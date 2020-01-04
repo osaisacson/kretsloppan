@@ -38,7 +38,7 @@ const CartScreen = props => {
       </View>
       <FlatList
         data={cartItems}
-        keyExtractor={item => item.productId}
+        keyExtractor={item => item.productId} //This is an exception where we need this on even new versions, as we don't have an id for the cart items
         renderItem={itemData => (
           <CartItem
             quantity={itemData.item.quantity}
