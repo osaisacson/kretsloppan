@@ -7,9 +7,10 @@ import {
   StyleSheet,
   Button
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
+import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
 
 const ProductDetailScreen = props => {
   const productId = props.navigation.getParam('productId');
@@ -17,11 +18,19 @@ const ProductDetailScreen = props => {
     state.products.availableProducts.find(prod => prod.id === productId)
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
+  const dispatch = useDispatch();
+
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
       <View style={styles.actions}>
-        <Button color={Colors.primary} title="Add to cart" />
+        <Button
+          color={Colors.primary}
+          title="Add to cart"
+          onPress={() => {
+            dispatch(cartActions.addToCart(selectedProduct));
+          }}
+        />
       </View>
       <Text style={styles.price}>{selectedProduct.price.toFixed(2)}</Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>

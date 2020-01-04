@@ -3,14 +3,21 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'; //Lets us use expo fonts
+// import { composeWithDevTools } from 'redux-devtools-extension'; //NOTE: remove before deploying the app. It is only used for React Native Debugger.
 
 import productsReducer from './store/reducers/products';
+import cartReducer from './store/reducers/cart';
+
 import ShopNavigator from './navigation/ShopNavigator';
 
 //Combines all the reducers which manages our redux state. This is where we geet our current state from in the child screens.
 const rootReducer = combineReducers({
-  products: productsReducer
+  products: productsReducer,
+  cart: cartReducer
 });
+
+//NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
+// const store = createStore(rootReducer, composeWithDevTools());
 
 const store = createStore(rootReducer); //Redux, manages our state
 
