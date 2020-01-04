@@ -44,7 +44,7 @@ ProductsOverviewScreen.navigationOptions = navData => {
           title="Cart"
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
           onPress={() => {
-            // navData.navigation.navigate('Cart')
+            navData.navigation.navigate('Cart');
           }}
         />
       </HeaderButtons>
