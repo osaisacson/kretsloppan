@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Button } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+
+import Colors from '../../constants/Colors';
 
 const ProductItem = props => {
   return (
@@ -10,7 +11,7 @@ const ProductItem = props => {
       </View>
       <View style={styles.details}>
         <Text style={styles.title}>{props.title}</Text>
-        <Text style={styles.title}>{props.price.toFixed(2)} Kr</Text>
+        <Text style={styles.price}>${props.price.toFixed(2)}</Text>
       </View>
       <View style={styles.actions}>
         <Button
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignContent: 'center',
+    alignItems: 'center',
     height: '25%',
     paddingHorizontal: 20
   }
