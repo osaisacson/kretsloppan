@@ -1,4 +1,6 @@
 import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions/cart';
+import { ADD_ORDER } from '../actions/orders';
+
 import CartItem from '../../models/cart-item';
 
 //By having these separate reducers (cart, product...) in redux managing the state becomes easier. They all get combined into one rootReducer in App.js
@@ -59,6 +61,8 @@ export default (state = initialState, action) => {
         items: updatedCartItems, //update the items in the state with the updatedCartItems defined in the if/else above
         totalAmount: state.totalAmount - selectedCartItem.productPrice //remove one item from the total price. This will be right regardless of the if/else above as we always remove one item with this action.
       };
+    case ADD_ORDER:
+      return initialState; //Clear the cart after adding the order, by resetting the state to an empty object as per the initialState above
   }
   return state;
 };

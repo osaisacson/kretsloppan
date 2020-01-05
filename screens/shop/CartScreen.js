@@ -35,14 +35,14 @@ const CartScreen = props => {
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
           Total:{' '}
-          <Text style={styles.amount}>${cartTotalAmount.toFixed(2)}</Text>
+          <Text style={styles.amount}>{cartTotalAmount.toFixed(2)} SEK</Text>
         </Text>
         <Button
           color={Colors.accent}
           title="Order Now"
           disabled={cartItems.length === 0}
           onPress={() => {
-            dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
+            dispatch(orderActions.addOrder(cartItems, cartTotalAmount)); //Moves tha items to the orders and clears the cart. See logic in orderreducer.
           }}
         />
       </View>
@@ -54,6 +54,7 @@ const CartScreen = props => {
             quantity={itemData.item.quantity}
             title={itemData.item.productTitle}
             amount={itemData.item.sum}
+            deletable //Makes the delete button visible on the CardItem component
             onRemove={() => {
               dispatch(cartActions.removeFromCart(itemData.item.productId));
             }}
