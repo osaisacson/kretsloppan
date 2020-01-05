@@ -7,13 +7,15 @@ import * as Font from 'expo-font'; //Lets us use expo fonts
 
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
+import ordersReducer from './store/reducers/orders';
 
 import ShopNavigator from './navigation/ShopNavigator';
 
 //Combines all the reducers which manages our redux state. This is where we geet our current state from in the child screens.
 const rootReducer = combineReducers({
   products: productsReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  orders: ordersReducer
 });
 
 //NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
