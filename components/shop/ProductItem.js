@@ -4,13 +4,10 @@ import {
   Text,
   Image,
   StyleSheet,
-  Button,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform
 } from 'react-native';
-
-import Colors from '../../constants/Colors';
 
 const ProductItem = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -24,7 +21,7 @@ const ProductItem = props => {
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.product}>
       <View style={styles.touchable}>
-        <TouchableCmp onPress={props.onViewDetail} useForeground>
+        <TouchableCmp onPress={props.onSelect} useForeground>
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
           <View>
             <View style={styles.imageContainer}>
@@ -32,19 +29,12 @@ const ProductItem = props => {
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{props.title}</Text>
-              <Text style={styles.price}>{props.price.toFixed(2)} SEK</Text>
+              <Text style={styles.price}>{props.price.toFixed(2)} Kr</Text>
             </View>
             <View style={styles.actions}>
-              <Button
-                color={Colors.primary}
-                title="View Details"
-                onPress={props.onViewDetail}
-              />
-              <Button
-                color={Colors.primary}
-                title="Add to cart"
-                onPress={props.onAddToCart}
-              />
+              {props.children}
+              {/* props.children refers to whatever we pass between the opening
+              and closing tag of our ProductItem component in the screen wherw we use it */}
             </View>
           </View>
         </TouchableCmp>
@@ -82,7 +72,7 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: 'center',
-    height: '15%',
+    height: '17%',
     padding: 10
   },
   title: {
@@ -99,7 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '25%',
+    height: '23%',
     paddingHorizontal: 20
   }
 });
