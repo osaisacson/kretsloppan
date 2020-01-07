@@ -1,5 +1,10 @@
 import PRODUCTS from '../../data/dummy-data';
-import { DELETE_PRODUCT } from '../actions/products';
+import {
+  DELETE_PRODUCT,
+  CREATE_PRODUCT,
+  UPDATE_PRODUCT
+} from '../actions/products';
+import Product from '../../models/product';
 
 const initialState = {
   availableProducts: PRODUCTS,
@@ -8,6 +13,49 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_PRODUCT:
+      //Creates a new product based on the model for products in models/product
+      //Data comes from the action as defined in actions/product
+      const newProduct = new Product(
+        new Date().toString(), //id of product, placeholder until real data
+        'u1', //ownerid of product, placeholder until real data
+        action.productData.title,
+        action.productData.imageUrl,
+        action.productData.description,
+        action.productData.price
+      );
+      return {
+        //update the reducer state above
+
+        ...state,
+        availableProducts: state.availableProducts.concat(newProduct), //old array plus a new element (newProduct is the new element)
+        userProducts: state.userProducts.concat(newProduct)
+      };
+    case UPDATE_PRODUCT:
+      const productIndex = state.userProducts.findIndex(
+        prod => prod.id === action.pid
+      );
+      const updatedProduct = new Product( //create a new product with updated data
+        action.pid,
+        state.userProducts[productIndex].ownerId,
+        action.productData.title,
+        action.productData.imageUrl,
+        action.productData.description,
+        state.userProducts[productIndex].price //price should not be editable, so we keep the original price for this
+      );
+      const updatedUserProducts = [...state.userProducts];
+      updatedUserProducts[productIndex] = updatedProduct; //replace the product at this index with the updated product above
+      const availableProductIndex = state.availableProducts.findIndex(
+        prod => prod.id === action.pid
+      );
+      const updatedAvailableProducts = [...state.availableProducts];
+      updatedAvailableProducts[availableProductIndex] = updatedProduct; //replace the product at this index with the updated product above
+      return {
+        ...state,
+        availableProducts: updatedAvailableProducts,
+        userProducts: updatedUserProducts
+      };
+
     case DELETE_PRODUCT:
       return {
         ...state, //copy state to make sure we dont loose any state
