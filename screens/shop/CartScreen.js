@@ -21,7 +21,8 @@ const CartScreen = props => {
         productTitle: state.cart.items[key].productTitle,
         productPrice: state.cart.items[key].productPrice,
         quantity: state.cart.items[key].quantity,
-        sum: state.cart.items[key].sum
+        sum: state.cart.items[key].sum,
+        imageUrl: state.cart.items[key].imageUrl
       });
     }
     return transformedCartItems.sort((a, b) =>
@@ -43,7 +44,7 @@ const CartScreen = props => {
         </Text>
         <Button
           color={Colors.accent}
-          title="Order Now"
+          title="Boka"
           disabled={cartItems.length === 0}
           onPress={() => {
             dispatch(orderActions.addOrder(cartItems, cartTotalAmount)); //Moves tha items to the orders and clears the cart. See logic in orderreducer.
@@ -58,6 +59,7 @@ const CartScreen = props => {
             quantity={itemData.item.quantity}
             title={itemData.item.productTitle}
             amount={itemData.item.sum}
+            imageUrl={itemData.item.imageUrl}
             deletable //Makes the delete button visible on the CardItem component
             onRemove={() => {
               dispatch(cartActions.removeFromCart(itemData.item.productId));

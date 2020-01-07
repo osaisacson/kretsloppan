@@ -6,6 +6,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import ProductItem from '../../components/shop/ProductItem';
 import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
 import HeaderButton from '../../components/UI/HeaderButton';
+import EmptyState from '../../components/UI/EmptyState';
 import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
@@ -17,7 +18,7 @@ const ProductsOverviewScreen = props => {
     prod => prod.categoryName === categoryName
   );
 
-  const dispatch = useDispatch(); //make onDispacth available for the buttons
+  const dispatch = useDispatch(); //make onDispatch available for the buttons
 
   const selectItemHandler = (id, title) => {
     //Passes the data of the item through the navigator.
@@ -27,6 +28,10 @@ const ProductsOverviewScreen = props => {
       productTitle: title
     });
   };
+
+  if (products.length === 0 || !products) {
+    return <EmptyState>Det finns inget i den här kategorin ännu.</EmptyState>;
+  }
 
   return (
     <FlatList
@@ -46,14 +51,14 @@ const ProductsOverviewScreen = props => {
           it's children) */}
           <Button
             color={Colors.primary}
-            title="View Details"
+            title="Se mer"
             onPress={() => {
               selectItemHandler(itemData.item.id, itemData.item.title); //Pass data to the next screen
             }}
           />
           <Button
             color={Colors.primary}
-            title="Add to cart"
+            title="Lägg i korg"
             onPress={() => {
               dispatch(cartActions.addToCart(itemData.item)); //Passes the whole object to actions/cart.js
             }}

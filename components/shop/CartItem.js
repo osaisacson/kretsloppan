@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   TouchableOpacity,
   Platform
@@ -10,25 +11,28 @@ import { Ionicons } from '@expo/vector-icons';
 
 const CartItem = props => {
   return (
-    <View style={styles.cartItem}>
-      <View style={styles.itemData}>
-        <Text style={styles.quantity}>{props.quantity} </Text>
-        <Text style={styles.mainText}>{props.title}</Text>
-      </View>
-      <View style={styles.itemData}>
-        <Text style={styles.mainText}>${props.amount.toFixed(2)}</Text>
-        {props.deletable && ( //Only show the delete button if the prop deletable is passed and set to true
-          <TouchableOpacity
-            onPress={props.onRemove}
-            style={styles.deleteButton}
-          >
-            <Ionicons
-              name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
-              size={23}
-              color="red"
-            />
-          </TouchableOpacity>
-        )}
+    <View>
+      <Image style={styles.image} source={{ uri: props.imageUrl }} />
+      <View style={styles.cartItem}>
+        <View style={styles.itemData}>
+          <Text style={styles.quantity}>{props.quantity} </Text>
+          <Text style={styles.mainText}>{props.title}</Text>
+        </View>
+        <View style={styles.itemData}>
+          <Text style={styles.mainText}>{props.amount.toFixed(2)} Kr</Text>
+          {props.deletable && ( //Only show the delete button if the prop deletable is passed and set to true
+            <TouchableOpacity
+              onPress={props.onRemove}
+              style={styles.deleteButton}
+            >
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
+                size={23}
+                color="red"
+              />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -40,7 +44,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 20
+    marginHorizontal: 10,
+    marginBottom: 15
+  },
+  image: {
+    width: '100%',
+    height: 100
   },
   itemData: {
     flexDirection: 'row',

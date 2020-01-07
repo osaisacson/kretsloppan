@@ -97,8 +97,8 @@ const AdminNavigator = createStackNavigator(
 const ShopNavigator = createDrawerNavigator(
   {
     Kategorier: ProductsNavigator,
-    Orders: OrdersNavigator,
-    Admin: AdminNavigator
+    Bokat: OrdersNavigator,
+    Förråd: AdminNavigator
   },
   {
     contentOptions: {

@@ -8,6 +8,7 @@ import ProductItem from '../../components/shop/ProductItem';
 import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
 
+//This screen shows the products which have been uploaded by the user
 const UserProductsScreen = props => {
   const userProducts = useSelector(state => state.products.userProducts);
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ const UserProductsScreen = props => {
 
 UserProductsScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Your Products',
+    headerTitle: 'Förråd (material jag laddat upp)',
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -83,7 +84,7 @@ UserProductsScreen.navigationOptions = navData => {
     headerRight: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Add"
+          title="Lägg till"
           iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
           onPress={() => {
             navData.navigation.navigate('EditProduct');

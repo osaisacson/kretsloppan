@@ -4,11 +4,21 @@ import { useSelector } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import HeaderButton from '../../components/UI/HeaderButton';
+import EmptyState from '../../components/UI/EmptyState';
+
 import OrderItem from '../../components/shop/OrderItem';
 
 const OrdersScreen = props => {
   const orders = useSelector(state => state.orders.orders); //This identifies the state from 1. 'orders' in APP.js. From there we get access to the state from 2. the 'orders' reducer defined in './store/reducers/orders'.
 
+  if (orders.length === 0 || !orders) {
+    return (
+      <EmptyState>
+        Du har inte valt något ännu, lägg till något material, sen gå till
+        kundkorgen och klicka 'boka'.
+      </EmptyState>
+    );
+  }
   return (
     <FlatList
       data={orders} //Flatlist should take an array
@@ -26,7 +36,7 @@ const OrdersScreen = props => {
 
 OrdersScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Your Orders',
+    headerTitle: 'Ditt bokade material',
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

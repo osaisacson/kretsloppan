@@ -12,12 +12,12 @@ const OrderItem = props => {
   return (
     <Card style={styles.orderItem}>
       <View style={styles.summary}>
-        <Text style={styles.totalAmount}>${props.amount.toFixed(2)}</Text>
+        <Text style={styles.totalAmount}>{props.amount.toFixed(2)} Kr</Text>
         <Text style={styles.date}>{props.date}</Text>
       </View>
       <Button
         color={Colors.primary}
-        title={showDetails ? 'Hide Details' : 'Show Details'}
+        title={showDetails ? 'Göm Detaljer' : 'Se detaljer'}
         onPress={() => {
           setShowDetails(prevState => !prevState); //prevState is originally false for showDetail. This syntax toggles it between being false and true, so if it was false on press make it true, and vice versa.
         }}
@@ -30,6 +30,7 @@ const OrderItem = props => {
               quantity={cartItem.quantity}
               amount={cartItem.sum}
               title={cartItem.productTitle}
+              imageUrl={cartItem.imageUrl}
             />
           ))}
         </View>

@@ -16,6 +16,7 @@ export default (state = initialState, action) => {
       const addedProduct = action.product; //we get the action.product from the product: product defined in actions/cart.j
       const prodPrice = addedProduct.price;
       const prodTitle = addedProduct.title;
+      const imageUrl = addedProduct.imageUrl;
 
       let updatedOrNewCardItem;
 
@@ -26,11 +27,18 @@ export default (state = initialState, action) => {
           state.items[addedProduct.id].quantity + 1,
           prodPrice,
           prodTitle,
-          state.items[addedProduct.id].sum + prodPrice
+          state.items[addedProduct.id].sum + prodPrice,
+          imageUrl
         );
       } else {
         //otherwise create and add a new item to the cart (comes from models/cart-item.js)
-        updatedOrNewCardItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
+        updatedOrNewCardItem = new CartItem(
+          1,
+          prodPrice,
+          prodTitle,
+          prodPrice,
+          imageUrl
+        );
       }
       //return a copy of the original state (so as to not overwrite anything), and set items equal to a new object where we copy all the existing state and then add a new dynamic key to which we set the newCartItem object.
       return {
@@ -49,7 +57,8 @@ export default (state = initialState, action) => {
           selectedCartItem.quantity - 1, //reduce quantity of items by one
           selectedCartItem.productPrice,
           selectedCartItem.productTitle,
-          selectedCartItem.sum - selectedCartItem.productPrice //update price to take one item off the sum
+          selectedCartItem.sum - selectedCartItem.productPrice, //update price to take one item off the sum
+          selectedCartItem.imageUrl
         );
         updatedCartItems = { ...state.items, [action.pid]: updatedCartItem }; //copy of the existing items where we replace the old cart item that has this id with a new cart item that has mostly same info as before but with updated quantity and sum. Effectively removing one item from that id.
       } else {

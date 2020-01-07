@@ -24,8 +24,8 @@ const EditProductScreen = props => {
 
   const dispatch = useDispatch();
 
-  const [category, setCategory] = useState(
-    editedProduct ? editedProduct.category : ''
+  const [categoryName, setCategoryName] = useState(
+    editedProduct ? editedProduct.categoryName : ''
   );
 
   const [title, setTitle] = useState(editedProduct ? editedProduct.title : '');
@@ -77,13 +77,17 @@ const EditProductScreen = props => {
       <View style={styles.form}>
         <View style={styles.formControl}>
           <Text style={styles.label}>Category</Text>
+
           <Picker
-            selectedValue={category}
-            onValueChange={text => setCategory(text)}
+            selectedValue={categoryName}
+            onValueChange={text => setCategoryName(text)}
           >
-            <Picker.Item label="Steve" value="steve" />
-            <Picker.Item label="Ellen" value="ellen" />
-            <Picker.Item label="Maria" value="maria" />
+            {/* NOTE: These are hardcoded to match the categories defined in the categories dummy data. They shalt not be hardcoded in the end. */}
+            <Picker.Item label="Tak" value="Tak" />
+            <Picker.Item label="Grund" value="Grund" />
+            <Picker.Item label="Fönster" value="Fönster" />
+            <Picker.Item label="Maskiner" value="Maskiner" />
+            <Picker.Item label="Diverse" value="Diverse" />
           </Picker>
         </View>
         <View style={styles.formControl}>

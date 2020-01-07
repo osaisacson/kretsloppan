@@ -26,7 +26,7 @@ const ProductDetailScreen = props => {
       <View style={styles.actions}>
         <Button
           color={Colors.primary}
-          title="Add to cart"
+          title="Lägg i korg"
           onPress={() => {
             dispatch(cartActions.addToCart(selectedProduct));
           }}
