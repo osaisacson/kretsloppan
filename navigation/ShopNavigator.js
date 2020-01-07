@@ -6,6 +6,7 @@ import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 //Any new screens need to be first imported here, and then added to the ProductsNavigator below.
+import CategoriesScreen from '../screens/shop/CategoriesScreen';
 import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import CartScreen from '../screens/shop/CartScreen';
@@ -32,6 +33,7 @@ const defaultNavOptions = {
 //Lists all the screens in the shop, in the order they will by default be rendered. This relates eg to how the backbutton functions and animations.
 const ProductsNavigator = createStackNavigator(
   {
+    Categories: CategoriesScreen,
     ProductsOverview: ProductsOverviewScreen,
     ProductDetail: ProductDetailScreen,
     Cart: CartScreen
@@ -94,7 +96,7 @@ const AdminNavigator = createStackNavigator(
 //Merges the product and and orders navigator into the drawers nav
 const ShopNavigator = createDrawerNavigator(
   {
-    Products: ProductsNavigator,
+    Kategorier: ProductsNavigator,
     Orders: OrdersNavigator,
     Admin: AdminNavigator
   },

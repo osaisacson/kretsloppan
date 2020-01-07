@@ -1,31 +1,53 @@
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+export const SET_CATEGORIES = 'SET_CATEGORIES';
 
 export const deleteProduct = productId => {
   return { type: DELETE_PRODUCT, pid: productId };
 };
 
-export const createProduct = (title, description, imageUrl, price) => {
+export const createProduct = (
+  title,
+  description,
+  imageUrl,
+  price,
+  categoryName
+) => {
   return {
     type: CREATE_PRODUCT,
     productData: {
       title, //short syntax when properties have same name. same as title: title.
       description,
       imageUrl,
-      price
+      price,
+      categoryName
     }
   };
 };
 
-export const updateProduct = (id, title, description, imageUrl) => {
+export const updateProduct = (
+  id,
+  title,
+  description,
+  imageUrl,
+  categoryName
+) => {
   return {
     type: UPDATE_PRODUCT,
     pid: id,
     productData: {
       title,
       description,
-      imageUrl
+      imageUrl,
+      categoryName
     }
+  };
+};
+
+export const setCategories = filterSettings => {
+  return {
+    type: SET_CATEGORIES,
+    filters: filterSettings
   };
 };

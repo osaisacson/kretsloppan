@@ -1,53 +1,69 @@
+import Category from '../models/category';
 import Product from '../models/product';
+
+export const CATEGORIES = [
+  new Category('c1', 'Stomme', '#f5428d'),
+  new Category('c2', 'Tak', '#f54242'),
+  new Category('c3', 'Grund', '#f5a442'),
+  new Category('c4', 'Fönster', '#f5d142'),
+  new Category('c5', 'Maskiner', '#368dff'),
+  new Category('c6', 'Diverse', '#41d95d')
+];
 
 const PRODUCTS = [
   new Product(
     'p1',
     'u1',
-    'Red Shirt',
-    'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    'A red t-shirt, perfect for days with non-red weather.',
-    29.99
+    'Takbeläggning',
+    'https://images.unsplash.com/photo-1496098236379-e7c6cfb4a70d?ixlib=rb-1.2.1&auto=format&fit=crop&w=933&q=80',
+    'Något använd.',
+    350,
+    'Tak'
   ),
   new Product(
     'p2',
     'u1',
-    'Blue Carpet',
-    'https://images.pexels.com/photos/6292/blue-pattern-texture-macro.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-    'Fits your red shirt perfectly. To stand on. Not to wear it.',
-    99.99
+    'Corrugated iron sheets',
+    'https://images.unsplash.com/photo-1519919558328-a1a0fd2def7a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1946&q=80',
+    'De bara skriker "ta dina stelkrampssprutor"',
+    135,
+    'Tak'
   ),
   new Product(
     'p3',
     'u2',
-    'Coffee Mug',
-    'https://images.pexels.com/photos/160834/coffee-cup-and-saucer-black-coffee-loose-coffee-beans-160834.jpeg?cs=srgb&dl=bean-beans-black-coffee-160834.jpg&fm=jpg',
-    'Can also be used for tea!',
-    8.99
+    'Trästockar',
+    'https://images.unsplash.com/photo-1558350002-195a30cc50b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    'Bäckar, bockar, stockar, lockar?',
+    255,
+    'Stomme'
   ),
   new Product(
     'p4',
     'u3',
-    'The Book - Limited Edition',
-    'https://images.pexels.com/photos/46274/pexels-photo-46274.jpeg?cs=srgb&dl=blur-blurred-book-pages-46274.jpg&fm=jpg',
-    "What the content is? Why would that matter? It's a limited edition!",
-    15.99
+    'Fönster',
+    'https://images.unsplash.com/photo-1519292585351-6f2aeb34ce86?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2076&q=80',
+    'Själens ögon enna',
+    46,
+    'Fönster'
   ),
   new Product(
     'p5',
     'u3',
-    'PowerBook',
-    'https://get.pxhere.com/photo/laptop-computer-macbook-mac-screen-water-board-keyboard-technology-air-mouse-photo-airport-aircraft-tablet-aviation-office-black-monitor-keys-graphic-hardware-image-pc-exhibition-multimedia-calculator-vector-water-cooling-floppy-disk-phased-out-desktop-computer-netbook-personal-computer-computer-monitor-electronic-device-computer-hardware-display-device-448748.jpg',
-    'Awesome hardware, crappy keyboard and a hefty price. Buy now before a new one is released!',
-    2299.99
+    'Kassaapparat',
+    'https://images.unsplash.com/photo-1565084980783-c76b5fe34717?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    "Aw, look at the charm. Plus it's probably haunted.",
+    360,
+    'Diverse'
   ),
   new Product(
     'p6',
     'u1',
-    'Pen & Paper',
-    'https://cdn.pixabay.com/photo/2015/10/03/02/14/pen-969298_1280.jpg',
-    "Can be used for role-playing (not the kind of role-playing you're thinking about...).",
-    5.49
+    'Grävskopa',
+    'https://images.unsplash.com/photo-1504306763499-721d07597b66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1535&q=80',
+    'En litn grävskopa.',
+    320,
+    'Maskiner'
   )
 ];
 

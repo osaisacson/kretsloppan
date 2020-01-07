@@ -5,10 +5,12 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Platform
+  Platform,
+  Picker
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
+import CATEGORIES from '../../data/dummy-data';
 
 import HeaderButton from '../../components/UI/HeaderButton';
 import * as productsActions from '../../store/actions/products';
@@ -21,6 +23,10 @@ const EditProductScreen = props => {
   );
 
   const dispatch = useDispatch();
+
+  const [category, setCategory] = useState(
+    editedProduct ? editedProduct.category : ''
+  );
 
   const [title, setTitle] = useState(editedProduct ? editedProduct.title : '');
 
@@ -40,15 +46,27 @@ const EditProductScreen = props => {
 
     if (editedProduct) {
       dispatch(
-        productsActions.updateProduct(prodId, title, description, imageUrl)
+        productsActions.updateProduct(
+          prodId,
+          title,
+          description,
+          imageUrl,
+          categoryName
+        )
       );
     } else {
       dispatch(
-        productsActions.createProduct(title, description, imageUrl, +price)
+        productsActions.createProduct(
+          title,
+          description,
+          imageUrl,
+          +price,
+          categoryName
+        )
       );
     }
     props.navigation.goBack(); //Goes back to the previous screen after the above action has been performed
-  }, [dispatch, prodId, title, description, imageUrl, price]);
+  }, [dispatch, prodId, title, description, imageUrl, price, categoryName]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
@@ -57,6 +75,17 @@ const EditProductScreen = props => {
   return (
     <ScrollView>
       <View style={styles.form}>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Category</Text>
+          <Picker
+            selectedValue={category}
+            onValueChange={text => setCategory(text)}
+          >
+            <Picker.Item label="Steve" value="steve" />
+            <Picker.Item label="Ellen" value="ellen" />
+            <Picker.Item label="Maria" value="maria" />
+          </Picker>
+        </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Title</Text>
           <TextInput

@@ -9,7 +9,14 @@ import HeaderButton from '../../components/UI/HeaderButton';
 import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
-  const products = useSelector(state => state.products.availableProducts); //Get a slice of the state, in particular the available producst from the products
+  const productsOriginal = useSelector(
+    state => state.products.availableProducts
+  ); //Get a slice of the state, in particular the available products from the products
+  const categoryName = props.navigation.getParam('categoryName');
+  const products = productsOriginal.filter(
+    prod => prod.categoryName === categoryName
+  );
+
   const dispatch = useDispatch(); //make onDispacth available for the buttons
 
   const selectItemHandler = (id, title) => {
@@ -59,19 +66,21 @@ const ProductsOverviewScreen = props => {
 
 //Overrides the default title being set in the ShopNavigator defaultNavigationOptions
 ProductsOverviewScreen.navigationOptions = navData => {
+  const categoryName = navData.navigation.getParam('categoryName');
+
   return {
-    headerTitle: 'All Products',
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer(); //Navigate nowhere, just open the sidedrawer
-          }}
-        />
-      </HeaderButtons>
-    ),
+    headerTitle: categoryName,
+    // headerLeft: (
+    //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
+    //     <Item
+    //       title="Menu"
+    //       iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+    //       onPress={() => {
+    //         navData.navigation.toggleDrawer(); //Navigate nowhere, just open the sidedrawer
+    //       }}
+    //     />
+    //   </HeaderButtons>
+    // ),
     headerRight: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

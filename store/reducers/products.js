@@ -2,7 +2,8 @@ import PRODUCTS from '../../data/dummy-data';
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
-  UPDATE_PRODUCT
+  UPDATE_PRODUCT,
+  SET_CATEGORIES
 } from '../actions/products';
 import Product from '../../models/product';
 
@@ -18,11 +19,12 @@ export default (state = initialState, action) => {
       //Data comes from the action as defined in actions/product
       const newProduct = new Product(
         new Date().toString(), //id of product, placeholder until real data
-        'u1', //ownerid of product, placeholder until real data
+        'u1', //ownerid of product, placeholder until real data,
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description,
-        action.productData.price
+        action.productData.price,
+        action.productData.categoryName
       );
       return {
         //update the reducer state above
@@ -41,7 +43,8 @@ export default (state = initialState, action) => {
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description,
-        state.userProducts[productIndex].price //price should not be editable, so we keep the original price for this
+        state.userProducts[productIndex].price, //price should not be editable, so we keep the original price for this
+        action.productData.categoryName
       );
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[productIndex] = updatedProduct; //replace the product at this index with the updated product above
