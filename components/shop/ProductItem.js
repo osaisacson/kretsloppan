@@ -9,6 +9,8 @@ import {
   Platform
 } from 'react-native';
 
+import Card from '../UI/Card';
+
 const ProductItem = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
@@ -19,7 +21,7 @@ const ProductItem = props => {
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
-    <View style={styles.product}>
+    <Card style={styles.product}>
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
@@ -39,19 +41,12 @@ const ProductItem = props => {
           </View>
         </TouchableCmp>
       </View>
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   product: {
-    shadowColor: 'black',
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5, //Because shadow only work on iOS, elevation is same thing but for android.
-    borderRadius: 10,
-    backgroundColor: 'white',
     height: 300,
     margin: 20
   },
