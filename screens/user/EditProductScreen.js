@@ -105,11 +105,28 @@ const EditProductScreen = props => {
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
-    //will act as key:value in the form reducer
-    let isValid = false;
-    if (text.trim().length > 0) {
-      isValid = true;
+    //inputIdentifier and text will act as key:value in the form reducer
+
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let isValid = true;
+
+    //If we haven't entered any value (its empty) set form validity to false
+    if (text.trim().length === 0) {
+      isValid = false;
     }
+    if (inputIdentifier === 'email' && !emailRegex.test(text.toLowerCase())) {
+      isValid = false;
+    }
+    // if (min != null && +text < min) {
+    //   isValid = false;
+    // }
+    // if (max != null && +text > max) {
+    //   isValid = false;
+    // }
+    // if (minLength != null && text.length < minLength) {
+    //   isValid = false;
+    // }
+
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
       value: text,
@@ -135,6 +152,11 @@ const EditProductScreen = props => {
             <Picker.Item label="Maskiner" value="Maskiner" />
             <Picker.Item label="Diverse" value="Diverse" />
           </Picker>
+          {!formState.inputValues.categoryName ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Please select a category</Text>
+            </View>
+          ) : null}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Title</Text>
@@ -146,10 +168,11 @@ const EditProductScreen = props => {
             autoCapitalize="sentences"
             returnKeyType="next"
           />
-          {/* Error message */}
-          {!formState.inputValues.title && (
-            <Text>Please enter a valid title</Text>
-          )}
+          {!formState.inputValues.title ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Please enter a title</Text>
+            </View>
+          ) : null}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image URL</Text>
@@ -159,6 +182,11 @@ const EditProductScreen = props => {
             onChangeText={textChangeHandler.bind(this, 'imageUrl')}
             returnKeyType="next"
           />
+          {!formState.inputValues.imageUrl ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Please enter an image url</Text>
+            </View>
+          ) : null}
         </View>
         {editedProduct ? null : (
           <View style={styles.formControl}>
@@ -170,6 +198,11 @@ const EditProductScreen = props => {
               keyboardType="number-pad"
               returnKeyType="next"
             />
+            {!formState.inputValues.price ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Please enter a price</Text>
+              </View>
+            ) : null}
           </View>
         )}
         <View style={styles.formControl}>
@@ -180,6 +213,15 @@ const EditProductScreen = props => {
             onChangeText={textChangeHandler.bind(this, 'description')}
             returnKeyType="done"
           />
+          {/* Error message */}
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{props.errorText}</Text>
+          </View>
+          {!formState.inputValues.description ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Please enter a description</Text>
+            </View>
+          ) : null}
         </View>
       </View>
     </ScrollView>
@@ -222,6 +264,14 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1
+  },
+  errorContainer: {
+    marginVertical: 5
+  },
+  errorText: {
+    fontFamily: 'open-sans',
+    color: 'red',
+    fontSize: 13
   }
 });
 
