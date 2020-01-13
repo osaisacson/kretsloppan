@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'; //Lets us use expo fonts
 // import { composeWithDevTools } from 'redux-devtools-extension'; //NOTE: remove before deploying the app. It is only used for React Native Debugger.
+import ReduxThunk from 'redux-thunk';
 
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
@@ -21,7 +22,7 @@ const rootReducer = combineReducers({
 //NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
 // const store = createStore(rootReducer, composeWithDevTools());
 
-const store = createStore(rootReducer); //Redux, manages our state
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); //Redux, manages our state.
 
 //Sets up requiring and asynchronically fetching our fonts when the app loads
 const fetchFonts = () => {

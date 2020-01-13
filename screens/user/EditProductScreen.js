@@ -108,25 +108,12 @@ const EditProductScreen = props => {
   const textChangeHandler = (inputIdentifier, text) => {
     //inputIdentifier and text will act as key:value in the form reducer
 
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     let isValid = true;
 
     //If we haven't entered any value (its empty) set form validity to false
     if (text.trim().length === 0) {
       isValid = false;
     }
-    if (inputIdentifier === 'email' && !emailRegex.test(text.toLowerCase())) {
-      isValid = false;
-    }
-    // if (min != null && +text < min) {
-    //   isValid = false;
-    // }
-    // if (max != null && +text > max) {
-    //   isValid = false;
-    // }
-    // if (minLength != null && text.length < minLength) {
-    //   isValid = false;
-    // }
 
     dispatchFormState({
       type: FORM_INPUT_UPDATE,

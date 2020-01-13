@@ -14,15 +14,21 @@ export const createProduct = (
   price,
   categoryName
 ) => {
-  return {
-    type: CREATE_PRODUCT,
-    productData: {
-      title, //short syntax when properties have same name. same as title: title.
-      description,
-      imageUrl,
-      price,
-      categoryName
-    }
+  //Dispatched this ways so it gets called by ReduxThunk
+  return dispatch => {
+    //any async code you want. will now not break the redux flow, because of ReduxThunk
+    //...lets us make http requests.
+
+    dispatch({
+      type: CREATE_PRODUCT,
+      productData: {
+        title, //short syntax when properties have same name. same as title: title.
+        description,
+        imageUrl,
+        price,
+        categoryName
+      }
+    });
   };
 };
 
