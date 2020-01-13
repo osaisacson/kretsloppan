@@ -7,7 +7,8 @@ import {
   TextInput,
   StyleSheet,
   Platform,
-  Picker
+  Picker,
+  KeyboardAvoidingView
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -136,95 +137,98 @@ const EditProductScreen = props => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Category</Text>
-
-          <Picker
-            selectedValue={formState.inputValues.categoryName}
-            onValueChange={textChangeHandler.bind(this, 'categoryName')}
-          >
-            {/* NOTE: These are hardcoded to match the categories defined in the categories dummy data. They shalt not be hardcoded in the end. */}
-            <Picker.Item label="Tak" value="Tak" />
-            <Picker.Item label="Grund" value="Grund" />
-            <Picker.Item label="Fönster" value="Fönster" />
-            <Picker.Item label="Maskiner" value="Maskiner" />
-            <Picker.Item label="Diverse" value="Diverse" />
-          </Picker>
-          {!formState.inputValues.categoryName ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Please select a category</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.title}
-            onChangeText={textChangeHandler.bind(this, 'title')}
-            keyboardType="default"
-            autoCapitalize="sentences"
-            returnKeyType="next"
-          />
-          {!formState.inputValues.title ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Please enter a title</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Image URL</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.imageUrl}
-            onChangeText={textChangeHandler.bind(this, 'imageUrl')}
-            returnKeyType="next"
-          />
-          {!formState.inputValues.imageUrl ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Please enter an image url</Text>
-            </View>
-          ) : null}
-        </View>
-        {editedProduct ? null : (
+    //KeyboardAvoidingView makes sure we can always reach our inputs, so they don't get covered by the keyboard
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+      keyboardVerticalOffset={100}
+    >
+      <ScrollView>
+        <View style={styles.form}>
           <View style={styles.formControl}>
-            <Text style={styles.label}>Price</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.price}
-              onChangeText={textChangeHandler.bind(this, 'price')}
-              keyboardType="number-pad"
-              returnKeyType="next"
-            />
-            {!formState.inputValues.price ? (
+            <Text style={styles.label}>Category</Text>
+
+            <Picker
+              selectedValue={formState.inputValues.categoryName}
+              onValueChange={textChangeHandler.bind(this, 'categoryName')}
+            >
+              {/* NOTE: These are hardcoded to match the categories defined in the categories dummy data. They shalt not be hardcoded in the end. */}
+              <Picker.Item label="Tak" value="Tak" />
+              <Picker.Item label="Grund" value="Grund" />
+              <Picker.Item label="Fönster" value="Fönster" />
+              <Picker.Item label="Maskiner" value="Maskiner" />
+              <Picker.Item label="Diverse" value="Diverse" />
+            </Picker>
+            {!formState.inputValues.categoryName ? (
               <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Please enter a price</Text>
+                <Text style={styles.errorText}>Please select a category</Text>
               </View>
             ) : null}
           </View>
-        )}
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.description}
-            onChangeText={textChangeHandler.bind(this, 'description')}
-            returnKeyType="done"
-          />
-          {/* Error message */}
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>{props.errorText}</Text>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Title</Text>
+            <TextInput
+              style={styles.input}
+              value={formState.inputValues.title}
+              onChangeText={textChangeHandler.bind(this, 'title')}
+              keyboardType="default"
+              autoCapitalize="sentences"
+              returnKeyType="next"
+            />
+            {!formState.inputValues.title ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Please enter a title</Text>
+              </View>
+            ) : null}
           </View>
-          {!formState.inputValues.description ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Please enter a description</Text>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Image URL</Text>
+            <TextInput
+              style={styles.input}
+              value={formState.inputValues.imageUrl}
+              onChangeText={textChangeHandler.bind(this, 'imageUrl')}
+              returnKeyType="next"
+            />
+            {!formState.inputValues.imageUrl ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Please enter an image url</Text>
+              </View>
+            ) : null}
+          </View>
+          {editedProduct ? null : (
+            <View style={styles.formControl}>
+              <Text style={styles.label}>Price</Text>
+              <TextInput
+                style={styles.input}
+                value={formState.inputValues.price}
+                onChangeText={textChangeHandler.bind(this, 'price')}
+                keyboardType="number-pad"
+                returnKeyType="next"
+              />
+              {!formState.inputValues.price ? (
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>Please enter a price</Text>
+                </View>
+              ) : null}
             </View>
-          ) : null}
+          )}
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Description</Text>
+            <TextInput
+              style={styles.input}
+              value={formState.inputValues.description}
+              onChangeText={textChangeHandler.bind(this, 'description')}
+              returnKeyType="done"
+            />
+            {!formState.inputValues.description ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Please enter a description</Text>
+              </View>
+            ) : null}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -270,8 +274,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontFamily: 'open-sans',
-    color: 'red',
-    fontSize: 13
+    color: 'grey',
+    fontSize: 13,
+    textAlign: 'right'
   }
 });
 
