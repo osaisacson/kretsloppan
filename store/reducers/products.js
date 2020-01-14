@@ -3,7 +3,8 @@ import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
-  SET_CATEGORIES
+  SET_CATEGORIES,
+  SET_PRODUCTS
 } from '../actions/products';
 import Product from '../../models/product';
 
@@ -14,11 +15,17 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SET_PRODUCTS:
+      return {
+        availableProducts: action.products, //Set the available products in our store to the ones we fetch in ...actions/products.js fetchProducts()
+        userProducts: action.products.filter(prod => prod.ownerId === 'u1')
+      };
+
     case CREATE_PRODUCT:
       //Creates a new product based on the model for products in models/product
       //Data comes from the action as defined in actions/product
       const newProduct = new Product(
-        new Date().toString(), //id of product, placeholder until real data
+        action.productData.id, //created by firebase. check actions/products.js resData.name for more info
         'u1', //ownerid of product, placeholder until real data,
         action.productData.title,
         action.productData.imageUrl,

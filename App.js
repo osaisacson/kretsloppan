@@ -37,6 +37,7 @@ export default function App() {
 
   //If font is not loaded yet (fontLoaded is false) return the AppLoading component which pauses the showing of the app until x has been met
   if (!fontLoaded) {
+    console.log('App loading, waiting for font to load');
     return (
       <AppLoading
         startAsync={fetchFonts}

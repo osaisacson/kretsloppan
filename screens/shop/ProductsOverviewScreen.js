@@ -1,24 +1,56 @@
-import React from 'react';
-import { FlatList, Button, Platform } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  FlatList,
+  Button,
+  Platform,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  Text
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import ProductItem from '../../components/shop/ProductItem';
 import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
+import * as productsActions from '../../store/actions/products';
 import HeaderButton from '../../components/UI/HeaderButton';
 import EmptyState from '../../components/UI/EmptyState';
 import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
+  //check if we are loading
+  const [isLoading, setIsLoading] = useState(false);
+  //check if we get any errors
+  const [error, setError] = useState();
+  //Get a slice of the state, in particular the available products from the products
   const productsOriginal = useSelector(
     state => state.products.availableProducts
-  ); //Get a slice of the state, in particular the available products from the products
+  );
+
+  //filter products by categoryName, which is set in the parent CategoriesScreen and passed through navigation params
   const categoryName = props.navigation.getParam('categoryName');
   const products = productsOriginal.filter(
     prod => prod.categoryName === categoryName
   );
 
   const dispatch = useDispatch(); //make onDispatch available for the buttons
+
+  //Runs whenever the component is loaded, and fetches the latest products
+  const loadProducts = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(productsActions.fetchProducts());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [dispatch, loadProducts]);
 
   const selectItemHandler = (id, title) => {
     //Passes the data of the item through the navigator.
@@ -29,7 +61,35 @@ const ProductsOverviewScreen = props => {
     });
   };
 
+  //Om något gick fel, visa ett error message
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>Oj oj oj oj oj, något gick fel.</Text>
+        <Button
+          title="Try again"
+          onPress={loadProducts}
+          color={Colors.primary}
+        />
+      </View>
+    );
+  }
+
+  //Om vi inte har något i den valda kategorin: visa ett empty state
   if (products.length === 0 || !products) {
+    return <EmptyState>Inga material i den här kategorin än</EmptyState>;
+  }
+
+  //Vissa en spinner när vi laddar produkterna i kategorin
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (!isLoading && products.length === 0) {
     return <EmptyState>Det finns inget i den här kategorin ännu.</EmptyState>;
   }
 
@@ -100,4 +160,7 @@ ProductsOverviewScreen.navigationOptions = navData => {
   };
 };
 
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+});
 export default ProductsOverviewScreen;
