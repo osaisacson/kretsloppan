@@ -1,5 +1,6 @@
-import React, { useReducer, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   View,
   ScrollView,
@@ -7,7 +8,6 @@ import {
   TextInput,
   StyleSheet,
   Platform,
-  Picker,
   KeyboardAvoidingView
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -42,6 +42,9 @@ const formReducer = (state, action) => {
 };
 
 const EditCategoryScreen = props => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const categoryId = props.navigation.getParam('categoryId');
   const editedCategory = useSelector(state =>
     state.categories.categories.find(category => category.id === categoryId)

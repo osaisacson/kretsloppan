@@ -1,5 +1,6 @@
-import React, { useReducer, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   View,
   ScrollView,
@@ -15,6 +16,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import HeaderButton from '../../components/UI/HeaderButton';
 import * as productsActions from '../../store/actions/products';
+
+import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -42,6 +45,9 @@ const formReducer = (state, action) => {
 };
 
 const EditProductScreen = props => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const prodId = props.navigation.getParam('productId');
   const categories = useSelector(state => state.categories.categories);
 
@@ -68,38 +74,52 @@ const EditProductScreen = props => {
     formIsValid: editedProduct ? true : false
   });
 
+  useEffect(() => {
+    if (error) {
+      Alert.alert('An error occurred!', error, [{ text: 'Okay' }]);
+    }
+  }, [error]);
+
   //Add or edit a product
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async () => {
     // Only submit if we have valid form field inputs
     if (!formState.formIsValid) {
-      Alert.alert('Wrong input', 'Please check the errors in the form', [
-        { text: 'Ok' }
+      Alert.alert('Wrong input!', 'Please check the errors in the form.', [
+        { text: 'Okay' }
       ]);
       return;
     }
-    //if editedProduct is true we are editing, else we are adding
-    if (editedProduct) {
-      dispatch(
-        productsActions.updateProduct(
-          prodId,
-          formState.inputValues.categoryName,
-          formState.inputValues.title,
-          formState.inputValues.description,
-          formState.inputValues.imageUrl
-        )
-      );
-    } else {
-      dispatch(
-        productsActions.createProduct(
-          formState.inputValues.categoryName,
-          formState.inputValues.title,
-          formState.inputValues.description,
-          formState.inputValues.imageUrl,
-          +formState.inputValues.price
-        )
-      );
+    setError(null);
+    setIsLoading(true);
+    try {
+      //if editedProduct is true we are editing, else we are adding
+      if (editedProduct) {
+        await dispatch(
+          productsActions.updateProduct(
+            prodId,
+            formState.inputValues.categoryName,
+            formState.inputValues.title,
+            formState.inputValues.description,
+            formState.inputValues.imageUrl
+          )
+        );
+      } else {
+        await dispatch(
+          productsActions.createProduct(
+            formState.inputValues.categoryName,
+            formState.inputValues.title,
+            formState.inputValues.description,
+            formState.inputValues.imageUrl,
+            +formState.inputValues.price
+          )
+        );
+      }
+      props.navigation.goBack(); //Goes back to the previous screen after the above action has been performed
+    } catch (err) {
+      setError(err.message);
     }
-    props.navigation.goBack(); //Goes back to the previous screen after the above action has been performed
+
+    setIsLoading(false);
   }, [dispatch, prodId, formState]);
 
   useEffect(() => {
@@ -124,6 +144,14 @@ const EditProductScreen = props => {
       input: inputIdentifier
     });
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     //KeyboardAvoidingView makes sure we can always reach our inputs, so they don't get covered by the keyboard
