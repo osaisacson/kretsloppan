@@ -43,6 +43,8 @@ const formReducer = (state, action) => {
 
 const EditProductScreen = props => {
   const prodId = props.navigation.getParam('productId');
+  const categories = useSelector(state => state.categories.categories);
+
   const editedProduct = useSelector(state =>
     state.products.userProducts.find(prod => prod.id === prodId)
   );
@@ -139,12 +141,13 @@ const EditProductScreen = props => {
               selectedValue={formState.inputValues.categoryName}
               onValueChange={textChangeHandler.bind(this, 'categoryName')}
             >
-              {/* NOTE: These are hardcoded to match the categories defined in the categories dummy data. They shalt not be hardcoded in the end. */}
-              <Picker.Item label="Tak" value="Tak" />
-              <Picker.Item label="Grund" value="Grund" />
-              <Picker.Item label="Fönster" value="Fönster" />
-              <Picker.Item label="Maskiner" value="Maskiner" />
-              <Picker.Item label="Diverse" value="Diverse" />
+              {categories.map(category => (
+                <Picker.Item
+                  key={category.categoryName}
+                  label={category.categoryName}
+                  value={category.categoryName.toLowerCase()}
+                />
+              ))}
             </Picker>
             {!formState.inputValues.categoryName ? (
               <View style={styles.errorContainer}>
