@@ -107,8 +107,8 @@ export const createProduct = (
 };
 
 export const updateProduct = (
-  categoryName,
   id,
+  categoryName,
   title,
   description,
   imageUrl
