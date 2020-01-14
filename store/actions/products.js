@@ -7,6 +7,8 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 //reach out to firebase, fetch products and set these in our store
 export const fetchProducts = () => {
+  //Dispatched this ways so it gets called by ReduxThunk
+
   return async dispatch => {
     //any async code you want. will now not break the redux flow, because of ReduxThunk
     //...lets us make http requests. gets, posts, puts etc
@@ -16,19 +18,16 @@ export const fetchProducts = () => {
       );
 
       if (!response.ok) {
-        throw new Error(
-          'Something went wrong in ...actions/products.js/fetchProducts'
-        );
+        throw new Error('Something went wrong!');
       }
 
-      const resData = await response.json(); //Gives you the data returned by firebase when fetching our products
+      const resData = await response.json();
       const loadedProducts = [];
 
       //turn returned data into an array by looping over it and returning a new Product
       for (const key in resData) {
+        //loop over all items in resData
         loadedProducts.push(
-          //loop over all items in resData
-
           new Product(
             key,
             'u1',
@@ -40,15 +39,8 @@ export const fetchProducts = () => {
           )
         );
       }
-      console.log(
-        '...actions/products.js/fetchProducts: fetching products, raw: ',
-        resData
-      );
-      console.log(
-        '...actions/products.js/fetchProducts: fetching products, made to array: ',
-        loadedProducts
-      );
-      dispatch({ type: SET_PRODUCTS, products: loadedProducts }); //pass into our reducer (and store) the new array of loadedProducts we created from the returned data above
+      //pass into our reducer (and store) the new array of loadedProducts we created from the returned data above
+      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
     } catch (err) {
       // send to custom analytics server
       throw err;
@@ -56,7 +48,22 @@ export const fetchProducts = () => {
   };
 };
 
-//Create a new product
+export const deleteProduct = productId => {
+  return async dispatch => {
+    const response = await fetch(
+      `https://egnahemsfabriken.firebaseio.com/products/${productId}.json`,
+      {
+        method: 'DELETE'
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
+    dispatch({ type: DELETE_PRODUCT, pid: productId });
+  };
+};
+
 export const createProduct = (
   categoryName,
   title,
@@ -64,10 +71,8 @@ export const createProduct = (
   imageUrl,
   price
 ) => {
-  //Dispatched this ways so it gets called by ReduxThunk
   return async dispatch => {
-    //any async code you want. will now not break the redux flow, because of ReduxThunk
-    //...lets us make http requests. gets, posts, puts etc
+    // any async code you want!
     const response = await fetch(
       'https://egnahemsfabriken.firebaseio.com/products.json',
       {
@@ -77,7 +82,7 @@ export const createProduct = (
         },
         body: JSON.stringify({
           categoryName,
-          title,
+          title, //short syntax when properties have same name. same as title: title.
           description,
           imageUrl,
           price
@@ -87,17 +92,12 @@ export const createProduct = (
 
     const resData = await response.json(); //Gives you the data returned by firebase when creating a product
 
-    console.log(
-      '...actions/products.js/createProduct: created product: ',
-      resData
-    );
-
     dispatch({
       type: CREATE_PRODUCT,
       productData: {
         id: resData.name, //forward to our reducer the id (name ) created by firebase in the above POST
         categoryName,
-        title, //short syntax when properties have same name. same as title: title.
+        title,
         description,
         imageUrl,
         price
@@ -114,8 +114,8 @@ export const updateProduct = (
   imageUrl
 ) => {
   return async dispatch => {
-    await fetch(
-      `https://rn-complete-guide.firebaseio.com/products/${id}.json`,
+    const response = await fetch(
+      `https://egnahemsfabriken.firebaseio.com/products/${id}.json`,
       {
         method: 'PATCH',
         headers: {
@@ -130,6 +130,10 @@ export const updateProduct = (
       }
     );
 
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
+
     dispatch({
       type: UPDATE_PRODUCT,
       pid: id,
@@ -140,17 +144,5 @@ export const updateProduct = (
         imageUrl
       }
     });
-  };
-};
-
-export const deleteProduct = productId => {
-  return async dispatch => {
-    await fetch(
-      `https://rn-complete-guide.firebaseio.com/products/${productId}.json`,
-      {
-        method: 'DELETE'
-      }
-    );
-    dispatch({ type: DELETE_PRODUCT, pid: productId });
   };
 };
