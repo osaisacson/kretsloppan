@@ -33,15 +33,6 @@ const ProductsOverviewScreen = props => {
   //filter products by categoryName, which is set in the parent CategoriesScreen and passed through navigation params
   const categoryName = props.navigation.getParam('categoryName').toLowerCase();
 
-  console.log(
-    '----------------productsOriginal i productsScreen:',
-    productsOriginal
-  );
-  console.log(
-    '----------------passed categoryName to productsScreen:',
-    categoryName
-  );
-
   const products = productsOriginal.filter(
     prod => prod.categoryName.toLowerCase() === categoryName.toLowerCase()
   );

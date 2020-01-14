@@ -78,10 +78,6 @@ const CategoriesScreen = props => {
   }
 
   const renderGridItem = itemData => {
-    console.log(
-      'passed itemData for categories in categories screen:',
-      itemData
-    );
     return (
       <CategoryGridTile
         title={itemData.item.categoryName}
