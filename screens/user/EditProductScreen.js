@@ -52,18 +52,18 @@ const EditProductScreen = props => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
+      categoryName: editedProduct ? editedProduct.categoryName : '',
       title: editedProduct ? editedProduct.title : '',
       imageUrl: editedProduct ? editedProduct.imageUrl : '',
       description: editedProduct ? editedProduct.description : '',
-      price: '',
-      categoryName: editedProduct ? editedProduct.categoryName : ''
+      price: ''
     },
     inputValidities: {
+      categoryName: editedProduct ? true : false,
       title: editedProduct ? true : false,
       imageUrl: editedProduct ? true : false,
       description: editedProduct ? true : false,
-      price: editedProduct ? true : false,
-      categoryName: editedProduct ? true : false
+      price: editedProduct ? true : false
     },
     formIsValid: editedProduct ? true : false
   });
@@ -82,20 +82,20 @@ const EditProductScreen = props => {
       dispatch(
         productsActions.updateProduct(
           prodId,
+          formState.inputValues.categoryName,
           formState.inputValues.title,
           formState.inputValues.description,
-          formState.inputValues.imageUrl,
-          formState.inputValues.categoryName
+          formState.inputValues.imageUrl
         )
       );
     } else {
       dispatch(
         productsActions.createProduct(
+          formState.inputValues.categoryName,
           formState.inputValues.title,
           formState.inputValues.description,
           formState.inputValues.imageUrl,
-          +formState.inputValues.price,
-          formState.inputValues.categoryName
+          +formState.inputValues.price
         )
       );
     }

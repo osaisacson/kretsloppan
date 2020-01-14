@@ -32,11 +32,11 @@ export const fetchProducts = () => {
           new Product(
             key,
             'u1',
+            resData[key].categoryName,
             resData[key].title,
             resData[key].imageUrl,
             resData[key].description,
-            resData[key].price,
-            resData[key].categoryName
+            resData[key].price
           )
         );
       }
@@ -58,11 +58,11 @@ export const fetchProducts = () => {
 
 //Create a new product
 export const createProduct = (
+  categoryName,
   title,
   description,
   imageUrl,
-  price,
-  categoryName
+  price
 ) => {
   //Dispatched this ways so it gets called by ReduxThunk
   return async dispatch => {
@@ -76,11 +76,11 @@ export const createProduct = (
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          categoryName,
           title,
           description,
           imageUrl,
-          price,
-          categoryName
+          price
         })
       }
     );
@@ -96,35 +96,61 @@ export const createProduct = (
       type: CREATE_PRODUCT,
       productData: {
         id: resData.name, //forward to our reducer the id (name ) created by firebase in the above POST
+        categoryName,
         title, //short syntax when properties have same name. same as title: title.
         description,
         imageUrl,
-        price,
-        categoryName
+        price
       }
     });
   };
 };
 
 export const updateProduct = (
+  categoryName,
   id,
   title,
   description,
-  imageUrl,
-  categoryName
+  imageUrl
 ) => {
-  return {
-    type: UPDATE_PRODUCT,
-    pid: id,
-    productData: {
-      title,
-      description,
-      imageUrl,
-      categoryName
-    }
+  return async dispatch => {
+    await fetch(
+      `https://rn-complete-guide.firebaseio.com/products/${id}.json`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          categoryName,
+          title,
+          description,
+          imageUrl
+        })
+      }
+    );
+
+    dispatch({
+      type: UPDATE_PRODUCT,
+      pid: id,
+      productData: {
+        categoryName,
+        title,
+        description,
+        imageUrl
+      }
+    });
   };
 };
 
 export const deleteProduct = productId => {
-  return { type: DELETE_PRODUCT, pid: productId };
+  return async dispatch => {
+    await fetch(
+      `https://rn-complete-guide.firebaseio.com/products/${productId}.json`,
+      {
+        method: 'DELETE'
+      }
+    );
+    dispatch({ type: DELETE_PRODUCT, pid: productId });
+  };
 };

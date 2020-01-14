@@ -51,6 +51,18 @@ const ProductsOverviewScreen = props => {
     setIsLoading(false);
   }, [dispatch, setIsLoading, setError]);
 
+  //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadProducts again
+  useEffect(() => {
+    const willFocusSubscription = props.navigation.addListener(
+      'willFocus',
+      loadProducts
+    );
+    //Cleanup afterwards. Removes the subscription
+    return () => {
+      willFocusSubscription.remove();
+    };
+  }, [loadProducts]);
+
   useEffect(() => {
     loadProducts();
   }, [dispatch, loadProducts]);

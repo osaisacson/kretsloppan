@@ -26,11 +26,11 @@ export default (state = initialState, action) => {
       const newProduct = new Product(
         action.productData.id, //created by firebase. check actions/products.js resData.name for more info
         'u1', //ownerid of product, placeholder until real data,
+        action.productData.categoryName,
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description,
-        action.productData.price,
-        action.productData.categoryName
+        action.productData.price
       );
       return {
         //update the reducer state above
@@ -46,11 +46,11 @@ export default (state = initialState, action) => {
       const updatedProduct = new Product( //create a new product with updated data
         action.pid,
         state.userProducts[productIndex].ownerId,
+        action.productData.categoryName,
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description,
-        state.userProducts[productIndex].price, //price should not be editable, so we keep the original price for this
-        action.productData.categoryName
+        state.userProducts[productIndex].price //price should not be editable, so we keep the original price for this
       );
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[productIndex] = updatedProduct; //replace the product at this index with the updated product above

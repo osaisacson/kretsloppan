@@ -85,16 +85,40 @@ export const createCategory = (categoryName, color) => {
 };
 
 export const updateCategory = (id, categoryName, color) => {
-  return {
-    type: UPDATE_CATEGORY,
-    cid: id,
-    categoryData: {
-      categoryName,
-      color
-    }
+  return async dispatch => {
+    await fetch(
+      `https://rn-complete-guide.firebaseio.com/categories/${id}.json`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          categoryName,
+          color
+        })
+      }
+    );
+
+    dispatch({
+      type: UPDATE_CATEGORY,
+      cid: id,
+      categoryData: {
+        categoryName,
+        color
+      }
+    });
   };
 };
 
 export const deleteCategory = categoryId => {
-  return { type: DELETE_CATEGORY, cid: categoryId };
+  return async dispatch => {
+    await fetch(
+      `https://rn-complete-guide.firebaseio.com/categories/${categoryId}.json`,
+      {
+        method: 'DELETE'
+      }
+    );
+    dispatch({ type: DELETE_CATEGORY, cid: categoryId });
+  };
 };
