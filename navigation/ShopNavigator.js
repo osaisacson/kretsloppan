@@ -13,6 +13,8 @@ import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import EditProductScreen from '../screens/user/EditProductScreen';
+import UserCategoriesScreen from '../screens/user/UserCategoriesScreen';
+import EditCategoryScreen from '../screens/user/EditCategoryScreen';
 
 import Colors from '../constants/Colors';
 
@@ -93,12 +95,32 @@ const AdminNavigator = createStackNavigator(
   }
 );
 
+const AdminCategoriesNavigator = createStackNavigator(
+  {
+    UserCategories: UserCategoriesScreen,
+    EditCategory: EditCategoryScreen
+  },
+  {
+    navigationOptions: {
+      drawerIcon: drawerConfig => (
+        <Ionicons
+          name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      )
+    },
+    defaultNavigationOptions: defaultNavOptions
+  }
+);
+
 //Merges the product and and orders navigator into the drawers nav
 const ShopNavigator = createDrawerNavigator(
   {
-    Kategorier: ProductsNavigator,
+    Återbruk: ProductsNavigator,
     Bokat: OrdersNavigator,
-    Förråd: AdminNavigator
+    Produkter: AdminNavigator,
+    Kategorier: AdminCategoriesNavigator
   },
   {
     contentOptions: {

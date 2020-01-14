@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import {
   FlatList,
   Button,
@@ -8,7 +10,6 @@ import {
   StyleSheet,
   Text
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import ProductItem from '../../components/shop/ProductItem';
@@ -24,14 +25,25 @@ const ProductsOverviewScreen = props => {
   //check if we get any errors
   const [error, setError] = useState();
   //Get a slice of the state, in particular the available products from the products
+
   const productsOriginal = useSelector(
     state => state.products.availableProducts
   );
 
   //filter products by categoryName, which is set in the parent CategoriesScreen and passed through navigation params
-  const categoryName = props.navigation.getParam('categoryName');
+  const categoryName = props.navigation.getParam('categoryName').toLowerCase();
+
+  console.log(
+    '----------------productsOriginal i productsScreen:',
+    productsOriginal
+  );
+  console.log(
+    '----------------passed categoryName to productsScreen:',
+    categoryName
+  );
+
   const products = productsOriginal.filter(
-    prod => prod.categoryName === categoryName
+    prod => prod.categoryName.toLowerCase() === categoryName.toLowerCase()
   );
 
   const dispatch = useDispatch(); //make onDispatch available for the buttons

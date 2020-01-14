@@ -1,8 +1,8 @@
 import Product from '../../models/product';
+
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
-export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 //reach out to firebase, fetch products and set these in our store
@@ -16,7 +16,9 @@ export const fetchProducts = () => {
       );
 
       if (!response.ok) {
-        throw new Error('Something went wrong in ...actions/products.js');
+        throw new Error(
+          'Something went wrong in ...actions/products.js/fetchProducts'
+        );
       }
 
       const resData = await response.json(); //Gives you the data returned by firebase when fetching our products
@@ -54,11 +56,7 @@ export const fetchProducts = () => {
   };
 };
 
-export const deleteProduct = productId => {
-  return { type: DELETE_PRODUCT, pid: productId };
-};
-
-//Returns a promise
+//Create a new product
 export const createProduct = (
   title,
   description,
@@ -127,9 +125,6 @@ export const updateProduct = (
   };
 };
 
-export const setCategories = filterSettings => {
-  return {
-    type: SET_CATEGORIES,
-    filters: filterSettings
-  };
+export const deleteProduct = productId => {
+  return { type: DELETE_PRODUCT, pid: productId };
 };

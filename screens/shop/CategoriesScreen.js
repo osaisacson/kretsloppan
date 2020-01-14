@@ -1,14 +1,87 @@
-import React from 'react';
-import { FlatList } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import {
+  FlatList,
+  Button,
+  Platform,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  Text
+} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import { CATEGORIES } from '../../data/dummy-data';
+import * as categoryActions from '../../store/actions/categories';
 
 import HeaderButton from '../../components/UI/HeaderButton';
 import CategoryGridTile from '../../components/UI/CategoryGridTile';
+import EmptyState from '../../components/UI/EmptyState';
+import Colors from '../../constants/Colors';
 
 const CategoriesScreen = props => {
+  //check if we are loading
+  const [isLoading, setIsLoading] = useState(false);
+  //check if we get any errors
+  const [error, setError] = useState();
+  //Get a slice of the state, in particular the categories
+  const categories = useSelector(state => state.categories.categories);
+
+  const dispatch = useDispatch(); //make onDispatch available for the buttons
+
+  //Runs whenever the component is loaded, and fetches the latest categories
+  const loadCategories = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(categoryActions.fetchCategories());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    loadCategories();
+  }, [dispatch, loadCategories]);
+
+  //Om något gick fel, visa ett error message
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>Oj oj oj oj oj, något gick fel.</Text>
+        <Button
+          title="Try again"
+          onPress={loadCategories}
+          color={Colors.primary}
+        />
+      </View>
+    );
+  }
+
+  //Om vi inte har något i den valda kategorin: visa ett empty state
+  if (categories.length === 0 || !categories) {
+    return <EmptyState>Inga kategorier ännu</EmptyState>;
+  }
+
+  //Vissa en spinner när vi laddar våra kategorier
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (!isLoading && categories.length === 0) {
+    return <EmptyState>Det finns inga kategorier ännu.</EmptyState>;
+  }
+
   const renderGridItem = itemData => {
+    console.log(
+      'passed itemData for categories in categories screen:',
+      itemData
+    );
     return (
       <CategoryGridTile
         title={itemData.item.categoryName}
@@ -17,7 +90,7 @@ const CategoriesScreen = props => {
           props.navigation.navigate({
             routeName: 'ProductsOverview',
             params: {
-              categoryName: itemData.item.categoryName //id of category, to be used when filtering the items in the next screen
+              categoryName: itemData.item.categoryName //name of category, to be used when filtering the items in the next screen
             }
           });
         }}
@@ -28,7 +101,7 @@ const CategoriesScreen = props => {
   return (
     <FlatList
       keyExtractor={(item, index) => item.id}
-      data={CATEGORIES}
+      data={categories}
       renderItem={renderGridItem}
       numColumns={2}
     />
@@ -63,5 +136,9 @@ CategoriesScreen.navigationOptions = navData => {
     )
   };
 };
+
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+});
 
 export default CategoriesScreen;
