@@ -1,5 +1,12 @@
-import React from 'react';
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Button,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
@@ -10,6 +17,8 @@ import * as cartActions from '../../store/actions/cart'; //Lets us access all ac
 import * as orderActions from '../../store/actions/orders';
 
 const CartScreen = props => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const cartTotalAmount = useSelector(state => state.cart.totalAmount); //Get slice of state from redux, comes from the reducers/cart.js
   const cartItems = useSelector(state => {
     const transformedCartItems = [];
@@ -32,6 +41,12 @@ const CartScreen = props => {
 
   const dispatch = useDispatch(); //get access to dispatching actions below.
 
+  const sendOrderHandler = async () => {
+    setIsLoading(true);
+    await dispatch(orderActions.addOrder(cartItems, cartTotalAmount)); //Moves tha items to the orders and clears the cart. See logic in orderreducer.
+    setIsLoading(false);
+  };
+
   return (
     <View style={styles.screen}>
       <Card style={styles.summary}>
@@ -42,14 +57,16 @@ const CartScreen = props => {
             {/* Math to ensure we never end up with minus values */}
           </Text>
         </Text>
-        <Button
-          color={Colors.accent}
-          title="Boka"
-          disabled={cartItems.length === 0}
-          onPress={() => {
-            dispatch(orderActions.addOrder(cartItems, cartTotalAmount)); //Moves tha items to the orders and clears the cart. See logic in orderreducer.
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.primary} />
+        ) : (
+          <Button
+            color={Colors.accent}
+            title="Boka"
+            disabled={cartItems.length === 0}
+            onPress={sendOrderHandler}
+          />
+        )}
       </Card>
       <FlatList
         data={cartItems}

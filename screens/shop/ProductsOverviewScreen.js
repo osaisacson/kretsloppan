@@ -82,7 +82,7 @@ const ProductsOverviewScreen = props => {
       <View style={styles.centered}>
         <Text>Oj oj oj oj oj, något gick fel.</Text>
         <Button
-          title="Try again"
+          title="Försök igen"
           onPress={loadProducts}
           color={Colors.primary}
         />

@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'open-sans-bold',
     fontSize: 22,
-    textAlign: 'right'
+    textAlign: 'right',
+    color: 'white'
   }
 });
 
