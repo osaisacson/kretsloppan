@@ -1,27 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  FlatList,
-  Button,
-  Platform,
-  ActivityIndicator,
-  View,
-  StyleSheet,
-  Text
-} from 'react-native';
+//Components
+import { FlatList, Button, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-
 import ProductItem from '../../components/shop/ProductItem';
-import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
-import * as productsActions from '../../store/actions/products';
 import HeaderButton from '../../components/UI/HeaderButton';
 import EmptyState from '../../components/UI/EmptyState';
+import Error from '../../components/UI/Error';
+import Loader from '../../components/UI/Loader';
+//Actions
+import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
+import * as productsActions from '../../store/actions/products';
+//Constants
 import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
-  //check if we are loading
+  //Set original states
   const [isLoading, setIsLoading] = useState(false);
-  //check if we get any errors
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
   //Get a slice of the state, in particular the available products from the products
@@ -41,13 +37,13 @@ const ProductsOverviewScreen = props => {
   //Runs whenever the component is loaded, and fetches the latest products
   const loadProducts = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    setIsRefreshing(true);
     try {
       await dispatch(productsActions.fetchProducts());
     } catch (err) {
       setError(err.message);
     }
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadProducts again
@@ -63,7 +59,10 @@ const ProductsOverviewScreen = props => {
   }, [loadProducts]);
 
   useEffect(() => {
-    loadProducts();
+    setIsLoading(true);
+    loadProducts().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, loadProducts]);
 
   const selectItemHandler = (id, title) => {
@@ -77,16 +76,7 @@ const ProductsOverviewScreen = props => {
 
   //Om något gick fel, visa ett error message
   if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text>Oj oj oj oj oj, något gick fel.</Text>
-        <Button
-          title="Försök igen"
-          onPress={loadProducts}
-          color={Colors.primary}
-        />
-      </View>
-    );
+    return <Error actionOnPress={loadProducts} />;
   }
 
   //Om vi inte har något i den valda kategorin: visa ett empty state
@@ -96,11 +86,7 @@ const ProductsOverviewScreen = props => {
 
   //Vissa en spinner när vi laddar produkterna i kategorin
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+    return <Loader />;
   }
 
   if (!isLoading && products.length === 0) {
@@ -109,6 +95,8 @@ const ProductsOverviewScreen = props => {
 
   return (
     <FlatList
+      onRefresh={loadProducts}
+      refreshing={isRefreshing}
       data={products}
       keyExtractor={item => item.id} //Newer versions of React Native don't need this line, the key gets auto extracted from the id
       renderItem={itemData => (
@@ -174,7 +162,4 @@ ProductsOverviewScreen.navigationOptions = navData => {
   };
 };
 
-const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-});
 export default ProductsOverviewScreen;

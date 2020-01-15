@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import {
-  FlatList,
-  Button,
-  Platform,
-  Alert,
-  ActivityIndicator,
-  View,
-  StyleSheet,
-  Text
-} from 'react-native';
+import { FlatList, Button, Platform, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
+import Error from '../../components/UI/Error';
+import Loader from '../../components/UI/Loader';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -25,12 +18,8 @@ const UserProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   //check if we get any errors
   const [error, setError] = useState();
-
+  //get a slice of the userProduct state
   const userProducts = useSelector(state => state.products.userProducts);
-  console.log(
-    'state.products.userProducts from userProductsScreen',
-    userProducts
-  );
   const dispatch = useDispatch();
 
   //Runs whenever the component is loaded, and fetches the latest products
@@ -63,16 +52,7 @@ const UserProductsScreen = props => {
 
   //Om något gick fel, visa ett error message
   if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text>Oj oj oj oj oj, något gick fel.</Text>
-        <Button
-          title="Försök igen"
-          onPress={loadProducts}
-          color={Colors.primary}
-        />
-      </View>
-    );
+    return <Error actionOnPress={loadProducts} />;
   }
 
   //Om vi inte har några produkter än: visa ett empty state
@@ -82,11 +62,7 @@ const UserProductsScreen = props => {
 
   //Vissa en spinner när vi laddar produkter
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+    return <Loader />;
   }
 
   //Show an alert when trying to delete a product
@@ -170,7 +146,5 @@ UserProductsScreen.navigationOptions = navData => {
     )
   };
 };
-const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-});
+
 export default UserProductsScreen;

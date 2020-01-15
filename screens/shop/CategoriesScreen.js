@@ -1,23 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import {
-  FlatList,
-  Button,
-  Platform,
-  ActivityIndicator,
-  View,
-  StyleSheet,
-  Text
-} from 'react-native';
+//Components
+import { FlatList, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-
-import * as categoryActions from '../../store/actions/categories';
-
 import HeaderButton from '../../components/UI/HeaderButton';
 import CategoryGridTile from '../../components/UI/CategoryGridTile';
 import EmptyState from '../../components/UI/EmptyState';
-import Colors from '../../constants/Colors';
+import Error from '../../components/UI/Error';
+import Loader from '../../components/UI/Loader';
+//Actions
+import * as categoryActions from '../../store/actions/categories';
 
 const CategoriesScreen = props => {
   //check if we are loading
@@ -47,16 +39,7 @@ const CategoriesScreen = props => {
 
   //Om något gick fel, visa ett error message
   if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text>Oj oj oj oj oj, något gick fel.</Text>
-        <Button
-          title="Try again"
-          onPress={loadCategories}
-          color={Colors.primary}
-        />
-      </View>
-    );
+    return <Error actionOnPress={loadCategories} />;
   }
 
   //Om vi inte har något i den valda kategorin: visa ett empty state
@@ -66,11 +49,7 @@ const CategoriesScreen = props => {
 
   //Vissa en spinner när vi laddar våra kategorier
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+    return <Loader />;
   }
 
   if (!isLoading && categories.length === 0) {
@@ -132,9 +111,5 @@ CategoriesScreen.navigationOptions = navData => {
     )
   };
 };
-
-const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-});
 
 export default CategoriesScreen;
