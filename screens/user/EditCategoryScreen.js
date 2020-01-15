@@ -16,6 +16,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import HeaderButton from '../../components/UI/HeaderButton';
 import * as categoryActions from '../../store/actions/categories';
 
+import Colors from '../../constants/Colors';
+
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
 const formReducer = (state, action) => {
@@ -63,7 +65,7 @@ const EditCategoryScreen = props => {
     formIsValid: editedCategory ? true : false
   });
 
-  //Add or edit a product
+  //Add or edit a category
   const submitHandler = useCallback(() => {
     // Only submit if we have valid form field inputs
     if (!formState.formIsValid) {
@@ -131,6 +133,7 @@ const EditCategoryScreen = props => {
               value={formState.inputValues.categoryName}
               onChangeText={textChangeHandler.bind(this, 'categoryName')}
               keyboardType="default"
+              autoCorrect={false}
               autoCapitalize="sentences"
               returnKeyType="next"
             />
@@ -142,12 +145,18 @@ const EditCategoryScreen = props => {
               </View>
             ) : null}
           </View>
-          <View style={styles.formControl}>
+          <View
+            style={styles.formControl}
+            style={{
+              backgroundColor: formState.inputValues.color
+            }}
+          >
             <Text style={styles.label}>Color</Text>
             <TextInput
               style={styles.input}
               value={formState.inputValues.color}
               onChangeText={textChangeHandler.bind(this, 'color')}
+              autoCorrect={false}
               returnKeyType="done"
             />
             {!formState.inputValues.color ? (

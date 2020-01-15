@@ -1,17 +1,92 @@
-import React from 'react';
-import { FlatList, Button, Platform, Alert } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  FlatList,
+  Button,
+  Platform,
+  Alert,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  Text
+} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-
+//Components
 import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
 import Colors from '../../constants/Colors';
+//Actions
 import * as productsActions from '../../store/actions/products';
 
 //This screen shows the products which have been uploaded by the user
 const UserProductsScreen = props => {
+  //check if we are loading
+  const [isLoading, setIsLoading] = useState(false);
+  //check if we get any errors
+  const [error, setError] = useState();
+
   const userProducts = useSelector(state => state.products.userProducts);
+  console.log(
+    'state.products.userProducts from userProductsScreen',
+    userProducts
+  );
   const dispatch = useDispatch();
+
+  //Runs whenever the component is loaded, and fetches the latest products
+  const loadProducts = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(productsActions.fetchProducts());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadProducts again
+  useEffect(() => {
+    const willFocusSubscription = props.navigation.addListener(
+      'willFocus',
+      loadProducts
+    );
+    //Cleanup afterwards. Removes the subscription
+    return () => {
+      willFocusSubscription.remove();
+    };
+  }, [loadProducts]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [dispatch, loadProducts]);
+
+  //Om något gick fel, visa ett error message
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>Oj oj oj oj oj, något gick fel.</Text>
+        <Button
+          title="Försök igen"
+          onPress={loadProducts}
+          color={Colors.primary}
+        />
+      </View>
+    );
+  }
+
+  //Om vi inte har några produkter än: visa ett empty state
+  if (!isLoading && (userProducts.length === 0 || !userProducts)) {
+    return <EmptyState>Inget här ännu</EmptyState>;
+  }
+
+  //Vissa en spinner när vi laddar produkter
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   //Show an alert when trying to delete a product
   const deleteHandler = id => {
@@ -69,7 +144,7 @@ const UserProductsScreen = props => {
 
 UserProductsScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Förråd (per user)',
+    headerTitle: 'Ditt förråd',
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -94,5 +169,7 @@ UserProductsScreen.navigationOptions = navData => {
     )
   };
 };
-
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+});
 export default UserProductsScreen;

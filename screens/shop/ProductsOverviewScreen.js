@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import {
   FlatList,
   Button,
@@ -24,8 +23,8 @@ const ProductsOverviewScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   //check if we get any errors
   const [error, setError] = useState();
-  //Get a slice of the state, in particular the available products from the products
 
+  //Get a slice of the state, in particular the available products from the products
   const productsOriginal = useSelector(
     state => state.products.availableProducts
   );

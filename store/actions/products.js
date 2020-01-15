@@ -39,6 +39,16 @@ export const fetchProducts = () => {
           )
         );
       }
+
+      console.log(
+        '...actions/Products.js/fetchProducts: fetching Products, raw: ',
+        resData
+      );
+      console.log(
+        '...actions/Products.js/fetchProducts: fetching Products, made to array: ',
+        loadedProducts
+      );
+
       //pass into our reducer (and store) the new array of loadedProducts we created from the returned data above
       dispatch({ type: SET_PRODUCTS, products: loadedProducts });
     } catch (err) {

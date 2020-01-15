@@ -191,6 +191,7 @@ const EditProductScreen = props => {
               onChangeText={textChangeHandler.bind(this, 'title')}
               keyboardType="default"
               autoCapitalize="sentences"
+              autoCorrect={false}
               returnKeyType="next"
             />
             {!formState.inputValues.title ? (
@@ -205,6 +206,8 @@ const EditProductScreen = props => {
               style={styles.input}
               value={formState.inputValues.imageUrl}
               onChangeText={textChangeHandler.bind(this, 'imageUrl')}
+              autoCorrect={false}
+              selectTextOnFocus
               returnKeyType="next"
             />
             {!formState.inputValues.imageUrl ? (
@@ -221,6 +224,7 @@ const EditProductScreen = props => {
                 value={formState.inputValues.price}
                 onChangeText={textChangeHandler.bind(this, 'price')}
                 keyboardType="number-pad"
+                autoCorrect={false}
                 returnKeyType="next"
               />
               {!formState.inputValues.price ? (
@@ -236,6 +240,7 @@ const EditProductScreen = props => {
               style={styles.input}
               value={formState.inputValues.description}
               onChangeText={textChangeHandler.bind(this, 'description')}
+              autoCorrect={false}
               returnKeyType="done"
             />
             {!formState.inputValues.description ? (
