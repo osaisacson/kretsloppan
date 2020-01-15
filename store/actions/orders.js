@@ -29,6 +29,7 @@ export const fetchOrders = () => {
       }
       dispatch({ type: SET_ORDERS, orders: loadedOrders });
     } catch (err) {
+      console.log('error in actions/orders.js');
       throw err;
     }
   };

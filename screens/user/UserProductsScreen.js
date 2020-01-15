@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+//Components
 import {
   FlatList,
   Button,
@@ -11,9 +12,9 @@ import {
   Text
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-//Components
 import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
+//Constants
 import Colors from '../../constants/Colors';
 //Actions
 import * as productsActions from '../../store/actions/products';
