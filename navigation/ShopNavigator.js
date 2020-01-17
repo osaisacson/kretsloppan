@@ -132,14 +132,9 @@ const ShopNavigator = createDrawerNavigator(
 );
 
 //Login screen
-const AuthNavigator = createStackNavigator(
-  {
-    Auth: AuthScreen
-  },
-  {
-    defaultNavigationOptions: defaultNavOptions
-  }
-);
+const AuthNavigator = createStackNavigator({
+  Auth: AuthScreen
+});
 
 //Main navigator, which switches between login and regular screen navigator
 const MainNavigator = createSwitchNavigator({
