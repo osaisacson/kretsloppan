@@ -1,44 +1,36 @@
-import Category from '../../models/category';
+import Product from '../../models/category';
 
 export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 export const CREATE_CATEGORY = 'CREATE_CATEGORY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 
-//reach out to firebase, fetch categories and set these in our store
 export const fetchCategories = () => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    // any async code you want!
+    const userId = getState().auth.userId;
     try {
       const response = await fetch(
         'https://egnahemsfabriken.firebaseio.com/categories.json'
       );
 
       if (!response.ok) {
-        throw new Error(
-          'Something went wrong in ...actions/categories.js/fetchCategories'
-        );
+        throw new Error('Something went wrong!');
       }
 
-      const resData = await response.json(); //Gives you the data returned by firebase when fetching our Categories
+      const resData = await response.json();
       const loadedCategories = [];
 
-      //turn returned data into an array by looping over it and returning a new Category
       for (const key in resData) {
         loadedCategories.push(
-          //loop over all items in resData
-
-          new Category(key, resData[key].categoryName, resData[key].color)
+          new Product(key, resData[key].categoryName, resData[key].color)
         );
       }
-      console.log(
-        '...actions/Categories.js/fetchCategories: fetching Categories, raw: ',
-        resData
-      );
-      console.log(
-        '...actions/Categories.js/fetchCategories: fetching Categories, made to array: ',
-        loadedCategories
-      );
-      dispatch({ type: SET_CATEGORIES, categories: loadedCategories }); //pass into our reducer (and store) the new array of loadedCategories we created from the returned data above
+
+      dispatch({
+        type: SET_CATEGORIES,
+        categories: loadedCategories
+      });
     } catch (err) {
       // send to custom analytics server
       throw err;
@@ -46,14 +38,29 @@ export const fetchCategories = () => {
   };
 };
 
-//Create a new category
-export const createCategory = (categoryName, color) => {
-  //Dispatched this ways so it gets called by ReduxThunk
-  return async dispatch => {
-    //any async code you want. will now not break the redux flow, because of ReduxThunk
-    //...lets us make http requests. gets, posts, puts etc
+export const deleteProduct = categoryId => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      'https://egnahemsfabriken.firebaseio.com/categories.json',
+      `https://egnahemsfabriken.firebaseio.com/categories/${categoryId}.json?auth=${token}`,
+      {
+        method: 'DELETE'
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
+    dispatch({ type: DELETE_CATEGORY, cid: categoryId });
+  };
+};
+
+export const createProduct = (categoryName, color) => {
+  return async (dispatch, getState) => {
+    // any async code you want!
+    const token = getState().auth.token;
+    const response = await fetch(
+      `https://egnahemsfabriken.firebaseio.com/categories.json?auth=${token}`,
       {
         method: 'POST',
         headers: {
@@ -66,17 +73,12 @@ export const createCategory = (categoryName, color) => {
       }
     );
 
-    const resData = await response.json(); //Gives you the data returned by firebase when creating a product
-
-    console.log(
-      '...actions/categories.js/createProduct: created category: ',
-      resData
-    );
+    const resData = await response.json();
 
     dispatch({
       type: CREATE_CATEGORY,
-      productData: {
-        id: resData.name, //forward to our reducer the id (name ) created by firebase in the above POST
+      categoryData: {
+        id: resData.name,
         categoryName,
         color
       }
@@ -84,10 +86,11 @@ export const createCategory = (categoryName, color) => {
   };
 };
 
-export const updateCategory = (id, categoryName, color) => {
-  return async dispatch => {
-    await fetch(
-      `https://rn-complete-guide.firebaseio.com/categories/${id}.json`,
+export const updateProduct = (categoryId, categoryName, color) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await fetch(
+      `https://egnahemsfabriken.firebaseio.com/categories/${categoryId}.json?auth=${token}`,
       {
         method: 'PATCH',
         headers: {
@@ -100,25 +103,17 @@ export const updateCategory = (id, categoryName, color) => {
       }
     );
 
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
+
     dispatch({
       type: UPDATE_CATEGORY,
-      cid: id,
+      cid: categoryId,
       categoryData: {
         categoryName,
         color
       }
     });
-  };
-};
-
-export const deleteCategory = categoryId => {
-  return async dispatch => {
-    await fetch(
-      `https://rn-complete-guide.firebaseio.com/categories/${categoryId}.json`,
-      {
-        method: 'DELETE'
-      }
-    );
-    dispatch({ type: DELETE_CATEGORY, cid: categoryId });
   };
 };

@@ -3,22 +3,22 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'; //Lets us use expo fonts
-// import { composeWithDevTools } from 'redux-devtools-extension'; //NOTE: remove before deploying the app. It is only used for React Native Debugger.
 import ReduxThunk from 'redux-thunk';
 
-import categoryReducer from './store/reducers/categories';
+//Reducers
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
 import ordersReducer from './store/reducers/orders';
+import authReducer from './store/reducers/auth';
 
-import ShopNavigator from './navigation/ShopNavigator';
+import NavigationContainer from './navigation/NavigationContainer';
 
 //Combines all the reducers which manages our redux state. This is where we geet our current state from in the child screens.
 const rootReducer = combineReducers({
-  categories: categoryReducer,
   products: productsReducer,
   cart: cartReducer,
-  orders: ordersReducer
+  orders: ordersReducer,
+  auth: authReducer
 });
 
 //NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
@@ -39,20 +39,18 @@ export default function App() {
 
   //If font is not loaded yet (fontLoaded is false) return the AppLoading component which pauses the showing of the app until x has been met
   if (!fontLoaded) {
-    console.log('App loading, waiting for font to load');
     return (
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => {
           setFontLoaded(true);
         }}
-      ></AppLoading>
+      />
     );
   }
-
   return (
     <Provider store={store}>
-      <ShopNavigator />
+      <NavigationContainer />
     </Provider>
   );
 }

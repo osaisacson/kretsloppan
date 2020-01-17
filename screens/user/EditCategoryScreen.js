@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import {
-  ActivityIndicator,
   Alert,
   View,
   ScrollView,
@@ -15,8 +14,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import HeaderButton from '../../components/UI/HeaderButton';
 import * as categoryActions from '../../store/actions/categories';
-
-import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 

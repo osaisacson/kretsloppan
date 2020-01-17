@@ -5,13 +5,13 @@ import {
   FlatList,
   Button,
   Platform,
-  ActivityIndicator,
   View,
   StyleSheet,
   Text
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
+import Loader from '../../components/UI/Loader';
 import EmptyState from '../../components/UI/EmptyState';
 import OrderItem from '../../components/shop/OrderItem';
 //Constants
@@ -75,11 +75,7 @@ const OrdersScreen = props => {
 
   //Vissa en spinner när vi laddar produkter
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+    return <Loader />;
   }
 
   return (

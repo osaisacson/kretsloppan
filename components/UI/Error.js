@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, StyleSheet } from 'react-native';
+import { Button, View, StyleSheet, Text } from 'react-native';
 import Colors from '../../constants/Colors';
 
 const Loader = props => {

@@ -4,11 +4,10 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS = 'SET_ORDERS';
 
 export const fetchOrders = () => {
-  return async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+  return async dispatch => {
     try {
       const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/orders/${userId}.json`
+        'https://egnahemsfabriken.firebaseio.com/orders/u1.json'
       );
 
       if (!response.ok) {
@@ -30,18 +29,17 @@ export const fetchOrders = () => {
       }
       dispatch({ type: SET_ORDERS, orders: loadedOrders });
     } catch (err) {
+      console.log('error in actions/orders.js');
       throw err;
     }
   };
 };
 
 export const addOrder = (cartItems, totalAmount) => {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const userId = getState().auth.userId;
+  return async dispatch => {
     const date = new Date();
     const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/orders/${userId}.json?auth=${token}`,
+      'https://egnahemsfabriken.firebaseio.com/orders/u1.json',
       {
         method: 'POST',
         headers: {

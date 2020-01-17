@@ -5,10 +5,13 @@ export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
+//reach out to firebase, fetch products and set these in our store
 export const fetchProducts = () => {
-  return async (dispatch, getState) => {
-    // any async code you want!
-    const userId = getState().auth.userId;
+  //Dispatched this ways so it gets called by ReduxThunk
+
+  return async dispatch => {
+    //any async code you want. will now not break the redux flow, because of ReduxThunk
+    //...lets us make http requests. gets, posts, puts etc
     try {
       const response = await fetch(
         'https://egnahemsfabriken.firebaseio.com/products.json'
@@ -21,11 +24,13 @@ export const fetchProducts = () => {
       const resData = await response.json();
       const loadedProducts = [];
 
+      //turn returned data into an array by looping over it and returning a new Product
       for (const key in resData) {
+        //loop over all items in resData
         loadedProducts.push(
           new Product(
             key,
-            resData[key].ownerId,
+            'u1',
             resData[key].categoryName,
             resData[key].title,
             resData[key].imageUrl,
@@ -35,11 +40,17 @@ export const fetchProducts = () => {
         );
       }
 
-      dispatch({
-        type: SET_PRODUCTS,
-        products: loadedProducts,
-        userProducts: loadedProducts.filter(prod => prod.ownerId === userId)
-      });
+      console.log(
+        '...actions/Products.js/fetchProducts: fetching Products, raw: ',
+        resData
+      );
+      console.log(
+        '...actions/Products.js/fetchProducts: fetching Products, made to array: ',
+        loadedProducts
+      );
+
+      //pass into our reducer (and store) the new array of loadedProducts we created from the returned data above
+      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
     } catch (err) {
       // send to custom analytics server
       throw err;
@@ -48,10 +59,9 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = productId => {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
+  return async dispatch => {
     const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products/${productId}.json?auth=${token}`,
+      `https://egnahemsfabriken.firebaseio.com/products/${productId}.json`,
       {
         method: 'DELETE'
       }
@@ -71,12 +81,10 @@ export const createProduct = (
   imageUrl,
   price
 ) => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     // any async code you want!
-    const token = getState().auth.token;
-    const userId = getState().auth.userId;
     const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
+      'https://egnahemsfabriken.firebaseio.com/products.json',
       {
         method: 'POST',
         headers: {
@@ -84,27 +92,25 @@ export const createProduct = (
         },
         body: JSON.stringify({
           categoryName,
-          title,
+          title, //short syntax when properties have same name. same as title: title.
           description,
           imageUrl,
-          price,
-          ownerId: userId
+          price
         })
       }
     );
 
-    const resData = await response.json();
+    const resData = await response.json(); //Gives you the data returned by firebase when creating a product
 
     dispatch({
       type: CREATE_PRODUCT,
       productData: {
-        id: resData.name,
+        id: resData.name, //forward to our reducer the id (name ) created by firebase in the above POST
         categoryName,
         title,
         description,
         imageUrl,
-        price,
-        ownerId: userId
+        price
       }
     });
   };
@@ -117,10 +123,9 @@ export const updateProduct = (
   description,
   imageUrl
 ) => {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
+  return async dispatch => {
     const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+      `https://egnahemsfabriken.firebaseio.com/products/${id}.json`,
       {
         method: 'PATCH',
         headers: {
