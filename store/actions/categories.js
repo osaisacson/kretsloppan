@@ -1,4 +1,4 @@
-import Product from '../../models/category';
+import Category from '../../models/category';
 
 export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 export const CREATE_CATEGORY = 'CREATE_CATEGORY';
@@ -23,7 +23,7 @@ export const fetchCategories = () => {
 
       for (const key in resData) {
         loadedCategories.push(
-          new Product(key, resData[key].categoryName, resData[key].color)
+          new Category(key, resData[key].categoryName, resData[key].color)
         );
       }
 
@@ -38,7 +38,7 @@ export const fetchCategories = () => {
   };
 };
 
-export const deleteProduct = categoryId => {
+export const deleteCategory = categoryId => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(
@@ -55,7 +55,7 @@ export const deleteProduct = categoryId => {
   };
 };
 
-export const createProduct = (categoryName, color) => {
+export const createCategory = (categoryName, color) => {
   return async (dispatch, getState) => {
     // any async code you want!
     const token = getState().auth.token;
@@ -86,7 +86,7 @@ export const createProduct = (categoryName, color) => {
   };
 };
 
-export const updateProduct = (categoryId, categoryName, color) => {
+export const updateCategory = (categoryId, categoryName, color) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(

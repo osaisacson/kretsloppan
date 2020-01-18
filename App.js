@@ -6,6 +6,7 @@ import * as Font from 'expo-font'; //Lets us use expo fonts
 import ReduxThunk from 'redux-thunk';
 
 //Reducers
+import categoryReducer from './store/reducers/categories';
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
 import ordersReducer from './store/reducers/orders';
@@ -15,6 +16,7 @@ import NavigationContainer from './navigation/NavigationContainer';
 
 //Combines all the reducers which manages our redux state. This is where we geet our current state from in the child screens.
 const rootReducer = combineReducers({
+  categories: categoryReducer,
   products: productsReducer,
   cart: cartReducer,
   orders: ordersReducer,

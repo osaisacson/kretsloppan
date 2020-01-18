@@ -80,7 +80,24 @@ const OrdersNavigator = createStackNavigator(
 const AdminNavigator = createStackNavigator(
   {
     UserProducts: UserProductsScreen,
-    EditProduct: EditProductScreen,
+    EditProduct: EditProductScreen
+  },
+  {
+    navigationOptions: {
+      drawerIcon: drawerConfig => (
+        <Ionicons
+          name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      )
+    },
+    defaultNavigationOptions: defaultNavOptions
+  }
+);
+
+const AdminCategoriesNavigator = createStackNavigator(
+  {
     UserCategories: UserCategoriesScreen,
     EditCategory: EditCategoryScreen
   },
@@ -100,9 +117,10 @@ const AdminNavigator = createStackNavigator(
 
 const ShopNavigator = createDrawerNavigator(
   {
-    Products: ProductsNavigator,
-    Orders: OrdersNavigator,
-    Admin: AdminNavigator
+    Återbruk: ProductsNavigator,
+    Bokat: OrdersNavigator,
+    Produkter: AdminNavigator,
+    Kategorier: AdminCategoriesNavigator
   },
   {
     contentOptions: {
