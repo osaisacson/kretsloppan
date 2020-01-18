@@ -20,6 +20,7 @@ const UserProductsScreen = props => {
   //check if we get any errors
   const [error, setError] = useState();
   //get a slice of the userProduct state
+
   const userProducts = useSelector(state => state.products.userProducts);
   const dispatch = useDispatch();
 
