@@ -15,7 +15,7 @@ import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
-import UserCategoriesScreen from '../screens/user/UserCategoriesScreen';
+import CategoriesScreen from '../screens/user/CategoriesScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import EditCategoryScreen from '../screens/user/EditCategoryScreen';
 import EditProductScreen from '../screens/user/EditProductScreen';
@@ -98,7 +98,7 @@ const AdminNavigator = createStackNavigator(
 
 const AdminCategoriesNavigator = createStackNavigator(
   {
-    UserCategories: UserCategoriesScreen,
+    Categories: CategoriesScreen,
     EditCategory: EditCategoryScreen
   },
   {
@@ -262,7 +262,7 @@ export default createAppContainer(MainNavigator);
 
 // const AdminCategoriesNavigator = createStackNavigator(
 //   {
-//     UserCategories: UserCategoriesScreen,
+//     Categories: CategoriesScreen,
 //     EditCategory: EditCategoryScreen
 //   },
 //   {

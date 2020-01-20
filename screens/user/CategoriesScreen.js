@@ -4,61 +4,62 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FlatList, Button, Platform, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
-import ProductItem from '../../components/shop/ProductItem';
+import CategoryGridTile from '../../components/UI/CategoryGridTile';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
-import * as productsActions from '../../store/actions/products';
+import * as categoriesActions from '../../store/actions/categories';
 
-//This screen shows the products which have been uploaded by the user
-const UserProductsScreen = props => {
+//This screen shows the categories which have been uploaded by the user
+const CategoriesScreen = props => {
   //check if we are loading
   const [isLoading, setIsLoading] = useState(false);
   //check if we get any errors
   const [error, setError] = useState();
-  //get a slice of the userProduct state
 
-  const userProducts = useSelector(state => state.products.userProducts);
+  //get a slice of the categories state
+  const categories = useSelector(state => state.categories.categories);
   const dispatch = useDispatch();
 
-  //Runs whenever the component is loaded, and fetches the latest products
-  const loadProducts = useCallback(async () => {
+  //Runs whenever the component is loaded, and fetches the latest categories
+  const loadCategories = useCallback(async () => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(productsActions.fetchProducts());
+      await dispatch(categoriesActions.fetchCategories());
     } catch (err) {
+      console.log('Cannot fetch categories');
       setError(err.message);
     }
     setIsLoading(false);
   }, [dispatch, setIsLoading, setError]);
 
-  //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadProducts again
+  //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadCategories again
   useEffect(() => {
     const willFocusSubscription = props.navigation.addListener(
       'willFocus',
-      loadProducts
+      loadCategories
     );
     //Cleanup afterwards. Removes the subscription
     return () => {
       willFocusSubscription.remove();
     };
-  }, [loadProducts]);
+  }, [loadCategories]);
 
   useEffect(() => {
-    loadProducts();
-  }, [dispatch, loadProducts]);
+    loadCategories();
+  }, [dispatch, loadCategories]);
 
   //Om något gick fel, visa ett error message
   if (error) {
-    return <Error actionOnPress={loadProducts} />;
+    return <Error actionOnPress={loadCategories} />;
   }
 
   //Om vi inte har några produkter än: visa ett empty state
-  if (!isLoading && (userProducts.length === 0 || !userProducts)) {
+  if (!isLoading && (categories.length === 0 || !categories)) {
     return <EmptyState>Inget här ännu</EmptyState>;
   }
 
@@ -67,7 +68,7 @@ const UserProductsScreen = props => {
     return <Loader />;
   }
 
-  //Show an alert when trying to delete a product
+  //Show an alert when trying to delete a category
   const deleteHandler = id => {
     Alert.alert(
       'Are you sure?',
@@ -78,36 +79,34 @@ const UserProductsScreen = props => {
           text: 'Yes',
           style: 'destructive',
           onPress: () => {
-            dispatch(productsActions.deleteProduct(id));
+            dispatch(categoriesActions.deleteCategory(id));
           }
         }
       ]
     );
   };
 
-  const editProductHandler = id => {
-    props.navigation.navigate('EditProduct', { productId: id }); //Navigate to the edit screen and forward the product id
+  const editCategoryHandler = id => {
+    props.navigation.navigate('EditCategory', { categoryId: id }); //Navigate to the edit screen and forward the category id
   };
 
   return (
     <FlatList
-      data={userProducts}
+      data={categories}
       keyExtractor={item => item.id}
       renderItem={itemData => (
-        <ProductItem
-          image={itemData.item.imageUrl}
-          title={itemData.item.title}
-          price={itemData.item.price}
-          categoryName={itemData.item.categoryName}
+        <CategoryGridTile
+          title={itemData.item.categoryName}
+          color={itemData.item.color}
           onSelect={() => {
-            editProductHandler(itemData.item.id);
+            editCategoryHandler(itemData.item.id);
           }}
         >
           <Button
             color={Colors.primary}
             title="Edit"
             onPress={() => {
-              editProductHandler(itemData.item.id);
+              editCategoryHandler(itemData.item.id);
             }}
           />
           <Button
@@ -115,13 +114,13 @@ const UserProductsScreen = props => {
             title="Delete"
             onPress={deleteHandler.bind(this, itemData.item.id)}
           />
-        </ProductItem>
+        </CategoryGridTile>
       )}
     />
   );
 };
 
-UserProductsScreen.navigationOptions = navData => {
+CategoriesScreen.navigationOptions = navData => {
   return {
     headerTitle: 'Ditt förråd',
     headerLeft: (
@@ -141,7 +140,7 @@ UserProductsScreen.navigationOptions = navData => {
           title="Lägg till"
           iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
           onPress={() => {
-            navData.navigation.navigate('EditProduct');
+            navData.navigation.navigate('EditCategory');
           }}
         />
       </HeaderButtons>
@@ -149,4 +148,4 @@ UserProductsScreen.navigationOptions = navData => {
   };
 };
 
-export default UserProductsScreen;
+export default CategoriesScreen;
