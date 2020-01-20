@@ -1,7 +1,5 @@
 import { AsyncStorage } from 'react-native';
 
-// export const SIGNUP = 'SIGNUP';
-// export const LOGIN = 'LOGIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 
@@ -86,7 +84,7 @@ export const login = (email, password) => {
         message = 'Lösenordet passar inte emailen, prova igen';
       }
       if (errorId === 'MISSING_PASSWORD') {
-        message = 'Meh. Du har ju inte skrivit in något lösenord.';
+        message = 'Du verkar inte ha skrivit in något lösenord.';
       }
       throw new Error(message);
     }
@@ -109,7 +107,7 @@ export const login = (email, password) => {
 
 export const logout = () => {
   clearLogoutTimer();
-  AsyncStorage.removeItem('userData');
+  AsyncStorage.removeItem('userData'); //Remove data from our local storage
   return { type: LOGOUT };
 };
 

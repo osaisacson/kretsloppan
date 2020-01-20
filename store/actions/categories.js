@@ -6,9 +6,7 @@ export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 
 export const fetchCategories = () => {
-  return async (dispatch, getState) => {
-    // any async code you want!
-    const userId = getState().auth.userId;
+  return async dispatch => {
     try {
       const response = await fetch(
         'https://egnahemsfabriken.firebaseio.com/categories.json'
