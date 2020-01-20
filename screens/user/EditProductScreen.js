@@ -17,6 +17,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
 //Actions
+import * as categoriesActions from '../../store/actions/categories';
 import * as productsActions from '../../store/actions/products';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -50,6 +51,34 @@ const EditProductScreen = props => {
 
   const prodId = props.navigation.getParam('productId');
   const categories = useSelector(state => state.categories.categories);
+
+  const loadCategories = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(categoriesActions.fetchCategories());
+    } catch (err) {
+      console.log('Cannot fetch categories');
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadCategories again
+  useEffect(() => {
+    const willFocusSubscription = props.navigation.addListener(
+      'willFocus',
+      loadCategories
+    );
+    //Cleanup afterwards. Removes the subscription
+    return () => {
+      willFocusSubscription.remove();
+    };
+  }, [loadCategories]);
+
+  useEffect(() => {
+    loadCategories();
+  }, [dispatch, loadCategories]);
 
   const editedProduct = useSelector(state =>
     state.products.userProducts.find(prod => prod.id === prodId)
