@@ -12,7 +12,10 @@ export const fetchOrders = () => {
       );
 
       if (!response.ok) {
-        throw new Error('Something went wrong!');
+        const errorResData = await response.json();
+        const errorId = errorResData.error.message;
+        let message = errorId;
+        throw new Error(message);
       }
 
       const resData = await response.json();
@@ -57,7 +60,10 @@ export const addOrder = (cartItems, totalAmount) => {
     );
 
     if (!response.ok) {
-      throw new Error('Something went wrong!');
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+      let message = errorId;
+      throw new Error(message);
     }
 
     const resData = await response.json();

@@ -34,9 +34,9 @@ export const signup = (email, password) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      let message = 'Something went wrong!';
+      let message = errorId;
       if (errorId === 'EMAIL_EXISTS') {
-        message = 'This email exists already!';
+        message = 'Den här emailen finns redan';
       }
       throw new Error(message);
     }
@@ -77,11 +77,16 @@ export const login = (email, password) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      let message = 'Something went wrong!';
+      let message = errorId;
       if (errorId === 'EMAIL_NOT_FOUND') {
-        message = 'This email could not be found!';
-      } else if (errorId === 'INVALID_PASSWORD') {
-        message = 'This password is not valid!';
+        message =
+          'Emailen kan inte hittas. Byt till att skapa konto om du aldrig loggat in innan, annars kolla stavningen.';
+      }
+      if (errorId === 'INVALID_PASSWORD') {
+        message = 'Lösenordet passar inte emailen, prova igen';
+      }
+      if (errorId === 'MISSING_PASSWORD') {
+        message = 'Meh. Du har ju inte skrivit in något lösenord.';
       }
       throw new Error(message);
     }

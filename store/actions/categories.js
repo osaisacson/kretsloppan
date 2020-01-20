@@ -15,7 +15,10 @@ export const fetchCategories = () => {
       );
 
       if (!response.ok) {
-        throw new Error('Something went wrong!');
+        const errorResData = await response.json();
+        const errorId = errorResData.error.message;
+        let message = errorId;
+        throw new Error(message);
       }
 
       const resData = await response.json();
@@ -49,7 +52,10 @@ export const deleteCategory = categoryId => {
     );
 
     if (!response.ok) {
-      throw new Error('Something went wrong!');
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+      let message = errorId;
+      throw new Error(message);
     }
     dispatch({ type: DELETE_CATEGORY, cid: categoryId });
   };
@@ -104,7 +110,10 @@ export const updateCategory = (categoryId, categoryName, color) => {
     );
 
     if (!response.ok) {
-      throw new Error('Something went wrong!');
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+      let message = errorId;
+      throw new Error(message);
     }
 
     dispatch({

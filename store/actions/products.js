@@ -15,7 +15,10 @@ export const fetchProducts = () => {
       );
 
       if (!response.ok) {
-        throw new Error('Something went wrong!');
+        const errorResData = await response.json();
+        const errorId = errorResData.error.message;
+        let message = errorId;
+        throw new Error(message);
       }
 
       const resData = await response.json();
@@ -58,7 +61,10 @@ export const deleteProduct = productId => {
     );
 
     if (!response.ok) {
-      throw new Error('Something went wrong!');
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+      let message = errorId;
+      throw new Error(message);
     }
     dispatch({ type: DELETE_PRODUCT, pid: productId });
   };
@@ -136,7 +142,10 @@ export const updateProduct = (
     );
 
     if (!response.ok) {
-      throw new Error('Something went wrong!');
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+      let message = errorId;
+      throw new Error(message);
     }
 
     dispatch({
