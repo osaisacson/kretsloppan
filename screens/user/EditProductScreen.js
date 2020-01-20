@@ -14,6 +14,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
 //Actions
@@ -187,9 +188,11 @@ const EditProductScreen = props => {
     >
       <ScrollView>
         <View style={styles.form}>
+          <ImagePicker
+            onImageTaken={textChangeHandler.bind(this, 'imageUrl')}
+          />
           <View style={styles.formControl}>
             <Text style={styles.label}>Category</Text>
-
             <Picker
               selectedValue={formState.inputValues.categoryName}
               onValueChange={textChangeHandler.bind(this, 'categoryName')}
@@ -225,7 +228,7 @@ const EditProductScreen = props => {
               </View>
             ) : null}
           </View>
-          <View style={styles.formControl}>
+          {/* <View style={styles.formControl}>
             <Text style={styles.label}>Image URL</Text>
             <TextInput
               style={styles.input}
@@ -240,7 +243,7 @@ const EditProductScreen = props => {
                 <Text style={styles.errorText}>Please enter an image url</Text>
               </View>
             ) : null}
-          </View>
+          </View> */}
           {editedProduct ? null : (
             <View style={styles.formControl}>
               <Text style={styles.label}>Price</Text>
