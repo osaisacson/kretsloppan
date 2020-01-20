@@ -24,7 +24,8 @@ export const fetchOrders = () => {
             key,
             resData[key].cartItems,
             resData[key].totalAmount,
-            new Date(resData[key].date)
+            new Date(resData[key].date),
+            resData[key].imageUrl
           )
         );
       }
@@ -67,7 +68,8 @@ export const addOrder = (cartItems, totalAmount) => {
         id: resData.name,
         items: cartItems,
         amount: totalAmount,
-        date: date
+        date: date,
+        imageUrl: resData.imageUrl
       }
     });
   };

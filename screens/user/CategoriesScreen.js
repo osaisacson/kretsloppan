@@ -122,7 +122,7 @@ const CategoriesScreen = props => {
 
 CategoriesScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Ditt förråd',
+    headerTitle: 'Redigera Kategorier',
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

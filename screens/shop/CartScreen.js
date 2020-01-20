@@ -27,11 +27,11 @@ const CartScreen = props => {
     for (const key in state.cart.items) {
       transformedCartItems.push({
         productId: key,
-        productTitle: state.cart.items[key].productTitle,
-        productPrice: state.cart.items[key].productPrice,
+        imageUrl: state.cart.items[key].imageUrl,
         quantity: state.cart.items[key].quantity,
-        sum: state.cart.items[key].sum,
-        imageUrl: state.cart.items[key].imageUrl
+        productPrice: state.cart.items[key].productPrice,
+        productTitle: state.cart.items[key].productTitle,
+        sum: state.cart.items[key].sum
       });
     }
     return transformedCartItems.sort((a, b) =>

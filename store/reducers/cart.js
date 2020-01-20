@@ -20,13 +20,20 @@ export default (state = initialState, action) => {
       if (state.items[addedProduct.id]) {
         // already have the item in the cart
         updatedOrNewCartItem = new CartItem(
+          addedProduct.imageUrl,
           state.items[addedProduct.id].quantity + 1,
           prodPrice,
           prodTitle,
           state.items[addedProduct.id].sum + prodPrice
         );
       } else {
-        updatedOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
+        updatedOrNewCartItem = new CartItem(
+          addedProduct.imageUrl,
+          1,
+          prodPrice,
+          prodTitle,
+          prodPrice
+        );
       }
       return {
         ...state,
@@ -40,6 +47,7 @@ export default (state = initialState, action) => {
       if (currentQty > 1) {
         // need to reduce it, not erase it
         const updatedCartItem = new CartItem(
+          selectedCartItem.imageUrl,
           selectedCartItem.quantity - 1,
           selectedCartItem.productPrice,
           selectedCartItem.productTitle,
