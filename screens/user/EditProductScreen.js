@@ -190,6 +190,7 @@ const EditProductScreen = props => {
         <View style={styles.form}>
           <ImagePicker
             onImageTaken={textChangeHandler.bind(this, 'imageUrl')}
+            passedImage={formState.inputValues.imageUrl}
           />
           <View style={styles.formControl}>
             <Text style={styles.label}>Category</Text>

@@ -6,7 +6,7 @@ import * as Permissions from 'expo-permissions';
 import Colors from '../../constants/Colors';
 
 const ImgPicker = props => {
-  const [pickedImage, setPickedImage] = useState();
+  const [pickedImage, setPickedImage] = useState(props.passedImage); //Set state to be a previously taken picture if we have one. Passed from wherever we use this component.
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(
