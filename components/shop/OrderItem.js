@@ -1,26 +1,50 @@
 import React, { useState } from 'react';
+//Components
 import { View, Text, Button, StyleSheet } from 'react-native';
-
+import { Ionicons } from '@expo/vector-icons';
+import Card from '../UI/Card';
 import CartItem from './CartItem';
+//Constants
 import Colors from '../../constants/Colors';
 
-import Card from '../UI/Card';
-
 const OrderItem = props => {
+  console.log('props: --- -- -- ', props);
   const [showDetails, setShowDetails] = useState(false); //Initially don't show the details of the card
 
   return (
     <Card style={styles.orderItem}>
       <View style={styles.summary}>
         <Text style={styles.date}>{props.date}</Text>
+        <Text style={styles.date}>{props.items.length}</Text>
       </View>
-      <Button
-        color={Colors.primary}
-        title={showDetails ? 'Göm Detaljer' : 'Se detaljer'}
-        onPress={() => {
-          setShowDetails(prevState => !prevState); //prevState is originally false for showDetail. This syntax toggles it between being false and true, so if it was false on press make it true, and vice versa.
-        }}
-      />
+      {showDetails ? (
+        <Ionicons
+          name={
+            Platform.OS === 'android'
+              ? 'md-arrow-dropup-circle'
+              : 'ios-arrow-dropup-circle'
+          }
+          size={25}
+          color={'grey'}
+          onPress={() => {
+            setShowDetails(prevState => !prevState); //prevState is originally false for showDetail. This syntax toggles it between being false and true, so if it was false on press make it true, and vice versa.
+          }}
+        />
+      ) : (
+        <Ionicons
+          name={
+            Platform.OS === 'android'
+              ? 'md-arrow-dropdown-circle'
+              : 'ios-arrow-dropdown-circle'
+          }
+          size={25}
+          color={'grey'}
+          onPress={() => {
+            setShowDetails(prevState => !prevState); //prevState is originally false for showDetail. This syntax toggles it between being false and true, so if it was false on press make it true, and vice versa.
+          }}
+        />
+      )}
+
       {showDetails && ( //Show the full card if showDetails is true
         <View style={styles.detailItems}>
           {props.items.map(cartItem => (
