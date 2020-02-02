@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 //Components
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Card from '../UI/Card';
 import CartItem from './CartItem';
@@ -8,7 +8,6 @@ import CartItem from './CartItem';
 import Colors from '../../constants/Colors';
 
 const OrderItem = props => {
-  console.log('props: --- -- -- ', props);
   const [showDetails, setShowDetails] = useState(false); //Initially don't show the details of the card
 
   return (

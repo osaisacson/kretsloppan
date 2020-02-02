@@ -6,10 +6,13 @@ import {
   FlatList,
   Button,
   Platform,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
+
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { Ionicons } from '@expo/vector-icons';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
@@ -22,6 +25,8 @@ import Colors from '../../constants/Colors';
 const ProductsOverviewScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  // const [isClicked, setIsClicked] = useState(false);
+
   const [error, setError] = useState();
   const products = useSelector(state => state.products.availableProducts);
   const dispatch = useDispatch();
@@ -101,18 +106,26 @@ const ProductsOverviewScreen = props => {
             selectItemHandler(itemData.item.id, itemData.item.title);
           }}
         >
-          <Button
-            color={Colors.primary}
-            title="View Details"
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+            size={25}
+            // color={isClicked ? Colors.primary : 'grey'} //NOTE: make so responds to if added/deleted from korg
+            color={'grey'}
             onPress={() => {
-              selectItemHandler(itemData.item.id, itemData.item.title);
+              // setIsClicked(true);
+              dispatch(cartActions.addToCart(itemData.item));
             }}
           />
-          <Button
+          <Ionicons
+            name={
+              Platform.OS === 'android'
+                ? 'md-arrow-dropright-circle'
+                : 'ios-arrow-dropright-circle'
+            }
+            size={25}
             color={Colors.primary}
-            title="To Cart"
             onPress={() => {
-              dispatch(cartActions.addToCart(itemData.item));
+              selectItemHandler(itemData.item.id, itemData.item.title);
             }}
           />
         </ProductItem>
