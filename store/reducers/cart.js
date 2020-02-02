@@ -4,15 +4,13 @@ import CartItem from '../../models/cart-item';
 import { DELETE_PRODUCT } from '../actions/products';
 
 const initialState = {
-  items: {},
-  totalAmount: 0
+  items: {}
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const addedProduct = action.product;
-      const prodPrice = addedProduct.price;
       const prodTitle = addedProduct.title;
 
       let updatedOrNewCartItem;
@@ -22,23 +20,18 @@ export default (state = initialState, action) => {
         updatedOrNewCartItem = new CartItem(
           addedProduct.imageUrl,
           state.items[addedProduct.id].quantity + 1,
-          prodPrice,
-          prodTitle,
-          state.items[addedProduct.id].sum + prodPrice
+          prodTitle
         );
       } else {
         updatedOrNewCartItem = new CartItem(
           addedProduct.imageUrl,
           1,
-          prodPrice,
-          prodTitle,
-          prodPrice
+          prodTitle
         );
       }
       return {
         ...state,
-        items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem },
-        totalAmount: state.totalAmount + prodPrice
+        items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem }
       };
     case REMOVE_FROM_CART:
       const selectedCartItem = state.items[action.pid];
@@ -49,9 +42,7 @@ export default (state = initialState, action) => {
         const updatedCartItem = new CartItem(
           selectedCartItem.imageUrl,
           selectedCartItem.quantity - 1,
-          selectedCartItem.productPrice,
-          selectedCartItem.productTitle,
-          selectedCartItem.sum - selectedCartItem.productPrice
+          selectedCartItem.productTitle
         );
         updatedCartItems = { ...state.items, [action.pid]: updatedCartItem };
       } else {
@@ -60,8 +51,7 @@ export default (state = initialState, action) => {
       }
       return {
         ...state,
-        items: updatedCartItems,
-        totalAmount: state.totalAmount - selectedCartItem.productPrice
+        items: updatedCartItems
       };
     case ADD_ORDER:
       return initialState;
@@ -70,12 +60,10 @@ export default (state = initialState, action) => {
         return state;
       }
       const updatedItems = { ...state.items };
-      const itemTotal = state.items[action.pid].sum;
       delete updatedItems[action.pid];
       return {
         ...state,
-        items: updatedItems,
-        totalAmount: state.totalAmount - itemTotal
+        items: updatedItems
       };
   }
 

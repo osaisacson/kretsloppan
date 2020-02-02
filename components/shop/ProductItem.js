@@ -31,7 +31,6 @@ const ProductItem = props => {
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{props.title}</Text>
-              <Text style={styles.price}>{props.price} Kr</Text>
             </View>
             <View style={styles.actions}>
               {props.children}
@@ -74,11 +73,6 @@ const styles = StyleSheet.create({
     fontFamily: 'open-sans-bold',
     fontSize: 18,
     marginVertical: 2
-  },
-  price: {
-    fontFamily: 'open-sans',
-    fontSize: 14,
-    color: '#888'
   },
   actions: {
     flexDirection: 'row',

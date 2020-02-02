@@ -25,8 +25,7 @@ export default (state = initialState, action) => {
         action.productData.categoryName,
         action.productData.title,
         action.productData.imageUrl,
-        action.productData.description,
-        action.productData.price
+        action.productData.description
       );
       return {
         ...state,
@@ -43,8 +42,7 @@ export default (state = initialState, action) => {
         action.productData.categoryName,
         action.productData.title,
         action.productData.imageUrl,
-        action.productData.description,
-        state.userProducts[productIndex].price
+        action.productData.description
       );
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[productIndex] = updatedProduct;

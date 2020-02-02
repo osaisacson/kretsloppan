@@ -19,7 +19,6 @@ const CartItem = props => {
           <Text style={styles.mainText}>{props.title}</Text>
         </View>
         <View style={styles.itemData}>
-          <Text style={styles.mainText}>{props.amount.toFixed(2)} Kr</Text>
           {props.deletable && ( //Only show the delete button if the prop deletable is passed and set to true
             <TouchableOpacity
               onPress={props.onRemove}

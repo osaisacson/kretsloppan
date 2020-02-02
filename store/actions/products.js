@@ -32,8 +32,7 @@ export const fetchProducts = () => {
             resData[key].categoryName,
             resData[key].title,
             resData[key].imageUrl,
-            resData[key].description,
-            resData[key].price
+            resData[key].description
           )
         );
       }
@@ -70,13 +69,7 @@ export const deleteProduct = productId => {
   };
 };
 
-export const createProduct = (
-  categoryName,
-  title,
-  description,
-  imageUrl,
-  price
-) => {
+export const createProduct = (categoryName, title, description, imageUrl) => {
   return async (dispatch, getState) => {
     // any async code you want!
     const token = getState().auth.token;
@@ -93,7 +86,6 @@ export const createProduct = (
           title,
           description,
           imageUrl,
-          price,
           ownerId: userId
         })
       }
@@ -109,7 +101,6 @@ export const createProduct = (
         title,
         description,
         imageUrl,
-        price,
         ownerId: userId
       }
     });

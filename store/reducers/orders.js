@@ -15,7 +15,6 @@ export default (state = initialState, action) => {
       const newOrder = new Order(
         action.orderData.id,
         action.orderData.items,
-        action.orderData.amount,
         action.orderData.date,
         action.orderData.imageUrl
       );

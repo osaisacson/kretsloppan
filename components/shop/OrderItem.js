@@ -12,7 +12,6 @@ const OrderItem = props => {
   return (
     <Card style={styles.orderItem}>
       <View style={styles.summary}>
-        <Text style={styles.totalAmount}>{props.amount.toFixed(2)} Kr</Text>
         <Text style={styles.date}>{props.date}</Text>
       </View>
       <Button
@@ -28,7 +27,6 @@ const OrderItem = props => {
             <CartItem
               key={cartItem.productId}
               quantity={cartItem.quantity}
-              amount={cartItem.sum}
               title={cartItem.productTitle}
               imageUrl={cartItem.imageUrl}
             />
@@ -51,10 +49,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginBottom: 15
-  },
-  totalAmount: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 16
   },
   date: {
     fontSize: 16,

@@ -91,15 +91,13 @@ const EditProductScreen = props => {
       categoryName: editedProduct ? editedProduct.categoryName : '',
       title: editedProduct ? editedProduct.title : '',
       imageUrl: editedProduct ? editedProduct.imageUrl : '',
-      description: editedProduct ? editedProduct.description : '',
-      price: ''
+      description: editedProduct ? editedProduct.description : ''
     },
     inputValidities: {
       categoryName: editedProduct ? true : false,
       title: editedProduct ? true : false,
       imageUrl: editedProduct ? true : false,
-      description: editedProduct ? true : false,
-      price: editedProduct ? true : false
+      description: editedProduct ? true : false
     },
     formIsValid: editedProduct ? true : false
   });
@@ -139,8 +137,7 @@ const EditProductScreen = props => {
             formState.inputValues.categoryName,
             formState.inputValues.title,
             formState.inputValues.description,
-            formState.inputValues.imageUrl,
-            +formState.inputValues.price
+            formState.inputValues.imageUrl
           )
         );
       }
@@ -245,24 +242,6 @@ const EditProductScreen = props => {
               </View>
             ) : null}
           </View> */}
-          {editedProduct ? null : (
-            <View style={styles.formControl}>
-              <Text style={styles.label}>Price</Text>
-              <TextInput
-                style={styles.input}
-                value={formState.inputValues.price}
-                onChangeText={textChangeHandler.bind(this, 'price')}
-                keyboardType="number-pad"
-                autoCorrect={false}
-                returnKeyType="next"
-              />
-              {!formState.inputValues.price ? (
-                <View style={styles.errorContainer}>
-                  <Text style={styles.errorText}>Please enter a price</Text>
-                </View>
-              ) : null}
-            </View>
-          )}
           <View style={styles.formControl}>
             <Text style={styles.label}>Description</Text>
             <TextInput

@@ -26,7 +26,6 @@ export const fetchOrders = () => {
           new Order(
             key,
             resData[key].cartItems,
-            resData[key].totalAmount,
             new Date(resData[key].date),
             resData[key].imageUrl
           )
@@ -39,7 +38,7 @@ export const fetchOrders = () => {
   };
 };
 
-export const addOrder = (cartItems, totalAmount) => {
+export const addOrder = cartItems => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -53,7 +52,6 @@ export const addOrder = (cartItems, totalAmount) => {
         },
         body: JSON.stringify({
           cartItems,
-          totalAmount,
           date: date.toISOString()
         })
       }
@@ -73,7 +71,6 @@ export const addOrder = (cartItems, totalAmount) => {
       orderData: {
         id: resData.name,
         items: cartItems,
-        amount: totalAmount,
         date: date,
         imageUrl: resData.imageUrl
       }
