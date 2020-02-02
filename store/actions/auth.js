@@ -1,7 +1,10 @@
 import { AsyncStorage } from 'react-native';
 
 export const AUTHENTICATE = 'AUTHENTICATE';
+export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const LOGOUT = 'LOGOUT';
+
+import createProfile from '../actions/profiles';
 
 let timer;
 
@@ -12,7 +15,7 @@ export const authenticate = (userId, token, expiryTime) => {
   };
 };
 
-export const signup = (email, password) => {
+export const signup = (name, phone, email, password) => {
   return async dispatch => {
     const response = await fetch(
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCW5ea8PRTs-rgzfCE1Wd6vM0c56Elyy4g',
@@ -22,6 +25,8 @@ export const signup = (email, password) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          name: name,
+          phone: phone,
           email: email,
           password: password,
           returnSecureToken: true
@@ -40,7 +45,7 @@ export const signup = (email, password) => {
     }
 
     const resData = await response.json();
-    console.log(resData);
+    console.log('resData from sign up, before dispatches: ', resData);
     dispatch(
       authenticate(
         resData.localId,
@@ -48,6 +53,7 @@ export const signup = (email, password) => {
         parseInt(resData.expiresIn) * 1000
       )
     );
+    dispatch(createProfile(resData.localId, name, phone, email)); //Create new profile for the user signing in
     const expirationDate = new Date(
       new Date().getTime() + parseInt(resData.expiresIn) * 1000
     );
