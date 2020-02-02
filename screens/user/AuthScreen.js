@@ -9,7 +9,6 @@ import {
   Alert,
   ImageBackground
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
 
 import Input from '../../components/UI/Input';
@@ -17,7 +16,6 @@ import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
 //Actions
 import * as authActions from '../../store/actions/auth';
-import * as profileActions from '../../store/actions/profiles';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -93,12 +91,6 @@ const AuthScreen = props => {
     let action;
     if (isSignup) {
       action = authActions.signup(
-        formState.inputValues.email,
-        formState.inputValues.password
-      );
-      profileActions.createProfile(
-        formState.inputValues.name,
-        formState.inputValues.phone,
         formState.inputValues.email,
         formState.inputValues.password
       );

@@ -17,7 +17,6 @@ import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
-import ProfileScreen from '../screens/user/ProfileScreen';
 import CategoriesScreen from '../screens/user/CategoriesScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import EditCategoryScreen from '../screens/user/EditCategoryScreen';
@@ -41,24 +40,6 @@ const defaultNavOptions = {
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
-
-const ProfileNavigator = createStackNavigator(
-  {
-    Profile: ProfileScreen
-  },
-  {
-    navigationOptions: {
-      drawerIcon: drawerConfig => (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      )
-    },
-    defaultNavigationOptions: defaultNavOptions
-  }
-);
 
 const ProductsNavigator = createStackNavigator(
   {
@@ -138,7 +119,6 @@ const AdminCategoriesNavigator = createStackNavigator(
 
 const ShopNavigator = createDrawerNavigator(
   {
-    Profil: ProfileNavigator,
     Återbruk: ProductsNavigator,
     Bokat: OrdersNavigator,
     Förråd: AdminNavigator,
