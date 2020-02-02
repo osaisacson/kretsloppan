@@ -7,8 +7,9 @@ import {
   DrawerNavigatorItems
 } from 'react-navigation-drawer';
 //Components
-import { Platform, SafeAreaView, Button, View, Text } from 'react-native';
-import { Avatar, Divider, Badge, Icon, withBadge } from 'react-native-elements';
+import { Platform, SafeAreaView, Button, View } from 'react-native';
+import UserAvatar from '../components/UI/UserAvatar';
+import { Divider } from 'react-native-elements';
 //Icons
 import { Ionicons } from '@expo/vector-icons';
 //Screens
@@ -136,26 +137,14 @@ const ShopNavigator = createDrawerNavigator(
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
           <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-            <View>
-              <Avatar
-                size="large"
-                source={{
-                  uri:
-                    'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'
-                }}
-                activeOpacity={0.7}
-                onPress={() => {
-                  props.navigation.navigate('Bokat');
-                  props.navigation.closeDrawer();
-                }}
-              />
-              <Badge
-                value="2"
-                status="error"
-                containerStyle={{ position: 'relative', left: -70, bottom: 20 }}
-              />
-            </View>
-            <Divider style={{ backgroundColor: 'grey' }} />
+            <UserAvatar
+              showBadge={true}
+              actionOnPress={() => {
+                props.navigation.navigate('Bokat');
+                props.navigation.closeDrawer();
+              }}
+            />
+            <Divider style={{ top: -18, backgroundColor: 'grey' }} />
             <DrawerNavigatorItems {...props} />
             <Divider style={{ backgroundColor: 'grey' }} />
             <Button

@@ -12,6 +12,7 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
 import Loader from '../../components/UI/Loader';
+import UserAvatar from '../../components/UI/UserAvatar';
 import EmptyState from '../../components/UI/EmptyState';
 import OrderItem from '../../components/shop/OrderItem';
 //Constants
@@ -79,22 +80,25 @@ const OrdersScreen = props => {
   }
 
   return (
-    <FlatList
-      data={orders} //Flatlist should take an array
-      keyExtractor={item => item.id} // Usually not needed in new versions, only needed if don't have an id
-      renderItem={itemData => (
-        <OrderItem
-          date={itemData.item.readableDate}
-          items={itemData.item.items} //pass the items which will later be looped over
-        />
-      )}
-    />
+    <View>
+      <UserAvatar />
+      <FlatList
+        data={orders} //Flatlist should take an array
+        keyExtractor={item => item.id} // Usually not needed in new versions, only needed if don't have an id
+        renderItem={itemData => (
+          <OrderItem
+            date={itemData.item.readableDate}
+            items={itemData.item.items} //pass the items which will later be looped over
+          />
+        )}
+      />
+    </View>
   );
 };
 
 OrdersScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Ditt bokade material',
+    headerTitle: 'Min sida',
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
