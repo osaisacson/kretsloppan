@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Button,
   ActivityIndicator,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
@@ -107,7 +108,13 @@ const AuthScreen = props => {
       keyboardVerticalOffset={50}
       style={styles.screen}
     >
-      <LinearGradient colors={['#ffedff', '#ffe3ff']} style={styles.gradient}>
+      <ImageBackground
+        source={{
+          uri:
+            'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80'
+        }}
+        style={styles.centeredContent}
+      >
         <Card style={styles.authContainer}>
           <ScrollView>
             <Input
@@ -155,13 +162,13 @@ const AuthScreen = props => {
             </View>
           </ScrollView>
         </Card>
-      </LinearGradient>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 };
 
 AuthScreen.navigationOptions = {
-  headerTitle: 'Authenticate'
+  headerTitle: 'Egnahemsfabriken Ger Igen'
 };
 
 const styles = StyleSheet.create({
@@ -172,6 +179,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  centeredContent: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   authContainer: {
     width: '80%',

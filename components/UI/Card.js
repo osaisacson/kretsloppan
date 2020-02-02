@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5, //Because shadow only work on iOS, elevation is same thing but for android.
     borderRadius: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'rgba(255,255,255,0.9)'
   }
 });
 

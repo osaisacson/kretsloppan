@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+//Components
 import {
   ScrollView,
   View,
@@ -7,9 +9,11 @@ import {
   StyleSheet,
   Button
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-
+import HeaderButton from '../../components/UI/HeaderButton';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+//Constants
 import Colors from '../../constants/Colors';
+//Actions
 import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
 
 const ProductDetailScreen = props => {
@@ -40,7 +44,18 @@ const ProductDetailScreen = props => {
 //Sets/overrides the default navigation options in the ShopNavigator
 ProductDetailScreen.navigationOptions = navData => {
   return {
-    headerTitle: navData.navigation.getParam('productTitle')
+    headerTitle: navData.navigation.getParam('productTitle'),
+    headerRight: (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Cart"
+          iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+          onPress={() => {
+            navData.navigation.navigate('Cart');
+          }}
+        />
+      </HeaderButtons>
+    )
   };
 };
 
