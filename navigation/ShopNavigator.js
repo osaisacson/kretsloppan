@@ -144,7 +144,10 @@ const ShopNavigator = createDrawerNavigator(
                     'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'
                 }}
                 activeOpacity={0.7}
-                onPress={() => props.navigation.navigate('Bokat')}
+                onPress={() => {
+                  props.navigation.navigate('Bokat');
+                  props.navigation.closeDrawer();
+                }}
               />
               <Badge
                 value="2"
