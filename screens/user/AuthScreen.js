@@ -15,7 +15,9 @@ import { useDispatch } from 'react-redux';
 import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
+//Actions
 import * as authActions from '../../store/actions/auth';
+import * as profileActions from '../../store/actions/profiles';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -48,17 +50,38 @@ const AuthScreen = props => {
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
 
-  const [formState, dispatchFormState] = useReducer(formReducer, {
-    inputValues: {
-      email: '',
-      password: ''
-    },
-    inputValidities: {
-      email: false,
-      password: false
-    },
-    formIsValid: false
-  });
+  const valuesAndValidities = isSignup
+    ? {
+        inputValues: {
+          name: '',
+          phone: '',
+          email: '',
+          password: ''
+        },
+        inputValidities: {
+          name: false,
+          phone: false,
+          email: false,
+          password: false
+        },
+        formIsValid: false
+      }
+    : {
+        inputValues: {
+          email: '',
+          password: ''
+        },
+        inputValidities: {
+          email: false,
+          password: false
+        },
+        formIsValid: false
+      };
+
+  const [formState, dispatchFormState] = useReducer(
+    formReducer,
+    valuesAndValidities
+  );
 
   useEffect(() => {
     if (error) {
@@ -70,6 +93,12 @@ const AuthScreen = props => {
     let action;
     if (isSignup) {
       action = authActions.signup(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+      profileActions.createProfile(
+        formState.inputValues.name,
+        formState.inputValues.phone,
         formState.inputValues.email,
         formState.inputValues.password
       );
@@ -117,6 +146,31 @@ const AuthScreen = props => {
       >
         <Card style={styles.authContainer}>
           <ScrollView>
+            {/* Only show if they're signing up */}
+            {isSignup ? (
+              <>
+                <Input
+                  id="name"
+                  label="Namn"
+                  keyboardType="default"
+                  required
+                  autoCapitalize="none"
+                  errorText="Oj det verkar som du inte skrivit in ett namn, prova igen"
+                  onInputChange={inputChangeHandler}
+                  initialValue=""
+                />
+                <Input
+                  id="phone"
+                  label="Telefonnummer"
+                  keyboardType="decimal-pad"
+                  required
+                  errorText="Ett telefonnummer behövs för att hantera logistiken runt hämtning/lämning av återbruk"
+                  onInputChange={inputChangeHandler}
+                  initialValue=""
+                />
+              </>
+            ) : null}
+            {/* Always show */}
             <Input
               id="email"
               label="E-Mail"
@@ -124,7 +178,7 @@ const AuthScreen = props => {
               required
               email
               autoCapitalize="none"
-              errorText="Please enter a valid email address."
+              errorText="Email behövs som inloggningsnamn och så vi kan kontakta dig"
               onInputChange={inputChangeHandler}
               initialValue=""
             />
@@ -136,7 +190,7 @@ const AuthScreen = props => {
               required
               minLength={5}
               autoCapitalize="none"
-              errorText="Please enter a valid password."
+              errorText="Lösenord behövs för att hålla din data säker"
               onInputChange={inputChangeHandler}
               initialValue=""
             />

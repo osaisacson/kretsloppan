@@ -40,7 +40,7 @@ export const signup = (email, password) => {
     }
 
     const resData = await response.json();
-    console.log(resData);
+    console.log('resData from sign up, before dispatches: ', resData);
     dispatch(
       authenticate(
         resData.localId,
