@@ -7,7 +7,8 @@ import {
   DrawerNavigatorItems
 } from 'react-navigation-drawer';
 //Components
-import { Platform, SafeAreaView, Button, View } from 'react-native';
+import { Platform, SafeAreaView, Button, View, Text } from 'react-native';
+import { Avatar, Divider, Badge, Icon, withBadge } from 'react-native-elements';
 //Icons
 import { Ionicons } from '@expo/vector-icons';
 //Screens
@@ -135,7 +136,25 @@ const ShopNavigator = createDrawerNavigator(
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
           <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+            <View>
+              <Avatar
+                size="large"
+                source={{
+                  uri:
+                    'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'
+                }}
+                activeOpacity={0.7}
+                onPress={() => props.navigation.navigate('Bokat')}
+              />
+              <Badge
+                value="2"
+                status="error"
+                containerStyle={{ position: 'relative', left: -70, bottom: 20 }}
+              />
+            </View>
+            <Divider style={{ backgroundColor: 'grey' }} />
             <DrawerNavigatorItems {...props} />
+            <Divider style={{ backgroundColor: 'grey' }} />
             <Button
               title="Logga ut"
               color={Colors.primary}
