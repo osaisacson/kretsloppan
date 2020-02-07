@@ -18,6 +18,7 @@ const ProductItem = props => {
     TouchableCmp = TouchableNativeFeedback;
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
+
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
@@ -30,7 +31,13 @@ const ProductItem = props => {
               <Image style={styles.image} source={{ uri: props.image }} />
             </View>
             <View style={styles.details}>
-              <Text style={styles.title}>{props.title}</Text>
+              <Text
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
+                style={styles.title}
+              >
+                {props.title}
+              </Text>
             </View>
             <View style={styles.actions}>
               {props.children}
@@ -47,7 +54,8 @@ const ProductItem = props => {
 const styles = StyleSheet.create({
   product: {
     height: 300,
-    margin: 20
+    width: '47%',
+    margin: '1.5%'
   },
   touchable: {
     borderRadius: 10,
@@ -65,13 +73,16 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   details: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
-    height: '17%',
     padding: 10
   },
   title: {
+    height: '100%',
     fontFamily: 'open-sans-bold',
-    fontSize: 18,
+    fontSize: 16,
     marginVertical: 2
   },
   actions: {

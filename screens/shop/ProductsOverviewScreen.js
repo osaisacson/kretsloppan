@@ -93,44 +93,48 @@ const ProductsOverviewScreen = props => {
   }
 
   return (
-    <FlatList
-      onRefresh={loadProducts}
-      refreshing={isRefreshing}
-      data={products}
-      keyExtractor={item => item.id}
-      renderItem={itemData => (
-        <ProductItem
-          image={itemData.item.imageUrl}
-          title={itemData.item.title}
-          onSelect={() => {
-            selectItemHandler(itemData.item.id, itemData.item.title);
-          }}
-        >
-          <Ionicons
-            name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-            size={25}
-            // color={isClicked ? Colors.primary : 'grey'} //NOTE: make so responds to if added/deleted from korg
-            color={'grey'}
-            onPress={() => {
-              // setIsClicked(true);
-              dispatch(cartActions.addToCart(itemData.item));
-            }}
-          />
-          <Ionicons
-            name={
-              Platform.OS === 'android'
-                ? 'md-arrow-dropright-circle'
-                : 'ios-arrow-dropright-circle'
-            }
-            size={25}
-            color={Colors.primary}
-            onPress={() => {
+    <View style={styles.gridContainer}>
+      <FlatList
+        horizontal={false}
+        numColumns={2}
+        onRefresh={loadProducts}
+        refreshing={isRefreshing}
+        data={products}
+        keyExtractor={item => item.id}
+        renderItem={itemData => (
+          <ProductItem
+            image={itemData.item.imageUrl}
+            title={itemData.item.title}
+            onSelect={() => {
               selectItemHandler(itemData.item.id, itemData.item.title);
             }}
-          />
-        </ProductItem>
-      )}
-    />
+          >
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+              size={25}
+              // color={isClicked ? Colors.primary : 'grey'} //NOTE: make so responds to if added/deleted from korg
+              color={'grey'}
+              onPress={() => {
+                // setIsClicked(true);
+                dispatch(cartActions.addToCart(itemData.item));
+              }}
+            />
+            <Ionicons
+              name={
+                Platform.OS === 'android'
+                  ? 'md-arrow-dropright-circle'
+                  : 'ios-arrow-dropright-circle'
+              }
+              size={25}
+              color={Colors.primary}
+              onPress={() => {
+                selectItemHandler(itemData.item.id, itemData.item.title);
+              }}
+            />
+          </ProductItem>
+        )}
+      />
+    </View>
   );
 };
 
@@ -163,6 +167,12 @@ ProductsOverviewScreen.navigationOptions = navData => {
 };
 
 const styles = StyleSheet.create({
+  gridContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%'
+  },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
 
