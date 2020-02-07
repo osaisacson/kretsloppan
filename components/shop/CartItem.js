@@ -16,7 +16,9 @@ const CartItem = props => {
       <View style={styles.cartItem}>
         <View style={styles.itemData}>
           <Text style={styles.quantity}>{props.quantity} </Text>
-          <Text style={styles.mainText}>{props.title}</Text>
+          <Text numberOfLines={1} style={styles.mainText}>
+            {props.title}
+          </Text>
         </View>
         <View style={styles.itemData}>
           {props.deletable && ( //Only show the delete button if the prop deletable is passed and set to true
@@ -60,6 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   mainText: {
+    maxWidth: 240,
     fontFamily: 'open-sans-bold',
     fontSize: 16
   },

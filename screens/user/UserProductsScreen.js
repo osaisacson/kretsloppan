@@ -91,6 +91,8 @@ const UserProductsScreen = props => {
 
   return (
     <FlatList
+      horizontal={false}
+      numColumns={2}
       data={userProducts}
       keyExtractor={item => item.id}
       renderItem={itemData => (
