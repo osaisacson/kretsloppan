@@ -4,14 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   ActivityIndicator,
   View,
-  Text,
   FlatList,
   Button,
   StyleSheet
 } from 'react-native';
 import Colors from '../../constants/Colors';
 import CartItem from '../../components/shop/CartItem';
-import Card from '../../components/UI/Card';
+import EmptyState from '../../components/UI/EmptyState';
+
 //Actions
 import * as cartActions from '../../store/actions/cart'; //Lets us access all actions through cartActions.xxxx
 import * as orderActions from '../../store/actions/orders';
@@ -44,20 +44,22 @@ const CartScreen = props => {
     setIsLoading(false);
   };
 
+  const loadedContent =
+    cartItems.length === 0 ? (
+      <EmptyState>
+        Vagnen är tom, hitta redan gjorda bokningar under 'Bokat' i sidomenyn
+      </EmptyState>
+    ) : (
+      <Button
+        color={Colors.accent}
+        title="Boka"
+        disabled={cartItems.length === 0}
+        onPress={sendOrderHandler}
+      />
+    );
+
   return (
     <View style={styles.screen}>
-      <Card style={styles.summary}>
-        {isLoading ? (
-          <ActivityIndicator size="large" color={Colors.primary} />
-        ) : (
-          <Button
-            color={Colors.accent}
-            title="Boka"
-            disabled={cartItems.length === 0}
-            onPress={sendOrderHandler}
-          />
-        )}
-      </Card>
       <FlatList
         data={cartItems}
         keyExtractor={item => item.productId}
@@ -73,6 +75,13 @@ const CartScreen = props => {
           />
         )}
       />
+      <View style={styles.summary}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.primary} />
+        ) : (
+          loadedContent
+        )}
+      </View>
     </View>
   );
 };
@@ -88,8 +97,8 @@ const styles = StyleSheet.create({
   summary: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    justifyContent: 'center',
+    marginTop: 20,
     padding: 10
   },
   summaryText: {
