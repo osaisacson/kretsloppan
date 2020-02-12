@@ -7,20 +7,19 @@ import {
   Button,
   Platform,
   StyleSheet,
-  ScrollView,
-  TouchableOpacity
+  ScrollView
+  // TouchableOpacity
 } from 'react-native';
 
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 import ContentHeader from '../../components/UI/ContentHeader';
-import HorizontalScrollItem from '../../components/UI/HorizontalScrollItem';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
 //Actions
-import * as cartActions from '../../store/actions/cart';
+// import * as cartActions from '../../store/actions/cart';
 import * as productsActions from '../../store/actions/products';
 //Constants
 import Colors from '../../constants/Colors';
@@ -134,8 +133,9 @@ const ProductsOverviewScreen = props => {
               showsHorizontalScrollIndicator={false}
             >
               {recentProducts.map(prod => (
-                <HorizontalScrollItem
+                <ProductItem
                   key={prod.id}
+                  isHorizontal={true}
                   image={prod.imageUrl}
                   title={prod.title}
                   price={prod.price ? prod.price : 0}
@@ -154,7 +154,6 @@ const ProductsOverviewScreen = props => {
           productsExceptNewest.length ? productsExceptNewest.length : 0
         }
       />
-
       <FlatList
         horizontal={false}
         numColumns={2}

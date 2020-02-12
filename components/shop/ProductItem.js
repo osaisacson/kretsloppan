@@ -22,7 +22,9 @@ const ProductItem = props => {
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
-    <Card style={{ ...styles.product, ...props.style }}>
+    <Card
+      style={props.isHorizontal ? styles.horizontalProduct : styles.product}
+    >
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
@@ -38,7 +40,10 @@ const ProductItem = props => {
               >
                 {props.title}
               </Text>
-              <Text style={styles.price}> {props.price ? props.price : 0}</Text>
+              <Text style={styles.price}>
+                {' '}
+                {props.price ? props.price : 0} kr
+              </Text>
             </View>
             {props.children ? (
               <View style={styles.actions}>
@@ -58,7 +63,16 @@ const styles = StyleSheet.create({
   product: {
     height: 150,
     width: '47%',
-    margin: '1.5%'
+    margin: '1.5%',
+    borderWidth: 0.5,
+    borderColor: '#ddd'
+  },
+  horizontalProduct: {
+    height: 150,
+    width: 185,
+    marginLeft: 10,
+    borderWidth: 0.5,
+    borderColor: '#ddd'
   },
   touchable: {
     borderRadius: 10,
@@ -76,20 +90,19 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   details: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10
+    color: '#000'
   },
   title: {
-    width: '80%',
+    width: '90%',
     fontFamily: 'roboto-regular',
-    fontSize: 16
+    fontSize: 16,
+    marginLeft: 8
   },
   price: {
     fontFamily: 'roboto-bold',
-    fontSize: 20
+    fontSize: 20,
+    textAlign: 'right',
+    marginRight: 8
   },
   actions: {
     flexDirection: 'row',

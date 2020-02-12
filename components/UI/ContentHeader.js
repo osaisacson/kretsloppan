@@ -12,7 +12,6 @@ const ContentHeader = props => {
 
 const styles = StyleSheet.create({
   contentHeaderContainer: {
-    flex: 1,
     flexDirection: 'row',
     padding: 20,
     alignItems: 'baseline'
