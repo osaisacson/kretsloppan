@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class Product {
   constructor(
     id,
@@ -21,6 +23,9 @@ class Product {
     this.date = date;
 
     //HÄR
+  }
+  get readableDate() {
+    return moment(this.date).format('MMMM Do YYYY, hh:mm');
   }
 }
 

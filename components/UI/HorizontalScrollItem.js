@@ -11,7 +11,7 @@ import {
 
 import Card from '../UI/Card';
 
-const ProductItem = props => {
+const HorizontalScrollItem = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -37,16 +37,14 @@ const ProductItem = props => {
                 style={styles.title}
               >
                 {props.title}
+                {props.price ? props.price : 0}
               </Text>
-              <Text style={styles.price}> {props.price ? props.price : 0}</Text>
             </View>
-            {props.children ? (
-              <View style={styles.actions}>
-                {props.children}
-                {/* props.children refers to whatever we pass between the opening
+            <View style={styles.actions}>
+              {props.children}
+              {/* props.children refers to whatever we pass between the opening
               and closing tag of our ProductItem component in the screen wherw we use it */}
-              </View>
-            ) : null}
+            </View>
           </View>
         </TouchableCmp>
       </View>
@@ -57,8 +55,10 @@ const ProductItem = props => {
 const styles = StyleSheet.create({
   product: {
     height: 150,
-    width: '47%',
-    margin: '1.5%'
+    width: 150,
+    marginLeft: 10,
+    borderWidth: 0.5,
+    borderColor: '#ddd'
   },
   touchable: {
     borderRadius: 10,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: '70%',
+    height: '60%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: 'hidden' //To make sure any child (in this case the image) cannot overlap what we set in the image container
@@ -78,18 +78,15 @@ const styles = StyleSheet.create({
   details: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
     alignItems: 'center',
     padding: 10
   },
   title: {
-    width: '80%',
-    fontFamily: 'open-sans',
-    fontSize: 16
-  },
-  price: {
+    height: '100%',
     fontFamily: 'open-sans-bold',
-    fontSize: 20
+    fontSize: 16,
+    marginVertical: 1
   },
   actions: {
     flexDirection: 'row',
@@ -100,4 +97,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProductItem;
+export default HorizontalScrollItem;
