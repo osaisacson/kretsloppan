@@ -3,9 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const ContentHeader = props => {
   return (
-    <View style={styles.contentHeaderContainer}>
-      <Text style={styles.contentHeader}>{props.title}</Text>
-      <Text style={styles.indicator}>({props.indicator})</Text>
+    <View>
+      <View style={styles.contentHeaderContainer}>
+        <Text style={styles.contentHeader}>{props.title}</Text>
+        <Text style={styles.indicator}>({props.indicator})</Text>
+      </View>
+      <Text style={styles.subTitle}>{props.subTitle}</Text>
     </View>
   );
 };
@@ -13,7 +16,8 @@ const ContentHeader = props => {
 const styles = StyleSheet.create({
   contentHeaderContainer: {
     flexDirection: 'row',
-    padding: 20,
+    paddingLeft: 15,
+    paddingTop: 20,
     alignItems: 'baseline'
   },
   contentHeader: {
@@ -24,6 +28,12 @@ const styles = StyleSheet.create({
   indicator: {
     fontFamily: 'roboto-regular',
     fontSize: 16,
+    paddingBottom: 2
+  },
+  subTitle: {
+    fontFamily: 'roboto-light-italic',
+    fontSize: 16,
+    paddingLeft: 15,
     paddingBottom: 2
   }
 });

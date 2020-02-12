@@ -41,8 +41,8 @@ const fetchFonts = () => {
     'roboto-bold-italic': require('./assets/fonts/Roboto-BoldItalic.ttf'),
     'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
     'roboto-light': require('./assets/fonts/Roboto-Light.ttf'),
-    'roboto-thin': require('./assets/fonts/Roboto-Thin.ttf'),
-    'roboto-thin-italic': require('./assets/fonts/Roboto-ThinItalic.ttf')
+    'roboto-light-italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
+    'roboto-thin': require('./assets/fonts/Roboto-Thin.ttf')
   });
 };
 

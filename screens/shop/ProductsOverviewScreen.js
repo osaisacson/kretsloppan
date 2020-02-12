@@ -124,6 +124,7 @@ const ProductsOverviewScreen = props => {
       <ScrollView scrollEventThrottle={16}>
         <ContentHeader
           title={'Nya Tillskott'}
+          subTitle={'Det fräschaste, det nyaste'}
           indicator={recentProducts.length ? recentProducts.length : 0}
         />
         <View style={styles.horizontalScrollContainer}>
@@ -150,6 +151,7 @@ const ProductsOverviewScreen = props => {
       </ScrollView>
       <ContentHeader
         title={'Aktivt Förråd'}
+        subTitle={'Allt som är redo att hämtas'}
         indicator={
           productsExceptNewest.length ? productsExceptNewest.length : 0
         }
