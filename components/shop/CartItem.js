@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   quantity: {
-    fontFamily: 'open-sans',
+    fontFamily: 'roboto-regular',
     color: '#888',
     fontSize: 16
   },
   mainText: {
     maxWidth: 240,
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'roboto-bold',
     fontSize: 16
   },
   deleteButton: {

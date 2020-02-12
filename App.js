@@ -31,8 +31,18 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); //Redux, ma
 //Sets up requiring and asynchronically fetching our fonts when the app loads
 const fetchFonts = () => {
   return Font.loadAsync({
-    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
+    'bebas-neue': require('./assets/fonts/BebasNeue-Regular.ttf'),
+    'bebas-neue-bold': require('./assets/fonts/BebasNeue-Bold.ttf'),
+    'bebas-neue-book': require('./assets/fonts/BebasNeue-Book.ttf'),
+    'bebas-neue-light': require('./assets/fonts/BebasNeue-Light.ttf'),
+    'bebas-neue-thin': require('./assets/fonts/BebasNeue-Thin.ttf'),
+    'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    'roboto-bold-italic': require('./assets/fonts/Roboto-BoldItalic.ttf'),
+    'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
+    'roboto-light': require('./assets/fonts/Roboto-Light.ttf'),
+    'roboto-thin': require('./assets/fonts/Roboto-Thin.ttf'),
+    'roboto-thin-italic': require('./assets/fonts/Roboto-ThinItalic.ttf')
   });
 };
 

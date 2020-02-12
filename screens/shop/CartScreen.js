@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   summaryText: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'roboto-bold',
     fontSize: 18
   }
 });

@@ -73,13 +73,13 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   price: {
-    fontFamily: 'open-sans',
+    fontFamily: 'roboto-regular',
     fontSize: 20,
     textAlign: 'right',
     marginHorizontal: 20
   },
   description: {
-    fontFamily: 'open-sans',
+    fontFamily: 'roboto-regular',
     fontSize: 14,
     textAlign: 'center',
     marginHorizontal: 20

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 16,
-    fontFamily: 'open-sans',
+    fontFamily: 'roboto-regular',
     color: '#888'
   },
   detailItems: {

@@ -33,10 +33,10 @@ const defaultNavOptions = {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
   },
   headerTitleStyle: {
-    fontFamily: 'open-sans-bold'
+    fontFamily: 'roboto-bold'
   },
   headerBackTitleStyle: {
-    fontFamily: 'open-sans'
+    fontFamily: 'roboto-regular'
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };

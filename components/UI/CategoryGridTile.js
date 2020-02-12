@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'roboto-bold',
     fontSize: 22,
     textAlign: 'right',
     color: 'rgba(255, 255, 255, .7)'

@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
   },
   title: {
     width: '80%',
-    fontFamily: 'open-sans',
+    fontFamily: 'roboto-regular',
     fontSize: 16
   },
   price: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'roboto-bold',
     fontSize: 20
   },
   actions: {

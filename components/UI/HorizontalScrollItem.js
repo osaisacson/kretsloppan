@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   title: {
     height: '100%',
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'roboto-bold',
     fontSize: 16,
     marginVertical: 1
   },

@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   label: {
-    fontFamily: 'open-sans-bold',
     marginVertical: 8
   },
   input: {
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     marginVertical: 5
   },
   errorText: {
-    fontFamily: 'open-sans',
+    fontFamily: 'roboto-regular',
     color: 'red',
     fontSize: 13
   }

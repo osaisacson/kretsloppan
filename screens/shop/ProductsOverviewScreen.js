@@ -14,6 +14,7 @@ import {
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
+import ContentHeader from '../../components/UI/ContentHeader';
 import HorizontalScrollItem from '../../components/UI/HorizontalScrollItem';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
@@ -122,8 +123,11 @@ const ProductsOverviewScreen = props => {
   return (
     <View style={styles.gridContainer}>
       <ScrollView scrollEventThrottle={16}>
+        <ContentHeader
+          title={'Nya Tillskott'}
+          indicator={recentProducts.length ? recentProducts.length : 0}
+        />
         <View style={styles.horizontalScrollContainer}>
-          <Text style={styles.contentHeader}>Nya Tillskott</Text>
           <View style={styles.horizontalScroll}>
             <ScrollView
               horizontal={true}
@@ -144,7 +148,13 @@ const ProductsOverviewScreen = props => {
           </View>
         </View>
       </ScrollView>
-      <Text style={styles.contentHeader}>Aktivt förråd</Text>
+      <ContentHeader
+        title={'Aktivt Förråd'}
+        indicator={
+          productsExceptNewest.length ? productsExceptNewest.length : 0
+        }
+      />
+
       <FlatList
         horizontal={false}
         numColumns={2}
@@ -225,17 +235,11 @@ const styles = StyleSheet.create({
   },
   horizontalScrollContainer: {
     flex: 1,
-    height: 400,
-    paddingTop: 20
+    height: 200
   },
   horizontalScroll: {
     height: 200,
     marginTop: 20
-  },
-  contentHeader: {
-    textAlign: 'left',
-    paddingHorizontal: 20,
-    fontSize: 12
   },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
