@@ -37,6 +37,7 @@ const ProductItem = props => {
                 style={styles.title}
               >
                 {props.title}
+                {props.price ? props.price : 0}
               </Text>
             </View>
             <View style={styles.actions}>

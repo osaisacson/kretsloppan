@@ -32,7 +32,10 @@ export const fetchProducts = () => {
             resData[key].categoryName,
             resData[key].title,
             resData[key].imageUrl,
-            resData[key].description
+            resData[key].description,
+            resData[key].price,
+            resData[key].date
+            //HÄR
           )
         );
       }
@@ -69,11 +72,21 @@ export const deleteProduct = productId => {
   };
 };
 
-export const createProduct = (categoryName, title, description, imageUrl) => {
+export const createProduct = (
+  categoryName,
+  title,
+  description,
+  price,
+  imageUrl
+) => {
+  //HÄR
+
   return async (dispatch, getState) => {
     // any async code you want!
     const token = getState().auth.token;
     const userId = getState().auth.userId;
+    const date = new Date();
+
     const response = await fetch(
       `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
       {
@@ -85,8 +98,11 @@ export const createProduct = (categoryName, title, description, imageUrl) => {
           categoryName,
           title,
           description,
+          price,
           imageUrl,
-          ownerId: userId
+          ownerId: userId,
+          date: date.toISOString()
+          //HÄR
         })
       }
     );
@@ -100,8 +116,11 @@ export const createProduct = (categoryName, title, description, imageUrl) => {
         categoryName,
         title,
         description,
+        price,
         imageUrl,
-        ownerId: userId
+        ownerId: userId,
+        date: date
+        //HÄR
       }
     });
   };
@@ -112,7 +131,9 @@ export const updateProduct = (
   categoryName,
   title,
   description,
+  price,
   imageUrl
+  //HÄR
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -127,7 +148,9 @@ export const updateProduct = (
           categoryName,
           title,
           description,
+          price,
           imageUrl
+          //HÄR
         })
       }
     );
@@ -146,7 +169,9 @@ export const updateProduct = (
         categoryName,
         title,
         description,
+        price,
         imageUrl
+        //HÄR
       }
     });
   };

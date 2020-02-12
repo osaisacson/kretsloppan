@@ -28,6 +28,7 @@ const CartScreen = props => {
         productId: key,
         imageUrl: state.cart.items[key].imageUrl,
         quantity: state.cart.items[key].quantity,
+        price: state.cart.items[key].price ? state.cart.items[key].price : 0,
         productTitle: state.cart.items[key].productTitle
       });
     }
@@ -67,6 +68,7 @@ const CartScreen = props => {
           <CartItem
             quantity={itemData.item.quantity}
             title={itemData.item.productTitle}
+            price={itemData.item.price}
             imageUrl={itemData.item.imageUrl}
             deletable //Makes the delete button visible on the CardItem component
             onRemove={() => {

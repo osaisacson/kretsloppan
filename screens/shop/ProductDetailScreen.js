@@ -36,6 +36,10 @@ const ProductDetailScreen = props => {
           }}
         />
       </View>
+      <Text style={styles.price}>
+        {selectedProduct.price ? selectedProduct.price.toFixed(1) : 0} kr
+      </Text>
+
       <Text style={styles.description}>{selectedProduct.description}</Text>
     </ScrollView>
   );
@@ -67,6 +71,12 @@ const styles = StyleSheet.create({
   actions: {
     marginVertical: 10,
     alignItems: 'center'
+  },
+  price: {
+    fontFamily: 'open-sans',
+    fontSize: 20,
+    textAlign: 'right',
+    marginHorizontal: 20
   },
   description: {
     fontFamily: 'open-sans',

@@ -25,7 +25,10 @@ export default (state = initialState, action) => {
         action.productData.categoryName,
         action.productData.title,
         action.productData.imageUrl,
-        action.productData.description
+        action.productData.description,
+        action.productData.price,
+        action.productData.date
+        //HÄR
       );
       return {
         ...state,
@@ -36,13 +39,16 @@ export default (state = initialState, action) => {
       const productIndex = state.userProducts.findIndex(
         prod => prod.id === action.pid
       );
-      const updatedProduct = new Product(
+      const updatedProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
         state.userProducts[productIndex].ownerId,
         action.productData.categoryName,
         action.productData.title,
         action.productData.imageUrl,
-        action.productData.description
+        action.productData.description,
+        action.productData.price,
+        state.userProducts[productIndex].date
+        //HÄR
       );
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[productIndex] = updatedProduct;

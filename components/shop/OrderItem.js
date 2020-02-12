@@ -51,6 +51,7 @@ const OrderItem = props => {
               key={cartItem.productId}
               quantity={cartItem.quantity}
               title={cartItem.productTitle}
+              price={cartItem.price}
               imageUrl={cartItem.imageUrl}
             />
           ))}

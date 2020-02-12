@@ -20,12 +20,14 @@ export default (state = initialState, action) => {
         updatedOrNewCartItem = new CartItem(
           addedProduct.imageUrl,
           state.items[addedProduct.id].quantity + 1,
+          addedProduct.price,
           prodTitle
         );
       } else {
         updatedOrNewCartItem = new CartItem(
           addedProduct.imageUrl,
           1,
+          addedProduct.price,
           prodTitle
         );
       }
@@ -42,6 +44,7 @@ export default (state = initialState, action) => {
         const updatedCartItem = new CartItem(
           selectedCartItem.imageUrl,
           selectedCartItem.quantity - 1,
+          selectedCartItem.price,
           selectedCartItem.productTitle
         );
         updatedCartItems = { ...state.items, [action.pid]: updatedCartItem };
