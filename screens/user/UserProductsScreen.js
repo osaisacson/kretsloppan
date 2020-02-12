@@ -77,7 +77,7 @@ const UserProductsScreen = props => {
       <HorizontalScroll
         title={'Bearbetas'}
         subTitle={
-          "Material som håller på att fixas och inte är klart för hämtning ännu. När det är redo öppna kortet och klicka 'Redo'"
+          "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
         }
         scrollData={userProducts}
         showEditAndDelete={true}
