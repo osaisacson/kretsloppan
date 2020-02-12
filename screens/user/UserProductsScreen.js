@@ -65,6 +65,13 @@ const UserProductsScreen = props => {
     return <Loader />;
   }
 
+  const selectItemHandler = (id, title) => {
+    props.navigation.navigate('ProductDetail', {
+      productId: id,
+      productTitle: title
+    });
+  };
+
   return (
     <ScrollView>
       <HorizontalScroll

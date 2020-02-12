@@ -13,6 +13,7 @@ import {
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 // import { Ionicons } from '@expo/vector-icons';
+import AddButton from '../../components/UI/AddButton';
 import ContentHeader from '../../components/UI/ContentHeader';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
@@ -174,6 +175,7 @@ const ProductsOverviewScreen = props => {
           </ProductItem>
         )}
       />
+      <AddButton />
     </View>
   );
 };
