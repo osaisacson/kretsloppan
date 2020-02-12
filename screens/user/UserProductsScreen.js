@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { FlatList, Button, Platform, Alert } from 'react-native';
+import { Platform, ScrollView } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HeaderButton from '../../components/UI/HeaderButton';
-import ProductItem from '../../components/shop/ProductItem';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
-//Constants
-import Colors from '../../constants/Colors';
 //Actions
 import * as productsActions from '../../store/actions/products';
 
@@ -67,59 +65,36 @@ const UserProductsScreen = props => {
     return <Loader />;
   }
 
-  //Show an alert when trying to delete a product
-  const deleteHandler = id => {
-    Alert.alert(
-      'Are you sure?',
-      "Do you really want to delete this item? There's no going back.",
-      [
-        { text: 'Nope', style: 'default' },
-        {
-          text: 'Yes',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(productsActions.deleteProduct(id));
-          }
-        }
-      ]
-    );
-  };
-
-  const editProductHandler = id => {
-    props.navigation.navigate('EditProduct', { productId: id }); //Navigate to the edit screen and forward the product id
-  };
-
   return (
-    <FlatList
-      horizontal={false}
-      numColumns={2}
-      data={userProducts}
-      keyExtractor={item => item.id}
-      renderItem={itemData => (
-        <ProductItem
-          image={itemData.item.imageUrl}
-          title={itemData.item.title}
-          price={itemData.item.price ? itemData.item.price : 0}
-          categoryName={itemData.item.categoryName}
-          onSelect={() => {
-            editProductHandler(itemData.item.id);
-          }}
-        >
-          <Button
-            color={Colors.primary}
-            title="Edit"
-            onPress={() => {
-              editProductHandler(itemData.item.id);
-            }}
-          />
-          <Button
-            color={Colors.primary}
-            title="Delete"
-            onPress={deleteHandler.bind(this, itemData.item.id)}
-          />
-        </ProductItem>
-      )}
-    />
+    <ScrollView>
+      <HorizontalScroll
+        title={'Bokat'}
+        subTitle={'Väntas på att hämtas av dig - se kort för detaljer'}
+        extraSubTitle={'Notera att bokningen upphör gälla efter en vecka'}
+        scrollData={userProducts}
+        showEditAndDelete={true}
+      />
+      <HorizontalScroll
+        title={'Bearbetas'}
+        subTitle={
+          "Material som håller på att fixas och inte är klart för hämtning ännu. När det är redo öppna kortet och klicka 'Redo'"
+        }
+        scrollData={userProducts}
+        showEditAndDelete={true}
+      />
+      <HorizontalScroll
+        title={'Aktivt Förråd'}
+        subTitle={'Allt som är redo för hämtning'}
+        scrollData={userProducts}
+        showEditAndDelete={true}
+      />
+      <HorizontalScroll
+        title={'Gett igen'}
+        subTitle={'Arkiv av återbruk du gett igen'}
+        scrollData={userProducts}
+        showEditAndDelete={true}
+      />
+    </ScrollView>
   );
 };
 

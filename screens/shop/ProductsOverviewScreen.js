@@ -6,8 +6,7 @@ import {
   FlatList,
   Button,
   Platform,
-  StyleSheet,
-  ScrollView
+  StyleSheet
   // TouchableOpacity
 } from 'react-native';
 
@@ -18,6 +17,7 @@ import ContentHeader from '../../components/UI/ContentHeader';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
+import HorizontalScroll from '../../components/UI/HorizontalScroll';
 //Actions
 // import * as cartActions from '../../store/actions/cart';
 import * as productsActions from '../../store/actions/products';
@@ -121,34 +121,11 @@ const ProductsOverviewScreen = props => {
 
   return (
     <View style={styles.gridContainer}>
-      <ScrollView scrollEventThrottle={16}>
-        <ContentHeader
-          title={'Nya Tillskott'}
-          subTitle={'Det fräschaste, det nyaste'}
-          indicator={recentProducts.length ? recentProducts.length : 0}
-        />
-        <View style={styles.horizontalScrollContainer}>
-          <View style={styles.horizontalScroll}>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              {recentProducts.map(prod => (
-                <ProductItem
-                  key={prod.id}
-                  isHorizontal={true}
-                  image={prod.imageUrl}
-                  title={prod.title}
-                  price={prod.price ? prod.price : 0}
-                  onSelect={() => {
-                    selectItemHandler(prod.id, prod.title);
-                  }}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        </View>
-      </ScrollView>
+      <HorizontalScroll
+        title={'Nya Tillskott'}
+        subTitle={'Det fräschaste, det nyaste'}
+        scrollData={recentProducts}
+      />
       <ContentHeader
         title={'Aktivt Förråd'}
         subTitle={'Allt som är redo att hämtas'}
@@ -234,14 +211,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   },
-  horizontalScrollContainer: {
-    flex: 1,
-    height: 200
-  },
-  horizontalScroll: {
-    height: 200,
-    marginTop: 20
-  },
+
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
 

@@ -9,6 +9,9 @@ const ContentHeader = props => {
         <Text style={styles.indicator}>({props.indicator})</Text>
       </View>
       <Text style={styles.subTitle}>{props.subTitle}</Text>
+      {props.extraSubTitle ? (
+        <Text style={styles.extraSubTitle}>{props.extraSubTitle}</Text>
+      ) : null}
     </View>
   );
 };
@@ -32,6 +35,12 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontFamily: 'roboto-light-italic',
+    fontSize: 16,
+    paddingLeft: 15,
+    paddingBottom: 2
+  },
+  extraSubTitle: {
+    fontFamily: 'roboto-bold-italic',
     fontSize: 16,
     paddingLeft: 15,
     paddingBottom: 2

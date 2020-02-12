@@ -45,7 +45,7 @@ const ProductItem = props => {
                 {props.price ? props.price : 0} kr
               </Text>
             </View>
-            {props.children ? (
+            {props.showButtons ? (
               <View style={styles.actions}>
                 {props.children}
                 {/* props.children refers to whatever we pass between the opening
