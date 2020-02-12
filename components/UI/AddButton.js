@@ -4,8 +4,11 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  Alert
 } from 'react-native';
+//Constants
+import Colors from '../../constants/Colors';
 
 const AddButton = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -14,10 +17,19 @@ const AddButton = props => {
     TouchableCmp = TouchableNativeFeedback;
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
+
   return (
     <TouchableCmp>
       <View style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>+</Text>
+        <Text
+          onPress={() => {
+            console.log('--------clicked addButton------');
+            Alert.alert('Clicked addButton');
+          }}
+          style={styles.buttonTextStyle}
+        >
+          +
+        </Text>
       </View>
     </TouchableCmp>
   );
@@ -25,7 +37,12 @@ const AddButton = props => {
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    backgroundColor: '#fc454e',
+    backgroundColor: Colors.primary,
+    shadowColor: 'black',
+    shadowOpacity: 0.12,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
     width: 66,
     height: 66,
     borderRadius: 33,

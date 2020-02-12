@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { Platform, ScrollView } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import AddButton from '../../components/UI/AddButton';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HeaderButton from '../../components/UI/HeaderButton';
 import EmptyState from '../../components/UI/EmptyState';
@@ -73,35 +74,38 @@ const UserProductsScreen = props => {
   };
 
   return (
-    <ScrollView>
-      <HorizontalScroll
-        title={'Bokat'}
-        subTitle={'Väntas på att hämtas av dig - se kort för detaljer'}
-        extraSubTitle={'Notera att bokningen upphör gälla efter en vecka'}
-        scrollData={userProducts}
-        showEditAndDelete={true}
-      />
-      <HorizontalScroll
-        title={'Bearbetas'}
-        subTitle={
-          "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
-        }
-        scrollData={userProducts}
-        showEditAndDelete={true}
-      />
-      <HorizontalScroll
-        title={'Aktivt Förråd'}
-        subTitle={'Allt som är redo för hämtning'}
-        scrollData={userProducts}
-        showEditAndDelete={true}
-      />
-      <HorizontalScroll
-        title={'Gett igen'}
-        subTitle={'Arkiv av återbruk du gett igen'}
-        scrollData={userProducts}
-        showEditAndDelete={true}
-      />
-    </ScrollView>
+    <View>
+      <ScrollView>
+        <HorizontalScroll
+          title={'Bokat'}
+          subTitle={'Väntas på att hämtas av dig - se kort för detaljer'}
+          extraSubTitle={'Notera att bokningen upphör gälla efter en vecka'}
+          scrollData={userProducts}
+          showEditAndDelete={true}
+        />
+        <HorizontalScroll
+          title={'Bearbetas'}
+          subTitle={
+            "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
+          }
+          scrollData={userProducts}
+          showEditAndDelete={true}
+        />
+        <HorizontalScroll
+          title={'Aktivt Förråd'}
+          subTitle={'Allt som är redo för hämtning'}
+          scrollData={userProducts}
+          showEditAndDelete={true}
+        />
+        <HorizontalScroll
+          title={'Gett igen'}
+          subTitle={'Arkiv av återbruk du gett igen'}
+          scrollData={userProducts}
+          showEditAndDelete={true}
+        />
+      </ScrollView>
+      <AddButton />
+    </View>
   );
 };
 
