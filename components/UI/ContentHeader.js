@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const ContentHeader = props => {
   return (
-    <View styles={styles.contentHeaderContainer}>
+    <View style={styles.contentHeaderContainer}>
       <Text style={styles.contentHeader}>{props.title}</Text>
       <Text style={styles.indicator}>({props.indicator})</Text>
     </View>
@@ -12,17 +12,20 @@ const ContentHeader = props => {
 
 const styles = StyleSheet.create({
   contentHeaderContainer: {
-    display: 'flex',
+    flex: 1,
     flexDirection: 'row',
-    paddingLeft: 20
+    padding: 20,
+    alignItems: 'baseline'
   },
   contentHeader: {
     fontFamily: 'bebas-neue-bold',
-    fontSize: 25
+    fontSize: 25,
+    marginRight: 6
   },
   indicator: {
     fontFamily: 'roboto-regular',
-    fontSize: 16
+    fontSize: 16,
+    paddingBottom: 2
   }
 });
 

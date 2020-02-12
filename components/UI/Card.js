@@ -10,10 +10,10 @@ const Card = props => {
 const styles = StyleSheet.create({
   card: {
     shadowColor: 'black',
-    shadowOpacity: 0.26,
+    shadowOpacity: 0.12,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
-    elevation: 5, //Because shadow only work on iOS, elevation is same thing but for android.
+    elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
     borderRadius: 10,
     backgroundColor: 'rgba(255,255,255,0.9)'
   }
