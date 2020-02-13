@@ -9,7 +9,8 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 // import { Ionicons } from '@expo/vector-icons';
 import UserAvatar from '../../components/UI/UserAvatar';
 import SpotlightProductsScreen from './SpotlightProductsScreen';
-import ActiveProductsScreen from './ActiveProductsScreen';
+import ProductsScreen from './ProductsScreen';
+import ProjectsScreen from './ProjectsScreen';
 
 const ProductsOverviewScreen = props => {
   const Tab = createMaterialTopTabNavigator();
@@ -18,8 +19,8 @@ const ProductsOverviewScreen = props => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Spotlight" component={SpotlightProductsScreen} />
-        <Tab.Screen name="Förråd" component={ActiveProductsScreen} />
-        <Tab.Screen name="Projekt" component={ActiveProductsScreen} />
+        <Tab.Screen name="Förråd" component={ProductsScreen} />
+        <Tab.Screen name="Projekt" component={ProjectsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

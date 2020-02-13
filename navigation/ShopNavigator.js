@@ -14,6 +14,10 @@ import { Divider } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 //Screens
 import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
+import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
+import ProductsScreen from '../screens/shop/ProductsScreen';
+import ProjectsScreen from '../screens/shop/ProjectsScreen';
+
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
@@ -44,6 +48,9 @@ const defaultNavOptions = {
 const ProductsNavigator = createStackNavigator(
   {
     ProductsOverview: ProductsOverviewScreen,
+    Spotlight: SpotlightProductsScreen,
+    Products: ProductsScreen,
+    Projects: ProjectsScreen,
     ProductDetail: ProductDetailScreen,
     Cart: CartScreen
   },

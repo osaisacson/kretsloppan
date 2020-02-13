@@ -20,14 +20,13 @@ import ContentHeader from '../../components/UI/ContentHeader';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
 //Actions
 // import * as cartActions from '../../store/actions/cart';
 import * as productsActions from '../../store/actions/products';
 //Constants
 import Colors from '../../constants/Colors';
 
-const ActiveProductsScreen = props => {
+const ProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   // const [isClicked, setIsClicked] = useState(false);
@@ -141,31 +140,10 @@ const ActiveProductsScreen = props => {
             price={itemData.item.price ? itemData.item.price : 0}
             onSelect={() => {
               selectItemHandler(itemData.item.id, itemData.item.title);
+              // setIsClicked(true);
+              // dispatch(cartActions.addToCart(itemData.item));
             }}
-          >
-            {/* <Ionicons
-              name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-              size={25}
-              // color={isClicked ? Colors.primary : 'grey'} //NOTE: make so responds to if added/deleted from korg
-              color={'grey'}
-              onPress={() => {
-                // setIsClicked(true);
-                dispatch(cartActions.addToCart(itemData.item));
-              }}
-            />
-            <Ionicons
-              name={
-                Platform.OS === 'android'
-                  ? 'md-arrow-dropright-circle'
-                  : 'ios-arrow-dropright-circle'
-              }
-              size={25}
-              color={Colors.primary}
-              onPress={() => {
-                selectItemHandler(itemData.item.id, itemData.item.title);
-              }}
-            /> */}
-          </ProductItem>
+          ></ProductItem>
         )}
       />
       <AddButton />
@@ -173,7 +151,7 @@ const ActiveProductsScreen = props => {
   );
 };
 
-ActiveProductsScreen.navigationOptions = navData => {
+ProductsScreen.navigationOptions = navData => {
   return {
     headerTitle: 'Allt Återbruk',
     headerLeft: (
@@ -207,4 +185,4 @@ const styles = StyleSheet.create({
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
 
-export default ActiveProductsScreen;
+export default ProductsScreen;
