@@ -14,6 +14,7 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 // import { Ionicons } from '@expo/vector-icons';
 import AddButton from '../../components/UI/AddButton';
+import UserAvatar from '../../components/UI/UserAvatar';
 import ContentHeader from '../../components/UI/ContentHeader';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
@@ -182,7 +183,7 @@ const ProductsOverviewScreen = props => {
 
 ProductsOverviewScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Återbruk',
+    headerTitle: 'Allt Återbruk',
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -195,15 +196,12 @@ ProductsOverviewScreen.navigationOptions = navData => {
       </HeaderButtons>
     ),
     headerRight: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Cart"
-          iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-          onPress={() => {
-            navData.navigation.navigate('Cart');
-          }}
-        />
-      </HeaderButtons>
+      <UserAvatar
+        showBadge={true}
+        actionOnPress={() => {
+          navData.navigation.navigate('Profil');
+        }}
+      />
     )
   };
 };

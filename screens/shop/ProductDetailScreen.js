@@ -9,8 +9,8 @@ import {
   StyleSheet,
   Button
 } from 'react-native';
-import HeaderButton from '../../components/UI/HeaderButton';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import UserAvatar from '../../components/UI/UserAvatar';
+
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -50,15 +50,12 @@ ProductDetailScreen.navigationOptions = navData => {
   return {
     headerTitle: navData.navigation.getParam('productTitle'),
     headerRight: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Cart"
-          iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-          onPress={() => {
-            navData.navigation.navigate('Cart');
-          }}
-        />
-      </HeaderButtons>
+      <UserAvatar
+        showBadge={true}
+        actionOnPress={() => {
+          navData.navigation.navigate('Profil');
+        }}
+      />
     )
   };
 };

@@ -6,7 +6,8 @@ const UserAvatar = props => {
   return (
     <View>
       <Avatar
-        size="large"
+        size="medium"
+        rounded
         source={{
           uri:
             'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'
@@ -18,7 +19,7 @@ const UserAvatar = props => {
         <Badge
           value="2"
           status="error"
-          containerStyle={{ position: 'relative', left: -70, bottom: 20 }}
+          containerStyle={{ position: 'relative', left: -20, bottom: 20 }}
         />
       ) : null}
     </View>
