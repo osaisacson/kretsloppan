@@ -6,18 +6,29 @@ import HeaderButton from '../../components/UI/HeaderButton';
 
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-// import { Ionicons } from '@expo/vector-icons';
 import UserAvatar from '../../components/UI/UserAvatar';
 import SpotlightProductsScreen from './SpotlightProductsScreen';
 import ProductsScreen from './ProductsScreen';
 import ProjectsScreen from './ProjectsScreen';
+//Constants
+import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
   const Tab = createMaterialTopTabNavigator();
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        tabBarOptions={{
+          labelStyle: {
+            fontSize: 15,
+            fontFamily: 'roboto-regular',
+            textTransform: 'capitalize'
+            // color: Colors.primary
+          },
+          indicatorStyle: { backgroundColor: Colors.primary }
+        }}
+      >
         <Tab.Screen name="Spotlight" component={SpotlightProductsScreen} />
         <Tab.Screen name="Förråd" component={ProductsScreen} />
         <Tab.Screen name="Projekt" component={ProjectsScreen} />
