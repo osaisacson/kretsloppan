@@ -51,7 +51,7 @@ const ProductsNavigator = createStackNavigator(
     navigationOptions: {
       drawerIcon: drawerConfig => (
         <Ionicons
-          name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+          name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
           size={23}
           color={drawerConfig.tintColor}
         />
@@ -138,13 +138,12 @@ const ShopNavigator = createDrawerNavigator(
         <View style={{ flex: 1, paddingTop: 20 }}>
           <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
             <UserAvatar
-              showBadge={true}
               actionOnPress={() => {
                 props.navigation.navigate('Bokat');
                 props.navigation.closeDrawer();
               }}
             />
-            <Divider style={{ top: -18, backgroundColor: 'grey' }} />
+            <Divider style={{ backgroundColor: 'grey' }} />
             <DrawerNavigatorItems {...props} />
             <Divider style={{ backgroundColor: 'grey' }} />
             <Button
