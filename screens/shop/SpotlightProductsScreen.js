@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   View,
   Text,
-  FlatList,
+  ScrollView,
   Button,
   Platform,
   StyleSheet
@@ -16,10 +16,8 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 // import { Ionicons } from '@expo/vector-icons';
 import AddButton from '../../components/UI/AddButton';
 import UserAvatar from '../../components/UI/UserAvatar';
-import ContentHeader from '../../components/UI/ContentHeader';
 import Loader from '../../components/UI/Loader';
 import HeaderButton from '../../components/UI/HeaderButton';
-import ProductItem from '../../components/shop/ProductItem';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 //Actions
 // import * as cartActions from '../../store/actions/cart';
@@ -123,24 +121,26 @@ const SpotlightProductsScreen = props => {
   }
 
   return (
-    <View style={styles.gridContainer}>
-      <HorizontalScroll
-        title={'nya tillskott'}
-        subTitle={'Det fräschaste, det nyaste'}
-        scrollData={recentProducts}
-      />
-      <HorizontalScroll
-        title={'efterlysningar'}
-        subTitle={'Material som önskas. Kontakta efterlysaren.'}
-        scrollData={recentProducts}
-      />
-      <HorizontalScroll
-        title={'under bearbetning'}
-        subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
-        scrollData={recentProducts}
-      />
-      <AddButton />
-    </View>
+    <ScrollView>
+      <View>
+        <HorizontalScroll
+          title={'nya tillskott'}
+          subTitle={'Det fräschaste, det nyaste'}
+          scrollData={recentProducts}
+        />
+        <HorizontalScroll
+          title={'efterlysningar'}
+          subTitle={'Material som önskas. Kontakta efterlysaren.'}
+          scrollData={recentProducts}
+        />
+        <HorizontalScroll
+          title={'under bearbetning'}
+          subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
+          scrollData={recentProducts}
+        />
+        <AddButton />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -170,11 +170,6 @@ SpotlightProductsScreen.navigationOptions = navData => {
 };
 
 const styles = StyleSheet.create({
-  gridContainer: {
-    flex: 1,
-    width: '100%'
-  },
-
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
 

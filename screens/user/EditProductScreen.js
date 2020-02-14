@@ -194,27 +194,7 @@ const EditProductScreen = props => {
             passedImage={formState.inputValues.imageUrl}
           />
           <View style={styles.formControl}>
-            <Text style={styles.label}>Category</Text>
-            <Picker
-              selectedValue={formState.inputValues.categoryName}
-              onValueChange={textChangeHandler.bind(this, 'categoryName')}
-            >
-              {categories.map(category => (
-                <Picker.Item
-                  key={category.categoryName}
-                  label={category.categoryName}
-                  value={category.categoryName.toLowerCase()}
-                />
-              ))}
-            </Picker>
-            {!formState.inputValues.categoryName ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Please select a category</Text>
-              </View>
-            ) : null}
-          </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Title</Text>
+            <Text style={styles.label}>Titel</Text>
             <TextInput
               style={styles.input}
               value={formState.inputValues.title}
@@ -226,7 +206,7 @@ const EditProductScreen = props => {
             />
             {!formState.inputValues.title ? (
               <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Please enter a title</Text>
+                <Text style={styles.errorText}>Skriv in en titel</Text>
               </View>
             ) : null}
           </View>
@@ -247,7 +227,7 @@ const EditProductScreen = props => {
             ) : null}
           </View> */}
           <View style={styles.formControl}>
-            <Text style={styles.label}>Price</Text>
+            <Text style={styles.label}>Pris</Text>
             <TextInput
               style={styles.input}
               value={formState.inputValues.price}
@@ -258,12 +238,14 @@ const EditProductScreen = props => {
             />
             {!formState.inputValues.price ? (
               <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Please enter a price</Text>
+                <Text style={styles.errorText}>
+                  Lägg in ett pris (det kan vara 0)
+                </Text>
               </View>
             ) : null}
           </View>
           <View style={styles.formControl}>
-            <Text style={styles.label}>Description</Text>
+            <Text style={styles.label}>Beskrivning</Text>
             <TextInput
               style={styles.input}
               value={formState.inputValues.description}
@@ -273,7 +255,29 @@ const EditProductScreen = props => {
             />
             {!formState.inputValues.description ? (
               <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Please enter a description</Text>
+                <Text style={styles.errorText}>
+                  Skriv in en kort beskrivning
+                </Text>
+              </View>
+            ) : null}
+          </View>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Kategori</Text>
+            <Picker
+              selectedValue={formState.inputValues.categoryName}
+              onValueChange={textChangeHandler.bind(this, 'categoryName')}
+            >
+              {categories.map(category => (
+                <Picker.Item
+                  key={category.categoryName}
+                  label={category.categoryName}
+                  value={category.categoryName.toLowerCase()}
+                />
+              ))}
+            </Picker>
+            {!formState.inputValues.categoryName ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Välj en kategori</Text>
               </View>
             ) : null}
           </View>

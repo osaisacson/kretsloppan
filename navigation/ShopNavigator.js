@@ -127,9 +127,9 @@ const AdminCategoriesNavigator = createStackNavigator(
 const ShopNavigator = createDrawerNavigator(
   {
     Återbruk: ProductsNavigator,
-    Profil: AdminNavigator,
-    Bokat: OrdersNavigator,
-    Kategorier: AdminCategoriesNavigator
+    Profil: AdminNavigator
+    // Bokat: OrdersNavigator,
+    // Kategorier: AdminCategoriesNavigator
   },
   {
     contentOptions: {
