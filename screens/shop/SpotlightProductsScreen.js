@@ -121,8 +121,8 @@ const SpotlightProductsScreen = props => {
   }
 
   return (
-    <ScrollView>
-      <View>
+    <View>
+      <ScrollView>
         <HorizontalScroll
           title={'nya tillskott'}
           subTitle={'Det fräschaste, det nyaste'}
@@ -138,9 +138,9 @@ const SpotlightProductsScreen = props => {
           subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
           scrollData={recentProducts}
         />
-        <AddButton />
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <AddButton />
+    </View>
   );
 };
 
