@@ -31,7 +31,7 @@ const ImgPicker = props => {
     if (!hasPermission) {
       return;
     }
-    const image = await ImagePicker.launchCameraAsync({
+    const image = await ImagePicker.launchImageLibraryAsync({
       //We could also open the gallery here instead of launchCameraAsync
       allowsEditing: true,
       aspect: [16, 9],
@@ -39,6 +39,9 @@ const ImgPicker = props => {
     });
 
     setPickedImage(image.uri);
+    console.log('image object:', image);
+    console.log('image 64:', image.data);
+
     props.onImageTaken(image.uri); //Forwards the taken picture to the function 'onImageTaken' passed as a props wherever we use the ImgPicker component
   };
 
