@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "egnahemsfabriken",
+  "private_key_id": "5523f713088ee52f16135bff85200c7cbbbffeae",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCYpNzVB9Ltjq4y\nUdJeQfsBXsFvuUs2JA1VS2G8N0POiEsU+5pkmxU10nHmFeaVGj4fc5kGPXkLbA1x\nhlsI3MEaJ31cqLtlnLCAPZAfu19tokPrEYk1eYyhunFoUhdDtQIGLbCYaN6+iv9m\n7iJUNsrkId8YqSF2Xi6AYbUv1TVtW+haJTcp9oSuCDjU4QqTHdL3LUtiFek79fZF\nfHzHMstqJlgVuLDv4HQKf+YOyT0KcCLEzae+3q32l4FHTzkIkeoMH4qYnfpNr8fA\nwQELFUOMQLoaHjYyy8SPG+mrZeKwhTBj7zfoyzcwR0qpKXuaFpOh809Jn83Q3Z1F\n48+oOGOfAgMBAAECggEAOhYKfvqCNqoj+bwPLJU5GjVfsM83IrwnYrzTzVbOc8qD\nn9F62Cv3r0qM0zykSTr6RuerZKeB52nP19KD0+SFixlZ6CfBYBJ3S+WhcaHQ15x2\n8f3zU6kUbfrP6x3KApbf1VAPsn+9u46TUCzwXVGYdaW6Ct1ZgXynf20vEKu2sA1B\n6mcdiL/R3h1uPgRrJrL8dpqW0nAl0oCXQsb4TxZKxj60yRyY62dDMwmwVMzeQRQ8\nfJyY11dwbsBohuIJL6FYbouXwExEvM9S90weFyNd1OGxNjR8en1HEhFhGbuIfbYC\nLh4BRm85Azi3U1tz7FoEQABB9GYX1aoscTULJJK4+QKBgQDKKlaeZcMLyZmGzUBy\nLw0NsU5x+G/02oLomvLkHXwV0NFRfTvJTg13HP82zayLCx662lEejcBJImcveREW\nafDVQ8Y3pJ0OBiTPt1NN3afSESaKkA6P1avJ4XbIjoYdfOgsm5P2b2pawqjRSIQv\nLrj71lQnr6MkbpsobNWdFkeTwwKBgQDBSqO4ZPf1nQFRVBW6XfI1uxDlsx2SDizV\nJz7DZU/Am5slX0RAb16eA5gdq6FkGLAqwiTbhKcdyFLw0YgyY+Mdl1VELC8a5Gmj\n/ZJPtN6/ylUy0J2rhv+g2GeUEeTubGzc0LM2ga18KxVzXyjXmuyW0e3zHA4MWgRF\nCiXv3yp+9QKBgEeCvmz9NgcfYq0qQVeiiQ2E4Gi0JnYILTI2TSCfxVq6KLCYieNl\nNqIhoa0zB4uPfWk+/F7AaXn1L2a9fmvdQZFOjfj0w5FIXxESmeb7Nve5lVaCKoR6\nYm/gzvGWaJ5Zpo7Q4X/UXVyJasnMyuUds9VxNQdsu1qRvVSJWu5cCSmdAoGAeZcE\nSlhpir3LOGfWizfRx273gCcecOQt26AmYS/37Ud1XxsAijAEqw3DwNZYXekR2LPs\nD5LwtVFwq0CDln8zPUgXQR0yPI52zcwTH8S9YpRa5+5HYME5SOsYrRJcmobmLDm0\nopMMmNFZWwv/WzF/pphEQOvjAm4VxYBOwQf3aYkCgYBMdnrlqPBpRHUbX8HGqJsM\nFyGolru0DMHcBZYeaJYLs1viXm5ErXdW2G8KbZhle2wbAaBfEAdg2X5UlJD1bWMh\nJjYG+kCY5RaiibnZjto//Z25Qp2y38AYBQRBWrSKfmSAVZIXIVJMvQVe4ff7bkLi\nFVQzkCxDT84Wc0qz7MSvsQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-3x5yt@egnahemsfabriken.iam.gserviceaccount.com",
+  "client_id": "109698272218703288303",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-3x5yt%40egnahemsfabriken.iam.gserviceaccount.com"
+}
