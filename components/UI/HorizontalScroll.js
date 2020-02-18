@@ -2,6 +2,7 @@ import React from 'react';
 //Components
 import { Button, Alert, ScrollView, View, StyleSheet } from 'react-native';
 import ProductItem from '../../components/shop/ProductItem';
+import EmptyState from '../../components/UI/EmptyState';
 import ContentHeader from '../../components/UI/ContentHeader';
 //Constants
 import Colors from '../../constants/Colors';
@@ -50,41 +51,48 @@ const HorizontalScroll = props => {
         indicator={scrollData.length ? scrollData.length : 0}
       />
       <View style={styles.horizontalScrollContainer}>
-        <View style={styles.horizontalScroll}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {scrollData.map(prod => (
-              <ProductItem
-                key={prod.id}
-                isHorizontal={true}
-                image={prod.image}
-                title={prod.title}
-                price={prod.price ? prod.price : 0}
-                onSelect={() => {
-                  props.showEditAndDelete
-                    ? editProductHandler(prod.id)
-                    : selectItemHandler(prod.id, prod.title);
-                }}
-              >
-                {props.showEditAndDelete ? (
-                  <>
-                    <Button
-                      color={Colors.primary}
-                      title="Edit"
-                      onPress={() => {
-                        editProductHandler(prod.id);
-                      }}
-                    />
-                    <Button
-                      color={Colors.primary}
-                      title="Delete"
-                      onPress={deleteHandler.bind(this, prod.id)}
-                    />
-                  </>
-                ) : null}
-              </ProductItem>
-            ))}
-          </ScrollView>
-        </View>
+        {scrollData.length ? (
+          <View style={styles.horizontalScroll}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              {scrollData.map(prod => (
+                <ProductItem
+                  key={prod.id}
+                  isHorizontal={true}
+                  image={prod.image}
+                  title={prod.title}
+                  price={prod.price ? prod.price : 0}
+                  onSelect={() => {
+                    props.showEditAndDelete
+                      ? editProductHandler(prod.id)
+                      : selectItemHandler(prod.id, prod.title);
+                  }}
+                >
+                  {props.showEditAndDelete ? (
+                    <>
+                      <Button
+                        color={Colors.primary}
+                        title="Edit"
+                        onPress={() => {
+                          editProductHandler(prod.id);
+                        }}
+                      />
+                      <Button
+                        color={Colors.primary}
+                        title="Delete"
+                        onPress={deleteHandler.bind(this, prod.id)}
+                      />
+                    </>
+                  ) : null}
+                </ProductItem>
+              ))}
+            </ScrollView>
+          </View>
+        ) : (
+          <EmptyState>Inget här ännu</EmptyState>
+        )}
       </View>
     </ScrollView>
   );
