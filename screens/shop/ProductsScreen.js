@@ -33,24 +33,8 @@ const ProductsScreen = props => {
 
   const [error, setError] = useState();
   const products = useSelector(state => state.products.availableProducts);
-  // const products = unsortedProducts.slice().sort((a, b) => a.date - b.date);
 
-  //Function that adds the diff method to the array prototype.
-  Array.prototype.diff = function(a) {
-    return this.filter(function(i) {
-      return a.indexOf(i) < 0;
-    });
-  };
-  const recentProductsUnsorted = products.slice(
-    Math.max(products.length - 5, 0)
-  ); //Gets last 5 items uploaded
-
-  const productsExceptNewestUnsorted = products.diff(recentProductsUnsorted); //Pass the array we want to exclude from the array
-
-  const productsExceptNewest = productsExceptNewestUnsorted.sort(function(
-    a,
-    b
-  ) {
+  const productsSorted = products.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
 
@@ -122,16 +106,14 @@ const ProductsScreen = props => {
       <ContentHeader
         title={'Aktivt Förråd'}
         subTitle={'Allt som är redo att hämtas'}
-        indicator={
-          productsExceptNewest.length ? productsExceptNewest.length : 0
-        }
+        indicator={productsSorted.length ? productsSorted.length : 0}
       />
       <FlatList
         horizontal={false}
         numColumns={2}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
-        data={productsExceptNewest}
+        data={productsSorted}
         keyExtractor={item => item.id}
         renderItem={itemData => (
           <ProductItem

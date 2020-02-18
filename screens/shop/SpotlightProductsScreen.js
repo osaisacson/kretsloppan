@@ -28,32 +28,15 @@ import Colors from '../../constants/Colors';
 const SpotlightProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  // const [isClicked, setIsClicked] = useState(false);
 
   const [error, setError] = useState();
   const products = useSelector(state => state.products.availableProducts);
-  // const products = unsortedProducts.slice().sort((a, b) => a.date - b.date);
 
-  //Function that adds the diff method to the array prototype.
-  Array.prototype.diff = function(a) {
-    return this.filter(function(i) {
-      return a.indexOf(i) < 0;
-    });
-  };
   const recentProductsUnsorted = products.slice(
-    Math.max(products.length - 5, 0)
-  ); //Gets last 5 items uploaded
-
-  const productsExceptNewestUnsorted = products.diff(recentProductsUnsorted); //Pass the array we want to exclude from the array
+    Math.max(products.length - 10, 0)
+  ); //Gets last 10 items uploaded
 
   const recentProducts = recentProductsUnsorted.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
-
-  const productsExceptNewest = productsExceptNewestUnsorted.sort(function(
-    a,
-    b
-  ) {
     return new Date(b.date) - new Date(a.date);
   });
 
