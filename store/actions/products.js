@@ -131,7 +131,6 @@ export const createProduct = (
           'productData we are trying to pass to the realtime database: ',
           productData
         );
-
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
           `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
@@ -139,30 +138,35 @@ export const createProduct = (
             method: 'POST',
             body: JSON.stringify(productData)
           }
-        );
-      })
-      .catch(err =>
-        console.log(
-          'Error when attempting to save to firebase realtime database: ',
-          err
         )
-      )
-      .then(finalRes => {
-        console.log('finalRes from end of createProduct: ', finalRes);
-        dispatch({
-          type: CREATE_PRODUCT,
-          productData: {
-            id: finalRes.json().name,
-            categoryName,
-            title,
-            description,
-            price,
-            image,
-            ownerId: userId,
-            date: date
-          }
-        });
-        console.log('END------------');
+          .catch(err =>
+            console.log(
+              'Error when attempting to save to firebase realtime database: ',
+              err
+            )
+          )
+          .then(finalRes => finalRes.json())
+          .then(finalResParsed => {
+            console.log('FINAL RES IS BEING CALLED: ', finalResParsed);
+            console.log(
+              'finalResParsed from end of createProduct: ',
+              finalResParsed
+            );
+            dispatch({
+              type: CREATE_PRODUCT,
+              productData: {
+                id: finalResParsed.name,
+                categoryName,
+                title,
+                description,
+                price,
+                image,
+                ownerId: userId,
+                date: date
+              }
+            });
+            console.log('END------------');
+          });
       });
   };
 };

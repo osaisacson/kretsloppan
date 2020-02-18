@@ -122,7 +122,6 @@ const ProductsScreen = props => {
             price={itemData.item.price ? itemData.item.price : 0}
             onSelect={() => {
               selectItemHandler(itemData.item.id, itemData.item.title);
-              // setIsClicked(true);
               // dispatch(cartActions.addToCart(itemData.item));
             }}
           ></ProductItem>
