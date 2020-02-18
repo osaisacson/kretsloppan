@@ -52,7 +52,7 @@ const OrderItem = props => {
               quantity={cartItem.quantity}
               title={cartItem.productTitle}
               price={cartItem.price}
-              imageUrl={cartItem.imageUrl}
+              image={cartItem.image}
             />
           ))}
         </View>

@@ -90,14 +90,14 @@ const EditProductScreen = props => {
     inputValues: {
       categoryName: editedProduct ? editedProduct.categoryName : '',
       title: editedProduct ? editedProduct.title : '',
-      imageUrl: editedProduct ? editedProduct.imageUrl : '',
+      image: editedProduct ? editedProduct.image : '',
       description: editedProduct ? editedProduct.description : '',
       price: editedProduct ? editedProduct.price : ''
     },
     inputValidities: {
       categoryName: editedProduct ? true : false,
       title: editedProduct ? true : false,
-      imageUrl: editedProduct ? true : false,
+      image: editedProduct ? true : false,
       description: editedProduct ? true : false,
       price: editedProduct ? true : false
     },
@@ -131,7 +131,7 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.imageUrl
+            formState.inputValues.image
           )
         );
       } else {
@@ -141,7 +141,7 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.imageUrl
+            formState.inputValues.image
           )
         );
       }
@@ -160,6 +160,12 @@ const EditProductScreen = props => {
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
     //inputIdentifier and text will act as key:value in the form reducer
+
+    if (inputIdentifier === 'image' && text.length > 20) {
+      console.log('------EditProductScreen - adding/editing a product');
+      console.log('-received base64 string as expected');
+      console.log('END----------');
+    }
 
     let isValid = true;
 
@@ -190,8 +196,8 @@ const EditProductScreen = props => {
       <ScrollView>
         <View style={styles.form}>
           <ImagePicker
-            onImageTaken={textChangeHandler.bind(this, 'imageUrl')}
-            passedImage={formState.inputValues.imageUrl}
+            onImageTaken={textChangeHandler.bind(this, 'image')}
+            passedImage={formState.inputValues.image}
           />
           <View style={styles.formControl}>
             <Text style={styles.label}>Titel</Text>
@@ -214,13 +220,13 @@ const EditProductScreen = props => {
             <Text style={styles.label}>Image URL</Text>
             <TextInput
               style={styles.input}
-              value={formState.inputValues.imageUrl}
-              onChangeText={textChangeHandler.bind(this, 'imageUrl')}
+              value={formState.inputValues.image}
+              onChangeText={textChangeHandler.bind(this, 'image')}
               autoCorrect={false}
               selectTextOnFocus
               returnKeyType="next"
             />
-            {!formState.inputValues.imageUrl ? (
+            {!formState.inputValues.image ? (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Please enter an image url</Text>
               </View>
@@ -394,13 +400,13 @@ export default EditProductScreen;
 //   const [formState, dispatchFormState] = useReducer(formReducer, {
 //     inputValues: {
 //       title: editedProduct ? editedProduct.title : '',
-//       imageUrl: editedProduct ? editedProduct.imageUrl : '',
+//       image: editedProduct ? editedProduct.image : '',
 //       description: editedProduct ? editedProduct.description : '',
 //       price: ''
 //     },
 //     inputValidities: {
 //       title: editedProduct ? true : false,
-//       imageUrl: editedProduct ? true : false,
+//       image: editedProduct ? true : false,
 //       description: editedProduct ? true : false,
 //       price: editedProduct ? true : false
 //     },
@@ -429,7 +435,7 @@ export default EditProductScreen;
 //             prodId,
 //             formState.inputValues.title,
 //             formState.inputValues.description,
-//             formState.inputValues.imageUrl
+//             formState.inputValues.image
 //           )
 //         );
 //       } else {
@@ -437,7 +443,7 @@ export default EditProductScreen;
 //           productsActions.createProduct(
 //             formState.inputValues.title,
 //             formState.inputValues.description,
-//             formState.inputValues.imageUrl,
+//             formState.inputValues.image,
 //             +formState.inputValues.price
 //           )
 //         );
@@ -497,13 +503,13 @@ export default EditProductScreen;
 //             required
 //           />
 //           <Input
-//             id="imageUrl"
+//             id="image"
 //             label="Image Url"
 //             errorText="Please enter a valid image url!"
 //             keyboardType="default"
 //             returnKeyType="next"
 //             onInputChange={inputChangeHandler}
-//             initialValue={editedProduct ? editedProduct.imageUrl : ''}
+//             initialValue={editedProduct ? editedProduct.image : ''}
 //             initiallyValid={!!editedProduct}
 //             required
 //           />

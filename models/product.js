@@ -6,23 +6,19 @@ class Product {
     ownerId,
     categoryName,
     title,
-    imageUrl,
+    image,
     description,
     price,
     date
   ) {
-    //HÄR
-
     this.id = id;
     this.ownerId = ownerId;
     this.categoryName = categoryName;
     this.title = title;
-    this.imageUrl = imageUrl;
+    this.image = image;
     this.description = description;
     this.price = price;
     this.date = date;
-
-    //HÄR
   }
   get readableDate() {
     return moment(this.date).format('MMMM Do YYYY, hh:mm');

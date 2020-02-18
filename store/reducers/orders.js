@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
         action.orderData.id,
         action.orderData.items,
         action.orderData.date,
-        action.orderData.imageUrl
+        action.orderData.image
       );
       return {
         ...state,

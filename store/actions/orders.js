@@ -27,7 +27,7 @@ export const fetchOrders = () => {
             key,
             resData[key].cartItems,
             new Date(resData[key].date),
-            resData[key].imageUrl
+            resData[key].image
           )
         );
       }
@@ -72,7 +72,7 @@ export const addOrder = cartItems => {
         id: resData.name,
         items: cartItems,
         date: date,
-        imageUrl: resData.imageUrl
+        image: resData.image
       }
     });
   };

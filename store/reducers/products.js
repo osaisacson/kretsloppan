@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
         action.productData.ownerId,
         action.productData.categoryName,
         action.productData.title,
-        action.productData.imageUrl,
+        action.productData.image,
         action.productData.description,
         action.productData.price,
         action.productData.date
@@ -44,7 +44,7 @@ export default (state = initialState, action) => {
         state.userProducts[productIndex].ownerId,
         action.productData.categoryName,
         action.productData.title,
-        action.productData.imageUrl,
+        action.productData.image,
         action.productData.description,
         action.productData.price,
         state.userProducts[productIndex].date

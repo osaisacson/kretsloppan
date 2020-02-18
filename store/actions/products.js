@@ -31,11 +31,10 @@ export const fetchProducts = () => {
             resData[key].ownerId,
             resData[key].categoryName,
             resData[key].title,
-            resData[key].imageUrl,
+            resData[key].image,
             resData[key].description,
             resData[key].price,
             resData[key].date
-            //HÄR
           )
         );
       }
@@ -77,52 +76,94 @@ export const createProduct = (
   title,
   description,
   price,
-  imageUrl
+  image
 ) => {
-  //HÄR
-
-  return async (dispatch, getState) => {
-    // any async code you want!
+  console.log('---------Actions > products.js > createProduct');
+  console.log('-received original params: ');
+  console.log('categoryName: ', categoryName);
+  console.log('title: ', title);
+  console.log('description: ', description);
+  console.log('price: ', price);
+  console.log(
+    'image: ',
+    image && image.length > 100
+      ? 'passed image base64 as expected'
+      : 'WARNING: no image base64 passed'
+  );
+  return (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
+    console.log('-set constants: ');
+    console.log('token: ', token);
+    console.log('userId: ', userId);
+    console.log('date: ', date);
 
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
+    //First upload the base64 image
+    fetch(
+      'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify({
+          image: image //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+        })
+      }
+    )
+      .catch(err =>
+        console.log('error when trying to post to cloudfunctions', err)
+      )
+      .then(res => res.json())
+      .then(parsedRes => {
+        console.log(
+          'passed parsedRes before doing fetch to firebase realtime database of products: ',
+          parsedRes
+        );
+        const productData = {
           categoryName,
           title,
           description,
           price,
-          imageUrl,
+          image: parsedRes.image, //This is how we link to the image we store above
           ownerId: userId,
           date: date.toISOString()
-          //HÄR
-        })
-      }
-    );
+        };
+        console.log(
+          'productData we are trying to pass to the realtime database: ',
+          productData
+        );
 
-    const resData = await response.json();
-
-    dispatch({
-      type: CREATE_PRODUCT,
-      productData: {
-        id: resData.name,
-        categoryName,
-        title,
-        description,
-        price,
-        imageUrl,
-        ownerId: userId,
-        date: date
-        //HÄR
-      }
-    });
+        //Then upload the rest of the data to realtime database on firebase
+        return fetch(
+          `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
+          {
+            method: 'POST',
+            body: JSON.stringify(productData)
+          }
+        );
+      })
+      .catch(err =>
+        console.log(
+          'Error when attempting to save to firebase realtime database: ',
+          err
+        )
+      )
+      .then(finalRes => {
+        console.log('finalRes from end of createProduct: ', finalRes);
+        dispatch({
+          type: CREATE_PRODUCT,
+          productData: {
+            id: finalRes.json().name,
+            categoryName,
+            title,
+            description,
+            price,
+            image,
+            ownerId: userId,
+            date: date
+          }
+        });
+        console.log('END------------');
+      });
   };
 };
 
@@ -132,8 +173,7 @@ export const updateProduct = (
   title,
   description,
   price,
-  imageUrl
-  //HÄR
+  image
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -149,8 +189,7 @@ export const updateProduct = (
           title,
           description,
           price,
-          imageUrl
-          //HÄR
+          image
         })
       }
     );
@@ -170,8 +209,7 @@ export const updateProduct = (
         title,
         description,
         price,
-        imageUrl
-        //HÄR
+        image
       }
     });
   };

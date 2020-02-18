@@ -32,17 +32,15 @@ const ImgPicker = props => {
       return;
     }
     const image = await ImagePicker.launchImageLibraryAsync({
-      //We could also open the gallery here instead of launchCameraAsync
+      //We could also open the camera here instead of the gallery
+      base64: true, //lets us get and use the base64 encoded image to pass to storage
       allowsEditing: true,
       aspect: [16, 9],
       quality: 0.6
     });
 
-    setPickedImage(image.uri);
-    console.log('image object:', image);
-    console.log('image 64:', image.data);
-
-    props.onImageTaken(image.uri); //Forwards the taken picture to the function 'onImageTaken' passed as a props wherever we use the ImgPicker component
+    setPickedImage(image.uri); //show image from local storage
+    props.onImageTaken(image.base64); //Forwards the taken picture to the function 'onImageTaken' passed as a props wherever we use the ImgPicker component
   };
 
   return (
@@ -51,7 +49,7 @@ const ImgPicker = props => {
         {!pickedImage ? (
           <Text>Ingen bild vald än</Text>
         ) : (
-          <Image style={styles.image} source={{ uri: pickedImage }} />
+          <Image style={styles.image} source={{ uri: pickedImage }} /> //Originally uses the locally stored image as a placeholder
         )}
       </View>
       <Button

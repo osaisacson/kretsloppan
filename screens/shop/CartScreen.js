@@ -26,7 +26,7 @@ const CartScreen = props => {
     for (const key in state.cart.items) {
       transformedCartItems.push({
         productId: key,
-        imageUrl: state.cart.items[key].imageUrl,
+        image: state.cart.items[key].image,
         quantity: state.cart.items[key].quantity,
         price: state.cart.items[key].price ? state.cart.items[key].price : 0,
         productTitle: state.cart.items[key].productTitle
@@ -69,7 +69,7 @@ const CartScreen = props => {
             quantity={itemData.item.quantity}
             title={itemData.item.productTitle}
             price={itemData.item.price}
-            imageUrl={itemData.item.imageUrl}
+            image={itemData.item.image}
             deletable //Makes the delete button visible on the CardItem component
             onRemove={() => {
               dispatch(cartActions.removeFromCart(itemData.item.productId));

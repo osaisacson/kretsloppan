@@ -56,7 +56,7 @@ const HorizontalScroll = props => {
               <ProductItem
                 key={prod.id}
                 isHorizontal={true}
-                image={prod.imageUrl}
+                image={prod.image}
                 title={prod.title}
                 price={prod.price ? prod.price : 0}
                 onSelect={() => {
