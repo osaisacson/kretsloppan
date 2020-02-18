@@ -111,7 +111,7 @@ const SpotlightProductsScreen = props => {
           subTitle={'Det fräschaste, det nyaste'}
           scrollData={recentProducts}
         />
-        {/* <HorizontalScroll
+        <HorizontalScroll
           title={'efterlysningar'}
           subTitle={'Material som önskas. Kontakta efterlysaren.'}
           scrollData={recentProducts}
@@ -120,7 +120,7 @@ const SpotlightProductsScreen = props => {
           title={'under bearbetning'}
           subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
           scrollData={recentProducts}
-        /> */}
+        />
       </ScrollView>
       <AddButton />
     </View>

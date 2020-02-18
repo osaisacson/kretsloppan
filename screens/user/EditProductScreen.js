@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 //Components
 import {
   Alert,
@@ -92,14 +91,16 @@ const EditProductScreen = props => {
       title: editedProduct ? editedProduct.title : '',
       image: editedProduct ? editedProduct.image : '',
       description: editedProduct ? editedProduct.description : '',
-      price: editedProduct ? editedProduct.price : ''
+      price: editedProduct ? editedProduct.price : '',
+      status: editedProduct ? editedProduct.status : ''
     },
     inputValidities: {
       categoryName: editedProduct ? true : false,
       title: editedProduct ? true : false,
       image: editedProduct ? true : false,
       description: editedProduct ? true : false,
-      price: editedProduct ? true : false
+      price: editedProduct ? true : false,
+      status: editedProduct ? true : false
     },
     formIsValid: editedProduct ? true : false
   });
@@ -131,7 +132,8 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image
+            formState.inputValues.image,
+            formState.inputValues.status
           )
         );
       } else {
@@ -141,7 +143,8 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image
+            formState.inputValues.image,
+            formState.inputValues.status
           )
         );
       }
@@ -160,12 +163,6 @@ const EditProductScreen = props => {
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
     //inputIdentifier and text will act as key:value in the form reducer
-
-    if (inputIdentifier === 'image' && text.length > 20) {
-      console.log('------EditProductScreen - adding/editing a product');
-      console.log('-received base64 string as expected');
-      console.log('END----------');
-    }
 
     let isValid = true;
 
@@ -199,6 +196,28 @@ const EditProductScreen = props => {
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
           />
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Status</Text>
+            <Picker
+              selectedValue={formState.inputValues.status}
+              onValueChange={textChangeHandler.bind(this, 'status')}
+            >
+              <Picker.Item key={1} label={'Redo för hämtning'} value={'redo'} />
+              <Picker.Item
+                key={2}
+                label={'Under bearbetning'}
+                value={'bearbetas'}
+              />
+              <Picker.Item key={3} label={'Bokad'} value={'bokad'} />
+            </Picker>
+            {!formState.inputValues.status ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>
+                  Välj vad som bäst beskriver produktens status
+                </Text>
+              </View>
+            ) : null}
+          </View>
           <View style={styles.formControl}>
             <Text style={styles.label}>Titel</Text>
             <TextInput

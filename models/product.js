@@ -9,7 +9,8 @@ class Product {
     image,
     description,
     price,
-    date
+    date,
+    status
   ) {
     this.id = id;
     this.ownerId = ownerId;
@@ -19,6 +20,7 @@ class Product {
     this.description = description;
     this.price = price;
     this.date = date;
+    this.status = status;
   }
   get readableDate() {
     return moment(this.date).format('MMMM Do YYYY, hh:mm');

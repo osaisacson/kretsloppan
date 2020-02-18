@@ -34,7 +34,8 @@ export const fetchProducts = () => {
             resData[key].image,
             resData[key].description,
             resData[key].price,
-            resData[key].date
+            resData[key].date,
+            resData[key].status
           )
         );
       }
@@ -76,28 +77,29 @@ export const createProduct = (
   title,
   description,
   price,
-  image
+  image,
+  status
 ) => {
-  console.log('---------Actions > products.js > createProduct');
-  console.log('-received original params: ');
-  console.log('categoryName: ', categoryName);
-  console.log('title: ', title);
-  console.log('description: ', description);
-  console.log('price: ', price);
-  console.log(
-    'image: ',
-    image && image.length > 100
-      ? 'passed image base64 as expected'
-      : 'WARNING: no image base64 passed'
-  );
+  // console.log('---------Actions > products.js > createProduct');
+  // console.log('-received original params: ');
+  // console.log('categoryName: ', categoryName);
+  // console.log('title: ', title);
+  // console.log('description: ', description);
+  // console.log('price: ', price);
+  // console.log(
+  //   'image: ',
+  //   image && image.length > 100
+  //     ? 'passed image base64 as expected'
+  //     : 'WARNING: no image base64 passed'
+  // );
   return (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
-    console.log('-set constants: ');
-    console.log('token: ', token);
-    console.log('userId: ', userId);
-    console.log('date: ', date);
+    // console.log('-set constants: ');
+    // console.log('token: ', token);
+    // console.log('userId: ', userId);
+    // console.log('date: ', date);
 
     //First upload the base64 image
     fetch(
@@ -114,10 +116,10 @@ export const createProduct = (
       )
       .then(res => res.json())
       .then(parsedRes => {
-        console.log(
-          'passed parsedRes before doing fetch to firebase realtime database of products: ',
-          parsedRes
-        );
+        // console.log(
+        //   'passed parsedRes before doing fetch to firebase realtime database of products: ',
+        //   parsedRes
+        // );
         const productData = {
           categoryName,
           title,
@@ -125,12 +127,13 @@ export const createProduct = (
           price,
           image: parsedRes.image, //This is how we link to the image we store above
           ownerId: userId,
-          date: date.toISOString()
+          date: date.toISOString(),
+          status
         };
-        console.log(
-          'productData we are trying to pass to the realtime database: ',
-          productData
-        );
+        // console.log(
+        //   'productData we are trying to pass to the realtime database: ',
+        //   productData
+        // );
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
           `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
@@ -147,11 +150,11 @@ export const createProduct = (
           )
           .then(finalRes => finalRes.json())
           .then(finalResParsed => {
-            console.log('FINAL RES IS BEING CALLED: ', finalResParsed);
-            console.log(
-              'finalResParsed from end of createProduct: ',
-              finalResParsed
-            );
+            // console.log('FINAL RES IS BEING CALLED: ', finalResParsed);
+            // console.log(
+            //   'finalResParsed from end of createProduct: ',
+            //   finalResParsed
+            // );
             dispatch({
               type: CREATE_PRODUCT,
               productData: {
@@ -162,10 +165,11 @@ export const createProduct = (
                 price,
                 image,
                 ownerId: userId,
-                date: date
+                date: date,
+                status
               }
             });
-            console.log('END------------');
+            // console.log('END------------');
           });
       });
   };
@@ -177,10 +181,12 @@ export const updateProduct = (
   title,
   description,
   price,
-  image
+  image,
+  status
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+
     const response = await fetch(
       `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
       {
@@ -193,7 +199,8 @@ export const updateProduct = (
           title,
           description,
           price,
-          image
+          image,
+          status
         })
       }
     );
@@ -213,7 +220,8 @@ export const updateProduct = (
         title,
         description,
         price,
-        image
+        image,
+        status
       }
     });
   };
