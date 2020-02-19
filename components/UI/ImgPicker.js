@@ -35,7 +35,7 @@ const ImgPicker = props => {
       //We could also open the camera here instead of the gallery
       base64: true, //lets us get and use the base64 encoded image to pass to storage
       allowsEditing: true,
-      aspect: [16, 9],
+      aspect: [4, 3],
       quality: 0.6
     });
 

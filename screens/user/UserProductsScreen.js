@@ -21,6 +21,30 @@ const UserProductsScreen = props => {
   //get a slice of the userProduct state
 
   const userProducts = useSelector(state => state.products.userProducts);
+  const userProductsSorted = userProducts.sort(function(a, b) {
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  //Gets all booked products
+  const bookedUserProducts = userProductsSorted.filter(
+    product => product.status === 'bokad'
+  );
+
+  //Gets all currently being worked on products
+  const inProgressUserProducts = userProductsSorted.filter(
+    product => product.status === 'bearbetas'
+  );
+
+  //Gets all wanted products
+  const wantedUserProducts = userProductsSorted.filter(
+    product => product.status === 'efterlyst'
+  );
+
+  //Gets all done (given) products
+  const doneUserProducts = userProductsSorted.filter(
+    product => product.status === 'gettIgen'
+  );
+
   const dispatch = useDispatch();
 
   //Runs whenever the component is loaded, and fetches the latest products
@@ -77,30 +101,30 @@ const UserProductsScreen = props => {
     <View>
       <ScrollView>
         <HorizontalScroll
-          title={'Bokat'}
+          title={'Bokat av mig'}
           subTitle={'Väntas på att hämtas av dig - se kort för detaljer'}
           extraSubTitle={'Notera att bokningen upphör gälla efter en vecka'}
-          scrollData={userProducts}
+          scrollData={bookedUserProducts}
           showEditAndDelete={true}
         />
         <HorizontalScroll
-          title={'Bearbetas'}
+          title={'Under bearbetning'}
           subTitle={
             "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
           }
-          scrollData={userProducts}
+          scrollData={inProgressUserProducts}
           showEditAndDelete={true}
         />
         <HorizontalScroll
-          title={'Aktivt Förråd'}
-          subTitle={'Allt som är redo för hämtning'}
-          scrollData={userProducts}
+          title={'Efterlysta produkter'}
+          subTitle={'Mina efterlysningar'}
+          scrollData={wantedUserProducts}
           showEditAndDelete={true}
         />
         <HorizontalScroll
           title={'Gett igen'}
           subTitle={'Arkiv av återbruk du gett igen'}
-          scrollData={userProducts}
+          scrollData={doneUserProducts}
           showEditAndDelete={true}
         />
       </ScrollView>
