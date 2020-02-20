@@ -48,7 +48,7 @@ const ProductDetailScreen = props => {
 //Sets/overrides the default navigation options in the ShopNavigator
 export const screenOptions = navData => {
   return {
-    headerTitle: 'This should be the detail heading', //navData.route.params.productTitle,
+    headerTitle: navData.route.params.productTitle,
     headerRight: () => (
       <UserAvatar
         showBadge={true}

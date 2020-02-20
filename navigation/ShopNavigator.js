@@ -71,8 +71,7 @@ const defaultNavOptions = {
 //     </Tab.Navigator>
 //   );
 // };
-
-const ProductsStackNavigator = createStackNavigator(); //does not want an object, this becomes a component
+const ProductsStackNavigator = createStackNavigator();
 
 export const ProductsNavigator = () => {
   return (

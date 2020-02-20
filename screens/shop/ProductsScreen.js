@@ -1,27 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import {
-  View,
-  Text,
-  FlatList,
-  Button,
-  Platform,
-  StyleSheet
-  // TouchableOpacity
-} from 'react-native';
-
 //Components
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-// import { Ionicons } from '@expo/vector-icons';
+import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import AddButton from '../../components/UI/AddButton';
-import UserAvatar from '../../components/UI/UserAvatar';
 import ContentHeader from '../../components/UI/ContentHeader';
+import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
-import HeaderButton from '../../components/UI/HeaderButton';
 import ProductItem from '../../components/shop/ProductItem';
 //Actions
-// import * as cartActions from '../../store/actions/cart';
 import * as productsActions from '../../store/actions/products';
 //Constants
 import Colors from '../../constants/Colors';
@@ -29,15 +15,12 @@ import Colors from '../../constants/Colors';
 const ProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  // const [isClicked, setIsClicked] = useState(false);
-
   const [error, setError] = useState();
   const products = useSelector(state => state.products.availableProducts);
 
   const productsSorted = products.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
-
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(async () => {
@@ -68,16 +51,17 @@ const ProductsScreen = props => {
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate('ProductDetail', {
-      params: { productId: id, productTitle: title }
+      productId: id,
+      productTitle: title
     });
   };
 
   if (error) {
     return (
       <View style={styles.centered}>
-        <Text>An error occurred!</Text>
+        <Text>Något gick fel</Text>
         <Button
-          title="Try again"
+          title="Prova igen"
           onPress={loadProducts}
           color={Colors.primary}
         />
@@ -90,15 +74,11 @@ const ProductsScreen = props => {
   }
 
   if (!isLoading && products.length === 0) {
-    return (
-      <View style={styles.centered}>
-        <Text>No products found. Maybe start adding some!</Text>
-      </View>
-    );
+    return <EmptyState text="Inga produkter ännu, prova lägga till några." />;
   }
 
   return (
-    <View style={styles.gridContainer}>
+    <View>
       <ContentHeader
         title={'Aktivt Förråd'}
         subTitle={'Allt som är redo att hämtas'}
@@ -118,7 +98,6 @@ const ProductsScreen = props => {
             price={itemData.item.price ? itemData.item.price : 0}
             onSelect={() => {
               selectItemHandler(itemData.item.id, itemData.item.title);
-              // dispatch(cartActions.addToCart(itemData.item));
             }}
           ></ProductItem>
         )}
@@ -129,11 +108,6 @@ const ProductsScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  gridContainer: {
-    flex: 1,
-    width: '100%'
-  },
-
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
 
