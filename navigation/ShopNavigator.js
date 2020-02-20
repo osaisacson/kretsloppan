@@ -15,10 +15,10 @@ import UserAvatar from '../components/UI/UserAvatar';
 //Screens
 import ProductsOverviewScreen, {
   screenOptions as productsOverviewScreenOptions
-} from '../screens/shop/ProductDetailScreen';
-import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
-import ProductsScreen from '../screens/shop/ProductsScreen';
-import ProjectsScreen from '../screens/shop/ProjectsScreen';
+} from '../screens/shop/ProductsOverviewScreen';
+// import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
+// import ProductsScreen from '../screens/shop/ProductsScreen';
+// import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
 } from '../screens/shop/ProductDetailScreen';
@@ -49,38 +49,28 @@ const defaultNavOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
-const Tab = createMaterialTopTabNavigator();
+// const Tab = createMaterialTopTabNavigator();
 
-export const ProductsTabNavigator = () => {
-  return (
-    <Tab.Navigator
-      tabBarOptions={{
-        labelStyle: {
-          fontSize: 15,
-          fontFamily: 'roboto-regular',
-          textTransform: 'capitalize'
-        },
-        indicatorStyle: { backgroundColor: Colors.primary }
-      }}
-    >
-      <Tab.Screen
-        name="Spotlight"
-        component={SpotlightProductsScreen}
-        options={productsOverviewScreenOptions}
-      />
-      <Tab.Screen
-        name="Förråd"
-        component={ProductsScreen}
-        options={productsOverviewScreenOptions}
-      />
-      <Tab.Screen
-        name="Projekt"
-        component={ProjectsScreen}
-        options={productsOverviewScreenOptions}
-      />
-    </Tab.Navigator>
-  );
-};
+// export const ProductsTabNavigator = () => {
+//   return (
+//     <Tab.Navigator
+//       title="Egnahemsfabröken"
+//       initialRouteName="Spotlight"
+//       tabBarOptions={{
+//         labelStyle: {
+//           fontSize: 15,
+//           fontFamily: 'roboto-regular',
+//           textTransform: 'capitalize'
+//         },
+//         indicatorStyle: { backgroundColor: Colors.primary }
+//       }}
+//     >
+//       <Tab.Screen name="Spotlight" component={SpotlightProductsScreen} />
+//       <Tab.Screen name="Förråd" component={ProductsScreen} />
+//       <Tab.Screen name="Projekt" component={ProjectsScreen} />
+//     </Tab.Navigator>
+//   );
+// };
 
 const ProductsStackNavigator = createStackNavigator(); //does not want an object, this becomes a component
 
@@ -89,7 +79,7 @@ export const ProductsNavigator = () => {
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
         name="ProductsOverview"
-        component={ProductsTabNavigator}
+        component={ProductsOverviewScreen}
         options={productsOverviewScreenOptions}
       />
       <ProductsStackNavigator.Screen
