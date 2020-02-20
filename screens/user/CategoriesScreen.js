@@ -39,13 +39,10 @@ const CategoriesScreen = props => {
 
   //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadCategories again
   useEffect(() => {
-    const willFocusSubscription = props.navigation.addListener(
-      'willFocus',
-      loadCategories
-    );
-    //Cleanup afterwards. Removes the subscription
+    const unsubscribe = props.navigation.addListener('focus', loadCategories);
+
     return () => {
-      willFocusSubscription.remove();
+      unsubscribe();
     };
   }, [loadCategories]);
 

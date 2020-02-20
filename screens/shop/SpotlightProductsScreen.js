@@ -67,13 +67,10 @@ const SpotlightProductsScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const willFocusSub = props.navigation.addListener(
-      'willFocus',
-      loadProducts
-    );
+    const unsubscribe = props.navigation.addListener('focus', loadProducts);
 
     return () => {
-      willFocusSub.remove();
+      unsubscribe();
     };
   }, [loadProducts]);
 
@@ -86,8 +83,7 @@ const SpotlightProductsScreen = props => {
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate('ProductDetail', {
-      productId: id,
-      productTitle: title
+      params: { productId: id, productTitle: title }
     });
   };
 
@@ -141,31 +137,6 @@ const SpotlightProductsScreen = props => {
       <AddButton />
     </View>
   );
-};
-
-SpotlightProductsScreen.navigationOptions = navData => {
-  return {
-    headerTitle: 'Allt Återbruk',
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
-    headerRight: (
-      <UserAvatar
-        showBadge={true}
-        actionOnPress={() => {
-          navData.navigation.navigate('Profil');
-        }}
-      />
-    )
-  };
 };
 
 const styles = StyleSheet.create({

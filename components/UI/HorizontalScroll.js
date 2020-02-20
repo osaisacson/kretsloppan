@@ -14,8 +14,7 @@ const HorizontalScroll = props => {
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate('ProductDetail', {
-      productId: id,
-      productTitle: title
+      params: { productId: id, productTitle: title }
     });
   };
 

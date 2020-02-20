@@ -61,13 +61,10 @@ const UserProductsScreen = props => {
 
   //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadProducts again
   useEffect(() => {
-    const willFocusSubscription = props.navigation.addListener(
-      'willFocus',
-      loadProducts
-    );
-    //Cleanup afterwards. Removes the subscription
+    const unsubscribe = props.navigation.addListener('focus', loadProducts);
+
     return () => {
-      willFocusSubscription.remove();
+      unsubscribe();
     };
   }, [loadProducts]);
 
@@ -92,8 +89,7 @@ const UserProductsScreen = props => {
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate('ProductDetail', {
-      productId: id,
-      productTitle: title
+      params: { productId: id, productTitle: title }
     });
   };
 
@@ -133,10 +129,10 @@ const UserProductsScreen = props => {
   );
 };
 
-UserProductsScreen.navigationOptions = navData => {
+export const screenOptions = navData => {
   return {
     headerTitle: 'Ditt förråd',
-    headerLeft: (
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -147,7 +143,7 @@ UserProductsScreen.navigationOptions = navData => {
         />
       </HeaderButtons>
     ),
-    headerRight: (
+    headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Lägg till"

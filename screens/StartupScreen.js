@@ -14,24 +14,26 @@ const StartupScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    //Try to log the user in
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData');
+      //If we can't find user data stored on the device dispatch the action
       if (!userData) {
-        props.navigation.navigate('Auth');
+        dispatch(authActions.setDidTryAutoLogin());
         return;
       }
       const transformedData = JSON.parse(userData);
       const { token, userId, expiryDate } = transformedData;
       const expirationDate = new Date(expiryDate);
-
+      //If we find data but the token is expired or not there we dispatch an action
       if (expirationDate <= new Date() || !token || !userId) {
-        props.navigation.navigate('Auth');
+        dispatch(authActions.setDidTryAutoLogin());
         return;
       }
 
       const expirationTime = expirationDate.getTime() - new Date().getTime();
-
-      props.navigation.navigate('Shop');
+      //If we instead succeed and have a valid token then we instead go to the shop page
+      //We dispatch an action where we authenticate the user, which changes data in our redux store (sets the token, etc. the token is originally null)
       dispatch(authActions.authenticate(userId, token, expirationTime));
     };
 

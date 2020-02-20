@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+//Components
 import {
   ScrollView,
   View,
   KeyboardAvoidingView,
   StyleSheet,
+  ImageBackground,
   Button,
   ActivityIndicator,
-  Alert,
-  ImageBackground
+  Alert
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-
 import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
@@ -48,42 +48,21 @@ const AuthScreen = props => {
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
 
-  const valuesAndValidities = isSignup
-    ? {
-        inputValues: {
-          name: '',
-          phone: '',
-          email: '',
-          password: ''
-        },
-        inputValidities: {
-          name: false,
-          phone: false,
-          email: false,
-          password: false
-        },
-        formIsValid: false
-      }
-    : {
-        inputValues: {
-          email: '',
-          password: ''
-        },
-        inputValidities: {
-          email: false,
-          password: false
-        },
-        formIsValid: false
-      };
-
-  const [formState, dispatchFormState] = useReducer(
-    formReducer,
-    valuesAndValidities
-  );
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      email: '',
+      password: ''
+    },
+    inputValidities: {
+      email: false,
+      password: false
+    },
+    formIsValid: false
+  });
 
   useEffect(() => {
     if (error) {
-      Alert.alert('An Error Occurred!', error, [{ text: 'Okay' }]);
+      Alert.alert('Oj!', error, [{ text: 'OK' }]);
     }
   }, [error]);
 
@@ -104,7 +83,6 @@ const AuthScreen = props => {
     setIsLoading(true);
     try {
       await dispatch(action);
-      props.navigation.navigate('Shop');
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -138,31 +116,6 @@ const AuthScreen = props => {
       >
         <Card style={styles.authContainer}>
           <ScrollView>
-            {/* Only show if they're signing up */}
-            {isSignup ? (
-              <>
-                <Input
-                  id="name"
-                  label="Namn"
-                  keyboardType="default"
-                  required
-                  autoCapitalize="none"
-                  errorText="Oj det verkar som du inte skrivit in ett namn, prova igen"
-                  onInputChange={inputChangeHandler}
-                  initialValue=""
-                />
-                <Input
-                  id="phone"
-                  label="Telefonnummer"
-                  keyboardType="decimal-pad"
-                  required
-                  errorText="Ett telefonnummer behövs för att hantera logistiken runt hämtning/lämning av återbruk"
-                  onInputChange={inputChangeHandler}
-                  initialValue=""
-                />
-              </>
-            ) : null}
-            {/* Always show */}
             <Input
               id="email"
               label="E-Mail"
@@ -170,7 +123,7 @@ const AuthScreen = props => {
               required
               email
               autoCapitalize="none"
-              errorText="Email behövs som inloggningsnamn och så vi kan kontakta dig"
+              errorText="Please enter a valid email address."
               onInputChange={inputChangeHandler}
               initialValue=""
             />
@@ -182,7 +135,7 @@ const AuthScreen = props => {
               required
               minLength={5}
               autoCapitalize="none"
-              errorText="Lösenord behövs för att hålla din data säker"
+              errorText="Please enter a valid password."
               onInputChange={inputChangeHandler}
               initialValue=""
             />
@@ -191,7 +144,7 @@ const AuthScreen = props => {
                 <ActivityIndicator size="small" color={Colors.primary} />
               ) : (
                 <Button
-                  title={isSignup ? 'Sign Up' : 'Login'}
+                  title={isSignup ? 'Gå med' : 'Logga in'}
                   color={Colors.primary}
                   onPress={authHandler}
                 />
@@ -199,7 +152,7 @@ const AuthScreen = props => {
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
+                title={`Byt till ${isSignup ? 'logga in' : 'gå med'}`}
                 color={Colors.accent}
                 onPress={() => {
                   setIsSignup(prevState => !prevState);
@@ -213,7 +166,7 @@ const AuthScreen = props => {
   );
 };
 
-AuthScreen.navigationOptions = {
+export const screenOptions = {
   headerTitle: 'Egnahemsfabriken Ger Igen'
 };
 

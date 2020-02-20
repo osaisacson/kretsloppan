@@ -41,13 +41,10 @@ const OrdersScreen = props => {
 
   //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadOrders again
   useEffect(() => {
-    const willFocusSubscription = props.navigation.addListener(
-      'willFocus',
-      loadOrders
-    );
-    //Cleanup afterwards. Removes the subscription
+    const unsubscribe = props.navigation.addListener('focus', loadOrders);
+
     return () => {
-      willFocusSubscription.remove();
+      unsubscribe();
     };
   }, [loadOrders]);
 

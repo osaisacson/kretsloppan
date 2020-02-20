@@ -44,7 +44,7 @@ const EditCategoryScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const categoryId = props.navigation.getParam('categoryId');
+  const categoryId = props.route.params.categoryId;
   const editedCategory = useSelector(state =>
     state.categories.categories.find(category => category.id === categoryId)
   );
@@ -171,9 +171,9 @@ const EditCategoryScreen = props => {
 };
 
 EditCategoryScreen.navigationOptions = navData => {
-  const submitFn = navData.navigation.getParam('submit');
+  const submitFn = navData.route.params.submit;
   return {
-    headerTitle: navData.navigation.getParam('categoryId')
+    headerTitle: navData.route.params.categoryId
       ? 'Edit Category'
       : 'Add Category',
     headerRight: (

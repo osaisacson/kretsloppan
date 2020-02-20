@@ -17,7 +17,7 @@ import Colors from '../../constants/Colors';
 import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
 
 const ProductDetailScreen = props => {
-  const productId = props.navigation.getParam('productId');
+  const productId = props.route.params.productId;
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId)
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
@@ -46,14 +46,14 @@ const ProductDetailScreen = props => {
 };
 
 //Sets/overrides the default navigation options in the ShopNavigator
-ProductDetailScreen.navigationOptions = navData => {
+export const screenOptions = navData => {
   return {
-    headerTitle: navData.navigation.getParam('productTitle'),
-    headerRight: (
+    headerTitle: 'This should be the detail heading', //navData.route.params.productTitle,
+    headerRight: () => (
       <UserAvatar
         showBadge={true}
         actionOnPress={() => {
-          navData.navigation.navigate('Profil');
+          navData.navigation.navigate('Admin');
         }}
       />
     )

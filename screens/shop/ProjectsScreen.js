@@ -24,31 +24,6 @@ const ProjectsScreen = props => {
   );
 };
 
-ProjectsScreen.navigationOptions = navData => {
-  return {
-    headerTitle: 'Allt Återbruk',
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
-    headerRight: (
-      <UserAvatar
-        showBadge={true}
-        actionOnPress={() => {
-          navData.navigation.navigate('Profil');
-        }}
-      />
-    )
-  };
-};
-
 const styles = StyleSheet.create({
   gridContainer: {
     flex: 1,

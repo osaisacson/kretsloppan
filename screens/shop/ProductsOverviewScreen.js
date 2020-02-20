@@ -1,46 +1,44 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import HeaderButton from '../../components/UI/HeaderButton';
+// import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import UserAvatar from '../../components/UI/UserAvatar';
-import SpotlightProductsScreen from './SpotlightProductsScreen';
-import ProductsScreen from './ProductsScreen';
-import ProjectsScreen from './ProjectsScreen';
-//Constants
-import Colors from '../../constants/Colors';
+import HeaderButton from '../../components/UI/HeaderButton';
 
-const ProductsOverviewScreen = props => {
-  const Tab = createMaterialTopTabNavigator();
+// //Screens
+// import SpotlightProductsScreen from './SpotlightProductsScreen';
+// import ProductsScreen from './ProductsScreen';
+// import ProjectsScreen from './ProjectsScreen';
 
-  return (
-    <NavigationContainer>
-      <Tab.Navigator
-        tabBarOptions={{
-          labelStyle: {
-            fontSize: 15,
-            fontFamily: 'roboto-regular',
-            textTransform: 'capitalize'
-            // color: Colors.primary
-          },
-          indicatorStyle: { backgroundColor: Colors.primary }
-        }}
-      >
-        <Tab.Screen name="Spotlight" component={SpotlightProductsScreen} />
-        <Tab.Screen name="Förråd" component={ProductsScreen} />
-        <Tab.Screen name="Projekt" component={ProjectsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-};
+// //Constants
+// import Colors from '../../constants/Colors';
 
-ProductsOverviewScreen.navigationOptions = navData => {
+// const ProductsOverviewScreen = props => {
+//   const Tab = createMaterialTopTabNavigator();
+
+//   return (
+//     <Tab.Navigator
+//       tabBarOptions={{
+//         labelStyle: {
+//           fontSize: 15,
+//           fontFamily: 'roboto-regular',
+//           textTransform: 'capitalize'
+//         },
+//         indicatorStyle: { backgroundColor: Colors.primary }
+//       }}
+//     >
+//       <Tab.Screen name="Spotlight" component={SpotlightProductsScreen} />
+//       <Tab.Screen name="Förråd" component={ProductsScreen} />
+//       <Tab.Screen name="Projekt" component={ProjectsScreen} />
+//     </Tab.Navigator>
+//   );
+// };
+
+export const screenOptions = navData => {
   return {
     headerTitle: 'Allt Återbruk',
-    headerLeft: (
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -51,11 +49,11 @@ ProductsOverviewScreen.navigationOptions = navData => {
         />
       </HeaderButtons>
     ),
-    headerRight: (
+    headerRight: () => (
       <UserAvatar
         showBadge={true}
         actionOnPress={() => {
-          navData.navigation.navigate('Profil');
+          navData.navigation.navigate('Admin');
         }}
       />
     )
