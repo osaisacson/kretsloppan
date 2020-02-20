@@ -36,7 +36,6 @@ const ProductsScreen = props => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', loadProducts);
-
     return () => {
       unsubscribe();
     };

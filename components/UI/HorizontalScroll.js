@@ -1,20 +1,20 @@
 import React from 'react';
 //Components
-import { Button, Alert, ScrollView, View, StyleSheet } from 'react-native';
+import { Button, ScrollView, View, StyleSheet } from 'react-native';
 import ProductItem from '../../components/shop/ProductItem';
 import EmptyState from '../../components/UI/EmptyState';
 import ContentHeader from '../../components/UI/ContentHeader';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
-import * as productsActions from '../../store/actions/products';
 
 const HorizontalScroll = props => {
   const scrollData = props.scrollData;
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate('ProductDetail', {
-      params: { productId: id, productTitle: title }
+      productId: id,
+      productTitle: title
     });
   };
 
@@ -64,9 +64,7 @@ const HorizontalScroll = props => {
                   title={prod.title}
                   price={prod.price ? prod.price : 0}
                   onSelect={() => {
-                    props.showEditAndDelete
-                      ? editProductHandler(prod.id)
-                      : selectItemHandler(prod.id, prod.title);
+                    selectItemHandler(prod.id, prod.title);
                   }}
                 >
                   {props.showEditAndDelete ? (

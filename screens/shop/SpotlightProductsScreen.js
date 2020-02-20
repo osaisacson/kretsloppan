@@ -1,24 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+//Components
 import {
   View,
   Text,
   ScrollView,
   Button,
-  Platform,
+  Alert,
   StyleSheet
-  // TouchableOpacity
 } from 'react-native';
-
-//Components
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-// import { Ionicons } from '@expo/vector-icons';
 import AddButton from '../../components/UI/AddButton';
 import EmptyState from '../../components/UI/EmptyState';
-import UserAvatar from '../../components/UI/UserAvatar';
 import Loader from '../../components/UI/Loader';
-import HeaderButton from '../../components/UI/HeaderButton';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 //Actions
 import * as productsActions from '../../store/actions/products';
@@ -68,7 +61,6 @@ const SpotlightProductsScreen = props => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', loadProducts);
-
     return () => {
       unsubscribe();
     };
@@ -81,11 +73,26 @@ const SpotlightProductsScreen = props => {
     });
   }, [dispatch, loadProducts]);
 
-  const selectItemHandler = (id, title) => {
-    props.navigation.navigate('ProductDetail', {
-      params: { productId: id, productTitle: title }
-    });
-  };
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>Något gick fel</Text>
+        <Button
+          title="Prova igen"
+          onPress={loadProducts}
+          color={Colors.primary}
+        />
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (!isLoading && products.length === 0) {
+    return <EmptyState text="Inga produkter ännu, prova lägga till några." />;
+  }
 
   if (error) {
     return (
@@ -115,23 +122,27 @@ const SpotlightProductsScreen = props => {
           title={'nya tillskott'}
           subTitle={'Det fräschaste, det nyaste'}
           scrollData={recentProducts}
+          navigation={props.navigation}
         />
         <HorizontalScroll
           title={'under bearbetning'}
           subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
           scrollData={inProgressProducts}
+          navigation={props.navigation}
         />
         <HorizontalScroll
           title={'nyligen bokat'}
           subTitle={
-            'Bokade produkter, om de inte hämtas inom en vecka kan de bli bokade igen'
+            'Bokade produkter, om de inte hämtas inom en vecka blir de tillgängliga igen'
           }
           scrollData={bookedProducts}
+          navigation={props.navigation}
         />
         <HorizontalScroll
           title={'efterlysningar'}
           subTitle={'Material som önskas. Kontakta efterlysaren.'}
           scrollData={wantedProducts}
+          navigation={props.navigation}
         />
       </ScrollView>
       <AddButton />
