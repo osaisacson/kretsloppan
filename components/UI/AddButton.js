@@ -1,37 +1,50 @@
-import React from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Alert
-} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { FAB, Portal, Provider } from 'react-native-paper';
 //Constants
 import Colors from '../../constants/Colors';
 
 const AddButton = props => {
-  let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
-  //If platform is android and the version is the one which supports the ripple effect
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-    //Set TouchableCmp to instead be TouchableNativeFeedback
-  }
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleTrueFalse = () => setIsOpen(!isOpen);
 
   return (
-    <TouchableCmp>
-      <View style={styles.buttonStyle}>
-        <Text
+    <Provider>
+      <Portal>
+        <FAB.Group
+          open={isOpen}
+          icon={isOpen ? 'star' : 'star'}
+          actions={[
+            {
+              icon: 'star',
+              onPress: () => console.log('Pressed add')
+            },
+            {
+              icon: 'star',
+              label: 'Star',
+              onPress: () => console.log('Pressed star')
+            },
+            {
+              icon: 'email',
+              label: 'Email',
+              onPress: () => console.log('Pressed email')
+            },
+            {
+              icon: 'bell',
+              label: 'Remind',
+              onPress: () => console.log('Pressed notifications')
+            }
+          ]}
+          onStateChange={toggleTrueFalse}
           onPress={() => {
-            console.log('--------clicked addButton------');
-            Alert.alert('Clicked addButton');
+            if (isOpen) {
+              // do something if the speed dial is open
+            }
           }}
-          style={styles.buttonTextStyle}
-        >
-          +
-        </Text>
-      </View>
-    </TouchableCmp>
+        />
+      </Portal>
+    </Provider>
   );
 };
 

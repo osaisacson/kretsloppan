@@ -35,9 +35,8 @@ const UserOverviewScreen = props => {
             size={50}
           />
         </Button>
-        <Title style={styles.title}>Egnahemsfabriken</Title>
-        <Caption style={styles.caption}>@egnahemsfabriken</Caption>
-        <View style={styles.row}>
+        {/* <Title style={styles.title}>Egnahemsfabriken</Title> */}
+        {/* <View style={styles.row}>
           <View style={styles.section}>
             <Paragraph style={[styles.paragraph, styles.caption]}>
               202
@@ -50,7 +49,7 @@ const UserOverviewScreen = props => {
             </Paragraph>
             <Caption style={styles.caption}>Hämtade</Caption>
           </View>
-        </View>
+        </View> */}
       </View>
       <Tab.Navigator
         initialRouteName="Min Sida"
@@ -75,15 +74,10 @@ const styles = StyleSheet.create({
     paddingLeft: Margins.leftRight
   },
   title: {
-    marginTop: 20,
     fontWeight: 'bold',
     textAlign: 'center'
   },
-  caption: {
-    fontSize: 14,
-    lineHeight: 14,
-    textAlign: 'center'
-  },
+
   row: {
     marginTop: 20,
     marginBottom: 20,
@@ -114,7 +108,7 @@ const styles = StyleSheet.create({
 
 export const screenOptions = navData => {
   return {
-    headerTitle: 'Ditt förråd',
+    headerTitle: 'Egnahemsfabriken', //TBD dynamic title of logged in user's userName
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -130,7 +124,9 @@ export const screenOptions = navData => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Lägg till"
-          iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          iconName={
+            Platform.OS === 'android' ? 'md-add-circle' : 'ios-add-circle'
+          }
           onPress={() => {
             navData.navigation.navigate('EditProduct');
           }}

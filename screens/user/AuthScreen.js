@@ -7,13 +7,14 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   ImageBackground,
-  Button,
   ActivityIndicator,
   Alert
 } from 'react-native';
 import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
+import { Button } from 'react-native-paper';
+
 //Actions
 import * as authActions from '../../store/actions/auth';
 
@@ -144,20 +145,44 @@ const AuthScreen = props => {
                 <ActivityIndicator size="small" color={Colors.primary} />
               ) : (
                 <Button
-                  title={isSignup ? 'Gå med' : 'Logga in'}
-                  color={Colors.primary}
+                  color={'#000'}
+                  mode="outlined"
+                  contentStyle={{
+                    justifyContent: 'center',
+                    borderWidth: 0.1
+                  }}
+                  labelStyle={{
+                    paddingTop: 13,
+                    paddingBottom: 9,
+                    fontFamily: 'bebas-neue-bold',
+                    fontSize: 28
+                  }}
                   onPress={authHandler}
-                />
+                >
+                  {isSignup ? 'Gå med' : 'Logga in'}
+                </Button>
               )}
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title={`Byt till ${isSignup ? 'logga in' : 'gå med'}`}
-                color={Colors.accent}
+                color={'#666'}
+                mode="contained"
+                style={{
+                  width: '60%',
+                  alignSelf: 'center'
+                }}
+                labelStyle={{
+                  paddingTop: 2,
+                  fontFamily: 'bebas-neue-bold',
+                  fontSize: 12
+                }}
+                compact={true}
                 onPress={() => {
                   setIsSignup(prevState => !prevState);
                 }}
-              />
+              >
+                {`Byt till ${isSignup ? 'logga in' : 'skapa konto'}`}
+              </Button>
             </View>
           </ScrollView>
         </Card>

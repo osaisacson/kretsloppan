@@ -1,5 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+
 //Components
 import {
   ScrollView,
@@ -15,6 +17,7 @@ import UserAvatar from '../../components/UI/UserAvatar';
 import Colors from '../../constants/Colors';
 //Actions
 import * as cartActions from '../../store/actions/cart'; //Merges all cartActions defined in the pointed to file into one batch which can be accessed through cartActions.xxx
+import * as productsActions from '../../store/actions/products';
 
 const ProductDetailScreen = props => {
   const productId = props.route.params.productId;
@@ -23,6 +26,24 @@ const ProductDetailScreen = props => {
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const editProductHandler = id => {
+    navigation.navigate('EditProduct', { productId: id });
+  };
+
+  const deleteHandler = id => {
+    Alert.alert('Are you sure?', 'Do you really want to delete this item?', [
+      { text: 'No', style: 'default' },
+      {
+        text: 'Yes',
+        style: 'destructive',
+        onPress: () => {
+          dispatch(productsActions.deleteProduct(id));
+        }
+      }
+    ]);
+  };
 
   return (
     <ScrollView>
@@ -34,6 +55,18 @@ const ProductDetailScreen = props => {
           onPress={() => {
             dispatch(cartActions.addToCart(selectedProduct));
           }}
+        />
+        <Button
+          color={Colors.primary}
+          title="Edit"
+          onPress={() => {
+            editProductHandler(selectedProduct.id);
+          }}
+        />
+        <Button
+          color={Colors.primary}
+          title="Delete"
+          onPress={deleteHandler.bind(this, selectedProduct.id)}
         />
       </View>
       <Text style={styles.description}>

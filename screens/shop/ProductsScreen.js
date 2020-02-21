@@ -78,29 +78,31 @@ const ProductsScreen = props => {
 
   return (
     <View>
-      <ContentHeader
-        title={'Aktivt Förråd'}
-        subTitle={'Allt som är redo att hämtas'}
-        indicator={productsSorted.length ? productsSorted.length : 0}
-      />
-      <FlatList
-        horizontal={false}
-        numColumns={2}
-        onRefresh={loadProducts}
-        refreshing={isRefreshing}
-        data={productsSorted}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
-          <ProductItem
-            image={itemData.item.image}
-            title={itemData.item.title}
-            price={itemData.item.price ? itemData.item.price : 0}
-            onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.title);
-            }}
-          ></ProductItem>
-        )}
-      />
+      <View>
+        <ContentHeader
+          title={'Aktivt Förråd'}
+          subTitle={'Allt som är redo att hämtas'}
+          indicator={productsSorted.length ? productsSorted.length : 0}
+        />
+        <FlatList
+          horizontal={false}
+          numColumns={2}
+          onRefresh={loadProducts}
+          refreshing={isRefreshing}
+          data={productsSorted}
+          keyExtractor={item => item.id}
+          renderItem={itemData => (
+            <ProductItem
+              image={itemData.item.image}
+              title={itemData.item.title}
+              price={itemData.item.price ? itemData.item.price : 0}
+              onSelect={() => {
+                selectItemHandler(itemData.item.id, itemData.item.title);
+              }}
+            ></ProductItem>
+          )}
+        />
+      </View>
       <AddButton />
     </View>
   );

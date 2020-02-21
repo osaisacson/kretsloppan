@@ -248,7 +248,7 @@ const EditProductScreen = props => {
             <Text style={styles.label}>Pris</Text>
             <TextInput
               style={styles.input}
-              value={formState.inputValues.price}
+              value={formState.inputValues.price.toString()}
               onChangeText={textChangeHandler.bind(this, 'price')}
               keyboardType="number-pad"
               autoCorrect={false}

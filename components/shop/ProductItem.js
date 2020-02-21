@@ -41,7 +41,6 @@ const ProductItem = props => {
                 {props.title}
               </Text>
               <Text style={styles.price}>
-                {' '}
                 {props.price ? props.price : 0} kr
               </Text>
             </View>
