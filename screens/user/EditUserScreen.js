@@ -4,7 +4,6 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
-  Picker,
   Alert,
   Text,
   TextInput,

@@ -18,9 +18,9 @@ import ProductsOverviewScreen, {
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
 } from '../screens/shop/ProductDetailScreen';
-import UserProductsScreen, {
-  screenOptions as userProductsScreenOptions
-} from '../screens/user/UserProductsScreen';
+import UserOverviewScreen, {
+  screenOptions as userOverviewScreenOptions
+} from '../screens/user/UserOverviewScreen';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions
 } from '../screens/user/EditProductScreen';
@@ -73,9 +73,9 @@ export const AdminNavigator = () => {
   return (
     <AdminStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <AdminStackNavigator.Screen
-        name="UserProducts"
-        component={UserProductsScreen}
-        options={userProductsScreenOptions}
+        name="UserOverview"
+        component={UserOverviewScreen}
+        options={userOverviewScreenOptions}
       />
       <AdminStackNavigator.Screen
         name="EditProduct"
