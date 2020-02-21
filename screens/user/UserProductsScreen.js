@@ -25,10 +25,11 @@ const UserProductsScreen = props => {
   const [error, setError] = useState();
   //get a slice of the userProduct state
 
-  const userDetails = useSelector(state => state.auth);
+  // const userDetails = useSelector(state => state.auth);
   const userProducts = useSelector(state => state.products.userProducts);
+  const userDetails = useSelector(state => state.users.currentUser);
+
   const userProductsSorted = userProducts.sort(function(a, b) {
-    console.log(userDetails);
     return new Date(b.date) - new Date(a.date);
   });
 
@@ -61,6 +62,8 @@ const UserProductsScreen = props => {
 
   //Runs whenever the component is loaded, and fetches the latest products
   const loadProducts = useCallback(async () => {
+    console.log('TBD this should hold our userDetails: ', userDetails);
+
     setError(null);
     setIsLoading(true);
     try {
