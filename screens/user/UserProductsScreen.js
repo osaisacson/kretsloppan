@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { Platform, ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View, StyleSheet, Button } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import AddButton from '../../components/UI/AddButton';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
@@ -9,8 +9,13 @@ import HeaderButton from '../../components/UI/HeaderButton';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
+import { Avatar, Title, Caption, Paragraph, Text } from 'react-native-paper';
 //Actions
 import * as productsActions from '../../store/actions/products';
+//Constants
+import Margins from '../../constants/Margins';
+//Constants
+import Colors from '../../constants/Colors';
 
 //This screen shows the products which have been uploaded by the user
 const UserProductsScreen = props => {
@@ -20,8 +25,10 @@ const UserProductsScreen = props => {
   const [error, setError] = useState();
   //get a slice of the userProduct state
 
+  const userDetails = useSelector(state => state.auth);
   const userProducts = useSelector(state => state.products.userProducts);
   const userProductsSorted = userProducts.sort(function(a, b) {
+    console.log(userDetails);
     return new Date(b.date) - new Date(a.date);
   });
 
@@ -44,6 +51,11 @@ const UserProductsScreen = props => {
   const doneUserProducts = userProductsSorted.filter(
     product => product.status === 'gettIgen'
   );
+
+  //Navigate to the edit screen and forward the product id
+  const editUserHandler = id => {
+    props.navigation.navigate('EditUser');
+  };
 
   const dispatch = useDispatch();
 
@@ -96,6 +108,36 @@ const UserProductsScreen = props => {
   return (
     <View>
       <ScrollView>
+        <View style={styles.userInfoSection}>
+          <Avatar.Image
+            source={{
+              uri:
+                'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg'
+            }}
+            size={50}
+          />
+          <Title style={styles.title}>Dawid Urbaniak</Title>
+          <Caption style={styles.caption}>@trensik</Caption>
+          <Button
+            title="Redigera profil"
+            color={Colors.primary}
+            onPress={editUserHandler}
+          />
+          <View style={styles.row}>
+            <View style={styles.section}>
+              <Paragraph style={[styles.paragraph, styles.caption]}>
+                202
+              </Paragraph>
+              <Caption style={styles.caption}>Following</Caption>
+            </View>
+            <View style={styles.section}>
+              <Paragraph style={[styles.paragraph, styles.caption]}>
+                159
+              </Paragraph>
+              <Caption style={styles.caption}>Followers</Caption>
+            </View>
+          </View>
+        </View>
         <HorizontalScroll
           title={'Bokat av mig'}
           subTitle={'Väntas på att hämtas av dig - se kort för detaljer'}
@@ -128,6 +170,43 @@ const UserProductsScreen = props => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  userInfoSection: {
+    paddingLeft: Margins.leftRight
+  },
+  title: {
+    marginTop: 20,
+    fontWeight: 'bold'
+  },
+  caption: {
+    fontSize: 14,
+    lineHeight: 14
+  },
+  row: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: Margins.leftRight
+  },
+  paragraph: {
+    fontWeight: 'bold',
+    marginRight: 3
+  },
+  drawerSection: {
+    marginTop: 15
+  },
+  preference: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: Margins.leftRight
+  }
+});
 
 export const screenOptions = navData => {
   return {

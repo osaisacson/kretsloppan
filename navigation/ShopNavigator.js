@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
   createDrawerNavigator,
   DrawerItemList
@@ -16,9 +15,6 @@ import UserAvatar from '../components/UI/UserAvatar';
 import ProductsOverviewScreen, {
   screenOptions as productsOverviewScreenOptions
 } from '../screens/shop/ProductsOverviewScreen';
-// import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
-// import ProductsScreen from '../screens/shop/ProductsScreen';
-// import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
 } from '../screens/shop/ProductDetailScreen';
@@ -28,6 +24,9 @@ import UserProductsScreen, {
 import EditProductScreen, {
   screenOptions as editProductScreenOptions
 } from '../screens/user/EditProductScreen';
+import EditUserScreen, {
+  screenOptions as editUserScreenOptions
+} from '../screens/user/EditUserScreen';
 import AuthScreen, {
   screenOptions as authScreenOptions
 } from '../screens/user/AuthScreen';
@@ -49,28 +48,6 @@ const defaultNavOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
-// const Tab = createMaterialTopTabNavigator();
-
-// export const ProductsTabNavigator = () => {
-//   return (
-//     <Tab.Navigator
-//       title="Egnahemsfabröken"
-//       initialRouteName="Spotlight"
-//       tabBarOptions={{
-//         labelStyle: {
-//           fontSize: 15,
-//           fontFamily: 'roboto-regular',
-//           textTransform: 'capitalize'
-//         },
-//         indicatorStyle: { backgroundColor: Colors.primary }
-//       }}
-//     >
-//       <Tab.Screen name="Spotlight" component={SpotlightProductsScreen} />
-//       <Tab.Screen name="Förråd" component={ProductsScreen} />
-//       <Tab.Screen name="Projekt" component={ProjectsScreen} />
-//     </Tab.Navigator>
-//   );
-// };
 const ProductsStackNavigator = createStackNavigator();
 
 export const ProductsNavigator = () => {
@@ -104,6 +81,11 @@ export const AdminNavigator = () => {
         name="EditProduct"
         component={EditProductScreen}
         options={editProductScreenOptions}
+      />
+      <AdminStackNavigator.Screen
+        name="EditUser"
+        component={EditUserScreen}
+        options={editUserScreenOptions}
       />
     </AdminStackNavigator.Navigator>
   );
@@ -187,143 +169,3 @@ export const AuthNavigator = () => {
     </AuthStackNavigator.Navigator>
   );
 };
-
-// const ProductsNavigator = createStackNavigator(
-//   {
-//     ProductsOverview: ProductsOverviewScreen,
-//     Spotlight: SpotlightProductsScreen,
-//     Products: ProductsScreen,
-//     Projects: ProjectsScreen,
-//     ProductDetail: ProductDetailScreen,
-//     Cart: CartScreen
-//   },
-//   {
-//     navigationOptions: {
-//       drawerIcon: drawerConfig => (
-//         <Ionicons
-//           name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
-//           size={23}
-//           color={drawerConfig.tintColor}
-//         />
-//       )
-//     },
-//     defaultNavigationOptions: defaultNavOptions
-//   }
-// );
-
-// const OrdersNavigator = createStackNavigator(
-//   {
-//     Orders: OrdersScreen
-//   },
-//   {
-//     navigationOptions: {
-//       drawerIcon: drawerConfig => (
-//         <Ionicons
-//           name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
-//           size={23}
-//           color={drawerConfig.tintColor}
-//         />
-//       )
-//     },
-//     defaultNavigationOptions: defaultNavOptions
-//   }
-// );
-
-// const AdminNavigator = createStackNavigator(
-//   {
-//     UserProducts: UserProductsScreen,
-//     EditProduct: EditProductScreen
-//   },
-//   {
-//     navigationOptions: {
-//       drawerIcon: drawerConfig => (
-//         <Ionicons
-//           name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
-//           size={23}
-//           color={drawerConfig.tintColor}
-//         />
-//       )
-//     },
-//     defaultNavigationOptions: defaultNavOptions
-//   }
-// );
-
-// const AdminCategoriesNavigator = createStackNavigator(
-//   {
-//     Categories: CategoriesScreen,
-//     EditCategory: EditCategoryScreen
-//   },
-//   {
-//     navigationOptions: {
-//       drawerIcon: drawerConfig => (
-//         <Ionicons
-//           name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
-//           size={23}
-//           color={drawerConfig.tintColor}
-//         />
-//       )
-//     },
-//     defaultNavigationOptions: defaultNavOptions
-//   }
-// );
-
-// const ShopNavigator = createDrawerNavigator(
-//   {
-//     Återbruk: ProductsNavigator,
-//     Profil: AdminNavigator
-//     // Bokat: OrdersNavigator,
-//     // Kategorier: AdminCategoriesNavigator
-//   },
-//   {
-//     contentOptions: {
-//       activeTintColor: Colors.primary
-//     },
-
-//     contentComponent: props => {
-//       const dispatch = useDispatch();
-//       // const isAdmin = useSelector(
-//       //   state => state.auth.userId === 'AzZYhb5h17dKiHfCdCYs7g2dwYo2' //NOTE: placeholder for setting admin, is now always set to the id associated with egnahemsfabriken@gmail.com
-//       // );
-//       return (
-//         <View style={{ flex: 1, paddingTop: 20 }}>
-//           <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-//             <UserAvatar
-//               actionOnPress={() => {
-//                 props.navigation.navigate('Bokat');
-//                 props.navigation.closeDrawer();
-//               }}
-//             />
-//             <Divider style={{ backgroundColor: 'grey' }} />
-//             <DrawerNavigatorItems {...props} />
-//             <Divider style={{ backgroundColor: 'grey' }} />
-//             <Button
-//               title="Logga ut"
-//               color={Colors.primary}
-//               onPress={() => {
-//                 dispatch(authActions.logout());
-//                 // props.navigation.navigate('Auth');
-//               }}
-//             />
-//           </SafeAreaView>
-//         </View>
-//       );
-//     }
-//   }
-// );
-
-// const AuthNavigator = createStackNavigator(
-//   {
-//     Auth: AuthScreen
-//   },
-//   {
-//     defaultNavigationOptions: defaultNavOptions
-//   }
-// );
-
-// const MainNavigator = createSwitchNavigator({
-//   Startup: StartupScreen,
-//   Auth: AuthNavigator,
-//   Shop: ShopNavigator
-// });
-
-// export default createAppContainer(MainNavigator);

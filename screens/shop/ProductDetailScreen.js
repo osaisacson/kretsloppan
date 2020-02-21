@@ -36,6 +36,11 @@ const ProductDetailScreen = props => {
           }}
         />
       </View>
+      <Text style={styles.description}>
+        Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
+      </Text>
+      <Text style={styles.description}>(lista)</Text>
+
       <Text style={styles.price}>
         {selectedProduct.price ? selectedProduct.price.toFixed(1) : 0} kr
       </Text>

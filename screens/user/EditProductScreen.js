@@ -20,8 +20,6 @@ import Loader from '../../components/UI/Loader';
 //Actions
 import * as categoriesActions from '../../store/actions/categories';
 import * as productsActions from '../../store/actions/products';
-//Constants
-import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 

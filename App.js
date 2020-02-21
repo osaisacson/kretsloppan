@@ -8,9 +8,11 @@ import ReduxThunk from 'redux-thunk';
 //Reducers
 import categoryReducer from './store/reducers/categories';
 import productsReducer from './store/reducers/products';
+import usersReducer from './store/reducers/users';
+import authReducer from './store/reducers/auth';
+
 import cartReducer from './store/reducers/cart';
 import ordersReducer from './store/reducers/orders';
-import authReducer from './store/reducers/auth';
 
 import AppNavigator from './navigation/AppNavigator';
 
@@ -18,6 +20,7 @@ import AppNavigator from './navigation/AppNavigator';
 const rootReducer = combineReducers({
   categories: categoryReducer,
   products: productsReducer,
+  users: usersReducer,
   cart: cartReducer,
   orders: ordersReducer,
   auth: authReducer
