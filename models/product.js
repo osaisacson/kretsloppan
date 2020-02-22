@@ -10,7 +10,8 @@ class Product {
     description,
     price,
     date,
-    status
+    status,
+    reservedUntil
   ) {
     this.id = id;
     this.ownerId = ownerId;
@@ -21,6 +22,7 @@ class Product {
     this.price = price;
     this.date = date;
     this.status = status;
+    this.reservedUntil = reservedUntil;
   }
   get readableDate() {
     return moment(this.date).format('MMMM Do YYYY, hh:mm');

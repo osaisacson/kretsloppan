@@ -24,8 +24,6 @@ const ProductDetailScreen = props => {
     state.products.availableProducts.find(prod => prod.id === productId)
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
-  const [isToggled, setIsToggled] = useState(false);
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -48,33 +46,31 @@ const ProductDetailScreen = props => {
   var firstDay = new Date();
   const oneWeekFromNow = new Date(
     firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
-  ).toDateString();
+  ).toISOString();
 
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.image }} />
       <View style={styles.actions}>
         <ToggleButton
-          color={isToggled ? '#666' : '#000'}
           title={
             selectedProduct.status === 'reserverad'
-              ? `reserverad till ${
-                  selectedProduct.reservedUntil
-                    ? selectedProduct.reservedUntil
-                    : '000'
-                }`
+              ? `reserverad till ${selectedProduct.reservedUntil}`
               : 'reservera'
           }
+          disabled={selectedProduct.status === 'reserverad'}
           onSelect={() => {
-            setIsToggled(prevState => !prevState);
-            let status = isToggled ? 'reserverad' : 'redo';
             dispatch(
-              productsActions.changeProductStatus(selectedProduct.id, status)
+              productsActions.changeProductStatus(
+                selectedProduct.id,
+                'reserverad',
+                oneWeekFromNow //TBD: this currently sends the booked date to the product object successfully, but we still need to set the automated expiry date
+              )
             );
             navigation.navigate('ProductsOverview');
           }}
         />
-        <Text>{selectedProduct.status}</Text>
+
         <Button
           color={Colors.primary}
           title="Edit"

@@ -11,6 +11,7 @@ const ToggleButton = props => {
     <Button
       color={props.color}
       mode="contained"
+      disabled={props.disabled}
       style={{
         width: '60%',
         alignSelf: 'center'

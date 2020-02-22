@@ -29,7 +29,8 @@ export default (state = initialState, action) => {
         action.productData.description,
         action.productData.price,
         action.productData.date,
-        action.productData.status
+        action.productData.status,
+        action.productData.reservedUntil
       );
       return {
         ...state,
@@ -49,10 +50,11 @@ export default (state = initialState, action) => {
         action.productData.description,
         action.productData.price,
         state.userProducts[productIndex].date,
-        action.productData.status
+        action.productData.status,
+        state.userProducts[productIndex].reservedUntil
       );
-      const updatedUserProducts = [...state.userProducts];
-      updatedUserProducts[productIndex] = updatedUserProduct;
+      const updatedUserProducts = [...state.userProducts]; //copy current state of user products
+      updatedUserProducts[productIndex] = updatedUserProduct; //find the user product with the passed index (the one we should update)
       const availableProductIndex = state.availableProducts.findIndex(
         prod => prod.id === action.pid
       );
@@ -64,20 +66,26 @@ export default (state = initialState, action) => {
         userProducts: updatedUserProducts
       };
     case CHANGE_PRODUCT_STATUS:
-      const prodIndex = state.products.findIndex(
+      const prodIndex = state.availableProducts.findIndex(
         //Look through all products, not just userProducts as when we update a product above
         prod => prod.id === action.pid
       );
+      console.log(
+        'change product status in reducers to action.productData.reservedUntil: ',
+        action.productData.reservedUntil
+      );
+
       const updatedProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
-        state.products[prodIndex].ownerId, //Keep all the same except...
-        state.products[prodIndex].categoryName,
-        state.products[prodIndex].title,
-        state.products[prodIndex].image,
-        state.products[prodIndex].description,
-        state.products[prodIndex].price,
-        state.products[prodIndex].date,
-        action.productData.status //...status
+        state.availableProducts[prodIndex].ownerId, //Keep all the same except...
+        state.availableProducts[prodIndex].categoryName,
+        state.availableProducts[prodIndex].title,
+        state.availableProducts[prodIndex].image,
+        state.availableProducts[prodIndex].description,
+        state.availableProducts[prodIndex].price,
+        state.availableProducts[prodIndex].date,
+        action.productData.status, //...status
+        action.productData.reservedUntil //...reservedUntil
       );
       const updatedStatusUserProducts = [...state.userProducts];
       updatedStatusUserProducts[prodIndex] = updatedProduct;

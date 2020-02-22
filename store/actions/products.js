@@ -3,7 +3,7 @@ import Product from '../../models/product';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
-export const CHANGE_PRODUCT_STATUS = 'UPDATE_PRODUCT';
+export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export const fetchProducts = () => {
@@ -25,7 +25,40 @@ export const fetchProducts = () => {
       const resData = await response.json();
       const loadedProducts = [];
 
+      const reservationExpiryDate = new Date(resData.reservedUntil);
+
       for (const key in resData) {
+        //TBD: make this work: when loading products check if the reservedUntil date has passed, and in that case set the status to 'redo' and reset the reservedUntil to ''
+
+        // console.log(
+        //   'fetchProducts returns reservationExpiryDate:',
+        //   reservationExpiryDate
+        // );
+
+        // //If there is no reservationExpiryDate or it is less than today then update that product's reservedUntil to ''
+        // const reservedUntil =
+        //   !reservationExpiryDate || reservationExpiryDate <= new Date()
+        //     ? ''
+        //     : resData[key].reservedUntil;
+
+        // console.log(
+        //   'fetchProducts original resData[key].reservedUntil:',
+        //   resData[key].reservedUntil
+        // );
+        // console.log('fetchProducts sets reservedUntil as:', reservedUntil);
+        // //If there is no reservationExpiryDate or it is less than today AND the passed status is 'reserved' then update that product's status to 'redo'
+        // const status =
+        //   (!reservationExpiryDate || reservationExpiryDate <= new Date()) &&
+        //   resData[key].status === 'reserved'
+        //     ? 'redo'
+        //     : resData[key].status;
+
+        // console.log(
+        //   'fetchProducts original resData[key].status:',
+        //   resData[key].status
+        // );
+        // console.log('fetchProducts sets status as:', status);
+
         loadedProducts.push(
           new Product(
             key,
@@ -36,7 +69,8 @@ export const fetchProducts = () => {
             resData[key].description,
             resData[key].price,
             resData[key].date,
-            resData[key].status
+            resData[key].status,
+            resData[key].reservedUntil
           )
         );
       }
@@ -97,6 +131,7 @@ export const createProduct = (
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
+    const reservedUntilInitial = 'not';
     // console.log('-set constants: ');
     // console.log('token: ', token);
     // console.log('userId: ', userId);
@@ -129,7 +164,8 @@ export const createProduct = (
           image: parsedRes.image, //This is how we link to the image we store above
           ownerId: userId,
           date: date.toISOString(),
-          status
+          status,
+          reservedUntil: reservedUntilInitial
         };
         // console.log(
         //   'productData we are trying to pass to the realtime database: ',
@@ -167,7 +203,8 @@ export const createProduct = (
                 image,
                 ownerId: userId,
                 date: date,
-                status
+                status,
+                reservedUntil
               }
             });
             // console.log('END------------');
@@ -183,7 +220,8 @@ export const updateProduct = (
   description,
   price,
   image,
-  status
+  status,
+  reservedUntil
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -201,7 +239,8 @@ export const updateProduct = (
           description,
           price,
           image,
-          status
+          status,
+          reservedUntil
         })
       }
     );
@@ -222,14 +261,15 @@ export const updateProduct = (
         description,
         price,
         image,
-        status
+        status,
+        reservedUntil
       }
     });
   };
 };
 
-export const changeProductStatus = (id, status) => {
-  console.log('changing product status to', status);
+export const changeProductStatus = (id, status, reservedUntil) => {
+  console.log('changing product status to', status, reservedUntil);
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
@@ -241,7 +281,8 @@ export const changeProductStatus = (id, status) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          status
+          status,
+          reservedUntil
         })
       }
     );
@@ -253,11 +294,17 @@ export const changeProductStatus = (id, status) => {
       throw new Error(message);
     }
 
+    console.log(
+      'change product status in actions to reservedUntil: ',
+      reservedUntil
+    );
+
     dispatch({
       type: CHANGE_PRODUCT_STATUS,
       pid: id,
       productData: {
-        status
+        status,
+        reservedUntil
       }
     });
   };
