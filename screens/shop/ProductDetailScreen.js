@@ -42,7 +42,9 @@ const ProductDetailScreen = props => {
     firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
   ).toISOString();
 
-  const shorterDate = selectedProduct.reservedUntil.split('T')[0];
+  const shorterDate = selectedProduct.reservedUntil
+    ? selectedProduct.reservedUntil.split('T')[0]
+    : 'never';
 
   return (
     <ScrollView>
