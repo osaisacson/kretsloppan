@@ -32,17 +32,17 @@ const SpotlightProductsScreen = props => {
     .filter(product => product.status === 'redo'); //Gets last 10 items uploaded that have the status of 'redo'
 
   //Gets all currently being worked on products
-  const inProgressProducts = productsSorted.filter(
+  const inProgressProducts = products.filter(
     product => product.status === 'bearbetas'
   );
 
   //Gets all booked products
-  const bookedProducts = productsSorted.filter(
+  const bookedProducts = products.filter(
     product => product.status === 'reserverad'
   );
 
   //Gets all wanted products
-  const wantedProducts = productsSorted.filter(
+  const wantedProducts = products.filter(
     product => product.status === 'efterlyst'
   );
 

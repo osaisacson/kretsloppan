@@ -38,7 +38,7 @@ const ProductsOverviewScreen = props => {
 
 export const screenOptions = navData => {
   return {
-    headerTitle: 'Allt Återbruk',
+    headerTitle: '',
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

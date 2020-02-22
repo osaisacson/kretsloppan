@@ -39,7 +39,7 @@ import Colors from '../constants/Colors';
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-    height: 100
+    height: 80
   },
   headerTitleStyle: {
     fontFamily: 'roboto-bold'
@@ -180,7 +180,13 @@ const AuthStackNavigator = createStackNavigator();
 
 export const AuthNavigator = () => {
   return (
-    <AuthStackNavigator.Navigator screenOptions={defaultNavOptions}>
+    <AuthStackNavigator.Navigator
+      screenOptions={{
+        headerStyle: {
+          height: 0
+        }
+      }}
+    >
       <AuthStackNavigator.Screen
         name="Auth"
         component={AuthScreen}

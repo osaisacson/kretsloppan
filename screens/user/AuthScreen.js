@@ -111,7 +111,7 @@ const AuthScreen = props => {
       <ImageBackground
         source={{
           uri:
-            'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80'
+            'https://images.unsplash.com/photo-1454694220579-9d6672b1ec2a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=932&q=80'
         }}
         style={styles.centeredContent}
       >
@@ -165,7 +165,7 @@ const AuthScreen = props => {
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                color={'#666'}
+                color={'#50252E'}
                 mode="contained"
                 style={{
                   width: '60%',
@@ -192,7 +192,7 @@ const AuthScreen = props => {
 };
 
 export const screenOptions = {
-  headerTitle: 'Egnahemsfabriken Ger Igen'
+  headerTitle: ''
 };
 
 const styles = StyleSheet.create({

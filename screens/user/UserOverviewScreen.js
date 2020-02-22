@@ -38,8 +38,8 @@ const UserOverviewScreen = props => {
             size={50}
           />
         </Button>
-        {/* <Title style={styles.title}>Egnahemsfabriken</Title> */}
-        {/* <View style={styles.row}>
+        <Title style={styles.title}>Egnahemsfabriken</Title>
+        <View style={styles.row}>
           <View style={styles.section}>
             <Paragraph style={[styles.paragraph, styles.caption]}>
               202
@@ -52,17 +52,26 @@ const UserOverviewScreen = props => {
             </Paragraph>
             <Caption style={styles.caption}>Hämtade</Caption>
           </View>
-        </View> */}
+          <View style={styles.section}>
+            <Paragraph style={[styles.paragraph, styles.caption]}>22</Paragraph>
+            <Caption style={styles.caption}>Projekt</Caption>
+          </View>
+        </View>
       </View>
       <Tab.Navigator
         initialRouteName="Min Sida"
         tabBarOptions={{
+          tabStyle: {
+            backgroundColor: Colors.primary
+          },
           labelStyle: {
             fontSize: 15,
             fontFamily: 'roboto-regular',
             textTransform: 'capitalize'
           },
-          indicatorStyle: { backgroundColor: Colors.primary }
+          activeTintColor: '#fff',
+          inactiveTintColor: '#a4a9ac',
+          indicatorStyle: { backgroundColor: '#fff' }
         }}
       >
         <Tab.Screen name="Min Sida" component={UserSpotlightScreen} />
@@ -74,16 +83,17 @@ const UserOverviewScreen = props => {
 
 const styles = StyleSheet.create({
   userInfoSection: {
+    marginTop: -6,
     paddingLeft: Margins.leftRight
   },
   title: {
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: -6
   },
-
   row: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 0,
+    marginBottom: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
@@ -97,21 +107,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginRight: 3
-  },
-  drawerSection: {
-    marginTop: 15
-  },
-  preference: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: Margins.leftRight
   }
 });
 
 export const screenOptions = navData => {
   return {
-    headerTitle: 'Egnahemsfabriken', //TBD dynamic title of logged in user's userName
+    headerTitle: '', //TBD dynamic title of logged in user's userName
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
