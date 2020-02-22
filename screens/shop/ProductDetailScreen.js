@@ -78,10 +78,8 @@ const ProductDetailScreen = props => {
           isToggled={isToggled}
           title={isToggled ? `ändra till 'bearbetas'` : 'ändra till redo'}
           onSelect={() => {
-            console.log('you pressed me');
             setIsToggled(prevState => !prevState);
             let status = isToggled ? 'bearbetas' : 'redo';
-            console.log('status passed: ', status);
             dispatch(
               productsActions.changeProductStatus(selectedProduct.id, status)
             );
