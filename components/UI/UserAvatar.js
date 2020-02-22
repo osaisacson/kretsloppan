@@ -10,7 +10,11 @@ const UserAvatar = props => {
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
   return (
-    <TouchableCmp activeOpacity={0.5} onPress={props.actionOnPress}>
+    <TouchableCmp
+      activeOpacity={0.5}
+      onPress={props.actionOnPress}
+      style={{ margin: 10, paddingTop: 20 }}
+    >
       <Avatar.Image
         style={{
           color: '#fff',

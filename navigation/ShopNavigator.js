@@ -41,11 +41,9 @@ const defaultNavOptions = {
     height: 100
   },
   headerTitleStyle: {
-    marginTop: 10,
     fontFamily: 'roboto-bold'
   },
   headerBackTitleStyle: {
-    marginTop: 10,
     fontFamily: 'roboto-regular'
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
@@ -108,7 +106,7 @@ export const ShopNavigator = () => {
     <ShopDrawerNavigator.Navigator
       drawerContent={props => {
         return (
-          <View style={{ flex: 1, paddingTop: 20 }}>
+          <View style={{ flex: 1 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
               <UserAvatar
                 actionOnPress={() => {
@@ -116,7 +114,7 @@ export const ShopNavigator = () => {
                   props.navigation.closeDrawer();
                 }}
               />
-              <Divider style={{ backgroundColor: 'grey' }} />
+              <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
               <Button
                 title="Logga ut"
