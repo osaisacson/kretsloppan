@@ -28,9 +28,13 @@ const UserOverviewScreen = props => {
       <View style={styles.userInfoSection}>
         <Button mode="text" onPress={editUserHandler}>
           <Avatar.Image
-            source={{
-              uri: 'egnahemsfabriken.png'
+            style={{
+              color: '#fff',
+              backgroundColor: '#fff',
+              borderWidth: '0.3',
+              borderColor: '#000'
             }}
+            source={require('./../../assets/egnahemsfabriken.png')}
             size={50}
           />
         </Button>

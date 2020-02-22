@@ -1,28 +1,30 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Avatar, Badge } from 'react-native-elements';
+import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import { Avatar, Badge } from 'react-native-paper';
 
 const UserAvatar = props => {
+  let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
+  //If platform is android and the version is the one which supports the ripple effect
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+    //Set TouchableCmp to instead be TouchableNativeFeedback
+  }
   return (
-    <View>
-      <Avatar
-        size="medium"
-        rounded
-        source={{
-          uri:
-            'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'
+    <TouchableCmp activeOpacity={0.5} onPress={props.actionOnPress}>
+      <Avatar.Image
+        style={{
+          color: '#fff',
+          backgroundColor: '#fff',
+          borderWidth: '0.3',
+          borderColor: '#000'
         }}
-        activeOpacity={0.7}
-        onPress={props.actionOnPress}
+        source={require('./../../assets/egnahemsfabriken.png')}
+        size={50}
       />
       {props.showBadge ? (
-        <Badge
-          value="2"
-          status="error"
-          containerStyle={{ position: 'relative', left: -20, bottom: 20 }}
-        />
+        <Badge style={{ position: 'relative', left: -35, bottom: 20 }}>3</Badge>
       ) : null}
-    </View>
+    </TouchableCmp>
   );
 };
 

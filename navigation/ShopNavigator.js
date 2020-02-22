@@ -37,12 +37,15 @@ import Colors from '../constants/Colors';
 
 const defaultNavOptions = {
   headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
+    backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
+    height: 100
   },
   headerTitleStyle: {
+    marginTop: 10,
     fontFamily: 'roboto-bold'
   },
   headerBackTitleStyle: {
+    marginTop: 10,
     fontFamily: 'roboto-regular'
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary

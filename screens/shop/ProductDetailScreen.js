@@ -132,7 +132,7 @@ const ProductDetailScreen = props => {
       <Text style={styles.description}>(lista)</Text>
 
       <Text style={styles.price}>
-        {selectedProduct.price ? selectedProduct.price.toFixed(1) : 0} kr
+        {selectedProduct.price ? selectedProduct.price : 0} kr
       </Text>
 
       <Text style={styles.description}>{selectedProduct.description}</Text>
@@ -146,6 +146,7 @@ export const screenOptions = navData => {
     headerTitle: navData.route.params.productTitle,
     headerRight: () => (
       <UserAvatar
+        style={{ paddingTop: 10 }}
         showBadge={true}
         actionOnPress={() => {
           navData.navigation.navigate('Admin');
