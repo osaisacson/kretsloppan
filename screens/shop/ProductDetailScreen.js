@@ -2,17 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import {
-  ScrollView,
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Button,
-  Alert
-} from 'react-native';
+import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
 import UserAvatar from '../../components/UI/UserAvatar';
 import ToggleButton from '../../components/UI/ToggleButton';
+import { Button } from 'react-native-paper';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -23,6 +16,7 @@ const ProductDetailScreen = props => {
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId)
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
+  const [isToggled, setIsToggled] = useState(false);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -52,22 +46,45 @@ const ProductDetailScreen = props => {
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.image }} />
       <View style={styles.actions}>
-        <ToggleButton
-          title={
-            selectedProduct.status === 'reserverad'
-              ? `reserverad till ${selectedProduct.reservedUntil}`
-              : 'reservera'
-          }
+        <Button
+          mode="contained"
           disabled={selectedProduct.status === 'reserverad'}
-          onSelect={() => {
+          style={{
+            width: '60%',
+            alignSelf: 'center'
+          }}
+          labelStyle={{
+            paddingTop: 2,
+            fontFamily: 'bebas-neue-bold',
+            fontSize: 12
+          }}
+          compact={true}
+          onPress={() => {
             dispatch(
-              productsActions.changeProductStatus(
+              productsActions.reserveProduct(
                 selectedProduct.id,
                 'reserverad',
                 oneWeekFromNow //TBD: this currently sends the booked date to the product object successfully, but we still need to set the automated expiry date
               )
             );
             navigation.navigate('ProductsOverview');
+          }}
+        >
+          {selectedProduct.status === 'reserverad'
+            ? `reserverad till ${selectedProduct.reservedUntil}`
+            : 'reservera'}
+        </Button>
+        <ToggleButton
+          isToggled={isToggled}
+          title={isToggled ? `ändra till 'bearbetas'` : 'ändra till redo'}
+          onSelect={() => {
+            console.log('you pressed me');
+            setIsToggled(prevState => !prevState);
+            let status = isToggled ? 'bearbetas' : 'redo';
+            console.log('status passed: ', status);
+            dispatch(
+              productsActions.changeProductStatus(selectedProduct.id, status)
+            );
           }}
         />
 
