@@ -9,7 +9,7 @@ import {
   Platform
 } from 'react-native';
 
-import Card from '../UI/Card';
+import Card from './Card';
 
 const ProductItem = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity

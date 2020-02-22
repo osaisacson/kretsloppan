@@ -1,7 +1,7 @@
 import React from 'react';
 //Components
 import { Button, ScrollView, View, StyleSheet } from 'react-native';
-import ProductItem from '../../components/shop/ProductItem';
+import ProductItem from '../../components/UI/ProductItem';
 import EmptyState from '../../components/UI/EmptyState';
 import ContentHeader from '../../components/UI/ContentHeader';
 //Constants

@@ -6,7 +6,7 @@ import AddButton from '../../components/UI/AddButton';
 import ContentHeader from '../../components/UI/ContentHeader';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
-import ProductItem from '../../components/shop/ProductItem';
+import ProductItem from '../../components/UI/ProductItem';
 //Actions
 import * as productsActions from '../../store/actions/products';
 //Constants

@@ -11,9 +11,6 @@ import productsReducer from './store/reducers/products';
 import usersReducer from './store/reducers/users';
 import authReducer from './store/reducers/auth';
 
-import cartReducer from './store/reducers/cart';
-import ordersReducer from './store/reducers/orders';
-
 import AppNavigator from './navigation/AppNavigator';
 
 //Combines all the reducers which manages our redux state. This is where we geet our current state from in the child screens.
@@ -21,8 +18,6 @@ const rootReducer = combineReducers({
   categories: categoryReducer,
   products: productsReducer,
   users: usersReducer,
-  cart: cartReducer,
-  orders: ordersReducer,
   auth: authReducer
 });
 

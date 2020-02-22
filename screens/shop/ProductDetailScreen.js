@@ -42,6 +42,8 @@ const ProductDetailScreen = props => {
     firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
   ).toISOString();
 
+  const shorterDate = selectedProduct.reservedUntil.split('T')[0];
+
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.image }} />
@@ -51,7 +53,8 @@ const ProductDetailScreen = props => {
           disabled={selectedProduct.status === 'reserverad'}
           style={{
             width: '60%',
-            alignSelf: 'center'
+            alignSelf: 'center',
+            marginBottom: 20
           }}
           labelStyle={{
             paddingTop: 2,
@@ -71,20 +74,26 @@ const ProductDetailScreen = props => {
           }}
         >
           {selectedProduct.status === 'reserverad'
-            ? `reserverad till ${selectedProduct.reservedUntil}`
+            ? `reserverad till ${shorterDate}`
             : 'reservera'}
         </Button>
-        <ToggleButton
-          isToggled={isToggled}
-          title={isToggled ? `ändra till 'bearbetas'` : 'ändra till redo'}
-          onSelect={() => {
-            setIsToggled(prevState => !prevState);
-            let status = isToggled ? 'bearbetas' : 'redo';
-            dispatch(
-              productsActions.changeProductStatus(selectedProduct.id, status)
-            );
-          }}
-        />
+        {selectedProduct.status === 'reserverad' ? null : (
+          <ToggleButton
+            isToggled={isToggled}
+            title={`byt till ${
+              selectedProduct.status === 'redo' ? 'bearbetas' : 'redo'
+            }`}
+            onSelect={() => {
+              setIsToggled(prevState => !prevState);
+              let status =
+                selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
+              dispatch(
+                productsActions.changeProductStatus(selectedProduct.id, status)
+              );
+              navigation.navigate('ProductsOverview');
+            }}
+          />
+        )}
 
         <Button
           color={Colors.primary}
