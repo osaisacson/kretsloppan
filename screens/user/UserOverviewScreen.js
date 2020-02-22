@@ -29,8 +29,7 @@ const UserOverviewScreen = props => {
         <Button mode="text" onPress={editUserHandler}>
           <Avatar.Image
             source={{
-              uri:
-                'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg'
+              uri: 'egnahemsfabriken.png'
             }}
             size={50}
           />

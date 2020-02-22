@@ -3,11 +3,8 @@ import React from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
 
 //Components
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import AddButton from '../../components/UI/AddButton';
-import UserAvatar from '../../components/UI/UserAvatar';
 import ContentHeader from '../../components/UI/ContentHeader';
-import HeaderButton from '../../components/UI/HeaderButton';
 import EmptyState from '../../components/UI/EmptyState';
 
 const ProjectsScreen = props => {

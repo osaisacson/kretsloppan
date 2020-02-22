@@ -37,10 +37,35 @@ const ProductDetailScreen = props => {
       }
     ]);
   };
-  var firstDay = new Date();
-  const oneWeekFromNow = new Date(
-    firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
-  ).toISOString();
+
+  const reserveHandler = id => {
+    var firstDay = new Date();
+    const oneWeekFromNow = new Date(
+      firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
+    ).toISOString();
+
+    Alert.alert(
+      'Kom ihåg',
+      'Du måste kontakta säljaren för att komma överens om hämtningstid',
+      [
+        { text: 'Cancel', style: 'default' },
+        {
+          text: 'Jag förstår',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(
+              productsActions.reserveProduct(
+                id,
+                'reserverad',
+                oneWeekFromNow //TBD: this currently sends the booked date to the product object successfully, but we still need to set the automated expiry date
+              )
+            );
+            navigation.navigate('ProductsOverview');
+          }
+        }
+      ]
+    );
+  };
 
   const shorterDate = selectedProduct.reservedUntil
     ? selectedProduct.reservedUntil.split('T')[0]
@@ -64,16 +89,7 @@ const ProductDetailScreen = props => {
             fontSize: 12
           }}
           compact={true}
-          onPress={() => {
-            dispatch(
-              productsActions.reserveProduct(
-                selectedProduct.id,
-                'reserverad',
-                oneWeekFromNow //TBD: this currently sends the booked date to the product object successfully, but we still need to set the automated expiry date
-              )
-            );
-            navigation.navigate('ProductsOverview');
-          }}
+          onPress={reserveHandler.bind(this, selectedProduct.id)}
         >
           {selectedProduct.status === 'reserverad'
             ? `reserverad till ${shorterDate}`
