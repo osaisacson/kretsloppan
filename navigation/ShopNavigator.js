@@ -6,10 +6,11 @@ import {
   DrawerItemList
 } from '@react-navigation/drawer';
 //Components
-import { Platform, SafeAreaView, Button, View } from 'react-native';
+import { Platform, SafeAreaView, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import UserAvatar from '../components/UI/UserAvatar';
+import { Button } from 'react-native-paper';
 
 //Screens
 import ProductsOverviewScreen, {
@@ -117,12 +118,25 @@ export const ShopNavigator = () => {
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
               <Button
-                title="Logga ut"
-                color={Colors.primary}
+                color={'#666'}
+                mode="contained"
+                style={{
+                  marginTop: 200,
+                  width: '60%',
+                  alignSelf: 'center'
+                }}
+                labelStyle={{
+                  paddingTop: 2,
+                  fontFamily: 'bebas-neue-bold',
+                  fontSize: 14
+                }}
+                compact={true}
                 onPress={() => {
                   dispatch(authActions.logout());
                 }}
-              />
+              >
+                Logga ut
+              </Button>
             </SafeAreaView>
           </View>
         );
