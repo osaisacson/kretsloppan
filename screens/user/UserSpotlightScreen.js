@@ -27,7 +27,7 @@ const UserSpotlightScreen = props => {
 
   //Gets all booked products
   const bookedUserProducts = userProductsSorted.filter(
-    product => product.status === 'bokad'
+    product => product.status === 'reserverad'
   );
 
   //Gets all currently being worked on products
@@ -118,9 +118,9 @@ const UserSpotlightScreen = props => {
     <View>
       <ScrollView>
         <HorizontalScroll
-          title={'Bokat av mig'}
-          subTitle={'Väntas på att hämtas av dig - se kort för detaljer'}
-          extraSubTitle={'Notera att bokningen upphör gälla efter en vecka'}
+          title={'Reserverade av mig'}
+          subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
+          extraSubTitle={'Notera att reservationen upphör gälla efter en vecka'}
           scrollData={bookedUserProducts}
           showEditAndDelete={true}
           navigation={props.navigation}

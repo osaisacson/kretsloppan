@@ -2,6 +2,7 @@ import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
+  CHANGE_PRODUCT_STATUS,
   SET_PRODUCTS
 } from '../actions/products';
 import Product from '../../models/product';
@@ -39,7 +40,7 @@ export default (state = initialState, action) => {
       const productIndex = state.userProducts.findIndex(
         prod => prod.id === action.pid
       );
-      const updatedProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
+      const updatedUserProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
         state.userProducts[productIndex].ownerId,
         action.productData.categoryName,
@@ -51,16 +52,44 @@ export default (state = initialState, action) => {
         action.productData.status
       );
       const updatedUserProducts = [...state.userProducts];
-      updatedUserProducts[productIndex] = updatedProduct;
+      updatedUserProducts[productIndex] = updatedUserProduct;
       const availableProductIndex = state.availableProducts.findIndex(
         prod => prod.id === action.pid
       );
       const updatedAvailableProducts = [...state.availableProducts];
-      updatedAvailableProducts[availableProductIndex] = updatedProduct;
+      updatedAvailableProducts[availableProductIndex] = updatedUserProduct;
       return {
         ...state,
         availableProducts: updatedAvailableProducts,
         userProducts: updatedUserProducts
+      };
+    case CHANGE_PRODUCT_STATUS:
+      const prodIndex = state.products.findIndex(
+        //Look through all products, not just userProducts as when we update a product above
+        prod => prod.id === action.pid
+      );
+      const updatedProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
+        action.pid,
+        state.products[prodIndex].ownerId, //Keep all the same except...
+        state.products[prodIndex].categoryName,
+        state.products[prodIndex].title,
+        state.products[prodIndex].image,
+        state.products[prodIndex].description,
+        state.products[prodIndex].price,
+        state.products[prodIndex].date,
+        action.productData.status //...status
+      );
+      const updatedStatusUserProducts = [...state.userProducts];
+      updatedStatusUserProducts[prodIndex] = updatedProduct;
+      const allProductsIndex = state.availableProducts.findIndex(
+        prod => prod.id === action.pid
+      );
+      const updatedAllProducts = [...state.availableProducts];
+      updatedAllProducts[allProductsIndex] = updatedProduct;
+      return {
+        ...state,
+        availableProducts: updatedAllProducts,
+        userProducts: updatedStatusUserProducts
       };
     case DELETE_PRODUCT:
       return {

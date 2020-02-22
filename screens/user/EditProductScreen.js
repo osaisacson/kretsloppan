@@ -8,8 +8,7 @@ import {
   Alert,
   Text,
   TextInput,
-  KeyboardAvoidingView,
-  ActivityIndicator
+  KeyboardAvoidingView
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -217,7 +216,7 @@ const EditProductScreen = props => {
                 label={'Under bearbetning'}
                 value={'bearbetas'}
               />
-              <Picker.Item key={3} label={'Bokad'} value={'bokad'} />
+              <Picker.Item key={3} label={'Reserverad'} value={'reserverad'} />
             </Picker>
             {!formState.inputValues.status ? (
               <View style={styles.errorContainer}>

@@ -48,12 +48,13 @@ const CartScreen = props => {
   const loadedContent =
     cartItems.length === 0 ? (
       <EmptyState>
-        Vagnen är tom, hitta redan gjorda bokningar under 'Bokat' i sidomenyn
+        Vagnen är tom, hitta redan gjorda reservationer under 'Reservationer' i
+        sidomenyn
       </EmptyState>
     ) : (
       <Button
         color={Colors.accent}
-        title="Boka"
+        title="Reservera"
         disabled={cartItems.length === 0}
         onPress={sendOrderHandler}
       />

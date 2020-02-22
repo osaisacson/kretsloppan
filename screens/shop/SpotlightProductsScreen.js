@@ -38,7 +38,7 @@ const SpotlightProductsScreen = props => {
 
   //Gets all booked products
   const bookedProducts = productsSorted.filter(
-    product => product.status === 'bokad'
+    product => product.status === 'reserverad'
   );
 
   //Gets all wanted products
@@ -131,9 +131,9 @@ const SpotlightProductsScreen = props => {
           navigation={props.navigation}
         />
         <HorizontalScroll
-          title={'nyligen bokat'}
+          title={'nyligen reserverat'}
           subTitle={
-            'Bokade produkter, om de inte hämtas inom en vecka blir de tillgängliga igen'
+            'Reserverade produkter, blir tillgängliga igenom om de inte hämtas inom en vecka.'
           }
           scrollData={bookedProducts}
           navigation={props.navigation}

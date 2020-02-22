@@ -63,6 +63,11 @@ export const ProductsNavigator = () => {
         component={ProductDetailScreen}
         options={productDetailScreenOptions}
       />
+      <ProductsStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
     </ProductsStackNavigator.Navigator>
   );
 };
