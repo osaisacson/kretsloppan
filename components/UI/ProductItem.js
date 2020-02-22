@@ -1,4 +1,5 @@
 import React from 'react';
+//Components
 import {
   View,
   Text,
@@ -8,8 +9,10 @@ import {
   TouchableNativeFeedback,
   Platform
 } from 'react-native';
-
 import Card from './Card';
+import { Ionicons } from '@expo/vector-icons';
+//Constants
+import Colors from './../../constants/Colors';
 
 const ProductItem = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -25,6 +28,33 @@ const ProductItem = props => {
     <Card
       style={props.isHorizontal ? styles.horizontalProduct : styles.product}
     >
+      {props.status === 'bearbetas' ? (
+        <Ionicons
+          style={{
+            ...styles.icon,
+            backgroundColor: Colors.primary,
+            color: '#fff',
+            fontSize: 15
+          }}
+          name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
+          size={23}
+          color={props.color}
+        />
+      ) : null}
+      {props.status === 'reserverad' ? (
+        <Ionicons
+          style={{
+            ...styles.icon,
+            color: Colors.primary,
+            fontSize: 35,
+            marginLeft: 3,
+            marginTop: -10
+          }}
+          name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+          size={23}
+          color={props.color}
+        />
+      ) : null}
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
@@ -78,12 +108,24 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   imageContainer: {
+    position: 'relative',
     width: '100%',
     height: '70%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: 'hidden' //To make sure any child (in this case the image) cannot overlap what we set in the image container
   },
+  icon: {
+    position: 'absolute',
+    padding: 5,
+    zIndex: 99,
+    shadowColor: 'black',
+    shadowOpacity: 0.12,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 2 //Because shadow only work on iOS, elevation is same thing but for android.
+  },
+
   image: {
     width: '100%',
     height: '100%'
