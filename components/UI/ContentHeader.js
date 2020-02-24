@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Badge } from 'react-native-paper';
 
 const ContentHeader = props => {
   return (
     <View>
       <View style={styles.contentHeaderContainer}>
         <Text style={styles.contentHeader}>{props.title}</Text>
-        <Text style={styles.indicator}>({props.indicator})</Text>
+        <Badge style={{ marginBottom: 5, fontWeight: 'bold' }}>
+          {props.indicator}
+        </Badge>
       </View>
       <Text style={styles.subTitle}>{props.subTitle}</Text>
       {props.extraSubTitle ? (

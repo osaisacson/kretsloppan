@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
 
@@ -9,6 +10,27 @@ const UserAvatar = props => {
     TouchableCmp = TouchableNativeFeedback;
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
+
+  const userProducts = useSelector(state => state.products.userProducts);
+
+  //Gets nr of all booked products
+  const bookedUserProductsNr = userProducts.filter(
+    product => product.status === 'reserverad'
+  ).length;
+
+  //Gets nr of all currently being worked on products
+  const inProgressUserProductsNr = userProducts.filter(
+    product => product.status === 'bearbetas'
+  ).length;
+
+  //Gets nr of all wanted products
+  const wantedUserProductsNr = userProducts.filter(
+    product => product.status === 'efterlyst'
+  ).length;
+
+  const activeBadgeNr =
+    bookedUserProductsNr + inProgressUserProductsNr + wantedUserProductsNr;
+
   return (
     <TouchableCmp
       activeOpacity={0.5}
@@ -26,7 +48,16 @@ const UserAvatar = props => {
         size={50}
       />
       {props.showBadge ? (
-        <Badge style={{ position: 'relative', left: -35, bottom: 20 }}>3</Badge>
+        <Badge
+          style={{
+            fontWeight: 'bold',
+            position: 'relative',
+            left: -35,
+            bottom: 20
+          }}
+        >
+          {activeBadgeNr}
+        </Badge>
       ) : null}
     </TouchableCmp>
   );
