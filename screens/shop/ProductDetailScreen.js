@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
 import UserAvatar from '../../components/UI/UserAvatar';
 import ButtonIcon from '../../components/UI/ButtonIcon';
-import ToggleButton from '../../components/UI/ToggleButton';
+import ButtonToggle from '../../components/UI/ButtonToggle';
 import { Button } from 'react-native-paper';
 //Constants
 import Colors from '../../constants/Colors';
@@ -14,6 +14,10 @@ import * as productsActions from '../../store/actions/products';
 
 const ProductDetailScreen = props => {
   const productId = props.route.params.productId;
+  const ownerId = props.route.params.ownerId;
+
+  const loggedInUserId = useSelector(state => state.auth.userId);
+
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId)
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
@@ -21,6 +25,8 @@ const ProductDetailScreen = props => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const hasEditPermission = ownerId === loggedInUserId;
 
   const editProductHandler = id => {
     navigation.navigate('EditProduct', { productId: id });
@@ -75,24 +81,48 @@ const ProductDetailScreen = props => {
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.image }} />
-      <View style={styles.actions}>
-        <ButtonIcon
-          icon="delete"
-          color={Colors.warning}
-          onSelect={deleteHandler.bind(this, selectedProduct.id)}
-        />
-        <ButtonIcon
-          icon="pen"
-          color={Colors.neutral}
-          onSelect={() => {
-            editProductHandler(selectedProduct.id);
-          }}
-        />
-      </View>
+      {hasEditPermission ? (
+        <View style={styles.actions}>
+          <ButtonIcon
+            icon="delete"
+            color={Colors.warning}
+            onSelect={deleteHandler.bind(this, selectedProduct.id)}
+          />
+          {selectedProduct.status === 'reserverad' ? null : (
+            <ButtonToggle
+              isToggled={isToggled}
+              icon={selectedProduct.status === 'redo' ? 'hammer' : ''}
+              title={`byt till ${
+                selectedProduct.status === 'redo' ? 'bearbetas' : 'redo'
+              }`}
+              onSelect={() => {
+                setIsToggled(prevState => !prevState);
+                let status =
+                  selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
+                dispatch(
+                  productsActions.changeProductStatus(
+                    selectedProduct.id,
+                    status
+                  )
+                );
+                navigation.navigate('ProductsOverview');
+              }}
+            />
+          )}
+          <ButtonIcon
+            icon="pen"
+            color={Colors.neutral}
+            onSelect={() => {
+              editProductHandler(selectedProduct.id);
+            }}
+          />
+        </View>
+      ) : null}
       <View style={styles.toggles}>
         <Button
           mode="contained"
           compact={true}
+          color={Colors.primary}
           disabled={selectedProduct.status === 'reserverad'}
           style={{
             width: '60%',
@@ -111,24 +141,6 @@ const ProductDetailScreen = props => {
             ? `reserverad till ${shorterDate}`
             : 'reservera'}
         </Button>
-        {selectedProduct.status === 'reserverad' ? null : (
-          <ToggleButton
-            isToggled={isToggled}
-            icon={selectedProduct.status === 'redo' ? 'hammer' : ''}
-            title={`byt till ${
-              selectedProduct.status === 'redo' ? 'bearbetas' : 'redo'
-            }`}
-            onSelect={() => {
-              setIsToggled(prevState => !prevState);
-              let status =
-                selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
-              dispatch(
-                productsActions.changeProductStatus(selectedProduct.id, status)
-              );
-              navigation.navigate('ProductsOverview');
-            }}
-          />
-        )}
       </View>
       <Text style={styles.description}>
         Ta kontakt med dessa åkare om ni behöver hjälp med transporten:

@@ -1,16 +1,14 @@
 import React from 'react';
-import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
-
 //Components
-import { IconButton } from 'react-native-paper';
+import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import { Button } from 'react-native-paper';
 
-const ButtonIcon = props => {
+const ButtonToggle = props => {
   let TouchableCmp = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
-
   return (
     <TouchableCmp
       style={{
@@ -24,18 +22,25 @@ const ButtonIcon = props => {
         elevation: 5
       }}
     >
-      <IconButton
-        icon={props.icon}
-        size={25}
-        animated={true}
-        color={'#fff'}
+      <Button
+        mode="contained"
+        compact={true}
         style={{
-          backgroundColor: props.color
+          alignSelf: 'center'
+        }}
+        labelStyle={{
+          paddingTop: 4,
+          paddingBottom: 2,
+          fontFamily: 'bebas-neue-bold',
+          fontSize: 12
         }}
         onPress={props.onSelect}
-      />
+        icon={props.icon}
+      >
+        {props.title}
+      </Button>
     </TouchableCmp>
   );
 };
 
-export default ButtonIcon;
+export default ButtonToggle;

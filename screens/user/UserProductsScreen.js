@@ -48,9 +48,10 @@ const UserProductsScreen = props => {
     });
   }, [dispatch, loadProducts]);
 
-  const selectItemHandler = (id, title) => {
+  const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
       productId: id,
+      ownerId: ownerId,
       productTitle: title
     });
   };
@@ -97,7 +98,11 @@ const UserProductsScreen = props => {
             status={itemData.item.status}
             price={itemData.item.price ? itemData.item.price : 0}
             onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.title);
+              selectItemHandler(
+                itemData.item.id,
+                itemData.item.ownerId,
+                itemData.item.title
+              );
             }}
           ></ProductItem>
         )}

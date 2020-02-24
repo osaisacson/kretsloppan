@@ -11,9 +11,10 @@ import Colors from '../../constants/Colors';
 const HorizontalScroll = props => {
   const scrollData = props.scrollData;
 
-  const selectItemHandler = (id, title) => {
+  const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
       productId: id,
+      ownerId: ownerId,
       productTitle: title
     });
   };
@@ -65,7 +66,7 @@ const HorizontalScroll = props => {
                   status={prod.status}
                   price={prod.price ? prod.price : 0}
                   onSelect={() => {
-                    selectItemHandler(prod.id, prod.title);
+                    selectItemHandler(prod.id, prod.ownerId, prod.title);
                   }}
                 >
                   {props.showEditAndDelete ? (
