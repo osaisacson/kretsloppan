@@ -18,6 +18,7 @@ const ToggleButton = props => {
       }}
       compact={true}
       onPress={props.onSelect}
+      icon={props.icon}
     >
       {props.title}
     </Button>

@@ -76,8 +76,23 @@ const ProductDetailScreen = props => {
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.image }} />
       <View style={styles.actions}>
+        <ButtonIcon
+          icon="delete"
+          color={Colors.warning}
+          onSelect={deleteHandler.bind(this, selectedProduct.id)}
+        />
+        <ButtonIcon
+          icon="pen"
+          color={Colors.neutral}
+          onSelect={() => {
+            editProductHandler(selectedProduct.id);
+          }}
+        />
+      </View>
+      <View style={styles.toggles}>
         <Button
           mode="contained"
+          compact={true}
           disabled={selectedProduct.status === 'reserverad'}
           style={{
             width: '60%',
@@ -99,6 +114,7 @@ const ProductDetailScreen = props => {
         {selectedProduct.status === 'reserverad' ? null : (
           <ToggleButton
             isToggled={isToggled}
+            icon={selectedProduct.status === 'redo' ? 'hammer' : ''}
             title={`byt till ${
               selectedProduct.status === 'redo' ? 'bearbetas' : 'redo'
             }`}
@@ -113,19 +129,6 @@ const ProductDetailScreen = props => {
             }}
           />
         )}
-
-        <ButtonIcon
-          icon="pen"
-          color={Colors.neutral}
-          onSelect={() => {
-            editProductHandler(selectedProduct.id);
-          }}
-        />
-        <ButtonIcon
-          icon="delete"
-          color={Colors.warning}
-          onSelect={deleteHandler.bind(this, selectedProduct.id)}
-        />
       </View>
       <Text style={styles.description}>
         Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
@@ -163,7 +166,16 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   actions: {
-    marginVertical: 10,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: -30,
+    marginBottom: 10,
+    alignItems: 'center'
+  },
+  toggles: {
+    flex: 1,
+    marginBottom: 10,
     alignItems: 'center'
   },
   price: {
