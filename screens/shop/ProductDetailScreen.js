@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 //Components
 import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
 import UserAvatar from '../../components/UI/UserAvatar';
+import ButtonIcon from '../../components/UI/ButtonIcon';
 import ToggleButton from '../../components/UI/ToggleButton';
 import { Button } from 'react-native-paper';
 //Constants
@@ -113,17 +114,17 @@ const ProductDetailScreen = props => {
           />
         )}
 
-        <Button
-          color={Colors.primary}
-          title="Edit"
-          onPress={() => {
+        <ButtonIcon
+          icon="pen"
+          color={Colors.neutral}
+          onSelect={() => {
             editProductHandler(selectedProduct.id);
           }}
         />
-        <Button
-          color={Colors.primary}
-          title="Delete"
-          onPress={deleteHandler.bind(this, selectedProduct.id)}
+        <ButtonIcon
+          icon="delete"
+          color={Colors.warning}
+          onSelect={deleteHandler.bind(this, selectedProduct.id)}
         />
       </View>
       <Text style={styles.description}>
