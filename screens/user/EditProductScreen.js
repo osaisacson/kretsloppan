@@ -13,11 +13,12 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderButton from '../../components/UI/HeaderButton';
+import Input from '../../components/UI/Input';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
 import * as categoriesActions from '../../store/actions/categories';
-import * as projectsActions from '../../store/actions/projects';
+import * as productsActions from '../../store/actions/products';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -44,58 +45,40 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const EditProjectScreen = props => {
+const EditProductScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const projId = props.route.params ? props.route.params.projectId : null;
+  const prodId = props.route.params ? props.route.params.productId : null;
 
-  //Categories
+  //Categories & Projects
   const categories = useSelector(state => state.categories.categories);
+  const userProjects = useSelector(state => state.projects.userProjects);
 
-  const loadCategories = useCallback(async () => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      await dispatch(categoriesActions.fetchCategories());
-    } catch (err) {
-      console.log('Cannot fetch categories');
-      setError(err.message);
-    }
-    setIsLoading(false);
-  }, [dispatch, setIsLoading, setError]);
-
-  //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadCategories again
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadCategories);
-
-    return () => {
-      unsubscribe();
-    };
-  }, [loadCategories]);
-
-  useEffect(() => {
-    loadCategories();
-  }, [dispatch, loadCategories]);
-
-  //Find project
-  const editedProject = useSelector(state =>
-    state.projects.userProjects.find(proj => proj.id === projId)
+  //Find product
+  const editedProduct = useSelector(state =>
+    state.products.userProducts.find(prod => prod.id === prodId)
   );
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      title: editedProject ? editedProject.title : '',
-      image: editedProject ? editedProject.image : '',
-      description: editedProject ? editedProject.description : ''
+      categoryName: editedProduct ? editedProduct.categoryName : '',
+      title: editedProduct ? editedProduct.title : '',
+      image: editedProduct ? editedProduct.image : '',
+      description: editedProduct ? editedProduct.description : '',
+      price: editedProduct ? editedProduct.price : '',
+      projectId: editedProduct ? editedProduct.projectId : ''
     },
     inputValidities: {
-      title: editedProject ? true : false,
-      image: editedProject ? true : false,
-      description: editedProject ? true : false
+      categoryName: editedProduct ? true : false,
+      title: editedProduct ? true : false,
+      image: editedProduct ? true : false,
+      description: editedProduct ? true : false,
+      price: editedProduct ? true : false,
+      projectId: editedProduct ? true : false
     },
-    formIsValid: editedProject ? true : false
+    formIsValid: editedProduct ? true : false
   });
 
   useEffect(() => {
@@ -114,21 +97,27 @@ const EditProjectScreen = props => {
     setError(null);
     setIsLoading(true);
     try {
-      if (editedProject) {
+      if (editedProduct) {
         await dispatch(
-          projectsActions.updateProject(
-            projId,
+          productsActions.updateProduct(
+            prodId,
+            formState.inputValues.categoryName,
             formState.inputValues.title,
             formState.inputValues.description,
-            formState.inputValues.image
+            +formState.inputValues.price,
+            formState.inputValues.image,
+            formState.inputValues.projectId
           )
         );
       } else {
         await dispatch(
-          projectsActions.createProject(
+          productsActions.createProduct(
+            formState.inputValues.categoryName,
             formState.inputValues.title,
             formState.inputValues.description,
-            formState.inputValues.image
+            +formState.inputValues.price,
+            formState.inputValues.image,
+            formState.inputValues.projectId
           )
         );
       }
@@ -138,7 +127,7 @@ const EditProjectScreen = props => {
     }
 
     setIsLoading(false);
-  }, [dispatch, projId, formState]);
+  }, [dispatch, prodId, formState]);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -191,6 +180,45 @@ const EditProjectScreen = props => {
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
           />
+          {/* <View style={styles.formControl}>
+            <Text style={styles.label}>Status</Text>
+            <Picker
+              selectedValue={formState.inputValues.projectId}
+              onValueChange={textChangeHandler.bind(this, 'projectId')}
+            >
+              <Picker.Item key={1} label={'Redo för hämtning'} value={'redo'} />
+              <Picker.Item
+                key={2}
+                label={'Under bearbetning'}
+                value={'bearbetas'}
+              />
+              <Picker.Item key={3} label={'Reserverad'} value={'reserverad'} />
+            </Picker>
+            {!formState.inputValues.projectId ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>
+                  Välj vad som bäst beskriver produktens projectId
+                </Text>
+              </View>
+            ) : null}
+          </View> */}
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Project</Text>
+            <TextInput
+              style={styles.input}
+              value={formState.inputValues.projectId}
+              onChangeText={textChangeHandler.bind(this, 'projectId')}
+              keyboardType="default"
+              autoCapitalize="sentences"
+              autoCorrect={false}
+              returnKeyType="next"
+            />
+            {!formState.inputValues.projectId ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Välj ett projekt</Text>
+              </View>
+            ) : null}
+          </View>
           <View style={styles.formControl}>
             <Text style={styles.label}>Titel</Text>
             <TextInput
@@ -205,6 +233,27 @@ const EditProjectScreen = props => {
             {!formState.inputValues.title ? (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Skriv in en titel</Text>
+              </View>
+            ) : null}
+          </View>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Pris</Text>
+            <Text style={styles.subLabel}>
+              Om du lägger upp som företag, ange pris inklusive moms
+            </Text>
+            <TextInput
+              style={styles.input}
+              value={formState.inputValues.price.toString()}
+              onChangeText={textChangeHandler.bind(this, 'price')}
+              keyboardType="number-pad"
+              autoCorrect={false}
+              returnKeyType="next"
+            />
+            {!formState.inputValues.price ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>
+                  Lägg in ett pris (det kan vara 0)
+                </Text>
               </View>
             ) : null}
           </View>
@@ -225,6 +274,34 @@ const EditProjectScreen = props => {
               </View>
             ) : null}
           </View>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Kategori</Text>
+            <Picker
+              selectedValue={formState.inputValues.categoryName}
+              onValueChange={textChangeHandler.bind(this, 'categoryName')}
+            >
+              <Picker.Item
+                key={'tak'}
+                label={'tak'}
+                value={'tak'.toLowerCase()}
+              />
+              <Picker.Item
+                key={'golv'}
+                label={'golv'}
+                value={'golv'.toLowerCase()}
+              />
+              <Picker.Item
+                key={'dörr'}
+                label={'dörr'}
+                value={'dörr'.toLowerCase()}
+              />
+            </Picker>
+            {!formState.inputValues.categoryName ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Välj en kategori</Text>
+              </View>
+            ) : null}
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -234,7 +311,7 @@ const EditProjectScreen = props => {
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.projectId ? 'Edit Project' : 'Add Project'
+    headerTitle: routeParams.productId ? 'Edit Product' : 'Add Product'
   };
 };
 
@@ -274,4 +351,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default EditProjectScreen;
+export default EditProductScreen;

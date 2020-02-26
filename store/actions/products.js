@@ -40,6 +40,7 @@ export const fetchProducts = () => {
           const price = resData[key].price;
           const image = resData[key].image;
           const reservedUntil = `expired ${resData[key].reservedUntil}`;
+          const projectId = resData[key].projectId;
           const status =
             resData[key].status === 'reserverad' ? 'redo' : resData[key].status; //If the passed status is 'reserved' then update that product's status to 'redo'
           console.log('EXPIRED');
@@ -67,7 +68,8 @@ export const fetchProducts = () => {
                 price,
                 image,
                 status,
-                reservedUntil
+                reservedUntil,
+                projectId
               })
             }
           );
@@ -92,7 +94,8 @@ export const fetchProducts = () => {
               price,
               image,
               status,
-              reservedUntil
+              reservedUntil,
+              projectId
             }
           });
         }
@@ -108,7 +111,8 @@ export const fetchProducts = () => {
             resData[key].price,
             resData[key].date,
             resData[key].status,
-            resData[key].reservedUntil
+            resData[key].reservedUntil,
+            resData[key].projectId
           )
         );
       }
@@ -151,7 +155,7 @@ export const createProduct = (
   description,
   price,
   image,
-  status
+  projectId
 ) => {
   // console.log('---------Actions > products.js > createProduct');
   // console.log('-received original params: ');
@@ -169,7 +173,6 @@ export const createProduct = (
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
-    const reservedUntilInitial = 'not';
     // console.log('-set constants: ');
     // console.log('token: ', token);
     // console.log('userId: ', userId);
@@ -202,8 +205,9 @@ export const createProduct = (
           image: parsedRes.image, //This is how we link to the image we store above
           ownerId: userId,
           date: date.toISOString(),
-          status,
-          reservedUntil: reservedUntilInitial
+          status: 'redo',
+          reservedUntil: '',
+          projectId: projectId ? projectId : ''
         };
         // console.log(
         //   'productData we are trying to pass to the realtime database: ',
@@ -242,7 +246,8 @@ export const createProduct = (
                 ownerId: userId,
                 date: date,
                 status,
-                reservedUntil: reservedUntilInitial
+                reservedUntil: '',
+                projectId: projectId ? projectId : ''
               }
             });
             // console.log('END------------');
@@ -259,7 +264,8 @@ export const updateProduct = (
   price,
   image,
   status,
-  reservedUntil
+  reservedUntil,
+  projectId
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -278,7 +284,8 @@ export const updateProduct = (
           price,
           image,
           status,
-          reservedUntil
+          reservedUntil,
+          projectId
         })
       }
     );
@@ -300,7 +307,8 @@ export const updateProduct = (
         price,
         image,
         status,
-        reservedUntil
+        reservedUntil,
+        projectId
       }
     });
   };

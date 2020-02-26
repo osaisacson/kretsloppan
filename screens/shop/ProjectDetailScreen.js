@@ -3,10 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
+import ProductItem from '../../components/UI/ProductItem';
 import UserAvatar from '../../components/UI/UserAvatar';
 import ButtonIcon from '../../components/UI/ButtonIcon';
-import ButtonToggle from '../../components/UI/ButtonToggle';
-import { Button } from 'react-native-paper';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions

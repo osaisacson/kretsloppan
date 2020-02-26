@@ -31,7 +31,8 @@ export default (state = initialState, action) => {
         action.productData.price,
         action.productData.date,
         action.productData.status,
-        action.productData.reservedUntil
+        action.productData.reservedUntil,
+        action.productData.projectId
       );
       return {
         ...state,
@@ -52,7 +53,8 @@ export default (state = initialState, action) => {
         action.productData.price,
         state.userProducts[userProductIndex].date,
         action.productData.status,
-        state.userProducts[userProductIndex].reservedUntil
+        state.userProducts[userProductIndex].reservedUntil,
+        action.productData.projectId
       );
       const updatedUserProducts = [...state.userProducts]; //copy current state of user products
       updatedUserProducts[userProductIndex] = updatedUserProduct; //find the user product with the passed index (the one we should update)
@@ -82,7 +84,8 @@ export default (state = initialState, action) => {
         state.availableProducts[allProductsIndexCPS].price,
         state.availableProducts[allProductsIndexCPS].date,
         action.productData.status, //...status
-        state.availableProducts[allProductsIndexCPS].reservedUntil
+        state.availableProducts[allProductsIndexCPS].reservedUntil,
+        state.availableProducts[allProductsIndexCPS].projectId
       );
       const updatedUserProductsCPS = [...state.userProducts];
       updatedUserProductsCPS[allProductsIndexCPS] = updatedProductCPS;
@@ -108,7 +111,8 @@ export default (state = initialState, action) => {
         state.availableProducts[prodIndex].price,
         state.availableProducts[prodIndex].date,
         action.productData.status, //...status
-        action.productData.reservedUntil //...reservedUntil
+        action.productData.reservedUntil, //...reservedUntil
+        state.availableProducts[prodIndex].projectId
       );
       const updatedStatusUserProducts = [...state.userProducts];
       updatedStatusUserProducts[prodIndex] = updatedProduct;
