@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Alert,
+  FlatList
+} from 'react-native';
 import ProductItem from '../../components/UI/ProductItem';
 import UserAvatar from '../../components/UI/UserAvatar';
 import ButtonIcon from '../../components/UI/ButtonIcon';
@@ -34,6 +42,14 @@ const ProjectDetailScreen = props => {
 
   const editProjectHandler = id => {
     navigation.navigate('EditProject', { projectId: id });
+  };
+
+  const selectItemHandler = (id, ownerId, title) => {
+    props.navigation.navigate('ProductDetail', {
+      productId: id,
+      ownerId: ownerId,
+      productTitle: title
+    });
   };
 
   const deleteHandler = () => {
@@ -79,20 +95,29 @@ const ProjectDetailScreen = props => {
 
       {/* Information about the project */}
       <Text style={styles.description}>{selectedProject.description}</Text>
-
-      {associatedProducts.map(prod => (
-        <ProductItem
-          key={prod.id}
-          isHorizontal={true}
-          image={prod.image}
-          title={prod.title}
-          status={prod.status}
-          price={prod.price ? prod.price : 0}
-          onSelect={() => {
-            selectItemHandler(prod.id, prod.ownerId, prod.title);
-          }}
-        />
-      ))}
+      <FlatList
+        horizontal={false}
+        numColumns={2}
+        data={associatedProducts}
+        keyExtractor={item => item.id}
+        renderItem={itemData => (
+          <ProductItem
+            key={itemData.item.id}
+            isHorizontal={true}
+            image={itemData.item.image}
+            title={itemData.item.title}
+            status={itemData.item.status ? itemData.item.status : 'redo'}
+            price={itemData.item.price ? itemData.item.price : 0}
+            onSelect={() => {
+              selectItemHandler(
+                itemData.item.id,
+                itemData.item.ownerId,
+                itemData.item.title
+              );
+            }}
+          />
+        )}
+      />
     </ScrollView>
   );
 };

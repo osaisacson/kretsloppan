@@ -63,7 +63,7 @@ const HorizontalScroll = props => {
                   isHorizontal={true}
                   image={prod.image}
                   title={prod.title}
-                  status={prod.status}
+                  status={prod.status ? prod.status : 'redo'}
                   price={prod.price ? prod.price : 0}
                   onSelect={() => {
                     selectItemHandler(prod.id, prod.ownerId, prod.title);

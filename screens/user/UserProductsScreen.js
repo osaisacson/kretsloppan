@@ -95,7 +95,7 @@ const UserProductsScreen = props => {
           <ProductItem
             image={itemData.item.image}
             title={itemData.item.title}
-            status={itemData.item.status}
+            status={itemData.item.status ? itemData.item.status : 'redo'}
             price={itemData.item.price ? itemData.item.price : 0}
             onSelect={() => {
               selectItemHandler(

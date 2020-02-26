@@ -77,7 +77,7 @@ const ProductDetailScreen = props => {
     setIsToggled(prevState => !prevState);
     let status = selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
     dispatch(productsActions.changeProductStatus(id, status));
-    goBack();
+    props.navigation.goBack();
   };
 
   const reserveHandler = () => {

@@ -13,11 +13,9 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderButton from '../../components/UI/HeaderButton';
-import Input from '../../components/UI/Input';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
-import * as categoriesActions from '../../store/actions/categories';
 import * as productsActions from '../../store/actions/products';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -52,7 +50,6 @@ const EditProductScreen = props => {
   const prodId = props.route.params ? props.route.params.productId : null;
 
   //Categories & Projects
-  const categories = useSelector(state => state.categories.categories);
   const userProjects = useSelector(state => state.projects.userProjects);
 
   //Find product
@@ -180,39 +177,18 @@ const EditProductScreen = props => {
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
           />
-          {/* <View style={styles.formControl}>
-            <Text style={styles.label}>Status</Text>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Project</Text>
             <Picker
               selectedValue={formState.inputValues.projectId}
               onValueChange={textChangeHandler.bind(this, 'projectId')}
             >
-              <Picker.Item key={1} label={'Redo för hämtning'} value={'redo'} />
-              <Picker.Item
-                key={2}
-                label={'Under bearbetning'}
-                value={'bearbetas'}
-              />
-              <Picker.Item key={3} label={'Reserverad'} value={'reserverad'} />
+              <Picker.Item key="0" label="Inget" value="0" />
+              {userProjects.map(proj => (
+                <Picker.Item key={proj.id} label={proj.title} value={proj.id} />
+              ))}
             </Picker>
-            {!formState.inputValues.projectId ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>
-                  Välj vad som bäst beskriver produktens projectId
-                </Text>
-              </View>
-            ) : null}
-          </View> */}
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Project</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.projectId}
-              onChangeText={textChangeHandler.bind(this, 'projectId')}
-              keyboardType="default"
-              autoCapitalize="sentences"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
+
             {!formState.inputValues.projectId ? (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Välj ett projekt</Text>

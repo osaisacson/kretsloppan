@@ -26,8 +26,7 @@ export default (state = initialState, action) => {
         action.projectData.image,
         action.projectData.description,
         action.projectData.date,
-        action.projectData.status,
-        (availableProjects: [])
+        action.projectData.status
       );
       return {
         ...state,
@@ -45,7 +44,7 @@ export default (state = initialState, action) => {
         action.projectData.image,
         action.projectData.description,
         state.userProjects[userProjectIndex].date,
-        action.userProjects[userProjectIndex].status
+        state.userProjects[userProjectIndex].status
       );
       const updatedUserProjects = [...state.userProjects]; //copy current state of user projects
       updatedUserProjects[userProjectIndex] = updatedUserProject; //find the user project with the passed index (the one we should update)

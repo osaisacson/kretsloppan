@@ -245,7 +245,7 @@ export const createProduct = (
                 image,
                 ownerId: userId,
                 date: date,
-                status,
+                status: 'redo',
                 reservedUntil: '',
                 projectId: projectId ? projectId : ''
               }
@@ -263,8 +263,6 @@ export const updateProduct = (
   description,
   price,
   image,
-  status,
-  reservedUntil,
   projectId
 ) => {
   return async (dispatch, getState) => {
@@ -283,8 +281,6 @@ export const updateProduct = (
           description,
           price,
           image,
-          status,
-          reservedUntil,
           projectId
         })
       }
@@ -306,8 +302,6 @@ export const updateProduct = (
         description,
         price,
         image,
-        status,
-        reservedUntil,
         projectId
       }
     });

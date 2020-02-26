@@ -94,7 +94,7 @@ const ProjectsScreen = props => {
           keyExtractor={item => item.id}
           renderItem={itemData => (
             <ProjectItem
-              project={itemData}
+              project={itemData.item}
               onSelect={() => {
                 selectItemHandler(
                   itemData.item.id,
