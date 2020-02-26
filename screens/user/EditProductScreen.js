@@ -204,7 +204,7 @@ const EditProductScreen = props => {
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
           />
-          <View style={styles.formControl}>
+          {/* <View style={styles.formControl}>
             <Text style={styles.label}>Status</Text>
             <Picker
               selectedValue={formState.inputValues.status}
@@ -225,7 +225,7 @@ const EditProductScreen = props => {
                 </Text>
               </View>
             ) : null}
-          </View>
+          </View> */}
           <View style={styles.formControl}>
             <Text style={styles.label}>Titel</Text>
             <TextInput
@@ -245,6 +245,9 @@ const EditProductScreen = props => {
           </View>
           <View style={styles.formControl}>
             <Text style={styles.label}>Pris</Text>
+            <Text style={styles.subLabel}>
+              Om du lägger upp som företag, ange pris inklusive moms
+            </Text>
             <TextInput
               style={styles.input}
               value={formState.inputValues.price.toString()}
@@ -326,6 +329,9 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: 'roboto-bold',
     marginVertical: 8
+  },
+  subLabel: {
+    fontFamily: 'roboto-light-italic'
   },
   input: {
     paddingHorizontal: 2,
