@@ -31,7 +31,7 @@ export const fetchProjects = () => {
             resData[key].ownerId,
             resData[key].title,
             resData[key].image,
-            resData[key].description,
+            resData[key].slogan,
             resData[key].date,
             resData[key].status
           )
@@ -70,12 +70,12 @@ export const deleteProject = projectId => {
   };
 };
 
-export const createProject = (title, description, image, status) => {
+export const createProject = (title, slogan, image, status) => {
   // console.log('---------Actions > projects.js > createProject');
   // console.log('-received original params: ');
   // console.log('categoryName: ', categoryName);
   // console.log('title: ', title);
-  // console.log('description: ', description);
+  // console.log('slogan: ', slogan);
   // console.log('price: ', price);
   // console.log(
   //   'image: ',
@@ -113,7 +113,7 @@ export const createProject = (title, description, image, status) => {
         // );
         const projectData = {
           title,
-          description,
+          slogan,
           image: parsedRes.image, //This is how we link to the image we store above
           ownerId: userId,
           date: date.toISOString(),
@@ -149,7 +149,7 @@ export const createProject = (title, description, image, status) => {
               projectData: {
                 id: finalResParsed.name,
                 title,
-                description,
+                slogan,
                 image,
                 ownerId: userId,
                 date: date,
@@ -162,7 +162,7 @@ export const createProject = (title, description, image, status) => {
   };
 };
 
-export const updateProject = (id, title, description, image) => {
+export const updateProject = (id, title, slogan, image) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
@@ -175,7 +175,7 @@ export const updateProject = (id, title, description, image) => {
         },
         body: JSON.stringify({
           title,
-          description,
+          slogan,
           image
         })
       }
@@ -193,7 +193,7 @@ export const updateProject = (id, title, description, image) => {
       pid: id,
       projectData: {
         title,
-        description,
+        slogan,
         image
       }
     });

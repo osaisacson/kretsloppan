@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
         action.projectData.ownerId,
         action.projectData.title,
         action.projectData.image,
-        action.projectData.description,
+        action.projectData.slogan,
         action.projectData.date,
         action.projectData.status
       );
@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
         state.userProjects[userProjectIndex].ownerId,
         action.projectData.title,
         action.projectData.image,
-        action.projectData.description,
+        action.projectData.slogan,
         state.userProjects[userProjectIndex].date,
         state.userProjects[userProjectIndex].status
       );

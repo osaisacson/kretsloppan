@@ -11,7 +11,8 @@ import {
   Alert,
   FlatList
 } from 'react-native';
-import ProductItem from '../../components/UI/ProductItem';
+import ContentHeader from '../../components/UI/ContentHeader';
+import UsedItem from '../../components/UI/UsedItem';
 import UserAvatar from '../../components/UI/UserAvatar';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 //Constants
@@ -94,20 +95,24 @@ const ProjectDetailScreen = props => {
       ) : null}
 
       {/* Information about the project */}
-      <Text style={styles.description}>{selectedProject.description}</Text>
+      <Text style={styles.description}>{selectedProject.slogan}</Text>
+      <ContentHeader
+        title={'Återbruk'}
+        subTitle={'Återbruk som är använt/kommer användas i projektet'}
+        indicator={associatedProducts.length ? associatedProducts.length : 0}
+      />
       <FlatList
         horizontal={false}
-        numColumns={2}
+        numColumns={3}
         data={associatedProducts}
         keyExtractor={item => item.id}
         renderItem={itemData => (
-          <ProductItem
+          <UsedItem
             key={itemData.item.id}
             isHorizontal={true}
             image={itemData.item.image}
             title={itemData.item.title}
             status={itemData.item.status ? itemData.item.status : 'redo'}
-            price={itemData.item.price ? itemData.item.price : 0}
             onSelect={() => {
               selectItemHandler(
                 itemData.item.id,
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20
   },
   description: {
-    fontFamily: 'roboto-regular',
+    fontFamily: 'roboto-light-italic',
     fontSize: 14,
     textAlign: 'center',
     marginHorizontal: 20

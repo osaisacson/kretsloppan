@@ -88,12 +88,12 @@ const EditProjectScreen = props => {
     inputValues: {
       title: editedProject ? editedProject.title : '',
       image: editedProject ? editedProject.image : '',
-      description: editedProject ? editedProject.description : ''
+      slogan: editedProject ? editedProject.slogan : ''
     },
     inputValidities: {
       title: editedProject ? true : false,
       image: editedProject ? true : false,
-      description: editedProject ? true : false
+      slogan: editedProject ? true : false
     },
     formIsValid: editedProject ? true : false
   });
@@ -119,7 +119,7 @@ const EditProjectScreen = props => {
           projectsActions.updateProject(
             projId,
             formState.inputValues.title,
-            formState.inputValues.description,
+            formState.inputValues.slogan,
             formState.inputValues.image
           )
         );
@@ -127,7 +127,7 @@ const EditProjectScreen = props => {
         await dispatch(
           projectsActions.createProject(
             formState.inputValues.title,
-            formState.inputValues.description,
+            formState.inputValues.slogan,
             formState.inputValues.image
           )
         );
@@ -209,18 +209,18 @@ const EditProjectScreen = props => {
             ) : null}
           </View>
           <View style={styles.formControl}>
-            <Text style={styles.label}>Beskrivning</Text>
+            <Text style={styles.label}>Slogan</Text>
             <TextInput
               style={styles.input}
-              value={formState.inputValues.description}
-              onChangeText={textChangeHandler.bind(this, 'description')}
+              value={formState.inputValues.slogan}
+              onChangeText={textChangeHandler.bind(this, 'slogan')}
               autoCorrect={false}
               returnKeyType="done"
             />
-            {!formState.inputValues.description ? (
+            {!formState.inputValues.slogan ? (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>
-                  Skriv in en kort beskrivning
+                  Skriv in en kort slogan för projektet
                 </Text>
               </View>
             ) : null}

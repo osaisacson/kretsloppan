@@ -1,12 +1,12 @@
 import moment from 'moment';
 
 class Project {
-  constructor(id, ownerId, title, image, description, date, status) {
+  constructor(id, ownerId, title, image, slogan, date, status) {
     this.id = id;
     this.ownerId = ownerId;
     this.title = title;
     this.image = image;
-    this.description = description;
+    this.slogan = slogan;
     this.date = date;
     this.status = status;
   }
