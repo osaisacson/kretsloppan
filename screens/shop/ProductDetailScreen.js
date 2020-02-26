@@ -32,20 +32,56 @@ const ProductDetailScreen = props => {
     navigation.navigate('EditProduct', { productId: id });
   };
 
-  const deleteHandler = id => {
-    Alert.alert('Are you sure?', 'Do you really want to delete this item?', [
-      { text: 'No', style: 'default' },
-      {
-        text: 'Yes',
-        style: 'destructive',
-        onPress: () => {
-          dispatch(productsActions.deleteProduct(id));
+  const isReady = selectedProduct.status === 'redo';
+  const isReserved = selectedProduct.status === 'reserverad';
+  const isPickedUp = selectedProduct.status === 'hämtad';
+
+  const deleteHandler = () => {
+    const id = selectedProduct.id;
+    Alert.alert(
+      'Är du säker?',
+      'Vill du verkligen radera den här produkten? Det går inte att gå ändra sig sen.',
+      [
+        { text: 'Nej', style: 'default' },
+        {
+          text: 'Ja, radera',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(productsActions.deleteProduct(id));
+          }
         }
-      }
-    ]);
+      ]
+    );
   };
 
-  const reserveHandler = id => {
+  const collectHandler = () => {
+    const id = selectedProduct.id;
+    Alert.alert(
+      'Är produkten hämtad?',
+      'Genom att klicka här bekräftar du att produkten är hämtad. Den kommer då försvinna från det aktiva förrådet och hamna i ditt Gett Igen förråd.',
+      [
+        { text: 'Nej', style: 'default' },
+        {
+          text: 'Ja, flytta den',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(productsActions.changeProductStatus(id, 'hämtad'));
+          }
+        }
+      ]
+    );
+  };
+
+  const toggleIsReadyHandle = () => {
+    const id = selectedProduct.id;
+    setIsToggled(prevState => !prevState);
+    let status = selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
+    dispatch(productsActions.changeProductStatus(id, status));
+    navigation.navigate('ProductsOverview');
+  };
+
+  const reserveHandler = () => {
+    const id = selectedProduct.id;
     var firstDay = new Date();
     const oneWeekFromNow = new Date(
       firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
@@ -81,59 +117,32 @@ const ProductDetailScreen = props => {
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.image }} />
-      {hasEditPermission ? (
+
+      {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
+      {hasEditPermission && !isPickedUp ? (
         <View style={styles.actions}>
+          {/* Delete button */}
           <ButtonIcon
             icon="delete"
             color={Colors.warning}
-            onSelect={deleteHandler.bind(this, selectedProduct.id)}
+            onSelect={deleteHandler.bind(this)}
           />
-          {/* Show 'redo/bearbetas' button only if the product is not reserved */}
-          {selectedProduct.status === 'reserverad' ? null : (
+          {isReserved ? (
+            //Show 'hämtas/hämtad' button only if the product is reserved
+            <ButtonToggle
+              icon="star"
+              title="byt till hämtad"
+              onSelect={collectHandler.bind(this)}
+            />
+          ) : (
+            //else show 'redo/bearbetas' button
             <ButtonToggle
               isToggled={isToggled}
-              icon={selectedProduct.status === 'redo' ? 'hammer' : ''}
-              title={`byt till ${
-                selectedProduct.status === 'redo' ? 'bearbetas' : 'redo'
-              }`}
-              onSelect={() => {
-                setIsToggled(prevState => !prevState);
-                let status =
-                  selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
-                dispatch(
-                  productsActions.changeProductStatus(
-                    selectedProduct.id,
-                    status
-                  )
-                );
-                navigation.navigate('ProductsOverview');
-              }}
+              icon={isReady ? 'hammer' : ''}
+              title={`byt till ${isReady ? 'bearbetas' : 'redo'}`}
+              onSelect={toggleIsReadyHandle.bind(this)}
             />
           )}
-          {/* Show 'hämtas/hämtad' button only if the product is reserved */}
-          {selectedProduct.status === 'reserverad' ? (
-            <ButtonToggle
-              isToggled={isToggled}
-              icon={selectedProduct.status === 'hämtad' ? 'star' : ''}
-              title={`byt till ${
-                selectedProduct.status === 'hämtad' ? 'inte hämtad' : 'hämtad'
-              }`}
-              onSelect={() => {
-                setIsToggled(prevState => !prevState);
-                let status =
-                  selectedProduct.status === 'hämtad'
-                    ? 'inte hämtad'
-                    : 'hämtad';
-                dispatch(
-                  productsActions.changeProductStatus(
-                    selectedProduct.id,
-                    status
-                  )
-                );
-                navigation.navigate('ProductsOverview');
-              }}
-            />
-          ) : null}
           <ButtonIcon
             icon="pen"
             color={Colors.neutral}
@@ -143,12 +152,14 @@ const ProductDetailScreen = props => {
           />
         </View>
       ) : null}
+
+      {/* Buttons to always show, but to have conditional type based on   */}
       <View style={styles.toggles}>
         <Button
           mode="contained"
           compact={true}
           color={Colors.primary}
-          disabled={selectedProduct.status === 'reserverad'}
+          disabled={isReserved || isPickedUp} //disable/enable base on true/false of these params
           style={{
             width: '60%',
             alignSelf: 'center',
@@ -160,22 +171,24 @@ const ProductDetailScreen = props => {
             fontSize: 12
           }}
           compact={true}
-          onPress={reserveHandler.bind(this, selectedProduct.id)}
+          onPress={reserveHandler.bind(this)}
         >
-          {selectedProduct.status === 'reserverad'
+          {isPickedUp
+            ? 'hämtad'
+            : isReserved
             ? `reserverad till ${shorterDate}`
             : 'reservera'}
         </Button>
       </View>
+
+      {/* Information about the product */}
       <Text style={styles.description}>
         Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
       </Text>
       <Text style={styles.description}>(lista)</Text>
-
       <Text style={styles.price}>
         {selectedProduct.price ? selectedProduct.price : 0} kr
       </Text>
-
       <Text style={styles.description}>{selectedProduct.description}</Text>
     </ScrollView>
   );
