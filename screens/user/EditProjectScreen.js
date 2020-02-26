@@ -13,11 +13,12 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderButton from '../../components/UI/HeaderButton';
+import Input from '../../components/UI/Input';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
 import * as categoriesActions from '../../store/actions/categories';
-import * as projectsActions from '../../store/actions/projects';
+import * as productsActions from '../../store/actions/products';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -44,11 +45,11 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const EditProjectScreen = props => {
+const EditProductScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const projId = props.route.params ? props.route.params.projectId : null;
+  const prodId = props.route.params ? props.route.params.productId : null;
 
   //Categories
   const categories = useSelector(state => state.categories.categories);
@@ -78,24 +79,30 @@ const EditProjectScreen = props => {
     loadCategories();
   }, [dispatch, loadCategories]);
 
-  //Find project
-  const editedProject = useSelector(state =>
-    state.projects.userProjects.find(proj => proj.id === projId)
+  //Find product
+  const editedProduct = useSelector(state =>
+    state.products.userProducts.find(prod => prod.id === prodId)
   );
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      title: editedProject ? editedProject.title : '',
-      image: editedProject ? editedProject.image : '',
-      description: editedProject ? editedProject.description : ''
+      categoryName: editedProduct ? editedProduct.categoryName : '',
+      title: editedProduct ? editedProduct.title : '',
+      image: editedProduct ? editedProduct.image : '',
+      description: editedProduct ? editedProduct.description : '',
+      price: editedProduct ? editedProduct.price : '',
+      status: editedProduct ? editedProduct.status : ''
     },
     inputValidities: {
-      title: editedProject ? true : false,
-      image: editedProject ? true : false,
-      description: editedProject ? true : false
+      categoryName: editedProduct ? true : false,
+      title: editedProduct ? true : false,
+      image: editedProduct ? true : false,
+      description: editedProduct ? true : false,
+      price: editedProduct ? true : false,
+      status: editedProduct ? true : false
     },
-    formIsValid: editedProject ? true : false
+    formIsValid: editedProduct ? true : false
   });
 
   useEffect(() => {
@@ -114,21 +121,27 @@ const EditProjectScreen = props => {
     setError(null);
     setIsLoading(true);
     try {
-      if (editedProject) {
+      if (editedProduct) {
         await dispatch(
-          projectsActions.updateProject(
-            projId,
+          productsActions.updateProduct(
+            prodId,
+            formState.inputValues.categoryName,
             formState.inputValues.title,
             formState.inputValues.description,
-            formState.inputValues.image
+            +formState.inputValues.price,
+            formState.inputValues.image,
+            formState.inputValues.status
           )
         );
       } else {
         await dispatch(
-          projectsActions.createProject(
+          productsActions.createProduct(
+            formState.inputValues.categoryName,
             formState.inputValues.title,
             formState.inputValues.description,
-            formState.inputValues.image
+            +formState.inputValues.price,
+            formState.inputValues.image,
+            formState.inputValues.status
           )
         );
       }
@@ -138,7 +151,7 @@ const EditProjectScreen = props => {
     }
 
     setIsLoading(false);
-  }, [dispatch, projId, formState]);
+  }, [dispatch, prodId, formState]);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -191,6 +204,28 @@ const EditProjectScreen = props => {
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
           />
+          {/* <View style={styles.formControl}>
+            <Text style={styles.label}>Status</Text>
+            <Picker
+              selectedValue={formState.inputValues.status}
+              onValueChange={textChangeHandler.bind(this, 'status')}
+            >
+              <Picker.Item key={1} label={'Redo för hämtning'} value={'redo'} />
+              <Picker.Item
+                key={2}
+                label={'Under bearbetning'}
+                value={'bearbetas'}
+              />
+              <Picker.Item key={3} label={'Reserverad'} value={'reserverad'} />
+            </Picker>
+            {!formState.inputValues.status ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>
+                  Välj vad som bäst beskriver produktens status
+                </Text>
+              </View>
+            ) : null}
+          </View> */}
           <View style={styles.formControl}>
             <Text style={styles.label}>Titel</Text>
             <TextInput
@@ -205,6 +240,27 @@ const EditProjectScreen = props => {
             {!formState.inputValues.title ? (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Skriv in en titel</Text>
+              </View>
+            ) : null}
+          </View>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Pris</Text>
+            <Text style={styles.subLabel}>
+              Om du lägger upp som företag, ange pris inklusive moms
+            </Text>
+            <TextInput
+              style={styles.input}
+              value={formState.inputValues.price.toString()}
+              onChangeText={textChangeHandler.bind(this, 'price')}
+              keyboardType="number-pad"
+              autoCorrect={false}
+              returnKeyType="next"
+            />
+            {!formState.inputValues.price ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>
+                  Lägg in ett pris (det kan vara 0)
+                </Text>
               </View>
             ) : null}
           </View>
@@ -225,6 +281,26 @@ const EditProjectScreen = props => {
               </View>
             ) : null}
           </View>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Kategori</Text>
+            <Picker
+              selectedValue={formState.inputValues.categoryName}
+              onValueChange={textChangeHandler.bind(this, 'categoryName')}
+            >
+              {categories.map(category => (
+                <Picker.Item
+                  key={category.categoryName}
+                  label={category.categoryName}
+                  value={category.categoryName.toLowerCase()}
+                />
+              ))}
+            </Picker>
+            {!formState.inputValues.categoryName ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Välj en kategori</Text>
+              </View>
+            ) : null}
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -234,7 +310,7 @@ const EditProjectScreen = props => {
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.projectId ? 'Edit Project' : 'Add Project'
+    headerTitle: routeParams.productId ? 'Edit Product' : 'Add Product'
   };
 };
 
@@ -274,4 +350,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default EditProjectScreen;
+export default EditProductScreen;

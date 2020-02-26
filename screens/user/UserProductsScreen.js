@@ -107,7 +107,7 @@ const UserProductsScreen = props => {
           ></ProductItem>
         )}
       />
-      <AddButton />
+      <AddButton navigation={props.navigation} />
     </View>
   );
 };

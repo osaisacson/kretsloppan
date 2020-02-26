@@ -8,6 +8,7 @@ import ReduxThunk from 'redux-thunk';
 //Reducers
 import categoryReducer from './store/reducers/categories';
 import productsReducer from './store/reducers/products';
+import projectsReducer from './store/reducers/projects';
 import usersReducer from './store/reducers/users';
 import authReducer from './store/reducers/auth';
 
@@ -17,6 +18,7 @@ import AppNavigator from './navigation/AppNavigator';
 const rootReducer = combineReducers({
   categories: categoryReducer,
   products: productsReducer,
+  projects: projectsReducer,
   users: usersReducer,
   auth: authReducer
 });

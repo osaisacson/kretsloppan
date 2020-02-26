@@ -70,7 +70,9 @@ const AddButton = props => {
         }}
       >
         <TouchableHighlight
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('EditProduct');
+          }}
           style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -92,7 +94,9 @@ const AddButton = props => {
         }}
       >
         <TouchableHighlight
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('EditProject');
+          }}
           style={{
             position: 'absolute',
             alignItems: 'center',
