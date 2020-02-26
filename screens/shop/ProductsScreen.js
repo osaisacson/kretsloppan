@@ -16,7 +16,9 @@ const ProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  const products = useSelector(state => state.products.availableProducts);
+  const products = useSelector(
+    state => state.products.availableProducts
+  ).filter(product => product.status === 'redo');
 
   const productsSorted = products.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
