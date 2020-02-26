@@ -26,7 +26,8 @@ export default (state = initialState, action) => {
         action.projectData.image,
         action.projectData.description,
         action.projectData.date,
-        action.projectData.status
+        action.projectData.status,
+        (availableProjects: [])
       );
       return {
         ...state,

@@ -31,7 +31,10 @@ const ProjectItem = props => {
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
           <View>
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={{ uri: props.image }} />
+              <Image
+                style={styles.image}
+                source={{ uri: props.project.image }}
+              />
             </View>
             <View style={styles.details}>
               <Text
@@ -39,7 +42,7 @@ const ProjectItem = props => {
                 ellipsizeMode={'tail'}
                 style={styles.title}
               >
-                {props.title}
+                {props.project.title}
               </Text>
             </View>
           </View>

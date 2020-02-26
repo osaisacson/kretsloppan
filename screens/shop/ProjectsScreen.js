@@ -94,8 +94,7 @@ const ProjectsScreen = props => {
           keyExtractor={item => item.id}
           renderItem={itemData => (
             <ProjectItem
-              image={itemData.item.image}
-              title={itemData.item.title}
+              project={itemData}
               onSelect={() => {
                 selectItemHandler(
                   itemData.item.id,

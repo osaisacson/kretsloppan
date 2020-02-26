@@ -19,18 +19,27 @@ import ProductsOverviewScreen, {
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
 } from '../screens/shop/ProductDetailScreen';
-import UserOverviewScreen, {
-  screenOptions as userOverviewScreenOptions
-} from '../screens/user/UserOverviewScreen';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions
 } from '../screens/user/EditProductScreen';
+
+import ProjectDetailScreen, {
+  screenOptions as projectDetailScreenOptions
+} from '../screens/shop/ProjectDetailScreen';
+import EditProjectScreen, {
+  screenOptions as editProjectScreenOptions
+} from '../screens/user/EditProjectScreen';
+
+import UserOverviewScreen, {
+  screenOptions as userOverviewScreenOptions
+} from '../screens/user/UserOverviewScreen';
 import EditUserScreen, {
   screenOptions as editUserScreenOptions
 } from '../screens/user/EditUserScreen';
 import AuthScreen, {
   screenOptions as authScreenOptions
 } from '../screens/user/AuthScreen';
+
 //Actions
 import * as authActions from '../store/actions/auth';
 //Constants
@@ -66,9 +75,20 @@ export const ProductsNavigator = () => {
         options={productDetailScreenOptions}
       />
       <ProductsStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
         name="EditProduct"
         component={EditProductScreen}
         options={editProductScreenOptions}
+      />
+
+      <ProductsStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
       />
     </ProductsStackNavigator.Navigator>
   );
