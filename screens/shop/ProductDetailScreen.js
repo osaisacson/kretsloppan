@@ -88,6 +88,7 @@ const ProductDetailScreen = props => {
             color={Colors.warning}
             onSelect={deleteHandler.bind(this, selectedProduct.id)}
           />
+          {/* Show 'redo/bearbetas' button only if the product is not reserved */}
           {selectedProduct.status === 'reserverad' ? null : (
             <ButtonToggle
               isToggled={isToggled}
@@ -109,6 +110,30 @@ const ProductDetailScreen = props => {
               }}
             />
           )}
+          {/* Show 'hämtas/hämtad' button only if the product is reserved */}
+          {selectedProduct.status === 'reserverad' ? (
+            <ButtonToggle
+              isToggled={isToggled}
+              icon={selectedProduct.status === 'hämtad' ? 'star' : ''}
+              title={`byt till ${
+                selectedProduct.status === 'hämtad' ? 'inte hämtad' : 'hämtad'
+              }`}
+              onSelect={() => {
+                setIsToggled(prevState => !prevState);
+                let status =
+                  selectedProduct.status === 'hämtad'
+                    ? 'inte hämtad'
+                    : 'hämtad';
+                dispatch(
+                  productsActions.changeProductStatus(
+                    selectedProduct.id,
+                    status
+                  )
+                );
+                navigation.navigate('ProductsOverview');
+              }}
+            />
+          ) : null}
           <ButtonIcon
             icon="pen"
             color={Colors.neutral}

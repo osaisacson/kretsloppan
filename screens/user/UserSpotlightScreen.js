@@ -42,7 +42,7 @@ const UserSpotlightScreen = props => {
 
   //Gets all done (given) products
   const doneUserProducts = userProductsSorted.filter(
-    product => product.status === 'gettIgen'
+    product => product.status === 'hämtad'
   );
 
   const dispatch = useDispatch();

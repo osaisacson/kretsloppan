@@ -26,39 +26,76 @@ export const fetchProducts = () => {
       const resData = await response.json();
       const loadedProducts = [];
 
-      const reservationExpiryDate = new Date(resData.reservedUntil);
-
       for (const key in resData) {
-        //TBD: make this work: when loading products check if the reservedUntil date has passed, and in that case set the status to 'redo' and reset the reservedUntil to ''
+        const reservationExpiryDate = new Date(resData[key].reservedUntil);
 
-        // console.log(
-        //   'fetchProducts returns reservationExpiryDate:',
-        //   reservationExpiryDate
-        // );
+        //If reservationExpiryDate is a date and it is less than today...
+        if (
+          reservationExpiryDate instanceof Date &&
+          reservationExpiryDate <= new Date()
+        ) {
+          const categoryName = resData[key].categoryName;
+          const title = resData[key].title;
+          const description = resData[key].description;
+          const price = resData[key].price;
+          const image = resData[key].image;
+          const reservedUntil = `expired ${resData[key].reservedUntil}`;
+          const status =
+            resData[key].status === 'reserverad' ? 'redo' : resData[key].status; //If the passed status is 'reserved' then update that product's status to 'redo'
+          console.log('EXPIRED');
+          console.log('title:', title);
+          console.log('reservationExpiryDate:', reservationExpiryDate);
+          console.log('thats a date?:', reservationExpiryDate instanceof Date);
+          console.log('original status:', resData[key].status);
+          console.log('new status:', status);
+          console.log('original reservedUntil:', resData[key].reservedUntil);
+          console.log('sets new reservedUntil as:', reservedUntil);
+          console.log('----------');
 
-        // //If there is no reservationExpiryDate or it is less than today then update that product's reservedUntil to ''
-        // const reservedUntil =
-        //   !reservationExpiryDate || reservationExpiryDate <= new Date()
-        //     ? ''
-        //     : resData[key].reservedUntil;
+          const token = getState().auth.token;
+          const response = await fetch(
+            `https://egnahemsfabriken.firebaseio.com/products/${key}.json?auth=${token}`,
+            {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                categoryName,
+                title,
+                description,
+                price,
+                image,
+                status,
+                reservedUntil
+              })
+            }
+          );
 
-        // console.log(
-        //   'fetchProducts original resData[key].reservedUntil:',
-        //   resData[key].reservedUntil
-        // );
-        // console.log('fetchProducts sets reservedUntil as:', reservedUntil);
-        // //If there is no reservationExpiryDate or it is less than today AND the passed status is 'reserved' then update that product's status to 'redo'
-        // const status =
-        //   (!reservationExpiryDate || reservationExpiryDate <= new Date()) &&
-        //   resData[key].status === 'reserved'
-        //     ? 'redo'
-        //     : resData[key].status;
+          if (!response.ok) {
+            console.log(
+              'actions/products.js fetchProducts: Something went wrong in attempting to update expired products'
+            );
+            const errorResData = await response.json();
+            const errorId = errorResData.error.message;
+            let message = errorId;
+            throw new Error(message);
+          }
 
-        // console.log(
-        //   'fetchProducts original resData[key].status:',
-        //   resData[key].status
-        // );
-        // console.log('fetchProducts sets status as:', status);
+          dispatch({
+            type: UPDATE_PRODUCT,
+            pid: key,
+            productData: {
+              categoryName,
+              title,
+              description,
+              price,
+              image,
+              status,
+              reservedUntil
+            }
+          });
+        }
 
         loadedProducts.push(
           new Product(
@@ -205,7 +242,7 @@ export const createProduct = (
                 ownerId: userId,
                 date: date,
                 status,
-                reservedUntil
+                reservedUntil: reservedUntilInitial
               }
             });
             // console.log('END------------');
