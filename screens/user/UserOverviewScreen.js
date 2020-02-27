@@ -13,7 +13,7 @@ import UserProductsScreen from './UserProductsScreen';
 
 //Constants
 import Colors from '../../constants/Colors';
-import Margins from '../../constants/Margins';
+import Styles from '../../constants/Styles';
 
 const UserOverviewScreen = props => {
   const Tab = createMaterialTopTabNavigator();
@@ -84,7 +84,7 @@ const UserOverviewScreen = props => {
 const styles = StyleSheet.create({
   userInfoSection: {
     marginTop: -6,
-    paddingLeft: Margins.leftRight
+    paddingLeft: Styles.leftRight
   },
   title: {
     fontWeight: 'bold',
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: Margins.leftRight
+    marginRight: Styles.leftRight
   },
   paragraph: {
     fontWeight: 'bold',
