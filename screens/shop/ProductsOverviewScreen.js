@@ -41,7 +41,7 @@ const ProductsOverviewScreen = props => {
                 color={color}
                 size={27}
                 style={{
-                  marginLeft: -20
+                  marginLeft: -35
                 }}
               />
             )
@@ -57,7 +57,7 @@ const ProductsOverviewScreen = props => {
                 color={color}
                 size={27}
                 style={{
-                  marginLeft: -60
+                  marginLeft: -70
                 }}
               />
             )
@@ -75,7 +75,7 @@ const ProductsOverviewScreen = props => {
                 color={color}
                 size={27}
                 style={{
-                  marginRight: -60
+                  marginRight: -70
                 }}
               />
             )
@@ -92,7 +92,7 @@ const ProductsOverviewScreen = props => {
                 color={color}
                 size={27}
                 style={{
-                  marginRight: -20
+                  marginRight: -35
                 }}
               />
             )

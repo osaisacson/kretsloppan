@@ -94,19 +94,16 @@ const ProductsScreen = props => {
           data={productsSorted}
           keyExtractor={item => item.id}
           renderItem={itemData => (
-            console.log(itemData),
-            (
-              <ProductItem
-                itemData={itemData.item}
-                onSelect={() => {
-                  selectItemHandler(
-                    itemData.item.id,
-                    itemData.item.ownerId,
-                    itemData.item.title
-                  );
-                }}
-              ></ProductItem>
-            )
+            <ProductItem
+              itemData={itemData.item}
+              onSelect={() => {
+                selectItemHandler(
+                  itemData.item.id,
+                  itemData.item.ownerId,
+                  itemData.item.title
+                );
+              }}
+            ></ProductItem>
           )}
         />
       </View>
