@@ -16,39 +16,39 @@ import { Button } from 'react-native-paper';
 import ProductsOverviewScreen, {
   screenOptions as productsOverviewScreenOptions
 } from '../screens/shop/ProductsOverviewScreen';
+
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
 } from '../screens/shop/ProductDetailScreen';
-import EditProductScreen, {
-  screenOptions as editProductScreenOptions
-} from '../screens/user/EditProductScreen';
-
 import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions
 } from '../screens/shop/ProjectDetailScreen';
+
+import EditProductScreen, {
+  screenOptions as editProductScreenOptions
+} from '../screens/user/EditProductScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions
 } from '../screens/user/EditProjectScreen';
 
-import UserOverviewScreen, {
-  screenOptions as userOverviewScreenOptions
-} from '../screens/user/UserOverviewScreen';
 import EditUserScreen, {
   screenOptions as editUserScreenOptions
 } from '../screens/user/EditUserScreen';
+
 import AuthScreen, {
   screenOptions as authScreenOptions
 } from '../screens/user/AuthScreen';
 
 //Actions
 import * as authActions from '../store/actions/auth';
+
 //Constants
 import Colors from '../constants/Colors';
 
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-    height: 80
+    height: 70
   },
   headerTitleStyle: {
     fontFamily: 'roboto-bold'
@@ -84,42 +84,17 @@ export const ProductsNavigator = () => {
         component={EditProductScreen}
         options={editProductScreenOptions}
       />
-
       <ProductsStackNavigator.Screen
         name="EditProject"
         component={EditProjectScreen}
         options={editProjectScreenOptions}
       />
-    </ProductsStackNavigator.Navigator>
-  );
-};
-
-const AdminStackNavigator = createStackNavigator();
-
-export const AdminNavigator = () => {
-  return (
-    <AdminStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <AdminStackNavigator.Screen
-        name="UserOverview"
-        component={UserOverviewScreen}
-        options={userOverviewScreenOptions}
-      />
-      <AdminStackNavigator.Screen
-        name="ProductDetail"
-        component={ProductDetailScreen}
-        options={productDetailScreenOptions}
-      />
-      <AdminStackNavigator.Screen
-        name="EditProduct"
-        component={EditProductScreen}
-        options={editProductScreenOptions}
-      />
-      <AdminStackNavigator.Screen
+      <ProductsStackNavigator.Screen
         name="EditUser"
         component={EditUserScreen}
         options={editUserScreenOptions}
       />
-    </AdminStackNavigator.Navigator>
+    </ProductsStackNavigator.Navigator>
   );
 };
 
@@ -136,7 +111,6 @@ export const ShopNavigator = () => {
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
               <UserAvatar
                 actionOnPress={() => {
-                  props.navigation.navigate('Admin');
                   props.navigation.closeDrawer();
                 }}
               />
@@ -177,20 +151,6 @@ export const ShopNavigator = () => {
           drawerIcon: props => (
             <Ionicons
               name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
-              size={23}
-              color={props.color}
-            />
-          )
-        }}
-      />
-
-      <ShopDrawerNavigator.Screen
-        name="Admin"
-        component={AdminNavigator}
-        options={{
-          drawerIcon: props => (
-            <Ionicons
-              name={Platform.OS === 'android' ? 'md-settings' : 'ios-settings'}
               size={23}
               color={props.color}
             />

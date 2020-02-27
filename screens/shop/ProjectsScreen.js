@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
-import ContentHeader from '../../components/UI/ContentHeader';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
-import ProjectItem from '../../components/UI/ProjectItem';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 //Constants
@@ -17,9 +16,10 @@ const ProjectsScreen = props => {
   const [error, setError] = useState();
   const projects = useSelector(state => state.projects.availableProjects);
 
-  const projectsSorted = projects.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
+  const projectsSorted = projects.sort((a, b) => {
+    return a.projectId > b.projectId ? 1 : -1;
   });
+
   const dispatch = useDispatch();
 
   const loadProjects = useCallback(async () => {
@@ -47,14 +47,6 @@ const ProjectsScreen = props => {
     });
   }, [dispatch, loadProjects]);
 
-  const selectItemHandler = (id, ownerId, title) => {
-    props.navigation.navigate('ProjectDetail', {
-      projectId: id,
-      ownerId: ownerId,
-      projectTitle: title
-    });
-  };
-
   if (error) {
     return (
       <View style={styles.centered}>
@@ -78,39 +70,15 @@ const ProjectsScreen = props => {
 
   return (
     <View>
-      <View>
-        <ContentHeader
-          title={'Projekt'}
-          subTitle={'Projekt som håller på att byggas med återbruk'}
-          indicator={projectsSorted.length ? projectsSorted.length : 0}
-        />
-        <FlatList
-          horizontal={false}
-          numColumns={1}
-          onRefresh={loadProjects}
-          refreshing={isRefreshing}
-          data={projectsSorted}
-          keyExtractor={item => item.id}
-          renderItem={itemData => (
-            <ProjectItem
-              project={itemData.item}
-              onSelect={() => {
-                selectItemHandler(
-                  itemData.item.id,
-                  itemData.item.ownerId,
-                  itemData.item.title
-                );
-              }}
-            ></ProjectItem>
-          )}
-        />
-      </View>
+      <HorizontalScroll
+        isProject={true}
+        title={'Projekt'}
+        subTitle={'Projekt som håller på att byggas med återbruk'}
+        scrollData={projectsSorted}
+        navigation={props.navigation}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-});
 
 export default ProjectsScreen;

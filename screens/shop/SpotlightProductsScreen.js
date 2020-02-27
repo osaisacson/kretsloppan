@@ -1,28 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 //Components
-import {
-  View,
-  Text,
-  ScrollView,
-  Button,
-  Alert,
-  StyleSheet
-} from 'react-native';
-import AddButton from '../../components/UI/AddButton';
+import { View, Text, ScrollView, Button, StyleSheet } from 'react-native';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
+
 //Actions
 import * as productsActions from '../../store/actions/products';
+
 //Constants
 import Colors from '../../constants/Colors';
+import ProjectsScreen from './ProjectsScreen';
 
 const SpotlightProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+
+  //Get products
   const products = useSelector(state => state.products.availableProducts);
+
   const productsSorted = products.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
@@ -118,6 +117,7 @@ const SpotlightProductsScreen = props => {
   return (
     <View>
       <ScrollView>
+        <ProjectsScreen navigation={props.navigation} />
         <HorizontalScroll
           title={'nya tillskott'}
           subTitle={'Det fräschaste, det nyaste'}

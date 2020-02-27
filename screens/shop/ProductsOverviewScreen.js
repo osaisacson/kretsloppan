@@ -26,6 +26,7 @@ const ProductsOverviewScreen = props => {
       <Tab.Navigator
         initialRouteName="Spotlight"
         labeled={false}
+        shifting={true}
         activeColor="#f0edf6"
         inactiveColor="#3e2465"
         barStyle={{ backgroundColor: 'rgba(127,63,191,.9)' }}
@@ -84,6 +85,7 @@ const ProductsOverviewScreen = props => {
           name="Min Sida"
           component={UserSpotlightScreen}
           options={{
+            tabBarBadge: 4,
             tabBarIcon: ({ color }) => (
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}

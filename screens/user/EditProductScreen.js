@@ -47,7 +47,7 @@ const EditProductScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const prodId = props.route.params ? props.route.params.productId : null;
+  const prodId = props.route.params ? props.route.params.detailId : null;
 
   //Projects
   const userProjects = useSelector(state => state.projects.userProjects);
@@ -287,7 +287,7 @@ const EditProductScreen = props => {
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.productId ? 'Edit Product' : 'Add Product'
+    headerTitle: routeParams.detailId ? 'Edit Product' : 'Add Product'
   };
 };
 

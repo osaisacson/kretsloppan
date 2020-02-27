@@ -47,7 +47,7 @@ const EditProjectScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const projId = props.route.params ? props.route.params.projectId : null;
+  const projId = props.route.params ? props.route.params.detailId : null;
 
   //Find project
   const editedProject = useSelector(state =>

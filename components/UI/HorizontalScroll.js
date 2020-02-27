@@ -1,91 +1,64 @@
 import React from 'react';
 //Components
-import { Button, ScrollView, View, StyleSheet } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import ProductItem from '../../components/UI/ProductItem';
+import ProjectItem from '../../components/UI/ProjectItem';
 import EmptyState from '../../components/UI/EmptyState';
-import ContentHeader from '../../components/UI/ContentHeader';
-//Constants
-import Colors from '../../constants/Colors';
-//Actions
+import HeaderTwo from './HeaderTwo';
 
 const HorizontalScroll = props => {
+  let RenderedItem = ProductItem; //By default sets the rendered item to be product
+  let detailRoute = 'ProductDetail';
+  if (props.isProject) {
+    RenderedItem = ProjectItem;
+    detailRoute = 'ProjectDetail';
+  }
+
   const scrollData = props.scrollData;
 
   const selectItemHandler = (id, ownerId, title) => {
-    props.navigation.navigate('ProductDetail', {
-      productId: id,
+    props.navigation.navigate(detailRoute, {
+      detailId: id,
       ownerId: ownerId,
-      productTitle: title
+      detailTitle: title
     });
-  };
-
-  //Delete a product. Show an alert first.
-  const deleteHandler = id => {
-    Alert.alert(
-      'Är du säker?',
-      'Vill du verkligen radera den här produkten? Du kan inte gå tillbaka.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Ja',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(productsActions.deleteProduct(id));
-          }
-        }
-      ]
-    );
-  };
-
-  //Navigate to the edit screen and forward the product id
-  const editProductHandler = id => {
-    props.navigation.navigate('EditProduct', { productId: id });
   };
 
   return (
     <ScrollView scrollEventThrottle={16}>
-      <ContentHeader
+      <HeaderTwo
         title={props.title}
         subTitle={props.subTitle}
         extraSubTitle={props.extraSubTitle}
         indicator={scrollData.length ? scrollData.length : 0}
+        showNotificationBadge={props.showNotificationBadge}
       />
-      <View style={styles.horizontalScrollContainer}>
+      <View
+        style={{
+          flex: 1,
+          height: props.isProject ? 130 : 200
+        }}
+      >
         {scrollData.length ? (
-          <View style={styles.horizontalScroll}>
+          <View
+            style={{
+              height: props.isProject ? 130 : 200,
+              marginTop: 20
+            }}
+          >
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
-              {scrollData.map(prod => (
-                <ProductItem
-                  key={prod.id}
+              {scrollData.map(item => (
+                <RenderedItem
+                  itemData={item}
+                  key={item.id}
                   isHorizontal={true}
-                  image={prod.image}
-                  title={prod.title}
-                  status={prod.status ? prod.status : 'redo'}
-                  price={prod.price ? prod.price : 0}
                   onSelect={() => {
-                    selectItemHandler(prod.id, prod.ownerId, prod.title);
+                    selectItemHandler(item.id, item.ownerId, item.title);
                   }}
-                >
-                  {props.showEditAndDelete ? (
-                    <>
-                      <Button
-                        color={Colors.primary}
-                        title="Edit"
-                        onPress={() => {
-                          editProductHandler(prod.id);
-                        }}
-                      />
-                      <Button
-                        color={Colors.primary}
-                        title="Delete"
-                        onPress={deleteHandler.bind(this, prod.id)}
-                      />
-                    </>
-                  ) : null}
-                </ProductItem>
+                ></RenderedItem>
               ))}
             </ScrollView>
           </View>
@@ -96,17 +69,5 @@ const HorizontalScroll = props => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  horizontalScrollContainer: {
-    flex: 1,
-    height: 200
-  },
-  horizontalScroll: {
-    height: 200,
-    marginTop: 20
-  },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-});
 
 export default HorizontalScroll;

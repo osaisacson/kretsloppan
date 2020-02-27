@@ -11,9 +11,8 @@ import {
   Alert,
   FlatList
 } from 'react-native';
-import ContentHeader from '../../components/UI/ContentHeader';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import UsedItem from '../../components/UI/UsedItem';
-import UserAvatar from '../../components/UI/UserAvatar';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 //Constants
 import Colors from '../../constants/Colors';
@@ -21,7 +20,7 @@ import Colors from '../../constants/Colors';
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectDetailScreen = props => {
-  const projectId = props.route.params.projectId;
+  const projectId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
   const loggedInUserId = useSelector(state => state.auth.userId);
@@ -42,14 +41,14 @@ const ProjectDetailScreen = props => {
   const hasEditPermission = ownerId === loggedInUserId;
 
   const editProjectHandler = id => {
-    navigation.navigate('EditProject', { projectId: id });
+    navigation.navigate('EditProject', { detailId: id });
   };
 
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
-      productId: id,
+      detailId: id,
       ownerId: ownerId,
-      productTitle: title
+      detailTitle: title
     });
   };
 
@@ -96,7 +95,7 @@ const ProjectDetailScreen = props => {
 
       {/* Information about the project */}
       <Text style={styles.description}>{selectedProject.slogan}</Text>
-      <ContentHeader
+      <HeaderTwo
         title={'Återbruk'}
         subTitle={'Återbruk som är använt/kommer användas i projektet'}
         indicator={associatedProducts.length ? associatedProducts.length : 0}
@@ -130,16 +129,7 @@ const ProjectDetailScreen = props => {
 //Sets/overrides the default navigation options in the ShopNavigator
 export const screenOptions = navData => {
   return {
-    headerTitle: navData.route.params.projectTitle,
-    headerRight: () => (
-      <UserAvatar
-        style={{ paddingTop: 10 }}
-        showBadge={true}
-        actionOnPress={() => {
-          navData.navigation.navigate('Admin');
-        }}
-      />
-    )
+    headerTitle: navData.route.params.detailTitle
   };
 };
 

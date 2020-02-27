@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
-import UserAvatar from '../../components/UI/UserAvatar';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
 import { Button } from 'react-native-paper';
@@ -13,7 +12,7 @@ import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
 
 const ProductDetailScreen = props => {
-  const productId = props.route.params.productId;
+  const productId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
   const loggedInUserId = useSelector(state => state.auth.userId);
@@ -29,7 +28,7 @@ const ProductDetailScreen = props => {
   const hasEditPermission = ownerId === loggedInUserId;
 
   const editProductHandler = id => {
-    navigation.navigate('EditProduct', { productId: id });
+    navigation.navigate('EditProduct', { detailId: id });
   };
 
   const isReady = selectedProduct.status === 'redo';
@@ -197,16 +196,7 @@ const ProductDetailScreen = props => {
 //Sets/overrides the default navigation options in the ShopNavigator
 export const screenOptions = navData => {
   return {
-    headerTitle: navData.route.params.productTitle,
-    headerRight: () => (
-      <UserAvatar
-        style={{ paddingTop: 10 }}
-        showBadge={true}
-        actionOnPress={() => {
-          navData.navigation.navigate('Admin');
-        }}
-      />
-    )
+    headerTitle: navData.route.params.detailTitle
   };
 };
 

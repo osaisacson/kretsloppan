@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 //Components
-import { View, Text, ScrollView, Button, StyleSheet } from 'react-native';
-import AddButton from '../../components/UI/AddButton';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
+
 //Actions
 import * as productsActions from '../../store/actions/products';
+
 //Constants
 import Colors from '../../constants/Colors';
+import Styles from '../../constants/Styles';
 
 const UserSpotlightScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +48,11 @@ const UserSpotlightScreen = props => {
   const doneUserProducts = userProductsSorted.filter(
     product => product.status === 'hämtad'
   );
+
+  //Navigate to the edit screen and forward the product id
+  const editUserHandler = id => {
+    props.navigation.navigate('EditUser');
+  };
 
   const dispatch = useDispatch();
 
@@ -117,12 +126,47 @@ const UserSpotlightScreen = props => {
   return (
     <View>
       <ScrollView>
+        <View style={styles.userInfoSection}>
+          <Button mode="text" onPress={editUserHandler}>
+            <Avatar.Image
+              style={{
+                color: '#fff',
+                backgroundColor: '#fff',
+                borderWidth: '0.3',
+                borderColor: '#000'
+              }}
+              source={require('./../../assets/egnahemsfabriken.png')}
+              size={50}
+            />
+          </Button>
+          <Title style={styles.title}>Egnahemsfabriken</Title>
+          <View style={styles.row}>
+            <View style={styles.section}>
+              <Paragraph style={[styles.paragraph, styles.caption]}>
+                202
+              </Paragraph>
+              <Caption style={styles.caption}>Upplagda</Caption>
+            </View>
+            <View style={styles.section}>
+              <Paragraph style={[styles.paragraph, styles.caption]}>
+                159
+              </Paragraph>
+              <Caption style={styles.caption}>Hämtade</Caption>
+            </View>
+            <View style={styles.section}>
+              <Paragraph style={[styles.paragraph, styles.caption]}>
+                22
+              </Paragraph>
+              <Caption style={styles.caption}>Projekt</Caption>
+            </View>
+          </View>
+        </View>
         <HorizontalScroll
           title={'Reserverade av mig'}
           subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
           extraSubTitle={'Notera att reservationen upphör gälla efter en vecka'}
           scrollData={bookedUserProducts}
-          showEditAndDelete={true}
+          showNotificationBadge={true}
           navigation={props.navigation}
         />
         <HorizontalScroll
@@ -131,21 +175,19 @@ const UserSpotlightScreen = props => {
             "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
           }
           scrollData={inProgressUserProducts}
-          showEditAndDelete={true}
+          showNotificationBadge={true}
           navigation={props.navigation}
         />
         <HorizontalScroll
           title={'Efterlysta produkter'}
           subTitle={'Mina efterlysningar'}
           scrollData={wantedUserProducts}
-          showEditAndDelete={true}
           navigation={props.navigation}
         />
         <HorizontalScroll
           title={'Gett igen'}
           subTitle={'Arkiv av återbruk du gett igen'}
           scrollData={doneUserProducts}
-          showEditAndDelete={true}
           navigation={props.navigation}
         />
       </ScrollView>
@@ -154,7 +196,33 @@ const UserSpotlightScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  userInfoSection: {
+    marginTop: -6,
+    paddingLeft: Styles.leftRight
+  },
+  title: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: -6
+  },
+  row: {
+    marginTop: 0,
+    marginBottom: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: Styles.leftRight
+  },
+  paragraph: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginRight: 3
+  }
 });
 
 export default UserSpotlightScreen;

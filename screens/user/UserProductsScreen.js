@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import AddButton from '../../components/UI/AddButton';
-import ContentHeader from '../../components/UI/ContentHeader';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
@@ -50,9 +50,9 @@ const UserProductsScreen = props => {
 
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
-      productId: id,
+      detailId: id,
       ownerId: ownerId,
-      productTitle: title
+      detailTitle: title
     });
   };
 
@@ -79,24 +79,21 @@ const UserProductsScreen = props => {
 
   return (
     <View>
-      <ContentHeader
+      <HeaderTwo
         title={'Aktivt Förråd'}
         subTitle={'Allt som är redo att hämtas'}
         indicator={productsSorted.length ? productsSorted.length : 0}
       />
       <FlatList
         horizontal={false}
-        numColumns={2}
+        numColumns={3}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
         data={productsSorted}
         keyExtractor={item => item.id}
         renderItem={itemData => (
           <ProductItem
-            image={itemData.item.image}
-            title={itemData.item.title}
-            status={itemData.item.status ? itemData.item.status : 'redo'}
-            price={itemData.item.price ? itemData.item.price : 0}
+            itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(
                 itemData.item.id,
