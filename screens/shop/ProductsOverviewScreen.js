@@ -28,7 +28,7 @@ const ProductsOverviewScreen = props => {
         labeled={false}
         activeColor="#f0edf6"
         inactiveColor="#3e2465"
-        barStyle={{ backgroundColor: 'rgba(127,63,191,.6)' }}
+        barStyle={{ backgroundColor: 'rgba(127,63,191,.9)' }}
       >
         <Tab.Screen
           name="Spotlight"

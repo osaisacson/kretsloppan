@@ -53,7 +53,7 @@ const AddButton = props => {
       style={{
         position: 'absolute',
         zIndex: 99,
-        bottom: 20,
+        bottom: 5,
         alignSelf: 'center',
         shadowColor: 'black',
         shadowOpacity: 0.15,
