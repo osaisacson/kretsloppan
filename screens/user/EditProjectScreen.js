@@ -16,7 +16,6 @@ import HeaderButton from '../../components/UI/HeaderButton';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
-import * as categoriesActions from '../../store/actions/categories';
 import * as projectsActions from '../../store/actions/projects';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -49,34 +48,6 @@ const EditProjectScreen = props => {
   const [error, setError] = useState();
 
   const projId = props.route.params ? props.route.params.projectId : null;
-
-  //Categories
-  const categories = useSelector(state => state.categories.categories);
-
-  const loadCategories = useCallback(async () => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      await dispatch(categoriesActions.fetchCategories());
-    } catch (err) {
-      console.log('Cannot fetch categories');
-      setError(err.message);
-    }
-    setIsLoading(false);
-  }, [dispatch, setIsLoading, setError]);
-
-  //Update the menu when there's new data: when the screen focuses (see docs for other options, like onBlur), call loadCategories again
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadCategories);
-
-    return () => {
-      unsubscribe();
-    };
-  }, [loadCategories]);
-
-  useEffect(() => {
-    loadCategories();
-  }, [dispatch, loadCategories]);
 
   //Find project
   const editedProject = useSelector(state =>

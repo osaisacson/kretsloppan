@@ -49,7 +49,7 @@ const EditProductScreen = props => {
 
   const prodId = props.route.params ? props.route.params.productId : null;
 
-  //Categories & Projects
+  //Projects
   const userProjects = useSelector(state => state.projects.userProjects);
 
   //Find product
