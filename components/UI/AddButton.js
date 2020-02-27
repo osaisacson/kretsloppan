@@ -52,7 +52,8 @@ const AddButton = props => {
     <View
       style={{
         position: 'absolute',
-        bottom: 10,
+        zIndex: 99,
+        bottom: 20,
         alignSelf: 'center',
         shadowColor: 'black',
         shadowOpacity: 0.15,

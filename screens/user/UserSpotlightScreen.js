@@ -149,7 +149,6 @@ const UserSpotlightScreen = props => {
           navigation={props.navigation}
         />
       </ScrollView>
-      <AddButton navigation={props.navigation} />
     </View>
   );
 };

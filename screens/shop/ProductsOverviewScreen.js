@@ -1,38 +1,103 @@
 import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import UserAvatar from '../../components/UI/UserAvatar';
 import HeaderButton from '../../components/UI/HeaderButton';
 
 //Screens
+import AddButton from '../../components/UI/AddButton';
 import SpotlightProductsScreen from './SpotlightProductsScreen';
 import ProductsScreen from './ProductsScreen';
 import ProjectsScreen from './ProjectsScreen';
+import UserSpotlightScreen from './../user/UserSpotlightScreen';
+import UserProductsScreen from './../user/UserProductsScreen';
 
 //Constants
 import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialBottomTabNavigator();
 
   return (
-    <Tab.Navigator
-      initialRouteName="Spotlight"
-      tabBarOptions={{
-        labelStyle: {
-          fontSize: 15,
-          fontFamily: 'roboto-regular',
-          textTransform: 'capitalize'
-        },
-        indicatorStyle: { backgroundColor: Colors.primary }
-      }}
-    >
-      <Tab.Screen name="Spotlight" component={SpotlightProductsScreen} />
-      <Tab.Screen name="Förråd" component={ProductsScreen} />
-      <Tab.Screen name="Projekt" component={ProjectsScreen} />
-    </Tab.Navigator>
+    <>
+      <AddButton navigation={props.navigation} />
+      <Tab.Navigator
+        initialRouteName="Spotlight"
+        labeled={false}
+        activeColor="#f0edf6"
+        inactiveColor="#3e2465"
+        barStyle={{ backgroundColor: 'rgba(127,63,191,.6)' }}
+      >
+        <Tab.Screen
+          name="Spotlight"
+          component={SpotlightProductsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
+                color={color}
+                size={27}
+                style={{
+                  marginLeft: -20
+                }}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Förråd"
+          component={ProductsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
+                color={color}
+                size={27}
+                style={{
+                  marginLeft: -60
+                }}
+              />
+            )
+          }}
+        />
+
+        {/* <Tab.Screen name="Projekt" component={ProjectsScreen} /> */}
+        <Tab.Screen
+          name="Mitt Förråd"
+          component={UserProductsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
+                color={color}
+                size={27}
+                style={{
+                  marginRight: -60
+                }}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Min Sida"
+          component={UserSpotlightScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
+                color={color}
+                size={27}
+                style={{
+                  marginRight: -20
+                }}
+              />
+            )
+          }}
+        />
+      </Tab.Navigator>
+    </>
   );
 };
 
@@ -49,14 +114,6 @@ export const screenOptions = navData => {
           }}
         />
       </HeaderButtons>
-    ),
-    headerRight: () => (
-      <UserAvatar
-        showBadge={true}
-        actionOnPress={() => {
-          navData.navigation.navigate('Admin');
-        }}
-      />
     )
   };
 };

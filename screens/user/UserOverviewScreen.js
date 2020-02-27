@@ -1,22 +1,23 @@
 import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+// import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 //Components
 import { StyleSheet, View, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+// import AddButton from '../../components/UI/AddButton';
 import HeaderButton from '../../components/UI/HeaderButton';
 import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
 
 //Screens
-import UserSpotlightScreen from './UserSpotlightScreen';
-import UserProductsScreen from './UserProductsScreen';
+// import UserSpotlightScreen from './UserSpotlightScreen';
+// import UserProductsScreen from './UserProductsScreen';
 
 //Constants
 import Colors from '../../constants/Colors';
 import Styles from '../../constants/Styles';
 
 const UserOverviewScreen = props => {
-  const Tab = createMaterialTopTabNavigator();
+  // const Tab = createMaterialBottomTabNavigator();
 
   //Navigate to the edit screen and forward the product id
   const editUserHandler = id => {
@@ -58,7 +59,7 @@ const UserOverviewScreen = props => {
           </View>
         </View>
       </View>
-      <Tab.Navigator
+      {/* <Tab.Navigator
         initialRouteName="Min Sida"
         tabBarOptions={{
           tabStyle: {
@@ -73,10 +74,10 @@ const UserOverviewScreen = props => {
           inactiveTintColor: '#a4a9ac',
           indicatorStyle: { backgroundColor: '#fff' }
         }}
-      >
-        <Tab.Screen name="Min Sida" component={UserSpotlightScreen} />
-        <Tab.Screen name="Mitt Förråd" component={UserProductsScreen} />
-      </Tab.Navigator>
+      > */}
+      {/* <Tab.Screen name="Min Sida" component={UserSpotlightScreen} />
+        <Tab.Screen name="Mitt Förråd" component={UserProductsScreen} /> */}
+      {/* </Tab.Navigator> */}
     </>
   );
 };

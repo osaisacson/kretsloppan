@@ -145,7 +145,6 @@ const SpotlightProductsScreen = props => {
           navigation={props.navigation}
         />
       </ScrollView>
-      <AddButton navigation={props.navigation} />
     </View>
   );
 };

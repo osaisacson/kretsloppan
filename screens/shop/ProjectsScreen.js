@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
-import AddButton from '../../components/UI/AddButton';
 import ContentHeader from '../../components/UI/ContentHeader';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
@@ -106,7 +105,6 @@ const ProjectsScreen = props => {
           )}
         />
       </View>
-      <AddButton navigation={props.navigation} />
     </View>
   );
 };
