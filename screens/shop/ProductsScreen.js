@@ -6,6 +6,7 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
+import { MaterialIcons } from '@expo/vector-icons';
 //Actions
 import * as productsActions from '../../store/actions/products';
 //Constants
@@ -84,6 +85,13 @@ const ProductsScreen = props => {
         <HeaderTwo
           title={'Aktivt Förråd'}
           subTitle={'Allt som är redo att hämtas'}
+          icon={
+            <MaterialIcons
+              name="file-download"
+              size={20}
+              style={{ marginRight: 5 }}
+            />
+          }
           indicator={productsSorted.length ? productsSorted.length : 0}
         />
         <FlatList

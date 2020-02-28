@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
-import AddButton from '../../components/UI/AddButton';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
+import { MaterialIcons } from '@expo/vector-icons';
+
 //Actions
 import * as productsActions from '../../store/actions/products';
 //Constants
@@ -91,6 +92,13 @@ const UserProductsScreen = props => {
         title={'Ditt upplagda återbruk'}
         subTitle={
           'Allt som är redo att hämtas, håller på att bearbetas, eller har blivit hämtat.'
+        }
+        icon={
+          <MaterialIcons
+            name="file-upload"
+            size={20}
+            style={{ marginRight: 5 }}
+          />
         }
         indicator={productsSorted.length ? productsSorted.length : 0}
       />

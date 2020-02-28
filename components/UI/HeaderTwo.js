@@ -6,6 +6,7 @@ const HeaderTwo = props => {
   return (
     <View>
       <View style={styles.contentHeaderContainer}>
+        {props.icon ? props.icon : null}
         <Text style={styles.contentHeader}>{props.title}</Text>
         {props.showNotificationBadge ? (
           <Badge style={{ marginBottom: 5, fontWeight: 'bold' }}>

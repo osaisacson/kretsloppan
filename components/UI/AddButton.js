@@ -1,6 +1,12 @@
 import React from 'react';
 import { Animated, TouchableHighlight, View } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome';
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  Entypo
+} from '@expo/vector-icons';
+
 //Constants
 import Colors from '../../constants/Colors';
 
@@ -83,7 +89,7 @@ const AddButton = props => {
             backgroundColor: Colors.primary
           }}
         >
-          <Icon name="rocket" size={16} color={'#F8F8F8'} />
+          <MaterialIcons name="file-upload" size={25} color={'#F8F8F8'} />
         </TouchableHighlight>
       </Animated.View>
       <Animated.View
@@ -108,7 +114,7 @@ const AddButton = props => {
             backgroundColor: Colors.primary
           }}
         >
-          <Icon name="home" size={16} color={'#F8F8F8'} />
+          <Entypo name="address" size={20} color={'#F8F8F8'} />
         </TouchableHighlight>
       </Animated.View>
       <Animated.View
@@ -131,7 +137,11 @@ const AddButton = props => {
             backgroundColor: Colors.primary
           }}
         >
-          <Icon name="archive" size={16} color={'#F8F8F8'} />
+          <MaterialCommunityIcons
+            name="comment-plus"
+            size={21}
+            color={'#F8F8F8'}
+          />
         </TouchableHighlight>
       </Animated.View>
       <TouchableHighlight

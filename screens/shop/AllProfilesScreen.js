@@ -6,6 +6,8 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
+import { FontAwesome } from '@expo/vector-icons';
+
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
 //Constants
@@ -83,6 +85,13 @@ const AllProfilesScreen = props => {
         <HeaderTwo
           title={'Användare'}
           subTitle={'Allt som har skapat sig en profil'}
+          icon={
+            <FontAwesome
+              name="users"
+              size={18}
+              style={{ marginRight: 5, paddingBottom: 2 }}
+            />
+          }
           indicator={profilesSorted.length ? profilesSorted.length : 0}
         />
         <FlatList
