@@ -12,7 +12,7 @@ import * as productsActions from '../../store/actions/products';
 
 //Constants
 import Colors from '../../constants/Colors';
-import ProjectsScreen from './ProjectsScreen';
+import ProjectsScroll from '../../components/UI/ProjectsScroll';
 
 const SpotlightProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -117,7 +117,7 @@ const SpotlightProductsScreen = props => {
   return (
     <View>
       <ScrollView>
-        <ProjectsScreen navigation={props.navigation} />
+        <ProjectsScroll navigation={props.navigation} />
         <HorizontalScroll
           title={'nya tillskott'}
           subTitle={'Det fräschaste, det nyaste'}

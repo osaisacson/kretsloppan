@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { View, Text, Button, StyleSheet } from 'react-native';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import EmptyState from '../../components/UI/EmptyState';
-import Loader from '../../components/UI/Loader';
+import { View, Text, Button } from 'react-native';
+import HorizontalScroll from './HorizontalScroll';
+import EmptyState from './EmptyState';
+import Loader from './Loader';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 //Constants
 import Colors from '../../constants/Colors';
 
-const ProjectsScreen = props => {
+const ProjectsScroll = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -81,4 +81,4 @@ const ProjectsScreen = props => {
   );
 };
 
-export default ProjectsScreen;
+export default ProjectsScroll;

@@ -3,21 +3,17 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  Platform,
   Alert,
   Text,
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { Button } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
-import HeaderButton from '../../components/UI/HeaderButton';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
-import * as usersActions from '../../store/actions/users';
-//Constants
-import Colors from '../../constants/Colors';
+import * as profilesActions from '../../store/actions/profiles';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -44,28 +40,29 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const EditUserScreen = props => {
+const AddProfileScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  //Find user
-  const editedUser = useSelector(state => state.users.currentUser);
-  const userId = editedUser.id;
+  //Profiles
+  const authUserId = useSelector(state => state.auth.userId);
 
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      userName: editedUser ? editedUser.userName : '',
-      email: editedUser ? editedUser.email : '',
-      password: editedUser ? editedUser.password : ''
+      profileName: '',
+      email: '',
+      phone: '',
+      image: ''
     },
     inputValidities: {
-      userName: editedUser ? true : false,
-      email: editedUser ? true : false,
-      password: editedUser ? true : false
+      profileName: false,
+      email: false,
+      phone: false,
+      image: false
     },
-    formIsValid: editedUser ? true : false
+    formIsValid: false
   });
 
   useEffect(() => {
@@ -76,55 +73,30 @@ const EditUserScreen = props => {
 
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert('Wrong input!', 'Please check the errors in the form.', [
-        { text: 'Okay' }
+      Alert.alert('Fel input!', 'Verkar som något inte är ifyllt korrekt', [
+        { text: 'Ok, fine' }
       ]);
       return;
     }
     setError(null);
     setIsLoading(true);
     try {
-      if (editedUser) {
-        await dispatch(
-          usersActions.updateUser(
-            userId,
-            formState.inputValues.userName,
-            formState.inputValues.email,
-            formState.inputValues.password
-          )
-        );
-      } else {
-        await dispatch(
-          usersActions.createUser(
-            formState.inputValues.userName,
-            formState.inputValues.email,
-            formState.inputValues.password
-          )
-        );
-      }
-      props.navigation.goBack();
+      await dispatch(
+        profilesActions.createProfile(
+          authUserId,
+          formState.inputValues.profileName,
+          formState.inputValues.email,
+          formState.inputValues.phone,
+          formState.inputValues.image
+        )
+      );
+      console.log('saved successfully');
+      props.navigation.navigate('ProductsOverview');
     } catch (err) {
       setError(err.message);
     }
-
     setIsLoading(false);
-  }, [dispatch, userId, formState]);
-
-  useEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item
-            title="Save"
-            iconName={
-              Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
-            }
-            onPress={submitHandler}
-          />
-        </HeaderButtons>
-      )
-    });
-  }, [submitHandler]);
+  }, [dispatch, authUserId, formState]);
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
@@ -157,20 +129,42 @@ const EditUserScreen = props => {
     >
       <ScrollView>
         <View style={styles.form}>
+          <ImagePicker
+            onImageTaken={textChangeHandler.bind(this, 'image')}
+            passedImage={formState.inputValues.image}
+          />
+
           <View style={styles.formControl}>
             <Text style={styles.label}>Användarnamn</Text>
             <TextInput
               style={styles.input}
-              value={formState.inputValues.userName}
-              onChangeText={textChangeHandler.bind(this, 'userName')}
+              value={formState.inputValues.profileName}
+              onChangeText={textChangeHandler.bind(this, 'profileName')}
               keyboardType="default"
-              autoCapitalize="sentences"
+              autoCapitalize="none"
               autoCorrect={false}
               returnKeyType="next"
             />
-            {!formState.inputValues.userName ? (
+            {!formState.inputValues.profileName ? (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Skriv in ett användarnamn</Text>
+              </View>
+            ) : null}
+          </View>
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Telefon</Text>
+
+            <TextInput
+              style={styles.input}
+              value={formState.inputValues.phone.toString()}
+              onChangeText={textChangeHandler.bind(this, 'phone')}
+              keyboardType="number-pad"
+              autoCorrect={false}
+              returnKeyType="next"
+            />
+            {!formState.inputValues.phone ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Lägg in ett kontaktnummer</Text>
               </View>
             ) : null}
           </View>
@@ -181,6 +175,7 @@ const EditUserScreen = props => {
               value={formState.inputValues.email}
               onChangeText={textChangeHandler.bind(this, 'email')}
               keyboardType="email-address"
+              required
               email
               autoCapitalize="none"
               autoCorrect={false}
@@ -192,26 +187,26 @@ const EditUserScreen = props => {
               </View>
             ) : null}
           </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Lösenord</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.password}
-              secureTextEntry
-              minLength={5}
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={textChangeHandler.bind(this, 'password')}
-              returnKeyType="done"
-            />
-
-            {!formState.inputValues.password ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Skriv in ditt lösenord</Text>
-              </View>
-            ) : null}
-          </View>
         </View>
+        <Button
+          color={'#666'}
+          mode="contained"
+          style={{
+            marginTop: 50,
+            marginBottom: 50,
+            width: '60%',
+            alignSelf: 'center'
+          }}
+          labelStyle={{
+            paddingTop: 2,
+            fontFamily: 'bebas-neue-bold',
+            fontSize: 14
+          }}
+          compact={true}
+          onPress={submitHandler}
+        >
+          Spara profil
+        </Button>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -220,7 +215,7 @@ const EditUserScreen = props => {
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.userId ? 'Edit User' : 'Add User'
+    headerTitle: 'Skapa din profil'
   };
 };
 
@@ -240,6 +235,9 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-bold',
     marginVertical: 8
   },
+  subLabel: {
+    fontFamily: 'roboto-light-italic'
+  },
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
@@ -257,4 +255,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default EditUserScreen;
+export default AddProfileScreen;

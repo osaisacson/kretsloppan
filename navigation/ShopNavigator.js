@@ -31,9 +31,11 @@ import EditProjectScreen, {
   screenOptions as editProjectScreenOptions
 } from '../screens/user/EditProjectScreen';
 
-import EditUserScreen, {
-  screenOptions as editUserScreenOptions
-} from '../screens/user/EditUserScreen';
+import EditProfileScreen, {
+  screenOptions as editProfileScreenOptions
+} from '../screens/user/EditProfileScreen';
+
+import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
 
 import AuthScreen, {
   screenOptions as authScreenOptions
@@ -90,11 +92,30 @@ export const ProductsNavigator = () => {
         options={editProjectScreenOptions}
       />
       <ProductsStackNavigator.Screen
-        name="EditUser"
-        component={EditUserScreen}
-        options={editUserScreenOptions}
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={editProfileScreenOptions}
       />
     </ProductsStackNavigator.Navigator>
+  );
+};
+
+const UsersStackNavigator = createStackNavigator();
+
+export const UsersNavigator = () => {
+  return (
+    <UsersStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <UsersStackNavigator.Screen
+        name="AllProfiles"
+        component={AllProfilesScreen}
+        options={productsOverviewScreenOptions}
+      />
+      <UsersStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+    </UsersStackNavigator.Navigator>
   );
 };
 
@@ -147,6 +168,19 @@ export const ShopNavigator = () => {
       <ShopDrawerNavigator.Screen
         name="Products"
         component={ProductsNavigator}
+        options={{
+          drawerIcon: props => (
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
+              size={23}
+              color={props.color}
+            />
+          )
+        }}
+      />
+      <ShopDrawerNavigator.Screen
+        name="Users"
+        component={UsersNavigator}
         options={{
           drawerIcon: props => (
             <Ionicons

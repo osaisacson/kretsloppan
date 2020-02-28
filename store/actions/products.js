@@ -157,28 +157,10 @@ export const createProduct = (
   image,
   projectId
 ) => {
-  // console.log('---------Actions > products.js > createProduct');
-  // console.log('-received original params: ');
-  // console.log('categoryName: ', categoryName);
-  // console.log('title: ', title);
-  // console.log('description: ', description);
-  // console.log('price: ', price);
-  // console.log(
-  //   'image: ',
-  //   image && image.length > 100
-  //     ? 'passed image base64 as expected'
-  //     : 'WARNING: no image base64 passed'
-  // );
   return (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
-    // console.log('-set constants: ');
-    // console.log('token: ', token);
-    // console.log('userId: ', userId);
-    // console.log('date: ', date);
-
-    //First upload the base64 image
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
       {
@@ -193,10 +175,6 @@ export const createProduct = (
       )
       .then(res => res.json())
       .then(parsedRes => {
-        // console.log(
-        //   'passed parsedRes before doing fetch to firebase realtime database of products: ',
-        //   parsedRes
-        // );
         const productData = {
           categoryName,
           title,
@@ -209,10 +187,6 @@ export const createProduct = (
           reservedUntil: '',
           projectId: projectId ? projectId : ''
         };
-        // console.log(
-        //   'productData we are trying to pass to the realtime database: ',
-        //   productData
-        // );
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
           `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
@@ -229,11 +203,6 @@ export const createProduct = (
           )
           .then(finalRes => finalRes.json())
           .then(finalResParsed => {
-            // console.log('FINAL RES IS BEING CALLED: ', finalResParsed);
-            // console.log(
-            //   'finalResParsed from end of createProduct: ',
-            //   finalResParsed
-            // );
             dispatch({
               type: CREATE_PRODUCT,
               productData: {
@@ -250,12 +219,12 @@ export const createProduct = (
                 projectId: projectId ? projectId : ''
               }
             });
-            // console.log('END------------');
           });
       });
   };
 };
 
+//TBD: update so can upload new image, see example above
 export const updateProduct = (
   id,
   categoryName,

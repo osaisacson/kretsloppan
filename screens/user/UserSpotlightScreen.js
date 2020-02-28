@@ -17,14 +17,17 @@ import Styles from '../../constants/Styles';
 
 const UserSpotlightScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
   const userProducts = useSelector(state => state.products.userProducts);
-  //TBD: user profile data
-  // const userDetails = useSelector(state => state.auth);
-  // const userDetails = useSelector(state => state.users.currentUser);
+  //Get profiles, return only the one which matches the logged in id
+  const loggedInUserId = useSelector(state => state.auth.userId);
+  const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
+    profile => profile.profileId === loggedInUserId
+  );
 
+  //Current profile and sorted products
+  const currentProfile = profilesArray[0];
   const userProductsSorted = userProducts.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
@@ -50,21 +53,19 @@ const UserSpotlightScreen = props => {
   );
 
   //Navigate to the edit screen and forward the product id
-  const editUserHandler = id => {
-    props.navigation.navigate('EditUser');
+  const editProfileHandler = id => {
+    props.navigation.navigate('EditProfile');
   };
 
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(async () => {
     setError(null);
-    setIsRefreshing(true);
     try {
       await dispatch(productsActions.fetchProducts());
     } catch (err) {
       setError(err.message);
     }
-    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
@@ -127,7 +128,7 @@ const UserSpotlightScreen = props => {
     <View>
       <ScrollView>
         <View style={styles.userInfoSection}>
-          <Button mode="text" onPress={editUserHandler}>
+          <Button mode="text" onPress={editProfileHandler}>
             <Avatar.Image
               style={{
                 color: '#fff',
@@ -135,11 +136,11 @@ const UserSpotlightScreen = props => {
                 borderWidth: '0.3',
                 borderColor: '#000'
               }}
-              source={require('./../../assets/egnahemsfabriken.png')}
+              source={{ uri: currentProfile.image }}
               size={50}
             />
           </Button>
-          <Title style={styles.title}>Egnahemsfabriken</Title>
+          <Title style={styles.title}>{currentProfile.profileName}</Title>
           <View style={styles.row}>
             <View style={styles.section}>
               <Paragraph style={[styles.paragraph, styles.caption]}>

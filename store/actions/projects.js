@@ -71,26 +71,10 @@ export const deleteProject = projectId => {
 };
 
 export const createProject = (title, slogan, image, status) => {
-  // console.log('---------Actions > projects.js > createProject');
-  // console.log('-received original params: ');
-  // console.log('categoryName: ', categoryName);
-  // console.log('title: ', title);
-  // console.log('slogan: ', slogan);
-  // console.log('price: ', price);
-  // console.log(
-  //   'image: ',
-  //   image && image.length > 100
-  //     ? 'passed image base64 as expected'
-  //     : 'WARNING: no image base64 passed'
-  // );
   return (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
-    // console.log('-set constants: ');
-    // console.log('token: ', token);
-    // console.log('userId: ', userId);
-    // console.log('date: ', date);
 
     //First upload the base64 image
     fetch(
@@ -107,10 +91,6 @@ export const createProject = (title, slogan, image, status) => {
       )
       .then(res => res.json())
       .then(parsedRes => {
-        // console.log(
-        //   'passed parsedRes before doing fetch to firebase realtime database of projects: ',
-        //   parsedRes
-        // );
         const projectData = {
           title,
           slogan,
@@ -119,10 +99,7 @@ export const createProject = (title, slogan, image, status) => {
           date: date.toISOString(),
           status
         };
-        // console.log(
-        //   'projectData we are trying to pass to the realtime database: ',
-        //   projectData
-        // );
+
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
           `https://egnahemsfabriken.firebaseio.com/projects.json?auth=${token}`,
@@ -139,11 +116,6 @@ export const createProject = (title, slogan, image, status) => {
           )
           .then(finalRes => finalRes.json())
           .then(finalResParsed => {
-            // console.log('FINAL RES IS BEING CALLED: ', finalResParsed);
-            // console.log(
-            //   'finalResParsed from end of createProject: ',
-            //   finalResParsed
-            // );
             dispatch({
               type: CREATE_PROJECT,
               projectData: {
@@ -156,12 +128,12 @@ export const createProject = (title, slogan, image, status) => {
                 status
               }
             });
-            // console.log('END------------');
           });
       });
   };
 };
 
+//TBD: update so can upload new image, see example above
 export const updateProject = (id, title, slogan, image) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;

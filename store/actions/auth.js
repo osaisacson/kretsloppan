@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
+
 import ENV from '../../env';
 
 let timer;
@@ -45,7 +46,7 @@ export const signup = (email, password) => {
     }
 
     const resData = await response.json();
-    console.log(resData);
+    console.log('signed up user data: ', resData);
     dispatch(
       authenticate(
         resData.localId,
@@ -95,7 +96,7 @@ export const login = (email, password) => {
     }
 
     const resData = await response.json();
-    console.log(resData);
+    console.log('logged in user data: ', resData);
     dispatch(
       authenticate(
         resData.localId,
