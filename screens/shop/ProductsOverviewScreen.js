@@ -7,7 +7,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
-import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 
 //Screens
@@ -33,15 +32,6 @@ const ProductsOverviewScreen = props => {
   const currentProfile = useSelector(
     state => state.profiles.allProfiles
   ).filter(prof => prof.profileId === loggedInUserId);
-
-  // //Get profiles, return only the one which matches the logged in id
-  // const loggedInUserId = useSelector(state => state.auth.userId);
-  // const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
-  //   profile => profile.profileId === loggedInUserId
-  // );
-
-  // //Current profile and sorted products
-  // const currentProfile = profilesArray[0];
 
   const dispatch = useDispatch();
 
@@ -85,102 +75,92 @@ const ProductsOverviewScreen = props => {
     return <Loader />;
   }
 
+  //If we don't have a profile, navigate to a screen where we add a profile.
   if (!isLoading && currentProfile.length === 0) {
-    console.log('allProfiles from ProductsOverviewScreen: ', allProfiles),
-      console.log(
-        'loggedInUserId from ProductsOverviewScreen: ',
-        loggedInUserId
-      );
-
-    console.log('currentProfile from ProductsOverviewScreen: ', currentProfile);
     return <AddProfileScreen navigation={props.navigation} />;
   }
 
   //Get down to business
-
   const Tab = createMaterialBottomTabNavigator();
 
   return (
-    console.log('allProfiles from ProductsOverviewScreen: ', allProfiles),
-    (
-      <>
-        <AddButton navigation={props.navigation} />
-        <Tab.Navigator
-          initialRouteName="Spotlight"
-          labeled={false}
-          shifting={true}
-          activeColor="#f0edf6"
-          inactiveColor="#3e2465"
-          barStyle={{ backgroundColor: 'rgba(127,63,191,.9)' }}
-        >
-          <Tab.Screen
-            name="Spotlight"
-            component={SpotlightProductsScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons
-                  name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
-                  color={color}
-                  size={27}
-                  style={{
-                    marginLeft: -35
-                  }}
-                />
-              )
-            }}
-          />
-          <Tab.Screen
-            name="Förråd"
-            component={ProductsScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons
-                  name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
-                  color={color}
-                  size={27}
-                  style={{
-                    marginLeft: -70
-                  }}
-                />
-              )
-            }}
-          />
-          <Tab.Screen
-            name="Mitt Förråd"
-            component={UserProductsScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons
-                  name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
-                  color={color}
-                  size={27}
-                  style={{
-                    marginRight: -70
-                  }}
-                />
-              )
-            }}
-          />
-          <Tab.Screen
-            name="Min Sida"
-            component={UserSpotlightScreen}
-            options={{
-              tabBarBadge: 4,
-              tabBarIcon: ({ color }) => (
-                <Ionicons
-                  name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
-                  color={color}
-                  size={27}
-                  style={{
-                    marginRight: -35
-                  }}
-                />
-              )
-            }}
-          />
-        </Tab.Navigator>
-      </>
-    )
+    <>
+      <AddButton navigation={props.navigation} />
+      <Tab.Navigator
+        initialRouteName="Spotlight"
+        labeled={false}
+        shifting={true}
+        activeColor="#f0edf6"
+        inactiveColor="#3e2465"
+        barStyle={{ backgroundColor: 'rgba(127,63,191,.9)' }}
+      >
+        <Tab.Screen
+          name="Spotlight"
+          component={SpotlightProductsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
+                color={color}
+                size={27}
+                style={{
+                  marginLeft: -35
+                }}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Förråd"
+          component={ProductsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
+                color={color}
+                size={27}
+                style={{
+                  marginLeft: -70
+                }}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Mitt Förråd"
+          component={UserProductsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
+                color={color}
+                size={27}
+                style={{
+                  marginRight: -70
+                }}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Min Sida"
+          component={UserSpotlightScreen}
+          options={{
+            tabBarBadge: 4,
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
+                color={color}
+                size={27}
+                style={{
+                  marginRight: -35
+                }}
+              />
+            )
+          }}
+        />
+      </Tab.Navigator>
+    </>
   );
 };
 

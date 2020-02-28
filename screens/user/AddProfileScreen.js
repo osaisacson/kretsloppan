@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+//Component
 import {
   View,
   ScrollView,
@@ -9,9 +12,10 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { Button } from 'react-native-paper';
-import { useSelector, useDispatch } from 'react-redux';
+import HeaderOne from '../../components/UI/HeaderOne';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
+
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
 
@@ -128,10 +132,12 @@ const AddProfileScreen = props => {
       keyboardVerticalOffset={100}
     >
       <ScrollView>
+        <HeaderOne title="skapa profil" />
         <View style={styles.form}>
           <ImagePicker
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
+            imagePrompt="Välj en profilbild"
           />
 
           <View style={styles.formControl}>
@@ -183,7 +189,9 @@ const AddProfileScreen = props => {
             />
             {!formState.inputValues.email ? (
               <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Skriv in din email</Text>
+                <Text style={styles.errorText}>
+                  Skriv in den email köpare kan kontakta dig på
+                </Text>
               </View>
             ) : null}
           </View>
@@ -192,8 +200,8 @@ const AddProfileScreen = props => {
           color={'#666'}
           mode="contained"
           style={{
-            marginTop: 50,
-            marginBottom: 50,
+            marginTop: 30,
+            marginBottom: 80,
             width: '60%',
             alignSelf: 'center'
           }}
@@ -213,9 +221,8 @@ const AddProfileScreen = props => {
 };
 
 export const screenOptions = navData => {
-  const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: 'Skapa din profil'
+    headerTitle: ''
   };
 };
 

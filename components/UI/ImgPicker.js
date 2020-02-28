@@ -53,7 +53,7 @@ const ImgPicker = props => {
         )}
       </View>
       <Button
-        title="Ta en bild"
+        title={props.imagePrompt ? props.imagePrompt : 'Välj en bild'}
         color={Colors.primary}
         onPress={takeImageHandler}
       />
