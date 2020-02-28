@@ -2,13 +2,15 @@ import React from 'react';
 //Components
 import {
   View,
-  Text,
   Image,
+  Text,
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform
 } from 'react-native';
+//Constants
+import Styles from '../../constants/Styles';
 
 const ProjectItem = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -21,25 +23,80 @@ const ProjectItem = props => {
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
-    <View style={styles.project}>
-      <View style={styles.touchable}>
+    <View style={props.userProject ? styles.largeProject : styles.project}>
+      <View
+        style={props.userProject ? styles.largeTouchable : styles.touchable}
+      >
         <TouchableCmp onPress={props.onSelect} useForeground>
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
           <View>
-            <View style={styles.imageContainer}>
+            <View
+              style={
+                props.userProject
+                  ? styles.largeImageContainer
+                  : styles.imageContainer
+              }
+            >
               <Image
-                style={styles.image}
+                style={props.userProject ? styles.largeImage : styles.image}
                 source={{ uri: props.itemData.image }}
               />
             </View>
           </View>
         </TouchableCmp>
       </View>
+      <Text style={styles.title}>{props.itemData.title} </Text>
+      {props.userProject ? (
+        <Text style={styles.slogan}>{props.itemData.slogan} </Text>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  //For large projects
+  largeProject: {
+    height: 250,
+    width: 370,
+    marginLeft: 10,
+    borderWidth: 0.5,
+    borderRadius: Styles.borderRadius,
+    borderColor: '#ddd',
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  largeTouchable: {
+    height: 250,
+    width: 370,
+    borderRadius: Styles.borderRadius,
+    overflow: 'hidden'
+  },
+  largeImageContainer: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    borderRadius: Styles.borderRadius,
+    overflow: 'hidden' //To make sure any child (in this case the image) cannot overlap what we set in the image container
+  },
+  largeImage: {
+    borderRadius: Styles.borderRadius,
+    width: '100%',
+    height: '100%'
+  },
+  slogan: {
+    fontFamily: 'roboto-light-italic',
+    fontSize: 13,
+    textAlign: 'center'
+  },
+  //For round projects
+  title: {
+    marginTop: 5,
+    fontFamily: 'roboto-bold-italic',
+    fontSize: 13,
+    textAlign: 'center',
+    alignSelf: 'center'
+  },
   project: {
     height: 80,
     width: 80,
@@ -59,7 +116,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 100 / 2,
-    overflow: 'hidden' //To make sure any child (in this case the image) cannot overlap what we set in the image container
+    overflow: 'hidden'
   },
   image: {
     width: '100%',
@@ -68,12 +125,6 @@ const styles = StyleSheet.create({
   },
   details: {
     color: '#000'
-  },
-  title: {
-    width: '90%',
-    fontFamily: 'roboto-regular',
-    fontSize: 16,
-    marginLeft: 8
   }
 });
 

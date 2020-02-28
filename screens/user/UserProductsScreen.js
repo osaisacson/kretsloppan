@@ -16,11 +16,19 @@ const UserProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  const products = useSelector(state => state.products.userProducts);
 
+  //Get user products with the status 'redo' or 'bearbetas'
+  const userProducts = useSelector(state => state.products.userProducts);
+  const products = userProducts.filter(
+    product =>
+      product.status === 'redo' ||
+      product.status === 'bearbetas' ||
+      product.status === 'hämtad'
+  );
   const productsSorted = products.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
+
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(async () => {
@@ -80,8 +88,10 @@ const UserProductsScreen = props => {
   return (
     <View>
       <HeaderTwo
-        title={'Aktivt Förråd'}
-        subTitle={'Allt som är redo att hämtas'}
+        title={'Ditt upplagda återbruk'}
+        subTitle={
+          'Allt som är redo att hämtas, håller på att bearbetas, eller har blivit hämtat.'
+        }
         indicator={productsSorted.length ? productsSorted.length : 0}
       />
       <FlatList

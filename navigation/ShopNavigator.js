@@ -8,7 +8,7 @@ import {
 //Components
 import { Platform, SafeAreaView, View } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
 import UserAvatar from '../components/UI/UserAvatar';
 import { Button } from 'react-native-paper';
 
@@ -170,11 +170,7 @@ export const ShopNavigator = () => {
         component={ProductsNavigator}
         options={{
           drawerIcon: props => (
-            <Ionicons
-              name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
-              size={23}
-              color={props.color}
-            />
+            <Entypo name={'tools'} size={23} color={props.color} />
           )
         }}
       />
@@ -183,11 +179,7 @@ export const ShopNavigator = () => {
         component={UsersNavigator}
         options={{
           drawerIcon: props => (
-            <Ionicons
-              name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
-              size={23}
-              color={props.color}
-            />
+            <FontAwesome name={'users'} size={23} color={props.color} />
           )
         }}
       />

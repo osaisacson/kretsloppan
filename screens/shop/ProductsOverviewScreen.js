@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
 //Components
 import { View, Text, Button, StyleSheet } from 'react-native';
@@ -100,7 +100,11 @@ const ProductsOverviewScreen = props => {
           options={{
             tabBarIcon: ({ color }) => (
               <Ionicons
-                name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
+                name={
+                  Platform.OS === 'android'
+                    ? 'md-notifications'
+                    : 'ios-notifications'
+                }
                 color={color}
                 size={27}
                 style={{
@@ -115,8 +119,8 @@ const ProductsOverviewScreen = props => {
           component={ProductsScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
+              <MaterialIcons
+                name={'file-download'}
                 color={color}
                 size={27}
                 style={{
@@ -131,10 +135,10 @@ const ProductsOverviewScreen = props => {
           component={UserProductsScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
+              <MaterialIcons
+                name={'file-upload'}
                 color={color}
-                size={27}
+                size={30}
                 style={{
                   marginRight: -70
                 }}
@@ -148,10 +152,10 @@ const ProductsOverviewScreen = props => {
           options={{
             tabBarBadge: 4,
             tabBarIcon: ({ color }) => (
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
+              <FontAwesome
+                name={'user'}
                 color={color}
-                size={27}
+                size={30}
                 style={{
                   marginRight: -35
                 }}

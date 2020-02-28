@@ -7,6 +7,7 @@ import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
+import ProjectsScroll from '../../components/UI/ProjectsScroll';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
@@ -20,17 +21,28 @@ const UserSpotlightScreen = props => {
   const [error, setError] = useState();
 
   const userProducts = useSelector(state => state.products.userProducts);
+
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector(state => state.auth.userId);
   const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
     profile => profile.profileId === loggedInUserId
   );
 
+  //Get projects, return only the one which matches the logged in id
+  const userProjects = useSelector(
+    state => state.projects.availableProjects
+  ).filter(proj => proj.ownerId === loggedInUserId);
+
   //Current profile and sorted products
   const currentProfile = profilesArray[0];
   const userProductsSorted = userProducts.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
+
+  //Gets all ready products
+  const readyUserProducts = userProductsSorted.filter(
+    product => product.status === 'redo'
+  );
 
   //Gets all booked products
   const bookedUserProducts = userProductsSorted.filter(
@@ -51,6 +63,10 @@ const UserSpotlightScreen = props => {
   const doneUserProducts = userProductsSorted.filter(
     product => product.status === 'hämtad'
   );
+
+  const added = inProgressUserProducts.length + readyUserProducts.length;
+  const collected = doneUserProducts.length;
+  const nrOfProjects = userProjects.length;
 
   //Navigate to the edit screen and forward the product id
   const editProfileHandler = id => {
@@ -144,24 +160,29 @@ const UserSpotlightScreen = props => {
           <View style={styles.row}>
             <View style={styles.section}>
               <Paragraph style={[styles.paragraph, styles.caption]}>
-                202
+                {added ? added : 0}
               </Paragraph>
               <Caption style={styles.caption}>Upplagda</Caption>
             </View>
             <View style={styles.section}>
               <Paragraph style={[styles.paragraph, styles.caption]}>
-                159
+                {collected ? collected : 0}
               </Paragraph>
               <Caption style={styles.caption}>Hämtade</Caption>
             </View>
             <View style={styles.section}>
               <Paragraph style={[styles.paragraph, styles.caption]}>
-                22
+                {nrOfProjects ? nrOfProjects : 0}
               </Paragraph>
               <Caption style={styles.caption}>Projekt</Caption>
             </View>
           </View>
         </View>
+        <ProjectsScroll
+          userProject={true}
+          navigation={props.navigation}
+          title="Projekt du bygger på"
+        />
         <HorizontalScroll
           title={'Reserverade av mig'}
           subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
@@ -183,12 +204,6 @@ const UserSpotlightScreen = props => {
           title={'Efterlysta produkter'}
           subTitle={'Mina efterlysningar'}
           scrollData={wantedUserProducts}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'Gett igen'}
-          subTitle={'Arkiv av återbruk du gett igen'}
-          scrollData={doneUserProducts}
           navigation={props.navigation}
         />
       </ScrollView>

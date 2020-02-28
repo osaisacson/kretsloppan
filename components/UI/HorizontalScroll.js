@@ -9,9 +9,13 @@ import HeaderTwo from './HeaderTwo';
 const HorizontalScroll = props => {
   let RenderedItem = ProductItem; //By default sets the rendered item to be product
   let detailRoute = 'ProductDetail';
+  let scrollHeight = 200;
+
+  //Check if we should render the projectItem instead of productItem
   if (props.isProject) {
     RenderedItem = ProjectItem;
     detailRoute = 'ProjectDetail';
+    scrollHeight = props.userProject ? 350 : 150;
   }
 
   const scrollData = props.scrollData;
@@ -36,13 +40,13 @@ const HorizontalScroll = props => {
       <View
         style={{
           flex: 1,
-          height: props.isProject ? 130 : 200
+          height: scrollHeight
         }}
       >
         {scrollData.length ? (
           <View
             style={{
-              height: props.isProject ? 130 : 200,
+              height: scrollHeight,
               marginTop: 20
             }}
           >
@@ -55,6 +59,7 @@ const HorizontalScroll = props => {
                   itemData={item}
                   key={item.id}
                   isHorizontal={true}
+                  userProject={props.userProject}
                   onSelect={() => {
                     selectItemHandler(item.id, item.ownerId, item.title);
                   }}

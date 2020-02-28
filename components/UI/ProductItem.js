@@ -36,7 +36,9 @@ const ProductItem = props => {
               ...styles.icon,
               backgroundColor: Colors.primary,
               color: '#fff',
-              fontSize: 15
+              fontSize: 20,
+              paddingLeft: 8,
+              paddingRight: 8
             }}
             name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
             size={23}
@@ -53,6 +55,23 @@ const ProductItem = props => {
               marginTop: -10
             }}
             name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+            size={23}
+            color={props.itemData.color}
+          />
+        ) : null}
+        {props.itemData.status === 'hämtad' ? (
+          <Ionicons
+            style={{
+              ...styles.icon,
+              backgroundColor: Colors.completed,
+              color: '#fff',
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingBottom: 0,
+
+              fontSize: 25
+            }}
+            name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
             size={23}
             color={props.itemData.color}
           />

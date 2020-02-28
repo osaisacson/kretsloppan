@@ -14,7 +14,15 @@ const ProjectsScroll = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  const projects = useSelector(state => state.projects.availableProjects);
+
+  let projects = useSelector(state => state.projects.availableProjects);
+
+  if (props.userProject) {
+    const loggedInUserId = useSelector(state => state.auth.userId);
+    projects = useSelector(state => state.projects.availableProjects).filter(
+      proj => proj.ownerId === loggedInUserId
+    );
+  }
 
   const projectsSorted = projects.sort((a, b) => {
     return a.projectId > b.projectId ? 1 : -1;
@@ -72,8 +80,13 @@ const ProjectsScroll = props => {
     <View>
       <HorizontalScroll
         isProject={true}
+        userProject={props.userProject}
         title={'Projekt'}
-        subTitle={'Projekt som håller på att byggas med återbruk'}
+        subTitle={
+          props.title
+            ? props.title
+            : 'Projekt som håller på att byggas med återbruk'
+        }
         scrollData={projectsSorted}
         navigation={props.navigation}
       />
