@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
+import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
-import ProductItem from '../../components/UI/ProductItem';
+import RoundItem from '../../components/UI/RoundItem';
 import { FontAwesome } from '@expo/vector-icons';
+import { Divider } from 'react-native-paper';
 
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
@@ -51,7 +53,7 @@ const AllProfilesScreen = props => {
   }, [dispatch, loadProfiles]);
 
   const selectItemHandler = (id, profileId, title) => {
-    props.navigation.navigate('ProductDetail', {
+    props.navigation.navigate('ProfileDetail', {
       detailId: id,
       ownerId: profileId,
       detailTitle: title
@@ -80,29 +82,37 @@ const AllProfilesScreen = props => {
   }
 
   return (
-    <View>
-      <View>
-        <HeaderTwo
-          title={'Användare'}
-          subTitle={'Allt som har skapat sig en profil'}
-          icon={
-            <FontAwesome
-              name="users"
-              size={18}
-              style={{ marginRight: 5, paddingBottom: 2 }}
-            />
-          }
-          indicator={profilesSorted.length ? profilesSorted.length : 0}
-        />
-        <FlatList
-          horizontal={false}
-          numColumns={3}
-          onRefresh={loadProfiles}
-          refreshing={isRefreshing}
-          data={profilesSorted}
-          keyExtractor={item => item.id}
-          renderItem={itemData => (
-            <ProductItem
+    <SaferArea>
+      <HeaderTwo
+        title={'Användare'}
+        subTitle={'Allt som har skapat sig en profil'}
+        icon={
+          <FontAwesome
+            name="users"
+            size={18}
+            style={{ marginRight: 5, paddingBottom: 2 }}
+          />
+        }
+        indicator={profilesSorted.length ? profilesSorted.length : 0}
+      />
+      <FlatList
+        horizontal={false}
+        numColumns={1}
+        onRefresh={loadProfiles}
+        refreshing={isRefreshing}
+        data={profilesSorted}
+        keyExtractor={item => item.id}
+        renderItem={itemData => (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              padding: 10,
+              borderBottom: 0.2,
+              borderColor: '#666'
+            }}
+          >
+            <RoundItem
               itemData={itemData.item}
               onSelect={() => {
                 selectItemHandler(
@@ -111,11 +121,14 @@ const AllProfilesScreen = props => {
                   itemData.item.title
                 );
               }}
-            ></ProductItem>
-          )}
-        />
-      </View>
-    </View>
+            ></RoundItem>
+            <Text style={{ alignSelf: 'center', paddingLeft: 10 }}>
+              {itemData.item.profileName}
+            </Text>
+          </View>
+        )}
+      />
+    </SaferArea>
   );
 };
 
