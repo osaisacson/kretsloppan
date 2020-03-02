@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Button,
+  StyleSheet,
+  TextInput
+} from 'react-native';
 import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
@@ -20,9 +27,12 @@ const AllProfilesScreen = props => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const profiles = useSelector(state => state.profiles.allProfiles);
+  //Prepare for changing the rendered profiles on search
+  const [renderedProfiles, setRenderedProfiles] = useState(profiles);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const profilesSorted = profiles.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
+  const profilesSorted = renderedProfiles.sort(function(a, b) {
+    return b.profileName - a.profileName;
   });
 
   const dispatch = useDispatch();
@@ -51,6 +61,18 @@ const AllProfilesScreen = props => {
       setIsLoading(false);
     });
   }, [dispatch, loadProfiles]);
+
+  const searchHandler = text => {
+    const newData = renderedProfiles.filter(item => {
+      const itemData = item.profileName
+        ? item.profileName.toUpperCase()
+        : ''.toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    setRenderedProfiles(text.length ? newData : profiles);
+    setSearchQuery(text.length ? text : '');
+  };
 
   const selectItemHandler = (id, profileId, title) => {
     props.navigation.navigate('ProfileDetail', {
@@ -83,6 +105,13 @@ const AllProfilesScreen = props => {
 
   return (
     <SaferArea>
+      <TextInput
+        style={styles.textInputStyle}
+        onChangeText={text => searchHandler(text)}
+        value={searchQuery}
+        underlineColorAndroid="transparent"
+        placeholder="Leta bland användare"
+      />
       <HeaderTwo
         title={'Användare'}
         subTitle={'Allt som har skapat sig en profil'}
@@ -133,7 +162,18 @@ const AllProfilesScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  textStyle: {
+    padding: 10
+  },
+  textInputStyle: {
+    textAlign: 'center',
+    height: 40,
+    borderWidth: 1,
+    paddingLeft: 10,
+    borderColor: '#009688',
+    backgroundColor: '#FFFFFF'
+  }
 });
 
 export default AllProfilesScreen;
