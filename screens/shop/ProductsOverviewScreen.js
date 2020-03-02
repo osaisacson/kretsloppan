@@ -29,9 +29,9 @@ const ProductsOverviewScreen = props => {
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector(state => state.auth.userId);
   const allProfiles = useSelector(state => state.profiles.allProfiles);
-  const currentProfile = useSelector(
-    state => state.profiles.allProfiles
-  ).filter(prof => prof.profileId === loggedInUserId);
+  const currentProfile = allProfiles.filter(
+    prof => prof.profileId === loggedInUserId
+  );
 
   const dispatch = useDispatch();
 

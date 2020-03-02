@@ -16,7 +16,6 @@ import ProjectsScroll from '../../components/UI/ProjectsScroll';
 
 const SpotlightProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
   //Get products
@@ -49,13 +48,11 @@ const SpotlightProductsScreen = props => {
 
   const loadProducts = useCallback(async () => {
     setError(null);
-    setIsRefreshing(true);
     try {
       await dispatch(productsActions.fetchProducts());
     } catch (err) {
       setError(err.message);
     }
-    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
