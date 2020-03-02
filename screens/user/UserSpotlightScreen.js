@@ -7,10 +7,10 @@ import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import ProjectsScroll from '../../components/UI/ProjectsScroll';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
+import * as projectsActions from '../../store/actions/projects';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -20,21 +20,20 @@ const UserSpotlightScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const userProducts = useSelector(state => state.products.userProducts);
-
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector(state => state.auth.userId);
   const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
     profile => profile.profileId === loggedInUserId
   );
+  const currentProfile = profilesArray[0];
 
   //Get projects, return only the one which matches the logged in id
   const userProjects = useSelector(
     state => state.projects.availableProjects
   ).filter(proj => proj.ownerId === loggedInUserId);
 
-  //Current profile and sorted products
-  const currentProfile = profilesArray[0];
+  //Get user products
+  const userProducts = useSelector(state => state.products.userProducts);
   const userProductsSorted = userProducts.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
@@ -64,6 +63,7 @@ const UserSpotlightScreen = props => {
     product => product.status === 'hämtad'
   );
 
+  //Sets indicator numbers
   const added = inProgressUserProducts.length + readyUserProducts.length;
   const collected = doneUserProducts.length;
   const nrOfProjects = userProjects.length;
@@ -75,28 +75,33 @@ const UserSpotlightScreen = props => {
 
   const dispatch = useDispatch();
 
-  const loadProducts = useCallback(async () => {
+  //Load products and projects
+  const loadProductsAndProjects = useCallback(async () => {
     setError(null);
     try {
       await dispatch(productsActions.fetchProducts());
+      await dispatch(projectsActions.fetchProjects());
     } catch (err) {
       setError(err.message);
     }
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProducts);
+    const unsubscribe = props.navigation.addListener(
+      'focus',
+      loadProductsAndProjects
+    );
     return () => {
       unsubscribe();
     };
-  }, [loadProducts]);
+  }, [loadProductsAndProjects]);
 
   useEffect(() => {
     setIsLoading(true);
-    loadProducts().then(() => {
+    loadProductsAndProjects().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadProducts]);
+  }, [dispatch, loadProductsAndProjects]);
 
   if (error) {
     return (
@@ -104,7 +109,7 @@ const UserSpotlightScreen = props => {
         <Text>Något gick fel</Text>
         <Button
           title="Prova igen"
-          onPress={loadProducts}
+          onPress={loadProductsAndProjects}
           color={Colors.primary}
         />
       </View>
@@ -117,27 +122,6 @@ const UserSpotlightScreen = props => {
 
   if (!isLoading && userProducts.length === 0) {
     return <EmptyState text="Inga produkter ännu, prova lägga till några." />;
-  }
-
-  if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text>An error occurred!</Text>
-        <Button
-          title="Try again"
-          onPress={loadProducts}
-          color={Colors.primary}
-        />
-      </View>
-    );
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!isLoading && userProducts.length === 0) {
-    return <EmptyState>Inga produkter ännu. Lägg till några!</EmptyState>;
   }
 
   return (
@@ -178,10 +162,15 @@ const UserSpotlightScreen = props => {
             </View>
           </View>
         </View>
-        <ProjectsScroll
+
+        <HorizontalScroll
+          isProject={true}
           userProject={true}
+          title={'Mina projekt'}
+          subTitle={'Projekt jag bygger med återbruk'}
+          scrollData={userProjects}
+          showNotificationBadge={true}
           navigation={props.navigation}
-          title="Projekt du bygger på"
         />
         <HorizontalScroll
           title={'Reserverade av mig'}

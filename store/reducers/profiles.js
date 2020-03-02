@@ -13,7 +13,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PROFILES:
-      console.log('action.allProfiles in reducers', action.allProfiles);
+      // console.log('action.allProfiles in reducers', action.allProfiles);
 
       return {
         allProfiles: action.allProfiles

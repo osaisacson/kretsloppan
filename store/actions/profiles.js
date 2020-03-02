@@ -34,7 +34,7 @@ export const fetchProfiles = () => {
         );
       }
 
-      console.log('allProfiles in actions', loadedProfiles);
+      // console.log('allProfiles in actions', loadedProfiles);
 
       dispatch({
         type: SET_PROFILES,

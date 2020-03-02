@@ -9,65 +9,67 @@ import HorizontalScroll from '../../components/UI/HorizontalScroll';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
+import * as projectsActions from '../../store/actions/projects';
 
 //Constants
 import Colors from '../../constants/Colors';
-import ProjectsScroll from '../../components/UI/ProjectsScroll';
 
 const SpotlightProductsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  //Get products
-  const products = useSelector(state => state.products.availableProducts);
+  //Get products and projects
+  const allProducts = useSelector(state => state.products.availableProducts);
+  const allProjects = useSelector(state => state.projects.availableProjects);
 
-  const productsSorted = products.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
-
-  const recentProducts = productsSorted
+  const recentProducts = allProducts
     .slice(0, 10)
     .filter(product => product.status === 'redo'); //Gets last 10 items uploaded that have the status of 'redo'
 
   //Gets all currently being worked on products
-  const inProgressProducts = products.filter(
+  const inProgressProducts = allProducts.filter(
     product => product.status === 'bearbetas'
   );
 
   //Gets all booked products
-  const bookedProducts = products.filter(
+  const bookedProducts = allProducts.filter(
     product => product.status === 'reserverad'
   );
 
   //Gets all wanted products
-  const wantedProducts = products.filter(
+  const wantedProducts = allProducts.filter(
     product => product.status === 'efterlyst'
   );
 
   const dispatch = useDispatch();
 
-  const loadProducts = useCallback(async () => {
+  //Load products
+  const loadProductsAndProjects = useCallback(async () => {
     setError(null);
     try {
       await dispatch(productsActions.fetchProducts());
+      await dispatch(projectsActions.fetchProjects());
     } catch (err) {
       setError(err.message);
     }
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProducts);
+    const unsubscribe = props.navigation.addListener(
+      'focus',
+      loadProductsAndProjects
+    );
     return () => {
       unsubscribe();
     };
-  }, [loadProducts]);
+  }, [loadProductsAndProjects]);
 
   useEffect(() => {
     setIsLoading(true);
-    loadProducts().then(() => {
+    loadProductsAndProjects().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadProducts]);
+  }, [dispatch, loadProductsAndProjects]);
 
   if (error) {
     return (
@@ -75,7 +77,7 @@ const SpotlightProductsScreen = props => {
         <Text>Något gick fel</Text>
         <Button
           title="Prova igen"
-          onPress={loadProducts}
+          onPress={loadProductsAndProjects}
           color={Colors.primary}
         />
       </View>
@@ -86,7 +88,7 @@ const SpotlightProductsScreen = props => {
     return <Loader />;
   }
 
-  if (!isLoading && products.length === 0) {
+  if (!isLoading && allProducts.length === 0) {
     return <EmptyState text="Inga produkter ännu, prova lägga till några." />;
   }
 
@@ -96,7 +98,7 @@ const SpotlightProductsScreen = props => {
         <Text>An error occurred!</Text>
         <Button
           title="Try again"
-          onPress={loadProducts}
+          onPress={loadProductsAndProjects}
           color={Colors.primary}
         />
       </View>
@@ -107,14 +109,20 @@ const SpotlightProductsScreen = props => {
     return <Loader />;
   }
 
-  if (!isLoading && products.length === 0) {
+  if (!isLoading && allProducts.length === 0) {
     return <EmptyState>Inga produkter ännu. Lägg till några!</EmptyState>;
   }
 
   return (
     <View>
       <ScrollView>
-        <ProjectsScroll navigation={props.navigation} />
+        <HorizontalScroll
+          isProject={true}
+          title={'Projekt'}
+          subTitle={'Projekt som håller på att byggas med återbruk'}
+          scrollData={allProjects}
+          navigation={props.navigation}
+        />
         <HorizontalScroll
           title={'nya tillskott'}
           subTitle={'Det fräschaste, det nyaste'}
