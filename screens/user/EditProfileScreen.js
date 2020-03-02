@@ -9,6 +9,7 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
+import { Button } from 'react-native-paper';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderButton from '../../components/UI/HeaderButton';

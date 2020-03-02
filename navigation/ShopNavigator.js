@@ -49,6 +49,7 @@ import * as authActions from '../store/actions/auth';
 //Constants
 import Colors from '../constants/Colors';
 import AddProfileScreen from '../screens/user/AddProfileScreen';
+import { NavigationEvents } from 'react-navigation';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -184,6 +185,9 @@ export const ShopNavigator = () => {
       <ShopDrawerNavigator.Screen
         name="Products"
         component={ProductsNavigator}
+        onPress={() => {
+          props.navigation.popToTop();
+        }}
         options={{
           drawerIcon: props => (
             <Entypo name={'tools'} size={23} color={props.color} />
