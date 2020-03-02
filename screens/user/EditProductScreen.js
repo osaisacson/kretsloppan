@@ -58,6 +58,8 @@ const EditProductScreen = props => {
   );
   const dispatch = useDispatch();
 
+  const belongsToProject = editedProduct || userProjects.length;
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       categoryName: editedProduct ? editedProduct.categoryName : '',
@@ -73,7 +75,7 @@ const EditProductScreen = props => {
       image: editedProduct ? true : false,
       description: editedProduct ? true : false,
       price: editedProduct ? true : false,
-      projectId: editedProduct ? true : false
+      projectId: true
     },
     formIsValid: editedProduct ? true : false
   });
@@ -177,24 +179,29 @@ const EditProductScreen = props => {
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
           />
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Project</Text>
-            <Picker
-              selectedValue={formState.inputValues.projectId}
-              onValueChange={textChangeHandler.bind(this, 'projectId')}
-            >
-              <Picker.Item key="0" label="Inget" value="0" />
-              {userProjects.map(proj => (
-                <Picker.Item key={proj.id} label={proj.title} value={proj.id} />
-              ))}
-            </Picker>
+          {userProjects.length ? (
+            <View style={styles.formControl}>
+              <Text style={styles.label}>Project</Text>
+              <Picker
+                selectedValue={formState.inputValues.projectId}
+                onValueChange={textChangeHandler.bind(this, 'projectId')}
+              >
+                {userProjects.map(proj => (
+                  <Picker.Item
+                    key={proj.id}
+                    label={proj.title}
+                    value={proj.id}
+                  />
+                ))}
+              </Picker>
 
-            {!formState.inputValues.projectId ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Välj ett projekt</Text>
-              </View>
-            ) : null}
-          </View>
+              {!formState.inputValues.projectId ? (
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>Välj ett projekt</Text>
+                </View>
+              ) : null}
+            </View>
+          ) : null}
           <View style={styles.formControl}>
             <Text style={styles.label}>Titel</Text>
             <TextInput
