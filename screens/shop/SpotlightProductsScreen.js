@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 //Components
-import { View, Text, ScrollView, Button, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Button } from 'react-native';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
@@ -43,7 +43,7 @@ const SpotlightProductsScreen = props => {
 
   const dispatch = useDispatch();
 
-  //Load products
+  //Load products and projects
   const loadProductsAndProjects = useCallback(async () => {
     setError(null);
     try {
@@ -73,31 +73,10 @@ const SpotlightProductsScreen = props => {
 
   if (error) {
     return (
-      <View style={styles.centered}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Något gick fel</Text>
         <Button
           title="Prova igen"
-          onPress={loadProductsAndProjects}
-          color={Colors.primary}
-        />
-      </View>
-    );
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!isLoading && allProducts.length === 0) {
-    return <EmptyState text="Inga produkter ännu, prova lägga till några." />;
-  }
-
-  if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text>An error occurred!</Text>
-        <Button
-          title="Try again"
           onPress={loadProductsAndProjects}
           color={Colors.primary}
         />
@@ -153,9 +132,5 @@ const SpotlightProductsScreen = props => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-});
 
 export default SpotlightProductsScreen;

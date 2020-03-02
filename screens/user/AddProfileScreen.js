@@ -83,7 +83,7 @@ const AddProfileScreen = props => {
       return;
     }
     setError(null);
-    setIsLoading(true);
+    setIsLoading(true); //renders loader instead of form
     try {
       await dispatch(
         profilesActions.createProfile(
@@ -94,11 +94,11 @@ const AddProfileScreen = props => {
           formState.inputValues.image
         )
       );
-      console.log('saved successfully');
-      props.navigation.navigate('ProductsOverview');
     } catch (err) {
       setError(err.message);
     }
+    console.log('saved successfully');
+    props.navigation.navigate('ProductsOverview');
     setIsLoading(false);
   }, [dispatch, authUserId, formState]);
 
@@ -122,7 +122,18 @@ const AddProfileScreen = props => {
   };
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      console.log('we are loading'),
+      (
+        <View>
+          <Text>Sparar profil</Text>
+          {/* <Loader /> */}
+          {/* <View style={styles.centered}>
+<ActivityIndicator size="large" color={Colors.primary} />
+</View> */}
+        </View>
+      )
+    );
   }
 
   return (
@@ -197,6 +208,7 @@ const AddProfileScreen = props => {
           </View>
         </View>
         <Button
+          loading={isLoading}
           color={'#666'}
           mode="contained"
           style={{
@@ -222,6 +234,7 @@ const AddProfileScreen = props => {
 
 export const screenOptions = navData => {
   return {
+    headerLeft: null,
     headerTitle: ''
   };
 };

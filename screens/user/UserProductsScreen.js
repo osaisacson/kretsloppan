@@ -82,7 +82,7 @@ const UserProductsScreen = props => {
     return <Loader />;
   }
 
-  if (!isLoading && products.length === 0) {
+  if (!isLoading && userProducts.length === 0) {
     return <EmptyState text="Inga produkter ännu, prova lägga till några." />;
   }
 

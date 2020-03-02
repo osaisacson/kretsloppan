@@ -5,9 +5,9 @@ import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
 //Components
 import { View, Text, Button, StyleSheet } from 'react-native';
+import Loader from '../../components/UI/Loader';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
-import Loader from '../../components/UI/Loader';
 
 //Screens
 import AddButton from '../../components/UI/AddButton';
@@ -77,6 +77,7 @@ const ProductsOverviewScreen = props => {
 
   //If we don't have a profile, navigate to a screen where we add a profile.
   if (!isLoading && currentProfile.length === 0) {
+    // props.navigation.navigate('AddProfile');
     return <AddProfileScreen navigation={props.navigation} />;
   }
 
@@ -168,10 +169,6 @@ const ProductsOverviewScreen = props => {
   );
 };
 
-const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-});
-
 export const screenOptions = navData => {
   return {
     headerTitle: '',
@@ -188,5 +185,9 @@ export const screenOptions = navData => {
     )
   };
 };
+
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+});
 
 export default ProductsOverviewScreen;

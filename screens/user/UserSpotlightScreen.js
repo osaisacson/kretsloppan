@@ -120,10 +120,6 @@ const UserSpotlightScreen = props => {
     return <Loader />;
   }
 
-  if (!isLoading && userProducts.length === 0) {
-    return <EmptyState text="Inga produkter ännu, prova lägga till några." />;
-  }
-
   return (
     <View>
       <ScrollView>
@@ -163,38 +159,48 @@ const UserSpotlightScreen = props => {
           </View>
         </View>
 
-        <HorizontalScroll
-          isProject={true}
-          userProject={true}
-          title={'Mina projekt'}
-          subTitle={'Projekt jag bygger med återbruk'}
-          scrollData={userProjects}
-          showNotificationBadge={true}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'Reserverade av mig'}
-          subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
-          extraSubTitle={'Notera att reservationen upphör gälla efter en vecka'}
-          scrollData={bookedUserProducts}
-          showNotificationBadge={true}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'Under bearbetning'}
-          subTitle={
-            "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
-          }
-          scrollData={inProgressUserProducts}
-          showNotificationBadge={true}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'Efterlysta produkter'}
-          subTitle={'Mina efterlysningar'}
-          scrollData={wantedUserProducts}
-          navigation={props.navigation}
-        />
+        {!isLoading && userProducts.length === 0 ? (
+          <EmptyState text="Inga produkter ännu, prova lägga till några." />
+        ) : (
+          <>
+            <HorizontalScroll
+              isProject={true}
+              userProject={true}
+              title={'Mina projekt'}
+              subTitle={'Projekt jag bygger med återbruk'}
+              scrollData={userProjects}
+              showNotificationBadge={true}
+              navigation={props.navigation}
+            />
+            <HorizontalScroll
+              title={'Reserverade av mig'}
+              subTitle={
+                'Väntas på att hämtas upp av dig - se kort för detaljer'
+              }
+              extraSubTitle={
+                'Notera att reservationen upphör gälla efter en vecka'
+              }
+              scrollData={bookedUserProducts}
+              showNotificationBadge={true}
+              navigation={props.navigation}
+            />
+            <HorizontalScroll
+              title={'Under bearbetning'}
+              subTitle={
+                "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
+              }
+              scrollData={inProgressUserProducts}
+              showNotificationBadge={true}
+              navigation={props.navigation}
+            />
+            <HorizontalScroll
+              title={'Efterlysta produkter'}
+              subTitle={'Mina efterlysningar'}
+              scrollData={wantedUserProducts}
+              navigation={props.navigation}
+            />
+          </>
+        )}
       </ScrollView>
     </View>
   );

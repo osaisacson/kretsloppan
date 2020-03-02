@@ -6,6 +6,8 @@ import {
   DrawerItemList
 } from '@react-navigation/drawer';
 //Components
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import HeaderButton from './../components/UI/HeaderButton';
 import { Platform, SafeAreaView, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
@@ -46,6 +48,7 @@ import * as authActions from '../store/actions/auth';
 
 //Constants
 import Colors from '../constants/Colors';
+import AddProfileScreen from '../screens/user/AddProfileScreen';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -59,6 +62,14 @@ const defaultNavOptions = {
     fontFamily: 'roboto-regular'
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+};
+
+export const noItemsScreenOptions = navData => {
+  return {
+    headerRight: '',
+    headerTitle: '',
+    headerLeft: ''
+  };
 };
 
 const ProductsStackNavigator = createStackNavigator();
@@ -80,6 +91,11 @@ export const ProductsNavigator = () => {
         name="ProjectDetail"
         component={ProjectDetailScreen}
         options={projectDetailScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="AddProfile"
+        component={AddProfileScreen}
+        options={noItemsScreenOptions}
       />
       <ProductsStackNavigator.Screen
         name="EditProduct"
