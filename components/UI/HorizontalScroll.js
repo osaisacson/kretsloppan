@@ -2,26 +2,33 @@ import React from 'react';
 //Components
 import { ScrollView, View, StyleSheet } from 'react-native';
 import ProductItem from '../../components/UI/ProductItem';
-import ProjectItem from '../../components/UI/ProjectItem';
+import RoundItem from '../../components/UI/RoundItem';
+import LargeItem from '../../components/UI/LargeItem';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from './HeaderTwo';
 
 const HorizontalScroll = props => {
-  let RenderedItem = ProductItem; //By default sets the rendered item to be product
-  let detailRoute = 'ProductDetail';
+  //By default sets the rendered item to be product
+  let RenderedItem = ProductItem;
   let scrollHeight = 200;
+  let detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
-  //Check if we should render the projectItem instead of productItem
-  if (props.isProject) {
-    RenderedItem = ProjectItem;
-    detailRoute = 'ProjectDetail';
-    scrollHeight = props.userProject ? 350 : 150;
+  //Check if we instead should render the roundItem
+  if (props.roundItem) {
+    RenderedItem = RoundItem;
+    scrollHeight = 150;
+  }
+
+  //Check if we instead should render the largeItem
+  if (props.largeItem) {
+    RenderedItem = LargeItem;
+    scrollHeight = 350;
   }
 
   const scrollData = props.scrollData;
 
   const selectItemHandler = (id, ownerId, title) => {
-    props.navigation.navigate(detailRoute, {
+    props.navigation.navigate(detailPath, {
       detailId: id,
       ownerId: ownerId,
       detailTitle: title
@@ -60,7 +67,6 @@ const HorizontalScroll = props => {
                   itemData={item}
                   key={item.id}
                   isHorizontal={true}
-                  userProject={props.userProject}
                   onSelect={() => {
                     selectItemHandler(item.id, item.ownerId, item.title);
                   }}

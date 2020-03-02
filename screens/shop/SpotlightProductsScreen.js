@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 //Components
 import { View, Text, ScrollView, Button } from 'react-native';
+import SaferArea from '../../components/UI/SaferArea';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
@@ -93,10 +94,11 @@ const SpotlightProductsScreen = props => {
   }
 
   return (
-    <View>
-      <ScrollView>
+    <SaferArea>
+      <ScrollView nestedScrollEnabled={true}>
         <HorizontalScroll
-          isProject={true}
+          roundItem={true}
+          detailPath="ProjectDetail"
           title={'Projekt'}
           subTitle={'Projekt som håller på att byggas med återbruk'}
           scrollData={allProjects}
@@ -129,7 +131,7 @@ const SpotlightProductsScreen = props => {
           navigation={props.navigation}
         />
       </ScrollView>
-    </View>
+    </SaferArea>
   );
 };
 

@@ -165,8 +165,8 @@ const UserSpotlightScreen = props => {
         ) : (
           <>
             <HorizontalScroll
-              isProject={true}
-              userProject={true}
+              largeItem={true}
+              detailPath={'ProjectDetail'}
               title={'Mina projekt'}
               subTitle={'Projekt jag bygger med återbruk'}
               scrollData={userProjects}

@@ -43,7 +43,6 @@ const RoundItem = props => {
 };
 
 const styles = StyleSheet.create({
-  //For round projects
   title: {
     marginTop: 5,
     fontFamily: 'roboto-bold-italic',
@@ -55,15 +54,15 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     marginLeft: 10,
-    borderWidth: 0.5,
-    borderRadius: 100 / 2,
-    borderColor: '#ddd'
+    borderRadius: 100 / 2
   },
   touchable: {
     height: 80,
     width: 80,
     borderRadius: 100 / 2,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#000'
   },
   imageContainer: {
     position: 'relative',

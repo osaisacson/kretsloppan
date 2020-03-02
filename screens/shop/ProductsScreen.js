@@ -9,6 +9,7 @@ import {
   StyleSheet,
   TextInput
 } from 'react-native';
+import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
@@ -24,9 +25,7 @@ const ProductsScreen = props => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   //Get original products from state
-  const products = useSelector(
-    state => state.products.availableProducts
-  ).filter(product => product.status === 'redo');
+  const products = useSelector(state => state.products.availableProducts);
   //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(products);
   const [searchQuery, setSearchQuery] = useState('');
@@ -101,7 +100,7 @@ const ProductsScreen = props => {
   }
 
   return (
-    <View>
+    <SaferArea>
       <TextInput
         style={styles.textInputStyle}
         onChangeText={text => searchHandler(text)}
@@ -143,7 +142,7 @@ const ProductsScreen = props => {
           ></ProductItem>
         )}
       />
-    </View>
+    </SaferArea>
   );
 };
 const styles = StyleSheet.create({

@@ -9,6 +9,7 @@ import {
   StyleSheet,
   TextInput
 } from 'react-native';
+import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
@@ -102,7 +103,7 @@ const UserProductsScreen = props => {
   }
 
   return (
-    <View>
+    <SaferArea>
       <TextInput
         style={styles.textInputStyle}
         onChangeText={text => searchHandler(text)}
@@ -144,7 +145,7 @@ const UserProductsScreen = props => {
           ></ProductItem>
         )}
       />
-    </View>
+    </SaferArea>
   );
 };
 
