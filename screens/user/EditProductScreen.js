@@ -186,6 +186,7 @@ const EditProductScreen = props => {
                 selectedValue={formState.inputValues.projectId}
                 onValueChange={textChangeHandler.bind(this, 'projectId')}
               >
+                <Picker.Item key={0} label={'Inget'} value={0} />
                 {userProjects.map(proj => (
                   <Picker.Item
                     key={proj.id}
