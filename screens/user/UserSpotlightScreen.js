@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
-
+import SaferArea from '../../components/UI/SaferArea';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
@@ -122,7 +122,7 @@ const UserSpotlightScreen = props => {
   }
 
   return (
-    <View>
+    <SaferArea>
       <ScrollView>
         <View style={styles.userInfoSection}>
           <Button mode="text" onPress={editProfileHandler}>
@@ -203,7 +203,7 @@ const UserSpotlightScreen = props => {
           </>
         )}
       </ScrollView>
-    </View>
+    </SaferArea>
   );
 };
 

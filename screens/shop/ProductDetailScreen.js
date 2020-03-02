@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
+import SaferArea from '../../components/UI/SaferArea';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
 import { Button } from 'react-native-paper';
@@ -114,7 +115,7 @@ const ProductDetailScreen = props => {
     : 'never';
 
   return (
-    <View>
+    <SaferArea>
       <ScrollView>
         <Image style={styles.image} source={{ uri: selectedProduct.image }} />
 
@@ -191,7 +192,7 @@ const ProductDetailScreen = props => {
         </Text>
         <Text style={styles.description}>{selectedProduct.description}</Text>
       </ScrollView>
-    </View>
+    </SaferArea>
   );
 };
 
