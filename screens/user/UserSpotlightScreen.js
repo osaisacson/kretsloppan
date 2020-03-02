@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
+
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
