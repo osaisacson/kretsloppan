@@ -27,7 +27,7 @@ const ProductsScreen = props => {
   const products = useSelector(
     state => state.products.availableProducts
   ).filter(product => product.status === 'redo');
-  //prepare for changing the rendered products on search
+  //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(products);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -110,8 +110,10 @@ const ProductsScreen = props => {
         placeholder="Leta efter återbruk"
       />
       <HeaderTwo
-        title={'Aktivt Förråd'}
-        subTitle={'Allt som är redo att hämtas'}
+        title={'Allt återbruk'}
+        subTitle={
+          'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
+        }
         icon={
           <MaterialIcons
             name="file-download"

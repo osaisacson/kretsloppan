@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Button,
+  StyleSheet,
+  TextInput
+} from 'react-native';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
@@ -20,13 +27,11 @@ const UserProductsScreen = props => {
 
   //Get user products with the status 'redo' or 'bearbetas'
   const userProducts = useSelector(state => state.products.userProducts);
-  const products = userProducts.filter(
-    product =>
-      product.status === 'redo' ||
-      product.status === 'bearbetas' ||
-      product.status === 'hämtad'
-  );
-  const productsSorted = products.sort(function(a, b) {
+  //Prepare for changing the rendered products on search
+  const [renderedProducts, setRenderedProducts] = useState(userProducts);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const productsSorted = renderedProducts.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
 
@@ -56,6 +61,16 @@ const UserProductsScreen = props => {
       setIsLoading(false);
     });
   }, [dispatch, loadProducts]);
+
+  const searchHandler = text => {
+    const newData = renderedProducts.filter(item => {
+      const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    setRenderedProducts(text.length ? newData : userProducts);
+    setSearchQuery(text.length ? text : '');
+  };
 
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
@@ -88,6 +103,13 @@ const UserProductsScreen = props => {
 
   return (
     <View>
+      <TextInput
+        style={styles.textInputStyle}
+        onChangeText={text => searchHandler(text)}
+        value={searchQuery}
+        underlineColorAndroid="transparent"
+        placeholder="Leta bland ditt återbruk"
+      />
       <HeaderTwo
         title={'Ditt upplagda återbruk'}
         subTitle={
@@ -127,7 +149,18 @@ const UserProductsScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  textStyle: {
+    padding: 10
+  },
+  textInputStyle: {
+    textAlign: 'center',
+    height: 40,
+    borderWidth: 1,
+    paddingLeft: 10,
+    borderColor: '#009688',
+    backgroundColor: '#FFFFFF'
+  }
 });
 
 export default UserProductsScreen;
