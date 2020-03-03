@@ -217,7 +217,9 @@ const ProductDetailScreen = props => {
           ) : null}
           {selectedProduct.projectId ? (
             <>
-              <Text>Reserverad för projekt:</Text>
+              <Text>
+                {isPickedUp ? 'Används i ' : 'Reserverad för '}projekt:
+              </Text>
               <HorizontalScroll
                 roundItem={true}
                 detailPath={'ProjectDetail'}

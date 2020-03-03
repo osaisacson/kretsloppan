@@ -55,20 +55,32 @@ const SpotlightProductsScreen = props => {
     }
   }, [dispatch, setIsLoading, setError]);
 
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener(
+  //     'focus',
+  //     loadProductsAndProjects
+  //   );
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProductsAndProjects]);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   loadProductsAndProjects().then(() => {
+  //     setIsLoading(false);
+  //   });
+  // }, [dispatch, loadProductsAndProjects]);
+
   useEffect(() => {
+    setIsLoading(true);
     const unsubscribe = props.navigation.addListener(
       'focus',
       loadProductsAndProjects
     );
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProductsAndProjects]);
-
-  useEffect(() => {
-    setIsLoading(true);
     loadProductsAndProjects().then(() => {
       setIsLoading(false);
+      unsubscribe();
     });
   }, [dispatch, loadProductsAndProjects]);
 

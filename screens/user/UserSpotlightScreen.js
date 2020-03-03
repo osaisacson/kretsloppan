@@ -170,7 +170,6 @@ const UserSpotlightScreen = props => {
               title={'Mina projekt'}
               subTitle={'Projekt jag bygger med återbruk'}
               scrollData={userProjects}
-              showNotificationBadge={true}
               navigation={props.navigation}
             />
             <HorizontalScroll
@@ -198,6 +197,12 @@ const UserSpotlightScreen = props => {
               title={'Efterlysta produkter'}
               subTitle={'Mina efterlysningar'}
               scrollData={wantedUserProducts}
+              navigation={props.navigation}
+            />
+            <HorizontalScroll
+              title={'Gett Igen'}
+              subTitle={'Återbruk använt av mig'}
+              scrollData={doneUserProducts}
               navigation={props.navigation}
             />
           </>
