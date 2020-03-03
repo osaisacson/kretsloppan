@@ -221,7 +221,6 @@ export const createProduct = (
   };
 };
 
-//TBD: update so can upload new image, see example above
 export const updateProduct = (
   id,
   categoryName,
@@ -230,80 +229,145 @@ export const updateProduct = (
   price,
   image
 ) => {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const token = getState().auth.token;
 
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+    fetch(
+      'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
       {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        method: 'POST',
         body: JSON.stringify({
+          image: image //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+        })
+      }
+    )
+      .catch(err =>
+        console.log('error when trying to post to cloudfunctions', err)
+      )
+      .then(res => res.json())
+      .then(parsedRes => {
+        const productData = {
           categoryName,
           title,
           description,
           price,
-          image
-        })
-      }
-    );
-
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = errorId;
-      throw new Error(message);
-    }
-
-    dispatch({
-      type: UPDATE_PRODUCT,
-      pid: id,
-      productData: {
-        categoryName,
-        title,
-        description,
-        price,
-        image
-      }
-    });
+          image: parsedRes.image //This is how we link to the image we store above
+        };
+        //Then upload the rest of the data to realtime database on firebase
+        return fetch(
+          `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+          {
+            method: 'PATCH',
+            body: JSON.stringify(productData)
+          }
+        )
+          .catch(err =>
+            console.log(
+              'Error when attempting to save to firebase realtime database: ',
+              err
+            )
+          )
+          .then(finalRes => finalRes.json())
+          .then(finalResParsed => {
+            dispatch({
+              type: UPDATE_PRODUCT,
+              pid: id,
+              productData: {
+                categoryName,
+                title,
+                description,
+                price,
+                image
+              }
+            });
+          });
+      });
   };
 };
 
-export const changeProductStatus = (id, status) => {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
+// //TBD: update so can upload new image, see example above
+// export const updateProduct = (
+//   id,
+//   categoryName,
+//   title,
+//   description,
+//   price,
+//   image
+// ) => {
+//   return async (dispatch, getState) => {
+//     const token = getState().auth.token;
 
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          status
-        })
-      }
-    );
+//     const response = await fetch(
+//       `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+//       {
+//         method: 'PATCH',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//           categoryName,
+//           title,
+//           description,
+//           price,
+//           image
+//         })
+//       }
+//     );
 
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = errorId;
-      throw new Error(message);
-    }
+//     if (!response.ok) {
+//       const errorResData = await response.json();
+//       const errorId = errorResData.error.message;
+//       let message = errorId;
+//       throw new Error(message);
+//     }
 
-    dispatch({
-      type: CHANGE_PRODUCT_STATUS,
-      pid: id,
-      productData: {
-        status
-      }
-    });
-  };
-};
+//     dispatch({
+//       type: UPDATE_PRODUCT,
+//       pid: id,
+//       productData: {
+//         categoryName,
+//         title,
+//         description,
+//         price,
+//         image
+//       }
+//     });
+//   };
+// };
+
+// export const changeProductStatus = (id, status) => {
+//   return async (dispatch, getState) => {
+//     const token = getState().auth.token;
+
+//     const response = await fetch(
+//       `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+//       {
+//         method: 'PATCH',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//           status
+//         })
+//       }
+//     );
+
+//     if (!response.ok) {
+//       const errorResData = await response.json();
+//       const errorId = errorResData.error.message;
+//       let message = errorId;
+//       throw new Error(message);
+//     }
+
+//     dispatch({
+//       type: CHANGE_PRODUCT_STATUS,
+//       pid: id,
+//       productData: {
+//         status
+//       }
+//     });
+//   };
+// };
 
 export const reserveProduct = (id, status, reservedUntil, projectId) => {
   return async (dispatch, getState) => {

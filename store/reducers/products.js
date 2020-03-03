@@ -52,9 +52,9 @@ export default (state = initialState, action) => {
         action.productData.description,
         action.productData.price,
         state.userProducts[userProductIndex].date,
-        action.productData.status,
+        state.userProducts[userProductIndex].status,
         state.userProducts[userProductIndex].reservedUntil,
-        action.productData.projectId
+        state.userProducts[userProductIndex].projectId
       );
       const updatedUserProducts = [...state.userProducts]; //copy current state of user products
       updatedUserProducts[userProductIndex] = updatedUserProduct; //find the user product with the passed index (the one we should update)
