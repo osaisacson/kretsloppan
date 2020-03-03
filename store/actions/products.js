@@ -154,8 +154,7 @@ export const createProduct = (
   title,
   description,
   price,
-  image,
-  projectId
+  image
 ) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
@@ -184,8 +183,7 @@ export const createProduct = (
           ownerId: userId,
           date: date.toISOString(),
           status: 'redo',
-          reservedUntil: '',
-          projectId: projectId ? projectId : ''
+          reservedUntil: ''
         };
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
@@ -215,8 +213,7 @@ export const createProduct = (
                 ownerId: userId,
                 date: date,
                 status: 'redo',
-                reservedUntil: '',
-                projectId: projectId ? projectId : ''
+                reservedUntil: ''
               }
             });
           });
@@ -231,8 +228,7 @@ export const updateProduct = (
   title,
   description,
   price,
-  image,
-  projectId
+  image
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -249,8 +245,7 @@ export const updateProduct = (
           title,
           description,
           price,
-          image,
-          projectId
+          image
         })
       }
     );
@@ -270,8 +265,7 @@ export const updateProduct = (
         title,
         description,
         price,
-        image,
-        projectId
+        image
       }
     });
   };
@@ -311,7 +305,7 @@ export const changeProductStatus = (id, status) => {
   };
 };
 
-export const reserveProduct = (id, status, reservedUntil) => {
+export const reserveProduct = (id, status, reservedUntil, projectId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
@@ -324,7 +318,8 @@ export const reserveProduct = (id, status, reservedUntil) => {
         },
         body: JSON.stringify({
           status,
-          reservedUntil
+          reservedUntil,
+          projectId
         })
       }
     );
@@ -341,7 +336,8 @@ export const reserveProduct = (id, status, reservedUntil) => {
       pid: id,
       productData: {
         status,
-        reservedUntil
+        reservedUntil,
+        projectId
       }
     });
   };

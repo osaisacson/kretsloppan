@@ -112,7 +112,7 @@ export default (state = initialState, action) => {
         state.availableProducts[prodIndex].date,
         action.productData.status, //...status
         action.productData.reservedUntil, //...reservedUntil
-        state.availableProducts[prodIndex].projectId
+        action.productData.projectId //...project the product is tied to. Defaults to '' if not present.
       );
       const updatedStatusUserProducts = [...state.userProducts];
       updatedStatusUserProducts[prodIndex] = updatedProduct;

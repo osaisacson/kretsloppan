@@ -12,10 +12,8 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
-import { Button } from 'react-native-paper';
 import HeaderOne from '../../components/UI/HeaderOne';
 import ImagePicker from '../../components/UI/ImgPicker';
-import Loader from '../../components/UI/Loader';
 
 //Actions
 import * as profilesActions from '../../store/actions/profiles';

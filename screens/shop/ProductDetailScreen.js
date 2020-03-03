@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
+import HorizontalScroll from '../../components/UI/HorizontalScroll';
+import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
+import RoundItem from '../../components/UI/RoundItem';
 import SaferArea from '../../components/UI/SaferArea';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
@@ -13,15 +16,21 @@ import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
 
 const ProductDetailScreen = props => {
+  const [isToggled, setIsToggled] = useState(false);
+  const [showUserProjects, setShowUserProjects] = useState(false);
   const productId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
   const loggedInUserId = useSelector(state => state.auth.userId);
-
+  //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId)
-  ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
-  const [isToggled, setIsToggled] = useState(false);
+  );
+  //Projects
+  const userProjects = useSelector(state => state.projects.userProjects);
+  const projectForProduct = userProjects.filter(
+    proj => proj.id === selectedProduct.projectId
+  );
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -80,8 +89,14 @@ const ProductDetailScreen = props => {
     props.navigation.goBack();
   };
 
-  const reserveHandler = () => {
+  const toggleReserveButton = () => {
+    setShowUserProjects(prevState => !prevState);
+  };
+
+  const reserveHandler = clickedProjectId => {
     const id = selectedProduct.id;
+    const projectId = clickedProjectId ? clickedProjectId : '';
+
     var firstDay = new Date();
     const oneWeekFromNow = new Date(
       firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
@@ -100,7 +115,8 @@ const ProductDetailScreen = props => {
               productsActions.reserveProduct(
                 id,
                 'reserverad',
-                oneWeekFromNow //TBD: this currently sends the booked date to the product object successfully, but we still need to set the automated expiry date
+                oneWeekFromNow,
+                projectId
               )
             );
             navigation.navigate('ProductsOverview');
@@ -113,6 +129,8 @@ const ProductDetailScreen = props => {
   const shorterDate = selectedProduct.reservedUntil
     ? selectedProduct.reservedUntil.split('T')[0]
     : 'never';
+
+  const isReservedOrPickedUp = isReserved || isPickedUp;
 
   return (
     <SaferArea>
@@ -160,7 +178,7 @@ const ProductDetailScreen = props => {
             mode="contained"
             compact={true}
             color={Colors.primary}
-            disabled={isReserved || isPickedUp} //disable/enable base on true/false of these params
+            disabled={isReservedOrPickedUp} //disable/enable base on true/false of these params
             style={{
               width: '60%',
               alignSelf: 'center',
@@ -172,7 +190,7 @@ const ProductDetailScreen = props => {
               fontSize: 12
             }}
             compact={true}
-            onPress={reserveHandler.bind(this)}
+            onPress={toggleReserveButton}
           >
             {isPickedUp
               ? 'hämtad'
@@ -180,9 +198,43 @@ const ProductDetailScreen = props => {
               ? `reserverad till ${shorterDate}`
               : 'reservera'}
           </Button>
+
+          {/* Show the horizontal scroll of the user's projects if the product is
+          not picked up or reserved yet */}
+          {!isReservedOrPickedUp && showUserProjects ? (
+            <HorizontalScrollContainer>
+              {userProjects.map(item => (
+                <RoundItem
+                  itemData={item}
+                  key={item.id}
+                  isHorizontal={true}
+                  onSelect={() => {
+                    reserveHandler(item.id);
+                  }}
+                ></RoundItem>
+              ))}
+            </HorizontalScrollContainer>
+          ) : null}
+          {selectedProduct.projectId ? (
+            <>
+              <Text>Reserverad för projekt:</Text>
+              <HorizontalScroll
+                roundItem={true}
+                detailPath={'ProjectDetail'}
+                scrollData={projectForProduct}
+                navigation={props.navigation}
+              />
+              {/* <RoundItem
+                style={styles.description}
+                itemData={projectForProduct}
+                // onSelect={props.navigation.navigate('ProjectDetail')}
+              ></RoundItem> */}
+            </>
+          ) : null}
         </View>
 
         {/* Information about the product */}
+
         <Text style={styles.description}>
           Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
         </Text>

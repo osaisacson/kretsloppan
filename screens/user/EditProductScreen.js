@@ -12,6 +12,7 @@ import {
 import ButtonNormal from '../../components/UI/ButtonNormal';
 import { useSelector, useDispatch } from 'react-redux';
 import ImagePicker from '../../components/UI/ImgPicker';
+import HorizontalPicker from '../../components/UI/HorizontalPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
 import * as productsActions from '../../store/actions/products';
@@ -62,16 +63,14 @@ const EditProductScreen = props => {
       title: editedProduct ? editedProduct.title : '',
       image: editedProduct ? editedProduct.image : '',
       description: editedProduct ? editedProduct.description : '',
-      price: editedProduct ? editedProduct.price : '',
-      projectId: editedProduct ? editedProduct.projectId : ''
+      price: editedProduct ? editedProduct.price : ''
     },
     inputValidities: {
       categoryName: editedProduct ? true : false,
       title: editedProduct ? true : false,
       image: editedProduct ? true : false,
       description: editedProduct ? true : false,
-      price: editedProduct ? true : false,
-      projectId: true
+      price: editedProduct ? true : false
     },
     formIsValid: editedProduct ? true : false
   });
@@ -102,8 +101,7 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image,
-            formState.inputValues.projectId
+            formState.inputValues.image
           )
         );
       } else {
@@ -113,8 +111,7 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image,
-            formState.inputValues.projectId
+            formState.inputValues.image
           )
         );
       }
@@ -161,30 +158,6 @@ const EditProductScreen = props => {
             onImageTaken={textChangeHandler.bind(this, 'image')}
             passedImage={formState.inputValues.image}
           />
-          {userProjects.length ? (
-            <View style={styles.formControl}>
-              <Text style={styles.label}>Project</Text>
-              <Picker
-                selectedValue={formState.inputValues.projectId}
-                onValueChange={textChangeHandler.bind(this, 'projectId')}
-              >
-                <Picker.Item key={0} label={'Inget'} value={0} />
-                {userProjects.map(proj => (
-                  <Picker.Item
-                    key={proj.id}
-                    label={proj.title}
-                    value={proj.id}
-                  />
-                ))}
-              </Picker>
-
-              {!formState.inputValues.projectId ? (
-                <View style={styles.errorContainer}>
-                  <Text style={styles.errorText}>Välj ett projekt</Text>
-                </View>
-              ) : null}
-            </View>
-          ) : null}
           <View style={styles.formControl}>
             <Text style={styles.label}>Titel</Text>
             <TextInput
@@ -283,9 +256,6 @@ export const screenOptions = navData => {
 };
 
 const styles = StyleSheet.create({
-  form: {
-    margin: 20
-  },
   centered: {
     flex: 1,
     justifyContent: 'center',
