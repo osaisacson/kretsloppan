@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import ButtonNormal from '../../components/UI/ButtonNormal';
 
 //Component
 import {
@@ -207,26 +208,11 @@ const AddProfileScreen = props => {
             ) : null}
           </View>
         </View>
-        <Button
-          loading={isLoading}
-          color={'#666'}
-          mode="contained"
-          style={{
-            marginTop: 30,
-            marginBottom: 80,
-            width: '60%',
-            alignSelf: 'center'
-          }}
-          labelStyle={{
-            paddingTop: 2,
-            fontFamily: 'bebas-neue-bold',
-            fontSize: 14
-          }}
-          compact={true}
-          onPress={submitHandler}
-        >
-          Spara profil
-        </Button>
+        <ButtonNormal
+          isLoading={isLoading}
+          actionOnPress={submitHandler}
+          text={'Spara Profil'}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

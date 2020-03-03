@@ -9,9 +9,10 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
-import { Button } from 'react-native-paper';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
+import ButtonNormal from '../../components/UI/ButtonNormal';
+
 import HeaderButton from '../../components/UI/HeaderButton';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
@@ -217,25 +218,7 @@ const EditProfileScreen = props => {
             ) : null}
           </View>
         </View>
-        <Button
-          color={'#666'}
-          mode="contained"
-          style={{
-            marginTop: 50,
-            marginBottom: 50,
-            width: '60%',
-            alignSelf: 'center'
-          }}
-          labelStyle={{
-            paddingTop: 2,
-            fontFamily: 'bebas-neue-bold',
-            fontSize: 14
-          }}
-          compact={true}
-          onPress={submitHandler}
-        >
-          Spara profil
-        </Button>
+        <ButtonNormal text="Spara Profil" actionOnPress={submitHandler} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

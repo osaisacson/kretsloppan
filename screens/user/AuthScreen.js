@@ -111,7 +111,7 @@ const AuthScreen = props => {
       <ImageBackground
         source={{
           uri:
-            'https://images.unsplash.com/photo-1535673774336-ef95d2851cf3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=975&q=80'
+            'https://images.unsplash.com/photo-1577447278822-37801be21738?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
         }}
         style={styles.centeredContent}
       >

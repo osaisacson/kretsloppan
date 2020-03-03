@@ -3,16 +3,14 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  Platform,
   Picker,
   Alert,
   Text,
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import ButtonNormal from '../../components/UI/ButtonNormal';
 import { useSelector, useDispatch } from 'react-redux';
-import HeaderButton from '../../components/UI/HeaderButton';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
@@ -58,8 +56,6 @@ const EditProductScreen = props => {
   );
   const dispatch = useDispatch();
 
-  const belongsToProject = editedProduct || userProjects.length;
-
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       categoryName: editedProduct ? editedProduct.categoryName : '',
@@ -88,9 +84,11 @@ const EditProductScreen = props => {
 
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert('Wrong input!', 'Please check the errors in the form.', [
-        { text: 'Okay' }
-      ]);
+      Alert.alert(
+        'Ojoj',
+        'Det verkar som något saknas i formuläret, kolla om det står någonting under fälten.',
+        [{ text: 'OK' }]
+      );
       return;
     }
     setError(null);
@@ -127,22 +125,6 @@ const EditProductScreen = props => {
 
     setIsLoading(false);
   }, [dispatch, prodId, formState]);
-
-  useEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item
-            title="Save"
-            iconName={
-              Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
-            }
-            onPress={submitHandler}
-          />
-        </HeaderButtons>
-      )
-    });
-  }, [submitHandler]);
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
@@ -286,6 +268,7 @@ const EditProductScreen = props => {
               </View>
             ) : null}
           </View>
+          <ButtonNormal actionOnPress={submitHandler} text="Spara" />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
