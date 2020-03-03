@@ -47,9 +47,10 @@ export const fetchProfiles = () => {
   };
 };
 
-export const createProfile = (profileId, profileName, email, phone, image) => {
+export const createProfile = (profileName, email, phone, image) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId;
 
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
@@ -65,15 +66,12 @@ export const createProfile = (profileId, profileName, email, phone, image) => {
       )
       .then(res => res.json())
       .then(parsedRes => {
-        const date = new Date();
-
         const profileData = {
-          profileId,
+          profileId: userId, //Set profileId to be the userId of the logged in user: we get this from auth
           profileName,
           email,
           phone,
-          image: parsedRes.image, //This is how we link to the image we store above
-          date: date.toISOString()
+          image: parsedRes.image //This is how we link to the image we store above
         };
 
         return fetch(
@@ -94,12 +92,11 @@ export const createProfile = (profileId, profileName, email, phone, image) => {
             dispatch({
               type: CREATE_PROFILE,
               profileData: {
-                profileId,
+                profileId: userId,
                 profileName,
                 email,
                 phone,
-                image,
-                date: date.toISOString()
+                image
               }
             });
           });
@@ -107,9 +104,10 @@ export const createProfile = (profileId, profileName, email, phone, image) => {
   };
 };
 
-export const updateProfile = (profileId, profileName, email, phone, image) => {
+export const updateProfile = (profileName, email, phone, image) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId;
 
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
@@ -126,7 +124,7 @@ export const updateProfile = (profileId, profileName, email, phone, image) => {
       .then(res => res.json())
       .then(parsedRes => {
         const profileData = {
-          profileId,
+          profileId: userId,
           profileName,
           email,
           phone,
@@ -153,9 +151,9 @@ export const updateProfile = (profileId, profileName, email, phone, image) => {
           .then(finalResParsed => {
             dispatch({
               type: UPDATE_PROFILE,
-              uid: profileId,
+              uid: userId,
               profileData: {
-                profileId,
+                profileId: userId,
                 profileName,
                 email,
                 phone,

@@ -13,8 +13,6 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PROFILES:
-      // console.log('action.allProfiles in reducers', action.allProfiles);
-
       return {
         allProfiles: action.allProfiles
       };
@@ -24,8 +22,7 @@ export default (state = initialState, action) => {
         action.profileData.profileName,
         action.profileData.email,
         action.profileData.phone,
-        action.profileData.image,
-        action.profileData.date
+        action.profileData.image
       );
       return {
         ...state,
@@ -33,16 +30,16 @@ export default (state = initialState, action) => {
       };
 
     case UPDATE_PROFILE:
+      const userId = getState().auth.userId; //Get the id of the currently logged in user
       const profileIndex = state.allProfiles.findIndex(
-        profile => profile.profileId === action.uid
+        profile => profile.profileId === userId //Find the index of the profile where the profileId is the same as the logged in userId
       );
       const updatedProfile = new Profile(
-        action.uid,
+        action.profileData.profileId,
         action.profileData.profileName,
         action.profileData.email,
         action.profileData.phone,
-        action.profileData.image,
-        state.allProfiles[profileIndex].date
+        action.profileData.image
       );
 
       const updatedProfiles = [...state.allProfiles];

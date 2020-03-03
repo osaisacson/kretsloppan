@@ -97,7 +97,7 @@ const EditProfileScreen = props => {
     try {
       await dispatch(
         profilesActions.updateProfile(
-          currentProfile.id,
+          loggedInUserId,
           formState.inputValues.profileName,
           formState.inputValues.email,
           formState.inputValues.phone,

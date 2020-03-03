@@ -48,8 +48,6 @@ const AddProfileScreen = props => {
   const [error, setError] = useState();
 
   //Profiles
-  const authUserId = useSelector(state => state.auth.userId);
-
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -86,7 +84,6 @@ const AddProfileScreen = props => {
     try {
       await dispatch(
         profilesActions.createProfile(
-          authUserId,
           formState.inputValues.profileName,
           formState.inputValues.email,
           formState.inputValues.phone,
@@ -99,7 +96,7 @@ const AddProfileScreen = props => {
     console.log('saved successfully');
     props.navigation.navigate('ProductsOverview');
     setIsLoading(false);
-  }, [dispatch, authUserId, formState]);
+  }, [dispatch, formState]);
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
