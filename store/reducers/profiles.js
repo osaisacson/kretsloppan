@@ -19,10 +19,6 @@ export default (state = initialState, action) => {
         allProfiles: action.allProfiles
       };
     case CREATE_PROFILE:
-      const profileIndex = state.allProfiles.findIndex(
-        profile => profile.profileId === action.profileId
-      );
-
       const newProfile = new Profile(
         action.profileData.profileId,
         action.profileData.profileName,
@@ -37,8 +33,11 @@ export default (state = initialState, action) => {
       };
 
     case UPDATE_PROFILE:
+      const profileIndex = state.allProfiles.findIndex(
+        profile => profile.profileId === action.uid
+      );
       const updatedProfile = new Profile(
-        state.allProfiles[profileIndex].profileId,
+        action.uid,
         action.profileData.profileName,
         action.profileData.email,
         action.profileData.phone,

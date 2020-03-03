@@ -142,6 +142,7 @@ const AllProfilesScreen = props => {
             }}
           >
             <RoundItem
+              key={itemData.item.profileId}
               itemData={itemData.item}
               onSelect={() => {
                 selectItemHandler(
