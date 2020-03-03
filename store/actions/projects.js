@@ -133,41 +133,57 @@ export const createProject = (title, slogan, image, status) => {
   };
 };
 
-//TBD: update so can upload new image, see example above
 export const updateProject = (id, title, slogan, image) => {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const token = getState().auth.token;
 
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/projects/${id}.json?auth=${token}`,
+    //First upload the base64 image
+    fetch(
+      'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
       {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        method: 'POST',
         body: JSON.stringify({
-          title,
-          slogan,
-          image
+          image: image //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
         })
       }
-    );
+    )
+      .catch(err =>
+        console.log('error when trying to post to cloudfunctions', err)
+      )
+      .then(res => res.json())
+      .then(parsedRes => {
+        const projectData = {
+          title,
+          slogan,
+          image: parsedRes.image //This is how we link to the image we store above
+        };
 
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = errorId;
-      throw new Error(message);
-    }
-
-    dispatch({
-      type: UPDATE_PROJECT,
-      pid: id,
-      projectData: {
-        title,
-        slogan,
-        image
-      }
-    });
+        //Then upload the rest of the data to realtime database on firebase
+        return fetch(
+          `https://egnahemsfabriken.firebaseio.com/projects/${id}.json?auth=${token}`,
+          {
+            method: 'PATCH',
+            body: JSON.stringify(projectData)
+          }
+        )
+          .catch(err =>
+            console.log(
+              'Error when attempting to save to firebase realtime database: ',
+              err
+            )
+          )
+          .then(finalRes => finalRes.json())
+          .then(finalResParsed => {
+            dispatch({
+              type: UPDATE_PROJECT,
+              pid: id,
+              projectData: {
+                title,
+                slogan,
+                image
+              }
+            });
+          });
+      });
   };
 };
