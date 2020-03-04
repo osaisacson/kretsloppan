@@ -5,11 +5,11 @@ const ButtonNormal = props => {
   return (
     <Button
       loading={props.isLoading}
-      color={props.color ? props.color : '#666'}
+      disabled={props.disabled ? props.disabled : false}
       mode="contained"
       style={{
-        marginTop: 30,
-        marginBottom: 80,
+        marginTop: 10,
+        marginBottom: 60,
         width: '60%',
         alignSelf: 'center'
       }}

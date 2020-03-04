@@ -7,11 +7,13 @@ import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
 import SaferArea from '../../components/UI/SaferArea';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
+import ButtonNormal from '../../components/UI/ButtonNormal';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
 import * as projectsActions from '../../store/actions/projects';
+import * as proposalsActions from '../../store/actions/proposals';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -39,6 +41,9 @@ const UserSpotlightScreen = props => {
     return new Date(b.date) - new Date(a.date);
   });
 
+  //Get user proposals
+  const userProposals = useSelector(state => state.proposals.userProposals);
+
   //Gets all ready products
   const readyUserProducts = userProductsSorted.filter(
     product => product.status === 'redo'
@@ -52,11 +57,6 @@ const UserSpotlightScreen = props => {
   //Gets all currently being worked on products
   const inProgressUserProducts = userProductsSorted.filter(
     product => product.status === 'bearbetas'
-  );
-
-  //Gets all wanted products
-  const wantedUserProducts = userProductsSorted.filter(
-    product => product.status === 'efterlyst'
   );
 
   //Gets all done (given) products
@@ -77,11 +77,12 @@ const UserSpotlightScreen = props => {
   const dispatch = useDispatch();
 
   //Load products and projects
-  const loadProductsAndProjects = useCallback(async () => {
+  const loadProductsProposalsProjects = useCallback(async () => {
     setError(null);
     try {
       await dispatch(productsActions.fetchProducts());
       await dispatch(projectsActions.fetchProjects());
+      await dispatch(proposalsActions.fetchProposals());
     } catch (err) {
       setError(err.message);
     }
@@ -90,29 +91,30 @@ const UserSpotlightScreen = props => {
   useEffect(() => {
     const unsubscribe = props.navigation.addListener(
       'focus',
-      loadProductsAndProjects
+      loadProductsProposalsProjects
     );
     return () => {
       unsubscribe();
     };
-  }, [loadProductsAndProjects]);
+  }, [loadProductsProposalsProjects]);
 
   useEffect(() => {
     setIsLoading(true);
-    loadProductsAndProjects().then(() => {
+    loadProductsProposalsProjects().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadProductsAndProjects]);
+  }, [dispatch, loadProductsProposalsProjects]);
 
   if (error) {
     return (
       <View style={styles.centered}>
         <Text>Något gick fel</Text>
-        <Button
-          title="Prova igen"
-          onPress={loadProductsAndProjects}
+        <ButtonNormal
+          actionOnPress={loadProductsProposalsProjects}
           color={Colors.primary}
-        />
+        >
+          Prova igen
+        </ButtonNormal>
       </View>
     );
   }
@@ -196,7 +198,7 @@ const UserSpotlightScreen = props => {
             <HorizontalScroll
               title={'Efterlysta produkter'}
               subTitle={'Mina efterlysningar'}
-              scrollData={wantedUserProducts}
+              scrollData={userProposals}
               navigation={props.navigation}
             />
             <HorizontalScroll

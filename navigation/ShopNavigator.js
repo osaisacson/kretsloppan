@@ -26,13 +26,16 @@ import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions
 } from '../screens/shop/ProjectDetailScreen';
 
+//Edit/Add screens
 import EditProductScreen, {
   screenOptions as editProductScreenOptions
 } from '../screens/user/EditProductScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions
 } from '../screens/user/EditProjectScreen';
-
+import EditProposalScreen, {
+  screenOptions as editProposalScreenOptions
+} from '../screens/user/EditProposalScreen';
 import EditProfileScreen, {
   screenOptions as editProfileScreenOptions
 } from '../screens/user/EditProfileScreen';
@@ -107,6 +110,11 @@ export const ProductsNavigator = () => {
         name="EditProject"
         component={EditProjectScreen}
         options={editProjectScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
       />
       <ProductsStackNavigator.Screen
         name="EditProfile"

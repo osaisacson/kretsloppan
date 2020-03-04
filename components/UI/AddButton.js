@@ -126,7 +126,9 @@ const AddButton = props => {
         }}
       >
         <TouchableHighlight
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('EditProposal');
+          }}
           style={{
             position: 'absolute',
             alignItems: 'center',
