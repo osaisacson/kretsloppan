@@ -3,6 +3,7 @@ import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
+import formStyles from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
@@ -142,7 +143,7 @@ const EditProjectScreen = props => {
         prompt="Skriv in en titel"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}
           keyboardType="default"
@@ -158,7 +159,7 @@ const EditProjectScreen = props => {
         prompt="Skriv in en kort slogan för ditt projekt"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.slogan}
           onChangeText={textChangeHandler.bind(this, 'slogan')}
           autoCorrect={false}

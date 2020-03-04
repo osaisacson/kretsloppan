@@ -285,6 +285,40 @@ export const updateProduct = (
   };
 };
 
+export const changeProductStatus = (id, status) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    const response = await fetch(
+      `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          status
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+      let message = errorId;
+      throw new Error(message);
+    }
+
+    dispatch({
+      type: CHANGE_PRODUCT_STATUS,
+      pid: id,
+      productData: {
+        status
+      }
+    });
+  };
+};
+
 export const reserveProduct = (id, status, reservedUntil, projectId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
