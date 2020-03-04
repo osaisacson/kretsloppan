@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   View,
-  ScrollView,
   StyleSheet,
   Platform,
   Alert,
   Text,
-  TextInput,
-  KeyboardAvoidingView
+  TextInput
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector, useDispatch } from 'react-redux';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 import ButtonNormal from '../../components/UI/ButtonNormal';
-
 import HeaderButton from '../../components/UI/HeaderButton';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
@@ -152,75 +150,69 @@ const EditProfileScreen = props => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={100}
-    >
-      <ScrollView>
-        <View style={styles.form}>
-          <ImagePicker
-            onImageTaken={textChangeHandler.bind(this, 'image')}
-            passedImage={formState.inputValues.image}
+    <FormWrapper>
+      <View style={styles.form}>
+        <ImagePicker
+          onImageTaken={textChangeHandler.bind(this, 'image')}
+          passedImage={formState.inputValues.image}
+        />
+
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Användarnamn</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.profileName}
+            onChangeText={textChangeHandler.bind(this, 'profileName')}
+            keyboardType="default"
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="next"
           />
-
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Användarnamn</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.profileName}
-              onChangeText={textChangeHandler.bind(this, 'profileName')}
-              keyboardType="default"
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            {!formState.inputValues.profileName ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Skriv in ett användarnamn</Text>
-              </View>
-            ) : null}
-          </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Telefon</Text>
-
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.phone.toString()}
-              onChangeText={textChangeHandler.bind(this, 'phone')}
-              keyboardType="number-pad"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            {!formState.inputValues.phone ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Lägg in ett kontaktnummer</Text>
-              </View>
-            ) : null}
-          </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>email</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.email}
-              onChangeText={textChangeHandler.bind(this, 'email')}
-              keyboardType="email-address"
-              required
-              email
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType="done"
-            />
-            {!formState.inputValues.email ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Skriv in din email</Text>
-              </View>
-            ) : null}
-          </View>
+          {!formState.inputValues.profileName ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Skriv in ett användarnamn</Text>
+            </View>
+          ) : null}
         </View>
-        <ButtonNormal text="Spara Profil" actionOnPress={submitHandler} />
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Telefon</Text>
+
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.phone.toString()}
+            onChangeText={textChangeHandler.bind(this, 'phone')}
+            keyboardType="number-pad"
+            autoCorrect={false}
+            returnKeyType="next"
+          />
+          {!formState.inputValues.phone ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Lägg in ett kontaktnummer</Text>
+            </View>
+          ) : null}
+        </View>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>email</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.email}
+            onChangeText={textChangeHandler.bind(this, 'email')}
+            keyboardType="email-address"
+            required
+            email
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="done"
+          />
+          {!formState.inputValues.email ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Skriv in din email</Text>
+            </View>
+          ) : null}
+        </View>
+      </View>
+      <ButtonNormal text="Spara Profil" actionOnPress={submitHandler} />
+    </FormWrapper>
   );
 };
 

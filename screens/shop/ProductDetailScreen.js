@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, Alert } from 'react-native';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import RoundItem from '../../components/UI/RoundItem';
-import SaferArea from '../../components/UI/SaferArea';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
 import ButtonNormal from '../../components/UI/ButtonNormal';
@@ -133,102 +133,98 @@ const ProductDetailScreen = props => {
   const isReservedOrPickedUp = isReserved || isPickedUp;
 
   return (
-    <SaferArea>
-      <ScrollView>
-        <Image style={styles.image} source={{ uri: selectedProduct.image }} />
+    <FormWrapper>
+      <Image style={styles.image} source={{ uri: selectedProduct.image }} />
 
-        {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
-        {hasEditPermission && !isPickedUp ? (
-          <View style={styles.actions}>
-            {/* Delete button */}
-            <ButtonIcon
-              icon="delete"
-              color={Colors.warning}
-              onSelect={deleteHandler.bind(this)}
+      {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
+      {hasEditPermission && !isPickedUp ? (
+        <View style={styles.actions}>
+          {/* Delete button */}
+          <ButtonIcon
+            icon="delete"
+            color={Colors.warning}
+            onSelect={deleteHandler.bind(this)}
+          />
+          {isReserved ? (
+            //Show 'hämtas/hämtad' button only if the product is reserved
+            <ButtonToggle
+              icon="star"
+              title="byt till hämtad"
+              onSelect={collectHandler.bind(this)}
             />
-            {isReserved ? (
-              //Show 'hämtas/hämtad' button only if the product is reserved
-              <ButtonToggle
-                icon="star"
-                title="byt till hämtad"
-                onSelect={collectHandler.bind(this)}
-              />
-            ) : (
-              //else show 'redo/bearbetas' button
-              <ButtonToggle
-                isToggled={isToggled}
-                icon={isReady ? 'hammer' : ''}
-                title={`byt till ${isReady ? 'bearbetas' : 'redo'}`}
-                onSelect={toggleIsReadyHandle.bind(this)}
-              />
-            )}
-            <ButtonIcon
-              icon="pen"
-              color={Colors.neutral}
-              onSelect={() => {
-                editProductHandler(selectedProduct.id);
-              }}
+          ) : (
+            //else show 'redo/bearbetas' button
+            <ButtonToggle
+              isToggled={isToggled}
+              icon={isReady ? 'hammer' : ''}
+              title={`byt till ${isReady ? 'bearbetas' : 'redo'}`}
+              onSelect={toggleIsReadyHandle.bind(this)}
             />
-          </View>
-        ) : null}
-
-        {/* Buttons to always show, but to have conditional type based on   */}
-        <View style={styles.toggles}>
-          <ButtonNormal
-            backgroundColor={Colors.primary}
-            disabled={isReservedOrPickedUp} //disable/enable base on true/false of these params
-            actionOnPress={toggleReserveButton}
-          >
-            {isPickedUp
-              ? 'hämtad'
-              : isReserved
-              ? `reserverad till ${shorterDate}`
-              : 'reservera'}
-          </ButtonNormal>
-
-          {/* Show the horizontal scroll of the user's projects if the product is
-          not picked up or reserved yet */}
-          {!isReservedOrPickedUp && showUserProjects ? (
-            <HorizontalScrollContainer>
-              {userProjects.map(item => (
-                <RoundItem
-                  itemData={item}
-                  key={item.id}
-                  isHorizontal={true}
-                  onSelect={() => {
-                    reserveHandler(item.id);
-                  }}
-                />
-              ))}
-            </HorizontalScrollContainer>
-          ) : null}
-          {selectedProduct.projectId ? (
-            <>
-              <Text>
-                {isPickedUp ? 'Används i ' : 'Reserverad för '}projekt:
-              </Text>
-              <HorizontalScroll
-                roundItem={true}
-                detailPath={'ProjectDetail'}
-                scrollData={projectForProduct}
-                navigation={props.navigation}
-              />
-            </>
-          ) : null}
+          )}
+          <ButtonIcon
+            icon="pen"
+            color={Colors.neutral}
+            onSelect={() => {
+              editProductHandler(selectedProduct.id);
+            }}
+          />
         </View>
+      ) : null}
 
-        {/* Information about the product */}
+      {/* Buttons to always show, but to have conditional type based on   */}
+      <View style={styles.toggles}>
+        <ButtonNormal
+          backgroundColor={Colors.primary}
+          disabled={isReservedOrPickedUp} //disable/enable base on true/false of these params
+          actionOnPress={toggleReserveButton}
+        >
+          {isPickedUp
+            ? 'hämtad'
+            : isReserved
+            ? `reserverad till ${shorterDate}`
+            : 'reservera'}
+        </ButtonNormal>
 
-        <Text style={styles.description}>
-          Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
-        </Text>
-        <Text style={styles.description}>(lista)</Text>
-        <Text style={styles.price}>
-          {selectedProduct.price ? selectedProduct.price : 0} kr
-        </Text>
-        <Text style={styles.description}>{selectedProduct.description}</Text>
-      </ScrollView>
-    </SaferArea>
+        {/* Show the horizontal scroll of the user's projects if the product is
+          not picked up or reserved yet */}
+        {!isReservedOrPickedUp && showUserProjects ? (
+          <HorizontalScrollContainer>
+            {userProjects.map(item => (
+              <RoundItem
+                itemData={item}
+                key={item.id}
+                isHorizontal={true}
+                onSelect={() => {
+                  reserveHandler(item.id);
+                }}
+              />
+            ))}
+          </HorizontalScrollContainer>
+        ) : null}
+        {selectedProduct.projectId ? (
+          <>
+            <Text>{isPickedUp ? 'Används i ' : 'Reserverad för '}projekt:</Text>
+            <HorizontalScroll
+              roundItem={true}
+              detailPath={'ProjectDetail'}
+              scrollData={projectForProduct}
+              navigation={props.navigation}
+            />
+          </>
+        ) : null}
+      </View>
+
+      {/* Information about the product */}
+
+      <Text style={styles.description}>
+        Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
+      </Text>
+      <Text style={styles.description}>(lista)</Text>
+      <Text style={styles.price}>
+        {selectedProduct.price ? selectedProduct.price : 0} kr
+      </Text>
+      <Text style={styles.description}>{selectedProduct.description}</Text>
+    </FormWrapper>
   );
 };
 

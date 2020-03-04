@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import {
   View,
-  ScrollView,
   StyleSheet,
   Platform,
-  Picker,
   Alert,
   Text,
-  TextInput,
-  KeyboardAvoidingView
+  TextInput
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 import HeaderButton from '../../components/UI/HeaderButton';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
@@ -151,54 +149,48 @@ const EditProjectScreen = props => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={100}
-    >
-      <ScrollView>
-        <View style={styles.form}>
-          <ImagePicker
-            onImageTaken={textChangeHandler.bind(this, 'image')}
-            passedImage={formState.inputValues.image}
+    <FormWrapper>
+      <View style={styles.form}>
+        <ImagePicker
+          onImageTaken={textChangeHandler.bind(this, 'image')}
+          passedImage={formState.inputValues.image}
+        />
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Titel</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.title}
+            onChangeText={textChangeHandler.bind(this, 'title')}
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect={false}
+            returnKeyType="next"
           />
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Titel</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.title}
-              onChangeText={textChangeHandler.bind(this, 'title')}
-              keyboardType="default"
-              autoCapitalize="sentences"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            {!formState.inputValues.title ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Skriv in en titel</Text>
-              </View>
-            ) : null}
-          </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Slogan</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.slogan}
-              onChangeText={textChangeHandler.bind(this, 'slogan')}
-              autoCorrect={false}
-              returnKeyType="done"
-            />
-            {!formState.inputValues.slogan ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>
-                  Skriv in en kort slogan för projektet
-                </Text>
-              </View>
-            ) : null}
-          </View>
+          {!formState.inputValues.title ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Skriv in en titel</Text>
+            </View>
+          ) : null}
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Slogan</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.slogan}
+            onChangeText={textChangeHandler.bind(this, 'slogan')}
+            autoCorrect={false}
+            returnKeyType="done"
+          />
+          {!formState.inputValues.slogan ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>
+                Skriv in en kort slogan för projektet
+              </Text>
+            </View>
+          ) : null}
+        </View>
+      </View>
+    </FormWrapper>
   );
 };
 

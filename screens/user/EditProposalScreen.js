@@ -1,17 +1,8 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  Picker,
-  Alert,
-  Text,
-  TextInput,
-  KeyboardAvoidingView
-} from 'react-native';
+import { View, StyleSheet, Alert, Text, TextInput } from 'react-native';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 import ButtonNormal from '../../components/UI/ButtonNormal';
 import { useSelector, useDispatch } from 'react-redux';
-import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
@@ -135,77 +126,71 @@ const EditProposalScreen = props => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={100}
-    >
-      <ScrollView>
-        <View style={styles.form}>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Jag efterlyser...</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.title}
-              onChangeText={textChangeHandler.bind(this, 'title')}
-              keyboardType="default"
-              autoCapitalize="sentences"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            {!formState.inputValues.title ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>
-                  Skriv in titeln på din efterlysning
-                </Text>
-              </View>
-            ) : null}
-          </View>
-
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Beskrivning</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.description}
-              onChangeText={textChangeHandler.bind(this, 'description')}
-              autoCorrect={false}
-              returnKeyType="done"
-            />
-            {!formState.inputValues.description ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>
-                  Skriv in en kort beskrivning av vad du efterlyser
-                </Text>
-              </View>
-            ) : null}
-          </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>
-              Ersättning (skriv 0 för om du söker voluntärer/donationer)
-            </Text>
-            <Text style={styles.subLabel}>
-              Om du lägger upp som företag, ange pris inklusive moms
-            </Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.price.toString()}
-              onChangeText={textChangeHandler.bind(this, 'price')}
-              keyboardType="number-pad"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            {!formState.inputValues.price ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>
-                  Lägg in ett pris (sätt 0 för voluntärarbete)
-                </Text>
-              </View>
-            ) : null}
-          </View>
-          <ButtonNormal actionOnPress={submitHandler} text="Spara" />
+    <FormWrapper>
+      <View style={styles.form}>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Jag efterlyser...</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.title}
+            onChangeText={textChangeHandler.bind(this, 'title')}
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect={false}
+            returnKeyType="next"
+          />
+          {!formState.inputValues.title ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>
+                Skriv in titeln på din efterlysning
+              </Text>
+            </View>
+          ) : null}
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Beskrivning</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.description}
+            onChangeText={textChangeHandler.bind(this, 'description')}
+            autoCorrect={false}
+            returnKeyType="done"
+          />
+          {!formState.inputValues.description ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>
+                Skriv in en kort beskrivning av vad du efterlyser
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>
+            Ersättning (skriv 0 för om du söker voluntärer/donationer)
+          </Text>
+          <Text style={styles.subLabel}>
+            Om du lägger upp som företag, ange pris inklusive moms
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.price.toString()}
+            onChangeText={textChangeHandler.bind(this, 'price')}
+            keyboardType="number-pad"
+            autoCorrect={false}
+            returnKeyType="next"
+          />
+          {!formState.inputValues.price ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>
+                Lägg in ett pris (sätt 0 för voluntärarbete)
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        <ButtonNormal actionOnPress={submitHandler} text="Spara" />
+      </View>
+    </FormWrapper>
   );
 };
 

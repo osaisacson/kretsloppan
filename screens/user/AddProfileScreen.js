@@ -1,17 +1,10 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ButtonNormal from '../../components/UI/ButtonNormal';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 
 //Component
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  Alert,
-  Text,
-  TextInput,
-  KeyboardAvoidingView
-} from 'react-native';
+import { View, StyleSheet, Alert, Text, TextInput } from 'react-native';
 import HeaderOne from '../../components/UI/HeaderOne';
 import ImagePicker from '../../components/UI/ImgPicker';
 
@@ -133,83 +126,77 @@ const AddProfileScreen = props => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={100}
-    >
-      <ScrollView>
-        <HeaderOne title="skapa profil" />
-        <View style={styles.form}>
-          <ImagePicker
-            onImageTaken={textChangeHandler.bind(this, 'image')}
-            passedImage={formState.inputValues.image}
-            imagePrompt="Välj en profilbild"
-          />
-
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Användarnamn</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.profileName}
-              onChangeText={textChangeHandler.bind(this, 'profileName')}
-              keyboardType="default"
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            {!formState.inputValues.profileName ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Skriv in ett användarnamn</Text>
-              </View>
-            ) : null}
-          </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Telefon</Text>
-
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.phone.toString()}
-              onChangeText={textChangeHandler.bind(this, 'phone')}
-              keyboardType="number-pad"
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            {!formState.inputValues.phone ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Lägg in ett kontaktnummer</Text>
-              </View>
-            ) : null}
-          </View>
-          <View style={styles.formControl}>
-            <Text style={styles.label}>email</Text>
-            <TextInput
-              style={styles.input}
-              value={formState.inputValues.email}
-              onChangeText={textChangeHandler.bind(this, 'email')}
-              keyboardType="email-address"
-              required
-              email
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType="done"
-            />
-            {!formState.inputValues.email ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>
-                  Skriv in den email köpare kan kontakta dig på
-                </Text>
-              </View>
-            ) : null}
-          </View>
-        </View>
-        <ButtonNormal
-          isLoading={isLoading}
-          actionOnPress={submitHandler}
-          text={'Spara Profil'}
+    <FormWrapper>
+      <HeaderOne title="skapa profil" />
+      <View style={styles.form}>
+        <ImagePicker
+          onImageTaken={textChangeHandler.bind(this, 'image')}
+          passedImage={formState.inputValues.image}
+          imagePrompt="Välj en profilbild"
         />
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Användarnamn</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.profileName}
+            onChangeText={textChangeHandler.bind(this, 'profileName')}
+            keyboardType="default"
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="next"
+          />
+          {!formState.inputValues.profileName ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Skriv in ett användarnamn</Text>
+            </View>
+          ) : null}
+        </View>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Telefon</Text>
+
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.phone.toString()}
+            onChangeText={textChangeHandler.bind(this, 'phone')}
+            keyboardType="number-pad"
+            autoCorrect={false}
+            returnKeyType="next"
+          />
+          {!formState.inputValues.phone ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Lägg in ett kontaktnummer</Text>
+            </View>
+          ) : null}
+        </View>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>email</Text>
+          <TextInput
+            style={styles.input}
+            value={formState.inputValues.email}
+            onChangeText={textChangeHandler.bind(this, 'email')}
+            keyboardType="email-address"
+            required
+            email
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="done"
+          />
+          {!formState.inputValues.email ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>
+                Skriv in den email köpare kan kontakta dig på
+              </Text>
+            </View>
+          ) : null}
+        </View>
+      </View>
+      <ButtonNormal
+        isLoading={isLoading}
+        actionOnPress={submitHandler}
+        text={'Spara Profil'}
+      />
+    </FormWrapper>
   );
 };
 
