@@ -9,6 +9,8 @@ import ReduxThunk from 'redux-thunk';
 import productsReducer from './store/reducers/products';
 import projectsReducer from './store/reducers/projects';
 import profilesReducer from './store/reducers/profiles';
+import proposalsReducer from './store/reducers/proposals';
+
 import authReducer from './store/reducers/auth';
 
 import AppNavigator from './navigation/AppNavigator';
@@ -18,6 +20,7 @@ const rootReducer = combineReducers({
   products: productsReducer,
   projects: projectsReducer,
   profiles: profilesReducer,
+  proposals: proposalsReducer,
   auth: authReducer
 });
 

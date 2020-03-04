@@ -104,10 +104,9 @@ export const createProfile = (profileName, email, phone, image) => {
   };
 };
 
-export const updateProfile = (profileName, email, phone, image) => {
+export const updateProfile = (profileId, profileName, email, phone, image) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
-    const userId = getState().auth.userId;
 
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
@@ -124,7 +123,7 @@ export const updateProfile = (profileName, email, phone, image) => {
       .then(res => res.json())
       .then(parsedRes => {
         const profileData = {
-          profileId: userId,
+          profileId,
           profileName,
           email,
           phone,
@@ -151,9 +150,9 @@ export const updateProfile = (profileName, email, phone, image) => {
           .then(finalResParsed => {
             dispatch({
               type: UPDATE_PROFILE,
-              uid: userId,
+              uid: profileId,
               profileData: {
-                profileId: userId,
+                profileId,
                 profileName,
                 email,
                 phone,
