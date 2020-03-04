@@ -3,19 +3,22 @@ import { View, StyleSheet, Text } from 'react-native';
 
 const FormFieldWrapper = props => {
   return (
-    <View style={styles.formControl}>
-      <Text style={styles.label}>{props.label}</Text>
+    <View style={formStyles.formControl}>
+      <Text style={formStyles.label}>{props.label}</Text>
+      {props.subLabel ? (
+        <Text style={formStyles.subLabel}>{props.subLabel}</Text>
+      ) : null}
       {props.children}
       {props.showPromptIf ? (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{props.prompt}</Text>
+        <View style={formStyles.errorContainer}>
+          <Text style={formStyles.errorText}>{props.prompt}</Text>
         </View>
       ) : null}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const formStyles = StyleSheet.create({
   centered: {
     flex: 1,
     justifyContent: 'center',
@@ -24,9 +27,18 @@ const styles = StyleSheet.create({
   formControl: {
     width: '100%'
   },
+  input: {
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1
+  },
   label: {
     fontFamily: 'roboto-bold',
     marginVertical: 8
+  },
+  subLabel: {
+    fontFamily: 'roboto-light-italic'
   },
   input: {
     paddingHorizontal: 2,

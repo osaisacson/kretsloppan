@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { View, StyleSheet, Alert, Text, TextInput } from 'react-native';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import ButtonNormal from '../../components/UI/ButtonNormal';
 import { useSelector, useDispatch } from 'react-redux';
-import Loader from '../../components/UI/Loader';
+//Components
+import { Alert, TextInput } from 'react-native';
+import FormWrapper from '../../components/wrappers/FormWrapper';
+import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
 
@@ -121,75 +121,56 @@ const EditProposalScreen = props => {
     });
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
-    <FormWrapper>
-      <View style={styles.form}>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Jag efterlyser...</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.title}
-            onChangeText={textChangeHandler.bind(this, 'title')}
-            keyboardType="default"
-            autoCapitalize="sentences"
-            autoCorrect={false}
-            returnKeyType="next"
-          />
-          {!formState.inputValues.title ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>
-                Skriv in titeln på din efterlysning
-              </Text>
-            </View>
-          ) : null}
-        </View>
+    <FormWrapper
+      submitButtonText="Spara Efterlysning"
+      handlerForButtonSubmit={submitHandler}
+      isLoading={isLoading}
+    >
+      <FormFieldWrapper
+        label="Jag efterlyser..."
+        showPromptIf={!formState.inputValues.title}
+        prompt="Skriv in titeln på din efterlysning"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.title}
+          onChangeText={textChangeHandler.bind(this, 'title')}
+          keyboardType="default"
+          autoCapitalize="sentences"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
 
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Beskrivning</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.description}
-            onChangeText={textChangeHandler.bind(this, 'description')}
-            autoCorrect={false}
-            returnKeyType="done"
-          />
-          {!formState.inputValues.description ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>
-                Skriv in en kort beskrivning av vad du efterlyser
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>
-            Ersättning (skriv 0 för om du söker voluntärer/donationer)
-          </Text>
-          <Text style={styles.subLabel}>
-            Om du lägger upp som företag, ange pris inklusive moms
-          </Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.price.toString()}
-            onChangeText={textChangeHandler.bind(this, 'price')}
-            keyboardType="number-pad"
-            autoCorrect={false}
-            returnKeyType="next"
-          />
-          {!formState.inputValues.price ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>
-                Lägg in ett pris (sätt 0 för voluntärarbete)
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        <ButtonNormal actionOnPress={submitHandler} text="Spara" />
-      </View>
+      <FormFieldWrapper
+        label="Beskrivning"
+        showPromptIf={!formState.inputValues.description}
+        prompt="Skriv in en kort beskrivning av vad du efterlyser"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.description}
+          onChangeText={textChangeHandler.bind(this, 'description')}
+          autoCorrect={false}
+          returnKeyType="done"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Ersättning (skriv 0 för om du söker voluntärer/donationer)"
+        subLabel="Om du lägger upp som företag, ange pris inklusive moms"
+        showPromptIf={!formState.inputValues.price}
+        prompt="Skriv in en ersättning, 0 för voluntärer/donationer"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.price.toString()}
+          onChangeText={textChangeHandler.bind(this, 'price')}
+          keyboardType="number-pad"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
     </FormWrapper>
   );
 };
@@ -202,38 +183,5 @@ export const screenOptions = navData => {
       : 'Lägg till ny efterlysning'
   };
 };
-
-const styles = StyleSheet.create({
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  formControl: {
-    width: '100%'
-  },
-  label: {
-    fontFamily: 'roboto-bold',
-    marginVertical: 8
-  },
-  subLabel: {
-    fontFamily: 'roboto-light-italic'
-  },
-  input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
-  },
-  errorContainer: {
-    marginVertical: 5
-  },
-  errorText: {
-    fontFamily: 'roboto-regular',
-    color: 'grey',
-    fontSize: 13,
-    textAlign: 'right'
-  }
-});
 
 export default EditProposalScreen;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Alert, TextInput } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
+import formStyles from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
@@ -153,7 +154,7 @@ const EditProfileScreen = props => {
         prompt="Skriv in ett användarnamn"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.profileName}
           onChangeText={textChangeHandler.bind(this, 'profileName')}
           keyboardType="default"
@@ -168,7 +169,7 @@ const EditProfileScreen = props => {
         prompt="Lägg in ett kontaktnummer"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.phone.toString()}
           onChangeText={textChangeHandler.bind(this, 'phone')}
           keyboardType="number-pad"
@@ -182,7 +183,7 @@ const EditProfileScreen = props => {
         prompt="Skriv in den email folk kan kontakta dig på"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.email}
           onChangeText={textChangeHandler.bind(this, 'email')}
           keyboardType="email-address"
@@ -203,14 +204,5 @@ export const screenOptions = navData => {
     headerTitle: routeParams.profileId ? 'Edit Profile' : 'Add Profile'
   };
 };
-
-const styles = StyleSheet.create({
-  input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
-  }
-});
 
 export default EditProfileScreen;

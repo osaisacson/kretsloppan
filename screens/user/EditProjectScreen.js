@@ -1,18 +1,9 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import {
-  View,
-  StyleSheet,
-  Platform,
-  Alert,
-  Text,
-  TextInput
-} from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-import HeaderButton from '../../components/UI/HeaderButton';
+import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
-import Loader from '../../components/UI/Loader';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
@@ -109,22 +100,6 @@ const EditProjectScreen = props => {
     setIsLoading(false);
   }, [dispatch, projId, formState]);
 
-  useEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item
-            title="Save"
-            iconName={
-              Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
-            }
-            onPress={submitHandler}
-          />
-        </HeaderButtons>
-      )
-    });
-  }, [submitHandler]);
-
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
     //inputIdentifier and text will act as key:value in the form reducer
@@ -144,52 +119,52 @@ const EditProjectScreen = props => {
     });
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
-    <FormWrapper>
-      <View style={styles.form}>
+    <FormWrapper
+      submitButtonText="Spara Projekt"
+      handlerForButtonSubmit={submitHandler}
+      isLoading={isLoading}
+    >
+      <FormFieldWrapper
+        label="Profilbild"
+        showPromptIf={!formState.inputValues.image}
+        prompt="Välj en profilbild"
+      >
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
           passedImage={formState.inputValues.image}
         />
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Titel</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.title}
-            onChangeText={textChangeHandler.bind(this, 'title')}
-            keyboardType="default"
-            autoCapitalize="sentences"
-            autoCorrect={false}
-            returnKeyType="next"
-          />
-          {!formState.inputValues.title ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Skriv in en titel</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Slogan</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.slogan}
-            onChangeText={textChangeHandler.bind(this, 'slogan')}
-            autoCorrect={false}
-            returnKeyType="done"
-          />
-          {!formState.inputValues.slogan ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>
-                Skriv in en kort slogan för projektet
-              </Text>
-            </View>
-          ) : null}
-        </View>
-      </View>
+      </FormFieldWrapper>
+
+      <FormFieldWrapper
+        label="Titel"
+        showPromptIf={!formState.inputValues.title}
+        prompt="Skriv in en titel"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.title}
+          onChangeText={textChangeHandler.bind(this, 'title')}
+          keyboardType="default"
+          autoCapitalize="sentences"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+
+      <FormFieldWrapper
+        label="Slogan"
+        showPromptIf={!formState.inputValues.slogan}
+        prompt="Skriv in en kort slogan för ditt projekt"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.slogan}
+          onChangeText={textChangeHandler.bind(this, 'slogan')}
+          autoCorrect={false}
+          returnKeyType="done"
+        />
+      </FormFieldWrapper>
     </FormWrapper>
   );
 };
@@ -197,44 +172,10 @@ const EditProjectScreen = props => {
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.projectId ? 'Edit Project' : 'Add Project'
+    headerTitle: routeParams.projectId
+      ? 'Redigera projekt'
+      : 'Lägg till projekt'
   };
 };
-
-const styles = StyleSheet.create({
-  form: {
-    margin: 20
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  formControl: {
-    width: '100%'
-  },
-  label: {
-    fontFamily: 'roboto-bold',
-    marginVertical: 8
-  },
-  subLabel: {
-    fontFamily: 'roboto-light-italic'
-  },
-  input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
-  },
-  errorContainer: {
-    marginVertical: 5
-  },
-  errorText: {
-    fontFamily: 'roboto-regular',
-    color: 'grey',
-    fontSize: 13,
-    textAlign: 'right'
-  }
-});
 
 export default EditProjectScreen;

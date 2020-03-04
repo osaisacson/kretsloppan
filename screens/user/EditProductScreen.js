@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { View, StyleSheet, Picker, Alert, Text, TextInput } from 'react-native';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import ButtonNormal from '../../components/UI/ButtonNormal';
 import { useSelector, useDispatch } from 'react-redux';
+//Components
+import { Picker, Alert, TextInput } from 'react-native';
+import FormWrapper from '../../components/wrappers/FormWrapper';
+import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
+import formStyles from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
-import Loader from '../../components/UI/Loader';
 //Actions
 import * as productsActions from '../../store/actions/products';
 
@@ -130,100 +131,87 @@ const EditProductScreen = props => {
     });
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
-    <FormWrapper>
-      <View style={styles.form}>
+    <FormWrapper
+      submitButtonText="Spara Produkt"
+      handlerForButtonSubmit={submitHandler}
+      isLoading={isLoading}
+    >
+      <FormFieldWrapper
+        label="Profilbild"
+        showPromptIf={!formState.inputValues.image}
+        prompt="Välj en profilbild"
+      >
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
           passedImage={formState.inputValues.image}
         />
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Titel</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.title}
-            onChangeText={textChangeHandler.bind(this, 'title')}
-            keyboardType="default"
-            autoCapitalize="sentences"
-            autoCorrect={false}
-            returnKeyType="next"
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Titel"
+        showPromptIf={!formState.inputValues.title}
+        prompt="Skriv in en titel"
+      >
+        <TextInput
+          style={formStyles.input}
+          value={formState.inputValues.title}
+          onChangeText={textChangeHandler.bind(this, 'title')}
+          keyboardType="default"
+          autoCapitalize="sentences"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Pris"
+        subLabel="Om du lägger upp som företag, ange pris inklusive moms"
+        showPromptIf={!formState.inputValues.price}
+        prompt="Lägg in ett pris (det kan vara 0)"
+      >
+        <TextInput
+          style={formStyles.input}
+          value={formState.inputValues.price.toString()}
+          onChangeText={textChangeHandler.bind(this, 'price')}
+          keyboardType="number-pad"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Beskrivning"
+        showPromptIf={!formState.inputValues.description}
+        prompt="Skriv in en kort beskrivning"
+      >
+        <TextInput
+          style={formStyles.input}
+          value={formState.inputValues.description}
+          onChangeText={textChangeHandler.bind(this, 'description')}
+          autoCorrect={false}
+          returnKeyType="done"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Kategori"
+        showPromptIf={!formState.inputValues.categoryName}
+        prompt="Välj en kategori"
+      >
+        <Picker
+          selectedValue={formState.inputValues.categoryName}
+          onValueChange={textChangeHandler.bind(this, 'categoryName')}
+        >
+          <Picker.Item key={'tak'} label={'tak'} value={'tak'.toLowerCase()} />
+          <Picker.Item
+            key={'golv'}
+            label={'golv'}
+            value={'golv'.toLowerCase()}
           />
-          {!formState.inputValues.title ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Skriv in en titel</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Pris</Text>
-          <Text style={styles.subLabel}>
-            Om du lägger upp som företag, ange pris inklusive moms
-          </Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.price.toString()}
-            onChangeText={textChangeHandler.bind(this, 'price')}
-            keyboardType="number-pad"
-            autoCorrect={false}
-            returnKeyType="next"
+          <Picker.Item
+            key={'dörr'}
+            label={'dörr'}
+            value={'dörr'.toLowerCase()}
           />
-          {!formState.inputValues.price ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>
-                Lägg in ett pris (det kan vara 0)
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Beskrivning</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.description}
-            onChangeText={textChangeHandler.bind(this, 'description')}
-            autoCorrect={false}
-            returnKeyType="done"
-          />
-          {!formState.inputValues.description ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Skriv in en kort beskrivning</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Kategori</Text>
-          <Picker
-            selectedValue={formState.inputValues.categoryName}
-            onValueChange={textChangeHandler.bind(this, 'categoryName')}
-          >
-            <Picker.Item
-              key={'tak'}
-              label={'tak'}
-              value={'tak'.toLowerCase()}
-            />
-            <Picker.Item
-              key={'golv'}
-              label={'golv'}
-              value={'golv'.toLowerCase()}
-            />
-            <Picker.Item
-              key={'dörr'}
-              label={'dörr'}
-              value={'dörr'.toLowerCase()}
-            />
-          </Picker>
-          {!formState.inputValues.categoryName ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Välj en kategori</Text>
-            </View>
-          ) : null}
-        </View>
-        <ButtonNormal actionOnPress={submitHandler} text="Spara" />
-      </View>
+        </Picker>
+      </FormFieldWrapper>
     </FormWrapper>
   );
 };
@@ -231,41 +219,10 @@ const EditProductScreen = props => {
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.detailId ? 'Edit Product' : 'Add Product'
+    headerTitle: routeParams.detailId
+      ? 'Redigera återbruk'
+      : 'Lägg till återbruk'
   };
 };
-
-const styles = StyleSheet.create({
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  formControl: {
-    width: '100%'
-  },
-  label: {
-    fontFamily: 'roboto-bold',
-    marginVertical: 8
-  },
-  subLabel: {
-    fontFamily: 'roboto-light-italic'
-  },
-  input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
-  },
-  errorContainer: {
-    marginVertical: 5
-  },
-  errorText: {
-    fontFamily: 'roboto-regular',
-    color: 'grey',
-    fontSize: 13,
-    textAlign: 'right'
-  }
-});
 
 export default EditProductScreen;
