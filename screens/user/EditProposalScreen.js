@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
+import formStyles from '../../components/wrappers/FormFieldWrapper';
+
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
 
@@ -133,7 +135,7 @@ const EditProposalScreen = props => {
         prompt="Skriv in titeln på din efterlysning"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}
           keyboardType="default"
@@ -149,7 +151,7 @@ const EditProposalScreen = props => {
         prompt="Skriv in en kort beskrivning av vad du efterlyser"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.description}
           onChangeText={textChangeHandler.bind(this, 'description')}
           autoCorrect={false}
@@ -163,7 +165,7 @@ const EditProposalScreen = props => {
         prompt="Skriv in en ersättning, 0 för voluntärer/donationer"
       >
         <TextInput
-          style={styles.input}
+          style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
           keyboardType="number-pad"
