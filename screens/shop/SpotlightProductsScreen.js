@@ -11,6 +11,7 @@ import HorizontalScroll from '../../components/UI/HorizontalScroll';
 //Actions
 import * as productsActions from '../../store/actions/products';
 import * as projectsActions from '../../store/actions/projects';
+import * as proposalsActions from '../../store/actions/proposals';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -22,6 +23,7 @@ const SpotlightProductsScreen = props => {
   //Get products and projects
   const allProducts = useSelector(state => state.products.availableProducts);
   const allProjects = useSelector(state => state.projects.availableProjects);
+  const allProposals = useSelector(state => state.proposals.availableProposals);
 
   const recentProducts = allProducts
     .slice(0, 10)
@@ -50,39 +52,40 @@ const SpotlightProductsScreen = props => {
     try {
       await dispatch(productsActions.fetchProducts());
       await dispatch(projectsActions.fetchProjects());
+      await dispatch(proposalsActions.fetchProposals());
     } catch (err) {
       setError(err.message);
     }
   }, [dispatch, setIsLoading, setError]);
 
-  // useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener(
-  //     'focus',
-  //     loadProductsAndProjects
-  //   );
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [loadProductsAndProjects]);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   loadProductsAndProjects().then(() => {
-  //     setIsLoading(false);
-  //   });
-  // }, [dispatch, loadProductsAndProjects]);
-
   useEffect(() => {
-    setIsLoading(true);
     const unsubscribe = props.navigation.addListener(
       'focus',
       loadProductsAndProjects
     );
+    return () => {
+      unsubscribe();
+    };
+  }, [loadProductsAndProjects]);
+
+  useEffect(() => {
+    setIsLoading(true);
     loadProductsAndProjects().then(() => {
       setIsLoading(false);
-      unsubscribe();
     });
   }, [dispatch, loadProductsAndProjects]);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   const unsubscribe = props.navigation.addListener(
+  //     'focus',
+  //     loadProductsAndProjects
+  //   );
+  //   loadProductsAndProjects().then(() => {
+  //     setIsLoading(false);
+  //     unsubscribe();
+  //   });
+  // }, [dispatch, loadProductsAndProjects]);
 
   if (error) {
     return (
@@ -106,44 +109,49 @@ const SpotlightProductsScreen = props => {
   }
 
   return (
-    <SaferArea>
-      <ScrollView nestedScrollEnabled={true}>
-        <HorizontalScroll
-          roundItem={true}
-          detailPath="ProjectDetail"
-          title={'Projekt'}
-          subTitle={'Projekt som håller på att byggas med återbruk'}
-          scrollData={allProjects}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'nya tillskott'}
-          subTitle={'Det fräschaste, det nyaste'}
-          scrollData={recentProducts}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'under bearbetning'}
-          subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
-          scrollData={inProgressProducts}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'nyligen reserverat'}
-          subTitle={
-            'Reserverade produkter, blir tillgängliga igen om om de inte hämtas inom en vecka.'
-          }
-          scrollData={bookedProducts}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'efterlysningar'}
-          subTitle={'Material som önskas. Kontakta efterlysaren.'}
-          scrollData={wantedProducts}
-          navigation={props.navigation}
-        />
-      </ScrollView>
-    </SaferArea>
+    // console.log('allProducts: ', allProducts),
+    // console.log('allProjects: ', allProjects),
+    console.log('allProposals: ', allProposals),
+    (
+      <SaferArea>
+        <ScrollView nestedScrollEnabled={true}>
+          <HorizontalScroll
+            roundItem={true}
+            detailPath="ProjectDetail"
+            title={'Projekt'}
+            subTitle={'Projekt som håller på att byggas med återbruk'}
+            scrollData={allProjects}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            title={'nya tillskott'}
+            subTitle={'Det fräschaste, det nyaste'}
+            scrollData={recentProducts}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            title={'under bearbetning'}
+            subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
+            scrollData={inProgressProducts}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            title={'nyligen reserverat'}
+            subTitle={
+              'Reserverade produkter, blir tillgängliga igen om om de inte hämtas inom en vecka.'
+            }
+            scrollData={bookedProducts}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            title={'efterlysningar'}
+            subTitle={'Material som önskas. Kontakta efterlysaren.'}
+            scrollData={allProposals}
+            navigation={props.navigation}
+          />
+        </ScrollView>
+      </SaferArea>
+    )
   );
 };
 

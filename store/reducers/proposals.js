@@ -24,7 +24,8 @@ export default (state = initialState, action) => {
         action.proposalData.ownerId,
         action.proposalData.title,
         action.proposalData.description,
-        action.proposalData.price
+        action.proposalData.price,
+        action.proposalData.date
       );
       return {
         ...state,
@@ -32,23 +33,24 @@ export default (state = initialState, action) => {
         userProposals: state.userProposals.concat(newProposal)
       };
     case UPDATE_PROPOSAL:
-      const proposalIndex = state.userProposals.findIndex(
-        prop => prop.id === action.pid
+      const userProposalIndex = state.userProposals.findIndex(
+        proj => proj.id === action.pid
       );
-      const updatedProposal = new Proposal(
+      const updatedUserProposal = new Proposal( //Whenever we do a new proposal we have to pass the full params to match model
         action.pid,
-        state.userProposals[proposalIndex].ownerId,
+        state.userProposals[userProposalIndex].ownerId,
         action.proposalData.title,
         action.proposalData.description,
-        action.proposalData.price
+        action.proposalData.price,
+        state.userProposals[userProposalIndex].date
       );
-      const updatedUserProposals = [...state.userProposals];
-      updatedUserProposals[proposalIndex] = updatedProposal;
+      const updatedUserProposals = [...state.userProposals]; //copy current state of user proposals
+      updatedUserProposals[userProposalIndex] = updatedUserProposal; //find the user proposal with the passed index (the one we should update)
       const availableProposalIndex = state.availableProposals.findIndex(
-        proposal => proposal.id === action.pid
+        proj => proj.id === action.pid
       );
       const updatedAvailableProposals = [...state.availableProposals];
-      updatedAvailableProposals[availableProposalIndex] = updatedProposal;
+      updatedAvailableProposals[availableProposalIndex] = updatedUserProposal;
       return {
         ...state,
         availableProposals: updatedAvailableProposals,
