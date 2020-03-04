@@ -18,6 +18,7 @@ export default (state = initialState, action) => {
       };
     case CREATE_PROFILE:
       const newProfile = new Profile(
+        action.profileData.firebaseId,
         action.profileData.profileId,
         action.profileData.profileName,
         action.profileData.email,
@@ -30,12 +31,12 @@ export default (state = initialState, action) => {
       };
 
     case UPDATE_PROFILE:
-      const userId = getState().auth.userId; //Get the id of the currently logged in user
       const profileIndex = state.allProfiles.findIndex(
-        profile => profile.profileId === userId //Find the index of the profile where the profileId is the same as the logged in userId
+        profile => profile.profileId === action.currUser //Find the index of the profile where the profileId is the same as the currently logged in userId
       );
       const updatedProfile = new Profile(
-        action.profileData.profileId,
+        action.fid, //the id of the profile in firebase
+        state.allProfiles[profileIndex].profileId, //prev state profileId (ie, don't update this)
         action.profileData.profileName,
         action.profileData.email,
         action.profileData.phone,

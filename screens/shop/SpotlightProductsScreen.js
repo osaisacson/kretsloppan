@@ -109,49 +109,44 @@ const SpotlightProductsScreen = props => {
   }
 
   return (
-    // console.log('allProducts: ', allProducts),
-    // console.log('allProjects: ', allProjects),
-    console.log('allProposals: ', allProposals),
-    (
-      <SaferArea>
-        <ScrollView nestedScrollEnabled={true}>
-          <HorizontalScroll
-            roundItem={true}
-            detailPath="ProjectDetail"
-            title={'Projekt'}
-            subTitle={'Projekt som håller på att byggas med återbruk'}
-            scrollData={allProjects}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'nya tillskott'}
-            subTitle={'Det fräschaste, det nyaste'}
-            scrollData={recentProducts}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'under bearbetning'}
-            subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
-            scrollData={inProgressProducts}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'nyligen reserverat'}
-            subTitle={
-              'Reserverade produkter, blir tillgängliga igen om om de inte hämtas inom en vecka.'
-            }
-            scrollData={bookedProducts}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'efterlysningar'}
-            subTitle={'Material som önskas. Kontakta efterlysaren.'}
-            scrollData={allProposals}
-            navigation={props.navigation}
-          />
-        </ScrollView>
-      </SaferArea>
-    )
+    <SaferArea>
+      <ScrollView nestedScrollEnabled={true}>
+        <HorizontalScroll
+          roundItem={true}
+          detailPath="ProjectDetail"
+          title={'Projekt'}
+          subTitle={'Projekt som håller på att byggas med återbruk'}
+          scrollData={allProjects}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          title={'nya tillskott'}
+          subTitle={'Det fräschaste, det nyaste'}
+          scrollData={recentProducts}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          title={'under bearbetning'}
+          subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
+          scrollData={inProgressProducts}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          title={'nyligen reserverat'}
+          subTitle={
+            'Reserverade produkter, blir tillgängliga igen om om de inte hämtas inom en vecka.'
+          }
+          scrollData={bookedProducts}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          title={'efterlysningar'}
+          subTitle={'Material som önskas. Kontakta efterlysaren.'}
+          scrollData={allProposals}
+          navigation={props.navigation}
+        />
+      </ScrollView>
+    </SaferArea>
   );
 };
 

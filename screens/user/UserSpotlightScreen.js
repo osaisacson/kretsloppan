@@ -70,8 +70,8 @@ const UserSpotlightScreen = props => {
   const nrOfProjects = userProjects.length;
 
   //Navigate to the edit screen and forward the product id
-  const editProfileHandler = id => {
-    props.navigation.navigate('EditProfile');
+  const editProfileHandler = () => {
+    props.navigation.navigate('EditProfile', { detailId: currentProfile.id });
   };
 
   const dispatch = useDispatch();

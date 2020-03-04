@@ -24,12 +24,12 @@ export const fetchProfiles = () => {
       for (const key in resData) {
         loadedProfiles.push(
           new Profile(
+            key,
             resData[key].profileId,
             resData[key].profileName,
             resData[key].email,
             resData[key].phone,
-            resData[key].image,
-            resData[key].date
+            resData[key].image
           )
         );
       }
@@ -92,6 +92,7 @@ export const createProfile = (profileName, email, phone, image) => {
             dispatch({
               type: CREATE_PROFILE,
               profileData: {
+                firebaseId: finalResParsed.name,
                 profileId: userId,
                 profileName,
                 email,
@@ -104,9 +105,10 @@ export const createProfile = (profileName, email, phone, image) => {
   };
 };
 
-export const updateProfile = (profileId, profileName, email, phone, image) => {
+export const updateProfile = (firebaseId, profileName, email, phone, image) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId;
 
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
@@ -123,7 +125,6 @@ export const updateProfile = (profileId, profileName, email, phone, image) => {
       .then(res => res.json())
       .then(parsedRes => {
         const profileData = {
-          profileId,
           profileName,
           email,
           phone,
@@ -131,7 +132,7 @@ export const updateProfile = (profileId, profileName, email, phone, image) => {
         };
 
         return fetch(
-          `https://egnahemsfabriken.firebaseio.com/profiles/${profileId}.json?auth=${token}`,
+          `https://egnahemsfabriken.firebaseio.com/profiles/${firebaseId}.json?auth=${token}`,
           {
             method: 'PATCH',
             headers: {
@@ -150,9 +151,9 @@ export const updateProfile = (profileId, profileName, email, phone, image) => {
           .then(finalResParsed => {
             dispatch({
               type: UPDATE_PROFILE,
-              uid: profileId,
+              currUser: userId,
+              fid: firebaseId,
               profileData: {
-                profileId,
                 profileName,
                 email,
                 phone,

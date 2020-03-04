@@ -1,23 +1,11 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  View,
-  StyleSheet,
-  Platform,
-  Alert,
-  Text,
-  TextInput
-} from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { StyleSheet, Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-import ButtonNormal from '../../components/UI/ButtonNormal';
-import HeaderButton from '../../components/UI/HeaderButton';
+import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
-import Loader from '../../components/UI/Loader';
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
-//Constants
-import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -54,6 +42,8 @@ const EditProfileScreen = props => {
     profile => profile.profileId === loggedInUserId
   );
 
+  const firebaseId = props.route.params ? props.route.params.detailId : null;
+
   //Currently edited profile
   const currentProfile = profilesArray[0];
 
@@ -61,26 +51,21 @@ const EditProfileScreen = props => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      profileName: currentProfile.profileName,
-      email: currentProfile.email,
-      phone: currentProfile.phone,
-      image: currentProfile.image
+      profileName: currentProfile ? currentProfile.profileName : '',
+      email: currentProfile ? currentProfile.email : '',
+      phone: currentProfile ? currentProfile.phone : '',
+      image: currentProfile ? currentProfile.image : ''
     },
     inputValidities: {
-      profileName: true,
-      email: true,
-      phone: true,
-      image: true
+      profileName: currentProfile ? true : false,
+      email: currentProfile ? true : false,
+      phone: currentProfile ? true : false,
+      image: currentProfile ? true : false
     },
-    formIsValid: true
+    formIsValid: currentProfile ? true : false
   });
 
-  useEffect(() => {
-    if (error) {
-      Alert.alert('Oj!', error, [{ text: 'OK' }]);
-    }
-  }, [error]);
-
+  //Handlers
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert(
@@ -93,38 +78,32 @@ const EditProfileScreen = props => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(
-        profilesActions.updateProfile(
-          loggedInUserId,
-          formState.inputValues.profileName,
-          formState.inputValues.email,
-          formState.inputValues.phone,
-          formState.inputValues.image
-        )
-      );
+      if (currentProfile) {
+        await dispatch(
+          profilesActions.updateProfile(
+            firebaseId,
+            formState.inputValues.profileName,
+            formState.inputValues.email,
+            formState.inputValues.phone,
+            formState.inputValues.image
+          )
+        );
+      } else {
+        await dispatch(
+          profilesActions.createProfile(
+            formState.inputValues.profileName,
+            formState.inputValues.email,
+            formState.inputValues.phone,
+            formState.inputValues.image
+          )
+        );
+      }
       props.navigation.navigate('ProductsOverview');
     } catch (err) {
       setError(err.message);
     }
-
     setIsLoading(false);
-  }, [dispatch, currentProfile.id, formState]);
-
-  useEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item
-            title="Save"
-            iconName={
-              Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
-            }
-            onPress={submitHandler}
-          />
-        </HeaderButtons>
-      )
-    });
-  }, [submitHandler]);
+  }, [dispatch, currentProfile, formState]);
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
@@ -145,73 +124,75 @@ const EditProfileScreen = props => {
     });
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  //Alert if error
+  useEffect(() => {
+    if (error) {
+      Alert.alert('Oj!', error, [{ text: 'OK' }]);
+    }
+  }, [error]);
 
   return (
-    <FormWrapper>
-      <View style={styles.form}>
+    <FormWrapper
+      submitButtonText="Spara Profil"
+      handlerForButtonSubmit={submitHandler}
+      isLoading={isLoading}
+    >
+      <FormFieldWrapper
+        label="Profilbild"
+        showPromptIf={!formState.inputValues.image}
+        prompt="Välj en profilbild"
+      >
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
           passedImage={formState.inputValues.image}
         />
-
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Användarnamn</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.profileName}
-            onChangeText={textChangeHandler.bind(this, 'profileName')}
-            keyboardType="default"
-            autoCapitalize="none"
-            autoCorrect={false}
-            returnKeyType="next"
-          />
-          {!formState.inputValues.profileName ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Skriv in ett användarnamn</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Telefon</Text>
-
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.phone.toString()}
-            onChangeText={textChangeHandler.bind(this, 'phone')}
-            keyboardType="number-pad"
-            autoCorrect={false}
-            returnKeyType="next"
-          />
-          {!formState.inputValues.phone ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Lägg in ett kontaktnummer</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>email</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.email}
-            onChangeText={textChangeHandler.bind(this, 'email')}
-            keyboardType="email-address"
-            required
-            email
-            autoCapitalize="none"
-            autoCorrect={false}
-            returnKeyType="done"
-          />
-          {!formState.inputValues.email ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Skriv in din email</Text>
-            </View>
-          ) : null}
-        </View>
-      </View>
-      <ButtonNormal text="Spara Profil" actionOnPress={submitHandler} />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Användarnamn"
+        showPromptIf={!formState.inputValues.profileName}
+        prompt="Skriv in ett användarnamn"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.profileName}
+          onChangeText={textChangeHandler.bind(this, 'profileName')}
+          keyboardType="default"
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Telefon"
+        showPromptIf={!formState.inputValues.phone}
+        prompt="Lägg in ett kontaktnummer"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.phone.toString()}
+          onChangeText={textChangeHandler.bind(this, 'phone')}
+          keyboardType="number-pad"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Email"
+        showPromptIf={!formState.inputValues.email}
+        prompt="Skriv in den email folk kan kontakta dig på"
+      >
+        <TextInput
+          style={styles.input}
+          value={formState.inputValues.email}
+          onChangeText={textChangeHandler.bind(this, 'email')}
+          keyboardType="email-address"
+          required
+          email
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="done"
+        />
+      </FormFieldWrapper>
     </FormWrapper>
   );
 };
@@ -224,35 +205,11 @@ export const screenOptions = navData => {
 };
 
 const styles = StyleSheet.create({
-  form: {
-    margin: 20
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  formControl: {
-    width: '100%'
-  },
-  label: {
-    fontFamily: 'roboto-bold',
-    marginVertical: 8
-  },
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1
-  },
-  errorContainer: {
-    marginVertical: 5
-  },
-  errorText: {
-    fontFamily: 'roboto-regular',
-    color: 'grey',
-    fontSize: 13,
-    textAlign: 'right'
   }
 });
 

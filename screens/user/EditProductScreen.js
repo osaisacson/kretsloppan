@@ -39,9 +39,6 @@ const EditProductScreen = props => {
 
   const prodId = props.route.params ? props.route.params.detailId : null;
 
-  //Projects
-  const userProjects = useSelector(state => state.projects.userProjects);
-
   //Find product
   const editedProduct = useSelector(state =>
     state.products.userProducts.find(prod => prod.id === prodId)

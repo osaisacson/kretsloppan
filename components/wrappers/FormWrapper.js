@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
 //Components
 import {
   ScrollView,
@@ -7,10 +6,15 @@ import {
   View,
   KeyboardAvoidingView
 } from 'react-native';
-
-import SaferArea from '../../components/UI/SaferArea';
+import ButtonNormal from '../UI/ButtonNormal';
+import SaferArea from '../UI/SaferArea';
+import Loader from '../UI/Loader';
 
 const FormWrapper = props => {
+  if (props.isLoading) {
+    return <Loader />;
+  }
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -20,6 +24,10 @@ const FormWrapper = props => {
       <SaferArea>
         <ScrollView>
           <View style={styles.formWrapper}>{props.children}</View>
+          <ButtonNormal
+            text={props.submitButtonText}
+            actionOnPress={props.handlerForButtonSubmit}
+          />
         </ScrollView>
       </SaferArea>
     </KeyboardAvoidingView>

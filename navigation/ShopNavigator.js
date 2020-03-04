@@ -51,8 +51,6 @@ import * as authActions from '../store/actions/auth';
 
 //Constants
 import Colors from '../constants/Colors';
-import AddProfileScreen from '../screens/user/AddProfileScreen';
-import { NavigationEvents } from 'react-navigation';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -97,11 +95,6 @@ export const ProductsNavigator = () => {
         options={projectDetailScreenOptions}
       />
       <ProductsStackNavigator.Screen
-        name="AddProfile"
-        component={AddProfileScreen}
-        options={noItemsScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
         name="EditProduct"
         component={EditProductScreen}
         options={editProductScreenOptions}
@@ -119,7 +112,7 @@ export const ProductsNavigator = () => {
       <ProductsStackNavigator.Screen
         name="EditProfile"
         component={EditProfileScreen}
-        options={editProfileScreenOptions}
+        options={noItemsScreenOptions}
       />
     </ProductsStackNavigator.Navigator>
   );

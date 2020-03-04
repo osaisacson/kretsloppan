@@ -15,7 +15,7 @@ import SpotlightProductsScreen from './SpotlightProductsScreen';
 import ProductsScreen from './ProductsScreen';
 import UserSpotlightScreen from './../user/UserSpotlightScreen';
 import UserProductsScreen from './../user/UserProductsScreen';
-import AddProfileScreen from '../user/AddProfileScreen';
+import EditProfileScreen from '../user/EditProfileScreen';
 
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
@@ -77,8 +77,9 @@ const ProductsOverviewScreen = props => {
 
   //If we don't have a profile, navigate to a screen where we add a profile.
   if (!isLoading && currentProfile.length === 0) {
-    // props.navigation.navigate('AddProfile');
-    return <AddProfileScreen navigation={props.navigation} />;
+    return (
+      <EditProfileScreen navigation={props.navigation} route={props.route} />
+    );
   }
 
   //Get down to business
