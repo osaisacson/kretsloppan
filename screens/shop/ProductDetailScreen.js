@@ -9,7 +9,7 @@ import RoundItem from '../../components/UI/RoundItem';
 import SaferArea from '../../components/UI/SaferArea';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
-import { Button } from 'react-native-paper';
+import ButtonNormal from '../../components/UI/ButtonNormal';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -174,30 +174,17 @@ const ProductDetailScreen = props => {
 
         {/* Buttons to always show, but to have conditional type based on   */}
         <View style={styles.toggles}>
-          <Button
-            mode="contained"
-            compact={true}
-            color={Colors.primary}
+          <ButtonNormal
+            backgroundColor={Colors.primary}
             disabled={isReservedOrPickedUp} //disable/enable base on true/false of these params
-            style={{
-              width: '60%',
-              alignSelf: 'center',
-              marginBottom: 20
-            }}
-            labelStyle={{
-              paddingTop: 2,
-              fontFamily: 'bebas-neue-bold',
-              fontSize: 12
-            }}
-            compact={true}
-            onPress={toggleReserveButton}
+            actionOnPress={toggleReserveButton}
           >
             {isPickedUp
               ? 'hämtad'
               : isReserved
               ? `reserverad till ${shorterDate}`
               : 'reservera'}
-          </Button>
+          </ButtonNormal>
 
           {/* Show the horizontal scroll of the user's projects if the product is
           not picked up or reserved yet */}
@@ -211,7 +198,7 @@ const ProductDetailScreen = props => {
                   onSelect={() => {
                     reserveHandler(item.id);
                   }}
-                ></RoundItem>
+                />
               ))}
             </HorizontalScrollContainer>
           ) : null}
@@ -226,11 +213,6 @@ const ProductDetailScreen = props => {
                 scrollData={projectForProduct}
                 navigation={props.navigation}
               />
-              {/* <RoundItem
-                style={styles.description}
-                itemData={projectForProduct}
-                // onSelect={props.navigation.navigate('ProjectDetail')}
-              ></RoundItem> */}
             </>
           ) : null}
         </View>
