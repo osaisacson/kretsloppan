@@ -66,14 +66,6 @@ const defaultNavOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
-export const noItemsScreenOptions = navData => {
-  return {
-    headerRight: '',
-    headerTitle: '',
-    headerLeft: ''
-  };
-};
-
 const ProductsStackNavigator = createStackNavigator();
 
 export const ProductsNavigator = () => {
@@ -112,7 +104,7 @@ export const ProductsNavigator = () => {
       <ProductsStackNavigator.Screen
         name="EditProfile"
         component={EditProfileScreen}
-        options={noItemsScreenOptions}
+        options={editProfileScreenOptions}
       />
     </ProductsStackNavigator.Navigator>
   );

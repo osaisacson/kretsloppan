@@ -45,18 +45,11 @@ const ProductsOverviewScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProfiles);
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProfiles]);
-
-  useEffect(() => {
     setIsLoading(true);
     loadProfiles().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadProfiles]);
+  }, []); //Passing empty array means this only loads once after mount
 
   if (error) {
     return (

@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { Picker, Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
-import formStyles from '../../components/wrappers/FormFieldWrapper';
+import {
+  FormFieldWrapper,
+  formStyles
+} from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
 import * as productsActions from '../../store/actions/products';
@@ -133,14 +135,14 @@ const EditProductScreen = props => {
 
   return (
     <FormWrapper
-      submitButtonText="Spara Produkt"
+      submitButtonText="Spara Återbruk"
       handlerForButtonSubmit={submitHandler}
       isLoading={isLoading}
     >
       <FormFieldWrapper
-        label="Profilbild"
+        label="Bild av återbruket"
         showPromptIf={!formState.inputValues.image}
-        prompt="Välj en profilbild"
+        prompt="Välj en bild av återbruket"
       >
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}

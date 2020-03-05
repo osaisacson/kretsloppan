@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
-import formStyles from '../../components/wrappers/FormFieldWrapper';
+import {
+  FormFieldWrapper,
+  formStyles
+} from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
@@ -132,6 +134,16 @@ const EditProfileScreen = props => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (isLoading) {
+      Alert.alert(
+        'Laddar upp din profil, ändringarna syns om några sekunder',
+        error,
+        [{ text: 'OK' }]
+      );
+    }
+  }, [isLoading]);
+
   return (
     <FormWrapper
       submitButtonText="Spara Profil"
@@ -139,7 +151,7 @@ const EditProfileScreen = props => {
       isLoading={isLoading}
     >
       <FormFieldWrapper
-        label="Profilbild"
+        label="Profil bild"
         showPromptIf={!formState.inputValues.image}
         prompt="Välj en profilbild"
       >
@@ -200,8 +212,11 @@ const EditProfileScreen = props => {
 
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
+  console.log('these are the passed routeParams', navData.route.params);
   return {
-    headerTitle: routeParams.profileId ? 'Edit Profile' : 'Add Profile'
+    // headerLeft: routeParams.detailId ? null : '',
+    headerTitle: routeParams.detailId ? 'Redigera profil' : 'Skapa profil'
+    // headerRight: routeParams.detailId ? 'X' : ''
   };
 };
 

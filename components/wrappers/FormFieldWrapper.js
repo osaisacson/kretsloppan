@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-const FormFieldWrapper = props => {
+export const FormFieldWrapper = props => {
   return (
     <View style={formStyles.formControl}>
       <Text style={formStyles.label}>{props.label}</Text>
@@ -18,7 +18,7 @@ const FormFieldWrapper = props => {
   );
 };
 
-const formStyles = StyleSheet.create({
+export const formStyles = StyleSheet.create({
   centered: {
     flex: 1,
     justifyContent: 'center',
@@ -56,5 +56,3 @@ const formStyles = StyleSheet.create({
     textAlign: 'right'
   }
 });
-
-export default FormFieldWrapper;

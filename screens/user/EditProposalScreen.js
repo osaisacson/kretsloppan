@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
-import formStyles from '../../components/wrappers/FormFieldWrapper';
+import {
+  FormFieldWrapper,
+  formStyles
+} from '../../components/wrappers/FormFieldWrapper';
 
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';

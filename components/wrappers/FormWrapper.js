@@ -11,10 +11,6 @@ import SaferArea from '../UI/SaferArea';
 import Loader from '../UI/Loader';
 
 const FormWrapper = props => {
-  if (props.isLoading) {
-    return <Loader />;
-  }
-
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}

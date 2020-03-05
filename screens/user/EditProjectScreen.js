@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-import FormFieldWrapper from '../../components/wrappers/FormFieldWrapper';
-import formStyles from '../../components/wrappers/FormFieldWrapper';
+import {
+  FormFieldWrapper,
+  formStyles
+} from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
@@ -127,9 +129,9 @@ const EditProjectScreen = props => {
       isLoading={isLoading}
     >
       <FormFieldWrapper
-        label="Profilbild"
+        label="Projekt bild"
         showPromptIf={!formState.inputValues.image}
-        prompt="Välj en profilbild"
+        prompt="Välj en bild som representerar projektet"
       >
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
