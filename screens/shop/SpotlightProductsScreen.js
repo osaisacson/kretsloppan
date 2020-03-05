@@ -140,6 +140,7 @@ const SpotlightProductsScreen = props => {
           navigation={props.navigation}
         />
         <HorizontalScroll
+          detailPath="ProposalDetail"
           title={'efterlysningar'}
           subTitle={'Material som önskas. Kontakta efterlysaren.'}
           scrollData={allProposals}

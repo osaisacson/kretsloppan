@@ -24,6 +24,12 @@ import ProductDetailScreen, {
 import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions
 } from '../screens/details/ProjectDetailScreen';
+import ProposalDetailScreen, {
+  screenOptions as proposalDetailScreenOptions
+} from '../screens/details/ProposalDetailScreen';
+import ProfileDetailScreen, {
+  screenOptions as profileDetailScreenOptions
+} from '../screens/details/ProfileDetailScreen';
 
 //Edit/Add screens
 import EditProductScreen, {
@@ -103,6 +109,11 @@ export const ProductsNavigator = () => {
         component={ProjectDetailScreen}
         options={projectDetailScreenOptions}
       />
+      <ProductsStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
       {/* Edits */}
       <ProductsStackNavigator.Screen
         name="EditProduct"
@@ -139,9 +150,24 @@ export const UsersNavigator = () => {
         options={defaultMainPageOptions}
       />
       <UsersStackNavigator.Screen
+        name="ProfileDetail"
+        component={ProfileDetailScreen}
+        options={profileDetailScreenOptions}
+      />
+      <UsersStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <UsersStackNavigator.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
         options={productDetailScreenOptions}
+      />
+      <UsersStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
       />
     </UsersStackNavigator.Navigator>
   );

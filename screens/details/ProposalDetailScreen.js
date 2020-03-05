@@ -26,9 +26,9 @@ const ProposalDetailScreen = props => {
   );
   //Projects
   const userProjects = useSelector(state => state.projects.userProjects);
-  const projectForProposal = userProjects.filter(
-    proj => proj.id === selectedProposal.projectId
-  );
+  const projectForProposal = selectedProposal.projectId
+    ? userProjects.filter(proj => proj.id === selectedProposal.projectId)
+    : {};
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -145,7 +145,7 @@ const ProposalDetailScreen = props => {
           />
 
           {/* If proposal has a project id, show the project it belongs to */}
-          {selectedProposal.projectId ? (
+          {projectForProposal.length > 0 ? (
             <>
               <Text>För projekt:</Text>
               <HorizontalScroll
