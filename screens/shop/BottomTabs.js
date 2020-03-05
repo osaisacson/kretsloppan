@@ -13,8 +13,8 @@ import HeaderButton from '../../components/UI/HeaderButton';
 import AddButton from '../../components/UI/AddButton';
 import SpotlightProductsScreen from './SpotlightProductsScreen';
 import ProductsScreen from './ProductsScreen';
-import UserSpotlightScreen from './../user/UserSpotlightScreen';
-import UserProductsScreen from './../user/UserProductsScreen';
+import UserSpotlightScreen from '../user/UserSpotlightScreen';
+import UserProductsScreen from '../user/UserProductsScreen';
 import EditProfileScreen from '../user/EditProfileScreen';
 
 //Actions
@@ -22,7 +22,7 @@ import * as profilesActions from '../../store/actions/profiles';
 //Constants
 import Colors from '../../constants/Colors';
 
-const ProductsOverviewScreen = props => {
+const BottomTabs = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -163,25 +163,8 @@ const ProductsOverviewScreen = props => {
   );
 };
 
-export const screenOptions = navData => {
-  return {
-    headerTitle: '',
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    )
-  };
-};
-
 const styles = StyleSheet.create({
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });
 
-export default ProductsOverviewScreen;
+export default BottomTabs;

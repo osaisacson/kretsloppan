@@ -119,7 +119,7 @@ const ProductDetailScreen = props => {
                 projectId
               )
             );
-            navigation.navigate('ProductsOverview');
+            navigation.navigate('BottomTabs');
           }
         }
       ]

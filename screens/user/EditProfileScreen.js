@@ -101,7 +101,7 @@ const EditProfileScreen = props => {
           )
         );
       }
-      props.navigation.navigate('ProductsOverview');
+      props.navigation.navigate('BottomTabs');
     } catch (err) {
       setError(err.message);
     }
@@ -212,7 +212,6 @@ const EditProfileScreen = props => {
 
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
-  console.log('these are the passed routeParams', navData.route.params);
   return {
     // headerLeft: routeParams.detailId ? null : '',
     headerTitle: routeParams.detailId ? 'Redigera profil' : 'Skapa profil'

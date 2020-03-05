@@ -14,11 +14,10 @@ import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
 import UserAvatar from '../components/UI/UserAvatar';
 import { Button } from 'react-native-paper';
 
-//Screens
-import ProductsOverviewScreen, {
-  screenOptions as productsOverviewScreenOptions
-} from '../screens/shop/ProductsOverviewScreen';
+//Tabs
+import BottomTabs from '../screens/shop/BottomTabs';
 
+//Details
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
 } from '../screens/shop/ProductDetailScreen';
@@ -66,16 +65,34 @@ const defaultNavOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
+const defaultMainPageOptions = navData => {
+  return {
+    headerTitle: '',
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    )
+  };
+};
+
 const ProductsStackNavigator = createStackNavigator();
 
 export const ProductsNavigator = () => {
   return (
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
-        name="ProductsOverview"
-        component={ProductsOverviewScreen}
-        options={productsOverviewScreenOptions}
+        name="BottomTabs"
+        component={BottomTabs}
+        options={defaultMainPageOptions}
       />
+      {/* Details */}
       <ProductsStackNavigator.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
@@ -86,6 +103,7 @@ export const ProductsNavigator = () => {
         component={ProjectDetailScreen}
         options={projectDetailScreenOptions}
       />
+      {/* Edits */}
       <ProductsStackNavigator.Screen
         name="EditProduct"
         component={EditProductScreen}
@@ -118,7 +136,7 @@ export const UsersNavigator = () => {
       <UsersStackNavigator.Screen
         name="AllProfiles"
         component={AllProfilesScreen}
-        options={productsOverviewScreenOptions}
+        options={defaultMainPageOptions}
       />
       <UsersStackNavigator.Screen
         name="ProductDetail"
