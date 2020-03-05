@@ -46,6 +46,7 @@ import EditProfileScreen, {
 } from '../screens/addAndEdit/EditProfileScreen';
 
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
+import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 
 import AuthScreen, {
   screenOptions as authScreenOptions
@@ -89,7 +90,7 @@ const defaultMainPageOptions = navData => {
       <UserAvatar
         showBadge={true}
         actionOnPress={() => {
-          navData.navigation.navigate('Users');
+          navData.navigation.navigate('Min Sida');
         }}
       />
     )

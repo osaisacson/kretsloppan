@@ -143,7 +143,6 @@ const BottomTabs = props => {
           name="Min Sida"
           component={UserSpotlightScreen}
           options={{
-            tabBarBadge: 4,
             tabBarIcon: ({ color }) => (
               <FontAwesome
                 name={'user'}
