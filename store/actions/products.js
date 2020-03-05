@@ -39,6 +39,8 @@ export const fetchProducts = () => {
           const description = resData[key].description;
           const price = resData[key].price;
           const image = resData[key].image;
+          const address = resData[key].address;
+          const phone = resData[key].phone;
           const reservedUntil = `expired ${resData[key].reservedUntil}`;
           const projectId = resData[key].projectId;
           const status =
@@ -67,6 +69,8 @@ export const fetchProducts = () => {
                 description,
                 price,
                 image,
+                address,
+                phone,
                 status,
                 reservedUntil,
                 projectId
@@ -93,6 +97,8 @@ export const fetchProducts = () => {
               description,
               price,
               image,
+              address,
+              phone,
               status,
               reservedUntil,
               projectId
@@ -107,6 +113,8 @@ export const fetchProducts = () => {
             resData[key].categoryName,
             resData[key].title,
             resData[key].image,
+            resData[key].address,
+            resData[key].phone,
             resData[key].description,
             resData[key].price,
             resData[key].date,
@@ -154,7 +162,9 @@ export const createProduct = (
   title,
   description,
   price,
-  image
+  image,
+  address,
+  phone
 ) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
@@ -180,6 +190,8 @@ export const createProduct = (
           description,
           price,
           image: parsedRes.image, //This is how we link to the image we store above
+          address,
+          phone,
           ownerId: userId,
           date: date.toISOString(),
           status: 'redo',
@@ -210,6 +222,8 @@ export const createProduct = (
                 description,
                 price,
                 image,
+                address,
+                phone,
                 ownerId: userId,
                 date: date,
                 status: 'redo',
@@ -227,7 +241,9 @@ export const updateProduct = (
   title,
   description,
   price,
-  image
+  image,
+  address,
+  phone
 ) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
@@ -251,7 +267,9 @@ export const updateProduct = (
           title,
           description,
           price,
-          image: parsedRes.image //This is how we link to the image we store above
+          image: parsedRes.image, //This is how we link to the image we store above
+          address,
+          phone
         };
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
@@ -277,7 +295,9 @@ export const updateProduct = (
                 title,
                 description,
                 price,
-                image
+                image,
+                address,
+                phone
               }
             });
           });

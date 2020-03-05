@@ -42,6 +42,13 @@ const EditProductScreen = props => {
 
   const prodId = props.route.params ? props.route.params.detailId : null;
 
+  const loggedInUserId = useSelector(state => state.auth.userId);
+
+  //Find the profile that matches the id of the currently logged in User
+  const currentUser = useSelector(state =>
+    state.profiles.allProfiles.find(prof => prof.profileId === loggedInUserId)
+  );
+
   //Find product
   const editedProduct = useSelector(state =>
     state.products.userProducts.find(prod => prod.id === prodId)
@@ -54,14 +61,18 @@ const EditProductScreen = props => {
       title: editedProduct ? editedProduct.title : '',
       image: editedProduct ? editedProduct.image : '',
       description: editedProduct ? editedProduct.description : '',
-      price: editedProduct ? editedProduct.price : ''
+      price: editedProduct ? editedProduct.price : '',
+      address: editedProduct ? editedProduct.address : '',
+      phone: editedProduct ? editedProduct.phone : ''
     },
     inputValidities: {
       categoryName: editedProduct ? true : false,
       title: editedProduct ? true : false,
       image: editedProduct ? true : false,
       description: editedProduct ? true : false,
-      price: editedProduct ? true : false
+      price: editedProduct ? true : false,
+      address: editedProduct ? true : false,
+      phone: editedProduct ? true : false
     },
     formIsValid: editedProduct ? true : false
   });
@@ -92,7 +103,9 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image
+            formState.inputValues.image,
+            formState.inputValues.address,
+            +formState.inputValues.phone
           )
         );
       } else {
@@ -102,7 +115,9 @@ const EditProductScreen = props => {
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image
+            formState.inputValues.image,
+            formState.inputValues.address,
+            +formState.inputValues.phone
           )
         );
       }
@@ -189,7 +204,7 @@ const EditProductScreen = props => {
           value={formState.inputValues.description}
           onChangeText={textChangeHandler.bind(this, 'description')}
           autoCorrect={false}
-          returnKeyType="done"
+          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper
@@ -213,6 +228,39 @@ const EditProductScreen = props => {
             value={'dörr'.toLowerCase()}
           />
         </Picker>
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Address"
+        showPromptIf={!formState.inputValues.address}
+        prompt="Skriv in addressen där återbruket kan hämtas"
+      >
+        <TextInput
+          style={formStyles.input}
+          value={
+            currentUser.address
+              ? currentUser.address
+              : formState.inputValues.address
+          }
+          onChangeText={textChangeHandler.bind(this, 'address')}
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="phone"
+        showPromptIf={!formState.inputValues.phone}
+        prompt="Det telefonnummer man bäst kan kontakta dig på "
+      >
+        <TextInput
+          style={formStyles.input}
+          value={
+            currentUser.phone ? currentUser.phone : formState.inputValues.phone
+          }
+          onChangeText={textChangeHandler.bind(this, 'phone')}
+          keyboardType="number-pad"
+          autoCorrect={false}
+          returnKeyType="done"
+        />
       </FormFieldWrapper>
     </FormWrapper>
   );

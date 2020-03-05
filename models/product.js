@@ -7,6 +7,8 @@ class Product {
     categoryName,
     title,
     image,
+    address,
+    phone,
     description,
     price,
     date,
@@ -19,6 +21,8 @@ class Product {
     this.categoryName = categoryName;
     this.title = title;
     this.image = image;
+    this.address = address;
+    this.phone = phone;
     this.description = description;
     this.price = price;
     this.date = date;
