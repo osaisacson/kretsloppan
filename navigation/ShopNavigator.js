@@ -34,16 +34,16 @@ import ProfileDetailScreen, {
 //Edit/Add screens
 import EditProductScreen, {
   screenOptions as editProductScreenOptions
-} from '../screens/user/EditProductScreen';
+} from '../screens/addAndEdit/EditProductScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions
-} from '../screens/user/EditProjectScreen';
+} from '../screens/addAndEdit/EditProjectScreen';
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions
-} from '../screens/user/EditProposalScreen';
+} from '../screens/addAndEdit/EditProposalScreen';
 import EditProfileScreen, {
   screenOptions as editProfileScreenOptions
-} from '../screens/user/EditProfileScreen';
+} from '../screens/addAndEdit/EditProfileScreen';
 
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
 

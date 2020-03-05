@@ -13,7 +13,7 @@ import SpotlightProductsScreen from './SpotlightProductsScreen';
 import ProductsScreen from './ProductsScreen';
 import UserSpotlightScreen from '../user/UserSpotlightScreen';
 import UserProductsScreen from '../user/UserProductsScreen';
-import EditProfileScreen from '../user/EditProfileScreen';
+import EditProfileScreen from '../addAndEdit/EditProfileScreen';
 
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
