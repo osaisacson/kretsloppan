@@ -52,6 +52,7 @@ export const detailStyles = StyleSheet.create({
     paddingTop: 30
   },
   textCard: {
+    marginBottom: 15,
     padding: 10,
     borderWidth: 0.3,
     borderRadius: 4,
