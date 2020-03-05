@@ -8,9 +8,9 @@ import {
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from './../components/UI/HeaderButton';
-import { Platform, SafeAreaView, View } from 'react-native';
+import { Platform, SafeAreaView, View, Text } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
+import { FontAwesome, Entypo } from '@expo/vector-icons';
 import UserAvatar from '../components/UI/UserAvatar';
 import { Button } from 'react-native-paper';
 
@@ -84,6 +84,14 @@ const defaultMainPageOptions = navData => {
           }}
         />
       </HeaderButtons>
+    ),
+    headerRight: () => (
+      <UserAvatar
+        showBadge={true}
+        actionOnPress={() => {
+          navData.navigation.navigate('Users');
+        }}
+      />
     )
   };
 };
@@ -184,13 +192,15 @@ export const ShopNavigator = () => {
         return (
           <View style={{ flex: 1 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-              <UserAvatar
+              {/* <UserAvatar
                 actionOnPress={() => {
                   props.navigation.closeDrawer();
                 }}
-              />
+              /> */}
+              <Text>Ge igen</Text>
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
+              <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <Button
                 color={'#666'}
                 mode="contained"

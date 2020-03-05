@@ -62,21 +62,30 @@ const ProfileDetailScreen = props => {
         onSelect={toggleShowDetails}
       />
       <View style={detailStyles.centeredContent}>
-        <View style={detailStyles.textCard}>
-          <Text style={detailStyles.boundaryText}>
-            {selectedProfile.profileName}
-          </Text>
-        </View>
+        <Text style={detailStyles.largeCenteredHeader}>
+          {selectedProfile.profileName}
+        </Text>
         {/* Only show contact details if toggleDetails is true. TBD: tie this to user options */}
         {toggleDetails ? (
-          <View style={detailStyles.textCard}>
-            <Text style={detailStyles.boundaryText}>
-              {selectedProfile.email}
-            </Text>
-            <Text style={detailStyles.boundaryText}>
-              {selectedProfile.phone}
-            </Text>
-          </View>
+          <>
+            <View style={detailStyles.textCard}>
+              <Text style={detailStyles.boundaryText}>
+                {selectedProfile.email}
+              </Text>
+            </View>
+            <View style={detailStyles.textCard}>
+              <Text style={detailStyles.boundaryText}>
+                {selectedProfile.phone}
+              </Text>
+            </View>
+            {selectedProfile.address ? (
+              <View style={detailStyles.textCard}>
+                <Text style={detailStyles.boundaryText}>
+                  {selectedProfile.address}
+                </Text>
+              </View>
+            ) : null}
+          </>
         ) : null}
         {projectsForProfile.length > 0 ? (
           <>

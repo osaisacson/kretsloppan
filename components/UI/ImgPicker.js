@@ -16,9 +16,9 @@ const ImgPicker = props => {
     );
     if (result.status !== 'granted') {
       Alert.alert(
-        'Nej.',
+        'Å Nej!',
         'Du måste tillåta att öppna kameran för att kunna ta ett kort.',
-        [{ text: 'Okay' }]
+        [{ text: 'Ok' }]
       );
       return false;
     }
@@ -39,7 +39,7 @@ const ImgPicker = props => {
       quality: 0.6
     });
 
-    setPickedImage(image.uri); //show image from local storage
+    setPickedImage(image.uri ? image.uri : props.passedImage); //show image from local storage
     props.onImageTaken(image.base64); //Forwards the taken picture to the function 'onImageTaken' passed as a props wherever we use the ImgPicker component
   };
 

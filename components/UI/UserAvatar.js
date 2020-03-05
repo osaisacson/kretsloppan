@@ -11,6 +11,13 @@ const UserAvatar = props => {
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
 
+  const loggedInUserId = useSelector(state => state.auth.userId);
+
+  //Find the profile that matches the id of the currently logged in User
+  const currentUser = useSelector(state =>
+    state.profiles.allProfiles.find(prof => prof.profileId === loggedInUserId)
+  );
+
   const userProducts = useSelector(state => state.products.userProducts);
 
   //Gets nr of all booked products
@@ -35,7 +42,10 @@ const UserAvatar = props => {
     <TouchableCmp
       activeOpacity={0.5}
       onPress={props.actionOnPress}
-      style={{ margin: 10, paddingTop: 20 }}
+      style={{
+        marginHorizontal: 10,
+        marginTop: 40
+      }}
     >
       <Avatar.Image
         style={{
@@ -44,7 +54,7 @@ const UserAvatar = props => {
           borderWidth: '0.3',
           borderColor: '#000'
         }}
-        source={require('./../../assets/egnahemsfabriken.png')}
+        source={{ uri: currentUser.image }}
         size={50}
       />
       {props.showBadge ? (
