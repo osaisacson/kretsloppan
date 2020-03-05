@@ -20,10 +20,10 @@ import BottomTabs from '../screens/shop/BottomTabs';
 //Details
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
-} from '../screens/shop/ProductDetailScreen';
+} from '../screens/details/ProductDetailScreen';
 import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions
-} from '../screens/shop/ProjectDetailScreen';
+} from '../screens/details/ProjectDetailScreen';
 
 //Edit/Add screens
 import EditProductScreen, {
