@@ -6,8 +6,6 @@ import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 //Components
 import { View, Text, Button, StyleSheet } from 'react-native';
 import Loader from '../../components/UI/Loader';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import HeaderButton from '../../components/UI/HeaderButton';
 
 //Screens
 import AddButton from '../../components/UI/AddButton';
