@@ -112,9 +112,8 @@ const UserSpotlightScreen = props => {
         <ButtonNormal
           actionOnPress={loadProductsProposalsProjects}
           color={Colors.primary}
-        >
-          Prova igen
-        </ButtonNormal>
+          text="Prova igen"
+        />
       </View>
     );
   }

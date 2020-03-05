@@ -174,16 +174,17 @@ const ProductDetailScreen = props => {
       {/* Buttons to always show, but to have conditional type based on   */}
       <View style={styles.toggles}>
         <ButtonNormal
-          backgroundColor={Colors.primary}
+          color={Colors.primary}
           disabled={isReservedOrPickedUp} //disable/enable base on true/false of these params
           actionOnPress={toggleReserveButton}
-        >
-          {isPickedUp
-            ? 'hämtad'
-            : isReserved
-            ? `reserverad till ${shorterDate}`
-            : 'reservera'}
-        </ButtonNormal>
+          text={
+            isPickedUp
+              ? 'hämtad'
+              : isReserved
+              ? `reserverad till ${shorterDate}`
+              : 'reservera'
+          }
+        />
 
         {/* Show the horizontal scroll of the user's projects if the product is
           not picked up or reserved yet */}

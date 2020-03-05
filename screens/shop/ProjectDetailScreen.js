@@ -73,7 +73,7 @@ const ProjectDetailScreen = props => {
 
   return (
     <SaferArea>
-      <ScrollView>
+      <View>
         <Image style={styles.image} source={{ uri: selectedProject.image }} />
 
         {/* Buttons to show if the user has edit permissions */}
@@ -124,7 +124,7 @@ const ProjectDetailScreen = props => {
             />
           )}
         />
-      </ScrollView>
+      </View>
     </SaferArea>
   );
 };

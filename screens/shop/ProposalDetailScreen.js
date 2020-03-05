@@ -141,9 +141,8 @@ const ProposalDetailScreen = props => {
             color={Colors.primary}
             disabled={isResolved} //disable/enable base on true/false of these params
             actionOnPress={isResolvedHandler}
-          >
-            {isResolved ? 'löst' : 'markera som löst'}
-          </ButtonNormal>
+            text={isResolved ? 'löst' : 'markera som löst'}
+          />
 
           {/* If proposal has a project id, show the project it belongs to */}
           {selectedProposal.projectId ? (
