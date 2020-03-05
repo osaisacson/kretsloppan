@@ -71,60 +71,64 @@ const ProjectDetailScreen = props => {
     );
   };
 
+  const projectHeader = (
+    <View>
+      <Image style={styles.image} source={{ uri: selectedProject.image }} />
+
+      {/* Buttons to show if the user has edit permissions */}
+      {hasEditPermission ? (
+        <View style={styles.actions}>
+          {/* Delete button */}
+          <ButtonIcon
+            icon="delete"
+            color={Colors.warning}
+            onSelect={deleteHandler.bind(this)}
+          />
+          <ButtonIcon
+            icon="pen"
+            color={Colors.neutral}
+            onSelect={() => {
+              editProjectHandler(selectedProject.id);
+            }}
+          />
+        </View>
+      ) : null}
+
+      {/* Information about the project */}
+      <Text style={styles.description}>{selectedProject.slogan}</Text>
+      <HeaderTwo
+        title={'Återbruk'}
+        subTitle={'Återbruk som är använt/kommer användas i projektet'}
+        indicator={associatedProducts.length ? associatedProducts.length : 0}
+      />
+    </View>
+  );
+
   return (
     <SaferArea>
-      <View>
-        <Image style={styles.image} source={{ uri: selectedProject.image }} />
-
-        {/* Buttons to show if the user has edit permissions */}
-        {hasEditPermission ? (
-          <View style={styles.actions}>
-            {/* Delete button */}
-            <ButtonIcon
-              icon="delete"
-              color={Colors.warning}
-              onSelect={deleteHandler.bind(this)}
-            />
-            <ButtonIcon
-              icon="pen"
-              color={Colors.neutral}
-              onSelect={() => {
-                editProjectHandler(selectedProject.id);
-              }}
-            />
-          </View>
-        ) : null}
-
-        {/* Information about the project */}
-        <Text style={styles.description}>{selectedProject.slogan}</Text>
-        <HeaderTwo
-          title={'Återbruk'}
-          subTitle={'Återbruk som är använt/kommer användas i projektet'}
-          indicator={associatedProducts.length ? associatedProducts.length : 0}
-        />
-        <FlatList
-          horizontal={false}
-          numColumns={3}
-          data={associatedProducts}
-          keyExtractor={item => item.id}
-          renderItem={itemData => (
-            <UsedItem
-              key={itemData.item.id}
-              isHorizontal={true}
-              image={itemData.item.image}
-              title={itemData.item.title}
-              status={itemData.item.status ? itemData.item.status : 'redo'}
-              onSelect={() => {
-                selectItemHandler(
-                  itemData.item.id,
-                  itemData.item.ownerId,
-                  itemData.item.title
-                );
-              }}
-            />
-          )}
-        />
-      </View>
+      <FlatList
+        horizontal={false}
+        numColumns={3}
+        data={associatedProducts}
+        keyExtractor={item => item.id}
+        ListHeaderComponent={projectHeader}
+        renderItem={itemData => (
+          <UsedItem
+            key={itemData.item.id}
+            isHorizontal={true}
+            image={itemData.item.image}
+            title={itemData.item.title}
+            status={itemData.item.status ? itemData.item.status : 'redo'}
+            onSelect={() => {
+              selectItemHandler(
+                itemData.item.id,
+                itemData.item.ownerId,
+                itemData.item.title
+              );
+            }}
+          />
+        )}
+      />
     </SaferArea>
   );
 };
