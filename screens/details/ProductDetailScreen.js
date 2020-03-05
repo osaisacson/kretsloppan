@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Text, Image, StyleSheet, Alert } from 'react-native';
-import FormWrapper from '../../components/wrappers/FormWrapper';
+import { View, Text, Image, Alert } from 'react-native';
+import {
+  DetailWrapper,
+  detailStyles
+} from '../../components/wrappers/DetailWrapper';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import RoundItem from '../../components/UI/RoundItem';
@@ -104,7 +107,7 @@ const ProductDetailScreen = props => {
 
     Alert.alert(
       'Kom ihåg',
-      'Du måste kontakta säljaren för att komma överens om hämtningstid',
+      'Du måste själv kontakta säljaren för att komma överens om hämtningstid',
       [
         { text: 'Cancel', style: 'default' },
         {
@@ -133,12 +136,15 @@ const ProductDetailScreen = props => {
   const isReservedOrPickedUp = isReserved || isPickedUp;
 
   return (
-    <FormWrapper>
-      <Image style={styles.image} source={{ uri: selectedProduct.image }} />
+    <DetailWrapper>
+      <Image
+        style={detailStyles.image}
+        source={{ uri: selectedProduct.image }}
+      />
 
       {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
       {hasEditPermission && !isPickedUp ? (
-        <View style={styles.actions}>
+        <View style={detailStyles.actions}>
           {/* Delete button */}
           <ButtonIcon
             icon="delete"
@@ -172,7 +178,7 @@ const ProductDetailScreen = props => {
       ) : null}
 
       {/* Buttons to always show, but to have conditional type based on   */}
-      <View style={styles.toggles}>
+      <View style={detailStyles.toggles}>
         <ButtonNormal
           color={Colors.primary}
           disabled={isReservedOrPickedUp} //disable/enable base on true/false of these params
@@ -189,43 +195,73 @@ const ProductDetailScreen = props => {
         {/* Show the horizontal scroll of the user's projects if the product is
           not picked up or reserved yet */}
         {!isReservedOrPickedUp && showUserProjects ? (
-          <HorizontalScrollContainer>
-            {userProjects.map(item => (
-              <RoundItem
-                itemData={item}
-                key={item.id}
-                isHorizontal={true}
-                onSelect={() => {
-                  reserveHandler(item.id);
-                }}
-              />
-            ))}
-          </HorizontalScrollContainer>
-        ) : null}
-        {selectedProduct.projectId ? (
           <>
-            <Text>{isPickedUp ? 'Används i ' : 'Reserverad för '}projekt:</Text>
+            <Text style={detailStyles.centeredHeader}>
+              Vilket projekt återbruket användas i?
+            </Text>
+            <HorizontalScrollContainer>
+              {userProjects.map(item => (
+                <RoundItem
+                  title="välj vilket projekt återbruket ska användas i"
+                  itemData={item}
+                  key={item.id}
+                  isHorizontal={true}
+                  onSelect={() => {
+                    reserveHandler(item.id);
+                  }}
+                />
+              ))}
+            </HorizontalScrollContainer>
+          </>
+        ) : null}
+        {selectedProduct.projectId && isReservedOrPickedUp ? (
+          <View style={detailStyles.centered}>
+            <Text style={detailStyles.centeredHeader}>
+              {isPickedUp ? 'Används i ' : 'Reserverad för '}
+            </Text>
             <HorizontalScroll
               roundItem={true}
               detailPath={'ProjectDetail'}
               scrollData={projectForProduct}
               navigation={props.navigation}
             />
-          </>
+          </View>
         ) : null}
       </View>
 
       {/* Information about the product */}
-
-      <Text style={styles.description}>
-        Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
+      <Text style={detailStyles.price}>
+        {selectedProduct.price ? `${selectedProduct.price} kr` : 'gratis'}
       </Text>
-      <Text style={styles.description}>(lista)</Text>
-      <Text style={styles.price}>
-        {selectedProduct.price ? selectedProduct.price : 0} kr
-      </Text>
-      <Text style={styles.description}>{selectedProduct.description}</Text>
-    </FormWrapper>
+      <View style={detailStyles.textCard}>
+        <Text style={detailStyles.boundaryText}>
+          {selectedProduct.description}
+        </Text>
+      </View>
+      <Text style={detailStyles.sectionHeader}>Hämtas från</Text>
+      <View style={detailStyles.textCard}>
+        <Text style={detailStyles.boundaryText}>
+          {selectedProduct.address
+            ? selectedProduct.address
+            : 'Ingen address angiven'}
+        </Text>
+      </View>
+      <Text style={detailStyles.sectionHeader}>Kontakt</Text>
+      <View style={detailStyles.textCard}>
+        <Text style={detailStyles.boundaryText}>
+          {selectedProduct.phone
+            ? selectedProduct.phone
+            : 'Inget kontaktnummer angivet'}
+        </Text>
+      </View>
+      <Text style={detailStyles.sectionHeader}>Transport</Text>
+      <View style={detailStyles.textCard}>
+        <Text style={detailStyles.boundaryText}>
+          Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
+        </Text>
+        <Text style={detailStyles.boundaryText}>(lista)</Text>
+      </View>
+    </DetailWrapper>
   );
 };
 
@@ -235,37 +271,5 @@ export const screenOptions = navData => {
     headerTitle: navData.route.params.detailTitle
   };
 };
-
-const styles = StyleSheet.create({
-  image: {
-    height: 300,
-    width: '100%'
-  },
-  actions: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: -30,
-    marginBottom: 10,
-    alignItems: 'center'
-  },
-  toggles: {
-    flex: 1,
-    marginBottom: 10,
-    alignItems: 'center'
-  },
-  price: {
-    fontFamily: 'roboto-regular',
-    fontSize: 20,
-    textAlign: 'right',
-    marginHorizontal: 20
-  },
-  description: {
-    fontFamily: 'roboto-regular',
-    fontSize: 14,
-    textAlign: 'center',
-    marginHorizontal: 20
-  }
-});
 
 export default ProductDetailScreen;

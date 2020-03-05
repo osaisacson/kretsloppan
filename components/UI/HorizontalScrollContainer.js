@@ -5,33 +5,28 @@ import HeaderTwo from './HeaderTwo';
 
 const HorizontalScrollContainer = props => {
   //Change scrollHeight according to which component we are rendering
-  let scrollHeight = 180;
+  let scrollHeight = props.scrollHeight ? props.scrollHeight : 160;
 
   return (
     <ScrollView scrollEventThrottle={16}>
-      <HeaderTwo
-        title={props.title}
-        subTitle={props.subTitle}
-        extraSubTitle={props.extraSubTitle}
-        icon={props.icon}
-        showNotificationBadge={props.showNotificationBadge}
-      />
+      {props.title ? (
+        <HeaderTwo
+          title={props.title}
+          subTitle={props.subTitle}
+          extraSubTitle={props.extraSubTitle}
+          icon={props.icon}
+          showNotificationBadge={props.showNotificationBadge}
+        />
+      ) : null}
       <View
         style={{
-          flex: 1,
-          height: scrollHeight
+          height: scrollHeight,
+          marginTop: 20
         }}
       >
-        <View
-          style={{
-            height: scrollHeight,
-            marginTop: 20
-          }}
-        >
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {props.children}
-          </ScrollView>
-        </View>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {props.children}
+        </ScrollView>
       </View>
     </ScrollView>
   );

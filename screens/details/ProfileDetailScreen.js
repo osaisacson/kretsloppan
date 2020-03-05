@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { View, Text, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, Alert } from 'react-native';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ButtonToggle from '../../components/UI/ButtonToggle';
-
 import {
   DetailWrapper,
   detailStyles
@@ -63,17 +62,21 @@ const ProfileDetailScreen = props => {
         onSelect={toggleShowDetails}
       />
       <View style={detailStyles.centeredContent}>
-        <Text style={detailStyles.description}>{selectedProfile.name}</Text>
+        <View style={detailStyles.textCard}>
+          <Text style={detailStyles.boundaryText}>
+            {selectedProfile.profileName}
+          </Text>
+        </View>
         {/* Only show contact details if toggleDetails is true. TBD: tie this to user options */}
         {toggleDetails ? (
-          <>
-            <Text style={detailStyles.description}>
+          <View style={detailStyles.textCard}>
+            <Text style={detailStyles.boundaryText}>
               {selectedProfile.email}
             </Text>
-            <Text style={detailStyles.description}>
+            <Text style={detailStyles.boundaryText}>
               {selectedProfile.phone}
             </Text>
-          </>
+          </View>
         ) : null}
         {projectsForProfile.length > 0 ? (
           <>
@@ -99,25 +102,5 @@ export const screenOptions = navData => {
     headerTitle: navData.route.params.detailTitle
   };
 };
-
-const styles = StyleSheet.create({
-  image: {
-    height: 300,
-    width: '100%'
-  },
-  actions: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: -30,
-    marginBottom: 10,
-    alignItems: 'center'
-  },
-  toggles: {
-    flex: 1,
-    marginBottom: 10,
-    alignItems: 'center'
-  }
-});
 
 export default ProfileDetailScreen;

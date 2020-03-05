@@ -9,7 +9,7 @@ const ButtonNormal = props => {
       mode="contained"
       style={{
         marginTop: 10,
-        marginBottom: 60,
+        marginBottom: 20,
         width: '60%',
         alignSelf: 'center'
       }}

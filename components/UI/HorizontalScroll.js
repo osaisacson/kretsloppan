@@ -37,14 +37,16 @@ const HorizontalScroll = props => {
 
   return (
     <ScrollView scrollEventThrottle={16}>
-      <HeaderTwo
-        title={props.title}
-        subTitle={props.subTitle}
-        extraSubTitle={props.extraSubTitle}
-        icon={props.icon}
-        indicator={scrollData.length ? scrollData.length : 0}
-        showNotificationBadge={props.showNotificationBadge}
-      />
+      {props.title ? (
+        <HeaderTwo
+          title={props.title}
+          subTitle={props.subTitle}
+          extraSubTitle={props.extraSubTitle}
+          icon={props.icon}
+          indicator={scrollData.length ? scrollData.length : 0}
+          showNotificationBadge={props.showNotificationBadge}
+        />
+      ) : null}
       <View
         style={{
           flex: 1,
@@ -67,9 +69,13 @@ const HorizontalScroll = props => {
                   itemData={item}
                   key={item.id}
                   isHorizontal={true}
-                  onSelect={() => {
-                    selectItemHandler(item.id, item.ownerId, item.title);
-                  }}
+                  onSelect={
+                    props.customHandler
+                      ? props.customHandler
+                      : () => {
+                          selectItemHandler(item.id, item.ownerId, item.title);
+                        }
+                  }
                 ></RenderedItem>
               ))}
             </ScrollView>
