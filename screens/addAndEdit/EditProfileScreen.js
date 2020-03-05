@@ -57,12 +57,14 @@ const EditProfileScreen = props => {
       profileName: currentProfile ? currentProfile.profileName : '',
       email: currentProfile ? currentProfile.email : '',
       phone: currentProfile ? currentProfile.phone : '',
+      address: currentProfile ? currentProfile.address : '',
       image: currentProfile ? currentProfile.image : ''
     },
     inputValidities: {
       profileName: currentProfile ? true : false,
       email: currentProfile ? true : false,
       phone: currentProfile ? true : false,
+      address: currentProfile ? true : false,
       image: currentProfile ? true : false
     },
     formIsValid: currentProfile ? true : false
@@ -88,6 +90,7 @@ const EditProfileScreen = props => {
             formState.inputValues.profileName,
             formState.inputValues.email,
             formState.inputValues.phone,
+            formState.inputValues.address,
             formState.inputValues.image
           )
         );
@@ -97,6 +100,7 @@ const EditProfileScreen = props => {
             formState.inputValues.profileName,
             formState.inputValues.email,
             formState.inputValues.phone,
+            formState.inputValues.address,
             formState.inputValues.image
           )
         );
@@ -201,6 +205,21 @@ const EditProfileScreen = props => {
           keyboardType="email-address"
           required
           email
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        label="Address"
+        showPromptIf={!formState.inputValues.profileName}
+        prompt="Skriv in addressen återbruket vanligtvis kan hämtas på"
+      >
+        <TextInput
+          style={formStyles.input}
+          value={formState.inputValues.address}
+          onChangeText={textChangeHandler.bind(this, 'address')}
+          keyboardType="default"
           autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="done"

@@ -23,6 +23,7 @@ export default (state = initialState, action) => {
         action.profileData.profileName,
         action.profileData.email,
         action.profileData.phone,
+        action.profileData.address,
         action.profileData.image
       );
       return {
@@ -40,6 +41,7 @@ export default (state = initialState, action) => {
         action.profileData.profileName,
         action.profileData.email,
         action.profileData.phone,
+        action.profileData.address,
         action.profileData.image
       );
 

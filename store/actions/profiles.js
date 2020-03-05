@@ -29,6 +29,7 @@ export const fetchProfiles = () => {
             resData[key].profileName,
             resData[key].email,
             resData[key].phone,
+            resData[key].address,
             resData[key].image
           )
         );
@@ -47,7 +48,7 @@ export const fetchProfiles = () => {
   };
 };
 
-export const createProfile = (profileName, email, phone, image) => {
+export const createProfile = (profileName, email, phone, address, image) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -71,6 +72,7 @@ export const createProfile = (profileName, email, phone, image) => {
           profileName,
           email,
           phone,
+          address,
           image: parsedRes.image //This is how we link to the image we store above
         };
 
@@ -97,6 +99,7 @@ export const createProfile = (profileName, email, phone, image) => {
                 profileName,
                 email,
                 phone,
+                address,
                 image
               }
             });
@@ -105,7 +108,14 @@ export const createProfile = (profileName, email, phone, image) => {
   };
 };
 
-export const updateProfile = (firebaseId, profileName, email, phone, image) => {
+export const updateProfile = (
+  firebaseId,
+  profileName,
+  email,
+  phone,
+  address,
+  image
+) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -128,6 +138,7 @@ export const updateProfile = (firebaseId, profileName, email, phone, image) => {
           profileName,
           email,
           phone,
+          address,
           image: parsedRes.image //This is how we link to the image we store above
         };
 
@@ -157,6 +168,7 @@ export const updateProfile = (firebaseId, profileName, email, phone, image) => {
                 profileName,
                 email,
                 phone,
+                address,
                 image
               }
             });
