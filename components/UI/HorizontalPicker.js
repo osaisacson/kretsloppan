@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   item: {
     width: screenWidth - 60,
-    height: screenWidth - 60
+    height: screenWidth - 180
   },
   imageContainer: {
     flex: 1,

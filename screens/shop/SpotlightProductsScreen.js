@@ -7,6 +7,7 @@ import SaferArea from '../../components/UI/SaferArea';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
+import HorizontalPicker from '../../components/UI/HorizontalPicker';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
@@ -39,12 +40,26 @@ const SpotlightProductsScreen = props => {
     product => product.status === 'reserverad'
   );
 
-  //Gets all wanted products
-  const wantedProducts = allProducts.filter(
-    product => product.status === 'efterlyst'
-  );
-
   const dispatch = useDispatch();
+
+  const introductionData = [
+    {
+      image:
+        'https://images.unsplash.com/photo-1501366062246-723b4d3e4eb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1973&q=80',
+      title: 'Välkommen!'
+    },
+    {
+      image:
+        'https://images.unsplash.com/photo-1516383740770-fbcc5ccbece0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80',
+
+      title: 'Introduktion'
+    },
+    {
+      image:
+        'https://images.unsplash.com/photo-1455849318743-b2233052fcff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+      title: 'Avslutning'
+    }
+  ];
 
   //Load products and projects
   const loadProductsAndProjects = useCallback(async () => {
@@ -111,6 +126,7 @@ const SpotlightProductsScreen = props => {
   return (
     <SaferArea>
       <ScrollView nestedScrollEnabled={true}>
+        <HorizontalPicker pickerData={introductionData} />
         <HorizontalScroll
           roundItem={true}
           detailPath="ProjectDetail"
