@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
+import {
+  DetailWrapper,
+  detailStyles
+} from '../../components/wrappers/DetailWrapper';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import SaferArea from '../../components/UI/SaferArea';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
 import ButtonNormal from '../../components/UI/ButtonNormal';
@@ -106,67 +109,86 @@ const ProposalDetailScreen = props => {
   };
 
   return (
-    <SaferArea>
-      <ScrollView>
-        {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
-        {hasEditPermission && !isResolved ? (
-          <View style={styles.actions}>
-            {/* Delete button */}
-            <ButtonIcon
-              icon="delete"
-              color={Colors.warning}
-              onSelect={deleteHandler.bind(this)}
-            />
-            {
-              <ButtonToggle
-                isToggled={isToggled}
-                icon={isActive ? 'notification' : 'pause'}
-                title={`byt till ${isActive ? 'pausad' : 'aktiv'}`}
-                onSelect={toggleIsActiveHandle.bind(this)}
-              />
-            }
-            <ButtonIcon
-              icon="pen"
-              color={Colors.neutral}
-              onSelect={() => {
-                editProposalHandler(selectedProposal.id);
-              }}
-            />
-          </View>
-        ) : null}
-
-        {/* Buttons to always show, but to have conditional type based on   */}
-        <View style={styles.toggles}>
-          <ButtonNormal
-            color={Colors.primary}
-            disabled={isResolved} //disable/enable base on true/false of these params
-            actionOnPress={isResolvedHandler}
-            text={isResolved ? 'löst' : 'markera som löst'}
-          />
-
-          {/* If proposal has a project id, show the project it belongs to */}
-          {projectForProposal.length > 0 ? (
-            <>
-              <Text>För projekt:</Text>
-              <HorizontalScroll
-                roundItem={true}
-                detailPath={'ProjectDetail'}
-                scrollData={projectForProposal}
-                navigation={props.navigation}
-              />
-            </>
-          ) : null}
-        </View>
-
-        {/* Information about the proposal */}
-        <Text style={styles.price}>
-          {selectedProposal.price
-            ? `${selectedProposal.price} kr`
-            : 'Voluntär/Donation'}
+    <DetailWrapper>
+      {/* Information about the proposal */}
+      <View
+        style={{
+          ...detailStyles.textCard,
+          backgroundColor: Colors.primary
+        }}
+      >
+        <Text
+          style={{
+            ...detailStyles.boundaryText,
+            textAlign: 'center',
+            color: '#fff'
+          }}
+        >
+          {selectedProposal.title}
         </Text>
-        <Text style={styles.description}>{selectedProposal.description}</Text>
-      </ScrollView>
-    </SaferArea>
+      </View>
+      <Text style={detailStyles.price}>
+        {selectedProposal.price
+          ? `${selectedProposal.price} kr`
+          : 'Voluntär/Donation'}
+      </Text>
+      <Text style={detailStyles.sectionHeader}>Beskrivning</Text>
+      <View style={detailStyles.textCard}>
+        <Text style={detailStyles.boundaryText}>
+          {selectedProposal.description}
+        </Text>
+      </View>
+
+      {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
+      {hasEditPermission && !isResolved ? (
+        <View style={detailStyles.actions}>
+          {/* Delete button */}
+          <ButtonIcon
+            icon="delete"
+            color={Colors.warning}
+            onSelect={deleteHandler.bind(this)}
+          />
+          {
+            <ButtonToggle
+              isToggled={isToggled}
+              icon={isActive ? 'notification' : 'pause'}
+              title={`byt till ${isActive ? 'pausad' : 'aktiv'}`}
+              onSelect={toggleIsActiveHandle.bind(this)}
+            />
+          }
+          <ButtonIcon
+            icon="pen"
+            color={Colors.neutral}
+            onSelect={() => {
+              editProposalHandler(selectedProposal.id);
+            }}
+          />
+        </View>
+      ) : null}
+
+      {/* Buttons to always show, but to have conditional type based on   */}
+      <View style={detailStyles.toggles}>
+        <ButtonNormal
+          color={Colors.primary}
+          disabled={isResolved} //disable/enable base on true/false of these params
+          actionOnPress={isResolvedHandler}
+          text={isResolved ? 'löst' : 'markera som löst'}
+        />
+
+        {/* If proposal has a project id, show the project it belongs to */}
+        {projectForProposal.length > 0 ? (
+          <>
+            <Text>För projekt:</Text>
+            <HorizontalScroll
+              roundItem={true}
+              detailPath={'ProjectDetail'}
+              scrollData={projectForProposal}
+              navigation={props.navigation}
+            />
+          </>
+        ) : null}
+      </View>
+    </DetailWrapper>
   );
 };
 
@@ -176,37 +198,5 @@ export const screenOptions = navData => {
     headerTitle: navData.route.params.detailTitle
   };
 };
-
-const styles = StyleSheet.create({
-  image: {
-    height: 300,
-    width: '100%'
-  },
-  actions: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: -30,
-    marginBottom: 10,
-    alignItems: 'center'
-  },
-  toggles: {
-    flex: 1,
-    marginBottom: 10,
-    alignItems: 'center'
-  },
-  price: {
-    fontFamily: 'roboto-regular',
-    fontSize: 20,
-    textAlign: 'right',
-    marginHorizontal: 20
-  },
-  description: {
-    fontFamily: 'roboto-regular',
-    fontSize: 14,
-    textAlign: 'center',
-    marginHorizontal: 20
-  }
-});
 
 export default ProposalDetailScreen;

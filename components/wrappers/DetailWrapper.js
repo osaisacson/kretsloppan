@@ -73,7 +73,7 @@ export const detailStyles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: -30,
+    marginTop: 0,
     marginBottom: 10,
     alignItems: 'center'
   },

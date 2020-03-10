@@ -38,6 +38,7 @@ const TextItem = props => {
 
 const styles = StyleSheet.create({
   title: {
+    marginLeft: 10,
     marginTop: 5,
     padding: 20,
     fontFamily: 'roboto-bold-italic',
@@ -46,9 +47,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#fff',
     backgroundColor: Colors.primary
-  },
-  project: {
-    marginLeft: 10
   }
 });
 
