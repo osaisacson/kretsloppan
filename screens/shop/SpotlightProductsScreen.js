@@ -126,7 +126,7 @@ const SpotlightProductsScreen = props => {
   return (
     <SaferArea>
       <ScrollView nestedScrollEnabled={true}>
-        <HorizontalPicker pickerData={introductionData} />
+        {/* <HorizontalPicker pickerData={introductionData} /> */}
         <HorizontalScroll
           roundItem={true}
           detailPath="ProjectDetail"
@@ -156,6 +156,7 @@ const SpotlightProductsScreen = props => {
           navigation={props.navigation}
         />
         <HorizontalScroll
+          textItem={true}
           detailPath="ProposalDetail"
           title={'efterlysningar'}
           subTitle={'Material som önskas. Kontakta efterlysaren.'}

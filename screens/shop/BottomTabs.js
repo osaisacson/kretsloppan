@@ -13,7 +13,7 @@ import SpotlightProductsScreen from './SpotlightProductsScreen';
 import ProductsScreen from './ProductsScreen';
 import UserSpotlightScreen from '../user/UserSpotlightScreen';
 import UserProductsScreen from '../user/UserProductsScreen';
-import EditProfileScreen from '../addAndEdit/EditProfileScreen';
+import AddProfileScreen from '../addAndEdit/AddProfileScreen';
 
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
@@ -69,7 +69,7 @@ const BottomTabs = props => {
   //If we don't have a profile, navigate to a screen where we add a profile.
   if (!isLoading && currentProfile.length === 0) {
     return (
-      <EditProfileScreen navigation={props.navigation} route={props.route} />
+      <AddProfileScreen navigation={props.navigation} route={props.route} />
     );
   }
 

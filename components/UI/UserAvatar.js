@@ -39,40 +39,37 @@ const UserAvatar = props => {
     bookedUserProductsNr + inProgressUserProductsNr + wantedUserProductsNr;
 
   return (
-    console.log('currentUser', currentUser),
-    (
-      <TouchableCmp
-        activeOpacity={0.5}
-        onPress={props.actionOnPress}
+    <TouchableCmp
+      activeOpacity={0.5}
+      onPress={props.actionOnPress}
+      style={{
+        marginHorizontal: 10,
+        marginTop: 40
+      }}
+    >
+      <Avatar.Image
         style={{
-          marginHorizontal: 10,
-          marginTop: 40
+          color: '#fff',
+          backgroundColor: '#fff',
+          borderWidth: '0.3',
+          borderColor: '#000'
         }}
-      >
-        <Avatar.Image
+        source={{ uri: currentUser ? currentUser.image : '' }}
+        size={50}
+      />
+      {props.showBadge ? (
+        <Badge
           style={{
-            color: '#fff',
-            backgroundColor: '#fff',
-            borderWidth: '0.3',
-            borderColor: '#000'
+            fontWeight: 'bold',
+            position: 'relative',
+            left: -35,
+            bottom: 20
           }}
-          source={{ uri: currentUser ? currentUser.image : '' }}
-          size={50}
-        />
-        {props.showBadge ? (
-          <Badge
-            style={{
-              fontWeight: 'bold',
-              position: 'relative',
-              left: -35,
-              bottom: 20
-            }}
-          >
-            {activeBadgeNr}
-          </Badge>
-        ) : null}
-      </TouchableCmp>
-    )
+        >
+          {activeBadgeNr}
+        </Badge>
+      ) : null}
+    </TouchableCmp>
   );
 };
 

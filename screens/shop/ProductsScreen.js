@@ -145,6 +145,7 @@ const ProductsScreen = props => {
     </SaferArea>
   );
 };
+
 const styles = StyleSheet.create({
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   textStyle: {

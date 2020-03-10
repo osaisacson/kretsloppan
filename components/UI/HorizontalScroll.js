@@ -4,6 +4,7 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import ProductItem from '../../components/UI/ProductItem';
 import RoundItem from '../../components/UI/RoundItem';
 import LargeItem from '../../components/UI/LargeItem';
+import TextItem from '../../components/UI/TextItem';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from './HeaderTwo';
 
@@ -17,6 +18,12 @@ const HorizontalScroll = props => {
   if (props.roundItem) {
     RenderedItem = RoundItem;
     scrollHeight = 180;
+  }
+
+  //Check if we instead should render the textitem
+  if (props.textItem) {
+    RenderedItem = TextItem;
+    scrollHeight = 210;
   }
 
   //Check if we instead should render the largeItem

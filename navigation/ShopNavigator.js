@@ -44,9 +44,8 @@ import EditProposalScreen, {
 import EditProfileScreen, {
   screenOptions as editProfileScreenOptions
 } from '../screens/addAndEdit/EditProfileScreen';
-
+import AddProfileScreen from '../screens/addAndEdit/AddProfileScreen';
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
-import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 
 import AuthScreen, {
   screenOptions as authScreenOptions
@@ -255,6 +254,14 @@ export const ShopNavigator = () => {
   );
 };
 
+export const emptyHeader = navData => {
+  return {
+    headerLeft: '',
+    headerTitle: '',
+    headerRight: ''
+  };
+};
+
 const AuthStackNavigator = createStackNavigator();
 
 export const AuthNavigator = () => {
@@ -270,6 +277,11 @@ export const AuthNavigator = () => {
         name="Auth"
         component={AuthScreen}
         options={authScreenOptions}
+      />
+      <AuthStackNavigator.Screen
+        name="AddProfile"
+        component={AddProfileScreen}
+        options={emptyHeader}
       />
     </AuthStackNavigator.Navigator>
   );
