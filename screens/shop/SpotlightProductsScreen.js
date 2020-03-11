@@ -26,9 +26,9 @@ const SpotlightProductsScreen = props => {
   const allProjects = useSelector(state => state.projects.availableProjects);
   const allProposals = useSelector(state => state.proposals.availableProposals);
 
-  const recentProducts = allProducts
-    .slice(0, 10)
-    .filter(product => product.status === 'redo'); //Gets last 10 items uploaded that have the status of 'redo'
+  const recentProducts = allProducts.filter(
+    product => product.status === 'redo'
+  ); //Gets last 10 items uploaded that have the status of 'redo'
 
   //Gets all currently being worked on products
   const inProgressProducts = allProducts.filter(

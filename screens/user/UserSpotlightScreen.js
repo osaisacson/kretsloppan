@@ -134,7 +134,11 @@ const UserSpotlightScreen = props => {
                 borderWidth: '0.3',
                 borderColor: '#000'
               }}
-              source={{ uri: currentProfile.image }}
+              source={
+                currentProfile.image
+                  ? { uri: currentProfile.image }
+                  : require('./../../assets/avatar-placeholder-image.png')
+              }
               size={50}
             />
           </Button>

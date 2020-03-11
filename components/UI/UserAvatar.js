@@ -54,7 +54,11 @@ const UserAvatar = props => {
           borderWidth: '0.3',
           borderColor: '#000'
         }}
-        source={{ uri: currentUser ? currentUser.image : '' }}
+        source={
+          currentUser
+            ? { uri: currentUser.image }
+            : require('./../../assets/avatar-placeholder-image.png')
+        }
         size={50}
       />
       {props.showBadge ? (
