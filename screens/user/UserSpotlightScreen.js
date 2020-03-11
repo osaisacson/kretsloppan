@@ -199,6 +199,8 @@ const UserSpotlightScreen = props => {
               navigation={props.navigation}
             />
             <HorizontalScroll
+              textItem={true}
+              detailPath="ProposalDetail"
               title={'Efterlysta produkter'}
               subTitle={'Mina efterlysningar'}
               scrollData={userProposals}

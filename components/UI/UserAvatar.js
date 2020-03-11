@@ -21,19 +21,34 @@ const UserAvatar = props => {
   const userProducts = useSelector(state => state.products.userProducts);
 
   //Gets nr of all booked products
-  const bookedUserProductsNr = userProducts.filter(
+  const bookedUserProducts = userProducts.filter(
     product => product.status === 'reserverad'
-  ).length;
+  );
+
+  const bookedUserProductsNr =
+    bookedUserProducts && bookedUserProducts.length > 0
+      ? bookedUserProducts.length
+      : 0;
 
   //Gets nr of all currently being worked on products
-  const inProgressUserProductsNr = userProducts.filter(
+  const inProgressUserProducts = userProducts.filter(
     product => product.status === 'bearbetas'
-  ).length;
+  );
+
+  const inProgressUserProductsNr =
+    inProgressUserProducts && inProgressUserProducts.length > 0
+      ? inProgressUserProducts.length
+      : 0;
 
   //Gets nr of all wanted products
-  const wantedUserProductsNr = userProducts.filter(
+  const wantedUserProducts = userProducts.filter(
     product => product.status === 'efterlyst'
-  ).length;
+  );
+
+  const wantedUserProductsNr =
+    wantedUserProducts && wantedUserProducts.length > 0
+      ? wantedUserProducts.length
+      : 0;
 
   const activeBadgeNr =
     bookedUserProductsNr + inProgressUserProductsNr + wantedUserProductsNr;

@@ -220,7 +220,9 @@ const ProductDetailScreen = props => {
             </HorizontalScrollContainer>
           </>
         ) : null}
-        {selectedProduct.projectId.length > 2 && isReservedOrPickedUp ? (
+        {selectedProduct.projectId &&
+        selectedProduct.projectId.length > 2 &&
+        isReservedOrPickedUp ? (
           <View style={detailStyles.centered}>
             <Text style={detailStyles.centeredHeader}>
               {isPickedUp ? 'Används i ' : 'Reserverad för '}

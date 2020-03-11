@@ -8,6 +8,9 @@ import {
   formStyles
 } from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
+import ButtonNormal from '../../components/UI/ButtonNormal';
+//Constants
+import Colors from '../../constants/Colors';
 //Actions
 import * as productsActions from '../../store/actions/products';
 
@@ -37,11 +40,7 @@ const formReducer = (state, action) => {
 };
 
 const EditProductScreen = props => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
-
   const prodId = props.route.params ? props.route.params.detailId : null;
-
   const loggedInUserId = useSelector(state => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
@@ -53,6 +52,13 @@ const EditProductScreen = props => {
   const editedProduct = useSelector(state =>
     state.products.userProducts.find(prod => prod.id === prodId)
   );
+
+  //Set states
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const [usePreviousAddress, setUsePreviousAddress] = useState(false);
+  const [usePreviousPhone, setUsePreviousPhone] = useState(false);
+
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -148,6 +154,22 @@ const EditProductScreen = props => {
     });
   };
 
+  const toggleUseAddressButton = () => {
+    setUsePreviousAddress(prevState => !prevState);
+  };
+
+  const toggleUsePhoneButton = () => {
+    setUsePreviousPhone(prevState => !prevState);
+  };
+
+  const handleAddress = formState.inputValues.address
+    ? formState.inputValues.address
+    : currentUser.address;
+
+  const handlePhone = formState.inputValues.phone
+    ? formState.inputValues.phone
+    : currentUser.phone;
+
   return (
     <FormWrapper
       submitButtonText="Spara Återbruk"
@@ -231,31 +253,26 @@ const EditProductScreen = props => {
       </FormFieldWrapper>
       <FormFieldWrapper
         label="Address"
-        showPromptIf={!formState.inputValues.address}
-        prompt="Skriv in addressen där återbruket kan hämtas"
+        showPromptIf={!handleAddress}
+        prompt="Den address återbruket kan hämtas på"
       >
         <TextInput
           style={formStyles.input}
-          value={
-            currentUser.address
-              ? currentUser.address
-              : formState.inputValues.address
-          }
+          value={handleAddress}
           onChangeText={textChangeHandler.bind(this, 'address')}
+          keyboardType="default"
           autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper
         label="phone"
-        showPromptIf={!formState.inputValues.phone}
+        showPromptIf={!handlePhone}
         prompt="Det telefonnummer man bäst kan kontakta dig på "
       >
         <TextInput
           style={formStyles.input}
-          value={
-            currentUser.phone ? currentUser.phone : formState.inputValues.phone
-          }
+          value={handlePhone}
           onChangeText={textChangeHandler.bind(this, 'phone')}
           keyboardType="number-pad"
           autoCorrect={false}

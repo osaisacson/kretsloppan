@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 //Components
@@ -18,6 +18,7 @@ import * as proposalsActions from '../../store/actions/proposals';
 import Colors from '../../constants/Colors';
 
 const SpotlightProductsScreen = props => {
+  const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -65,30 +66,41 @@ const SpotlightProductsScreen = props => {
   const loadProductsAndProjects = useCallback(async () => {
     setError(null);
     try {
+      console.log('fetching data: loadProductsAndProjects');
       await dispatch(productsActions.fetchProducts());
       await dispatch(projectsActions.fetchProjects());
       await dispatch(proposalsActions.fetchProposals());
     } catch (err) {
+      console.log(
+        'Error when trying to loadProductsAndProjects: ',
+        err.message
+      );
       setError(err.message);
     }
-  }, [dispatch, setIsLoading, setError]);
+  }, [setIsLoading, setError]);
+
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener(
+  //     'focus',
+  //     loadProductsAndProjects
+  //   );
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProductsAndProjects]);
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener(
-      'focus',
-      loadProductsAndProjects
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProductsAndProjects]);
-
-  useEffect(() => {
+    isMountedRef.current = true;
     setIsLoading(true);
-    loadProductsAndProjects().then(() => {
-      setIsLoading(false);
-    });
-  }, [dispatch, loadProductsAndProjects]);
+
+    if (isMountedRef.current) {
+      loadProductsAndProjects().then(() => {
+        console.log('isMountedRef.current: ', isMountedRef.current);
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
+  }, [loadProductsAndProjects]);
 
   // useEffect(() => {
   //   setIsLoading(true);
