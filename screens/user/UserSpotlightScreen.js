@@ -178,6 +178,12 @@ const UserSpotlightScreen = props => {
               navigation={props.navigation}
             />
             <HorizontalScroll
+              title={'Upplagt av mig'}
+              subTitle={'Återbruk upplagt av dig'}
+              scrollData={readyUserProducts}
+              navigation={props.navigation}
+            />
+            <HorizontalScroll
               title={'Reserverade av mig'}
               subTitle={
                 'Väntas på att hämtas upp av dig - se kort för detaljer'
@@ -185,6 +191,7 @@ const UserSpotlightScreen = props => {
               extraSubTitle={
                 'Notera att reservationen upphör gälla efter en vecka'
               }
+              bgColor={Colors.primaryLight}
               scrollData={bookedUserProducts}
               showNotificationBadge={true}
               navigation={props.navigation}
@@ -194,6 +201,7 @@ const UserSpotlightScreen = props => {
               subTitle={
                 "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
               }
+              bgColor={Colors.primaryLight}
               scrollData={inProgressUserProducts}
               showNotificationBadge={true}
               navigation={props.navigation}

@@ -43,18 +43,19 @@ const UserProductsScreen = props => {
     setIsRefreshing(true);
     try {
       await dispatch(productsActions.fetchProducts());
+      console.log('loading products');
     } catch (err) {
       setError(err.message);
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProducts);
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProducts]);
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener('focus', loadProducts);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProducts]);
 
   useEffect(() => {
     setIsLoading(true);

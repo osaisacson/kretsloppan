@@ -1,6 +1,7 @@
 import React from 'react';
 //Components
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { Divider } from 'react-native-paper';
+import { ScrollView, View } from 'react-native';
 import ProductItem from '../../components/UI/ProductItem';
 import RoundItem from '../../components/UI/RoundItem';
 import LargeItem from '../../components/UI/LargeItem';
@@ -43,55 +44,67 @@ const HorizontalScroll = props => {
   };
 
   return (
-    <ScrollView scrollEventThrottle={16}>
-      {props.title ? (
-        <HeaderTwo
-          title={props.title}
-          subTitle={props.subTitle}
-          extraSubTitle={props.extraSubTitle}
-          icon={props.icon}
-          indicator={scrollData.length ? scrollData.length : 0}
-          showNotificationBadge={props.showNotificationBadge}
-        />
-      ) : null}
-      <View
+    <>
+      <Divider />
+      <ScrollView
+        scrollEventThrottle={16}
         style={{
-          flex: 1,
-          height: scrollHeight
+          backgroundColor: props.bgColor ? props.bgColor : 'transparent'
         }}
       >
-        {scrollData.length ? (
-          <View
-            style={{
-              height: scrollHeight,
-              marginTop: 20
-            }}
-          >
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
+        {props.title ? (
+          <HeaderTwo
+            title={props.title}
+            subTitle={props.subTitle}
+            extraSubTitle={props.extraSubTitle}
+            icon={props.icon}
+            indicator={scrollData.length ? scrollData.length : 0}
+            showNotificationBadge={props.showNotificationBadge}
+          />
+        ) : null}
+        <View
+          style={{
+            flex: 1,
+            height: scrollHeight
+          }}
+        >
+          {scrollData.length ? (
+            <View
+              style={{
+                height: scrollHeight,
+                marginTop: 20
+              }}
             >
-              {scrollData.map(item => (
-                <RenderedItem
-                  itemData={item}
-                  key={item.id}
-                  isHorizontal={true}
-                  onSelect={
-                    props.customHandler
-                      ? props.customHandler
-                      : () => {
-                          selectItemHandler(item.id, item.ownerId, item.title);
-                        }
-                  }
-                ></RenderedItem>
-              ))}
-            </ScrollView>
-          </View>
-        ) : (
-          <EmptyState>Inget här ännu</EmptyState>
-        )}
-      </View>
-    </ScrollView>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                {scrollData.map(item => (
+                  <RenderedItem
+                    itemData={item}
+                    key={item.id}
+                    isHorizontal={true}
+                    onSelect={
+                      props.customHandler
+                        ? props.customHandler
+                        : () => {
+                            selectItemHandler(
+                              item.id,
+                              item.ownerId,
+                              item.title
+                            );
+                          }
+                    }
+                  ></RenderedItem>
+                ))}
+              </ScrollView>
+            </View>
+          ) : (
+            <EmptyState style={{ height: 50 }}>Inget här ännu</EmptyState>
+          )}
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
