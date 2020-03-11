@@ -56,10 +56,13 @@ const EditProductScreen = props => {
   //Set states
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [usePreviousAddress, setUsePreviousAddress] = useState(false);
-  const [usePreviousPhone, setUsePreviousPhone] = useState(false);
+  const [usePreviousAddress, setUsePreviousAddress] = useState(true);
+  const [usePreviousPhone, setUsePreviousPhone] = useState(true);
 
   const dispatch = useDispatch();
+
+  const setNewAddress = editedProduct ? editedProduct.address : '';
+  const setNewPhone = editedProduct ? editedProduct.phone : '';
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -68,8 +71,8 @@ const EditProductScreen = props => {
       image: editedProduct ? editedProduct.image : '',
       description: editedProduct ? editedProduct.description : '',
       price: editedProduct ? editedProduct.price : '',
-      address: editedProduct ? editedProduct.address : '',
-      phone: editedProduct ? editedProduct.phone : ''
+      address: usePreviousAddress ? currentUser.address : setNewAddress,
+      phone: usePreviousPhone ? currentUser.phone : setNewPhone
     },
     inputValidities: {
       categoryName: editedProduct ? true : false,
@@ -155,20 +158,14 @@ const EditProductScreen = props => {
   };
 
   const toggleUseAddressButton = () => {
+    console.log('usePreviousAddress: ', usePreviousAddress);
     setUsePreviousAddress(prevState => !prevState);
   };
 
   const toggleUsePhoneButton = () => {
+    console.log('usePreviousPhone: ', usePreviousPhone);
     setUsePreviousPhone(prevState => !prevState);
   };
-
-  const handleAddress = formState.inputValues.address
-    ? formState.inputValues.address
-    : currentUser.address;
-
-  const handlePhone = formState.inputValues.phone
-    ? formState.inputValues.phone
-    : currentUser.phone;
 
   return (
     <FormWrapper
@@ -253,31 +250,55 @@ const EditProductScreen = props => {
       </FormFieldWrapper>
       <FormFieldWrapper
         label="Address"
-        showPromptIf={!handleAddress}
+        showPromptIf={!formState.inputValues.address}
         prompt="Den address återbruket kan hämtas på"
       >
-        <TextInput
-          style={formStyles.input}
-          value={handleAddress}
-          onChangeText={textChangeHandler.bind(this, 'address')}
-          keyboardType="default"
-          autoCorrect={false}
-          returnKeyType="next"
+        <ButtonNormal
+          color={Colors.primary}
+          disabled={!currentUser.address}
+          actionOnPress={toggleUseAddressButton}
+          text={
+            usePreviousAddress
+              ? 'Byt till ny address'
+              : `Använd ${currentUser.address}`
+          }
         />
+        {usePreviousAddress ? null : (
+          <TextInput
+            style={formStyles.input}
+            value={formState.inputValues.address}
+            onChangeText={textChangeHandler.bind(this, 'address')}
+            keyboardType="default"
+            autoCorrect={false}
+            returnKeyType="next"
+          />
+        )}
       </FormFieldWrapper>
       <FormFieldWrapper
         label="phone"
-        showPromptIf={!handlePhone}
+        showPromptIf={!formState.inputValues.phone}
         prompt="Det telefonnummer man bäst kan kontakta dig på "
       >
-        <TextInput
-          style={formStyles.input}
-          value={handlePhone}
-          onChangeText={textChangeHandler.bind(this, 'phone')}
-          keyboardType="number-pad"
-          autoCorrect={false}
-          returnKeyType="done"
+        <ButtonNormal
+          color={Colors.primary}
+          disabled={!currentUser.phone}
+          actionOnPress={toggleUsePhoneButton}
+          text={
+            usePreviousPhone
+              ? 'Byt till nytt nummer'
+              : `Använd ${currentUser.phone}`
+          }
         />
+        {usePreviousPhone ? null : (
+          <TextInput
+            style={formStyles.input}
+            value={formState.inputValues.phone.toString()}
+            onChangeText={textChangeHandler.bind(this, 'phone')}
+            keyboardType="number-pad"
+            autoCorrect={false}
+            returnKeyType="done"
+          />
+        )}
       </FormFieldWrapper>
     </FormWrapper>
   );

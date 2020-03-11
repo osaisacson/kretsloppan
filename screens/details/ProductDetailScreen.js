@@ -70,6 +70,7 @@ const ProductDetailScreen = props => {
         }
       ]
     );
+    navigation.goBack();
   };
 
   const collectHandler = () => {
@@ -220,7 +221,8 @@ const ProductDetailScreen = props => {
             </HorizontalScrollContainer>
           </>
         ) : null}
-        {selectedProduct.projectId &&
+        {selectedProduct &&
+        selectedProduct.projectId &&
         selectedProduct.projectId.length > 2 &&
         isReservedOrPickedUp ? (
           <View style={detailStyles.centered}>
@@ -249,7 +251,7 @@ const ProductDetailScreen = props => {
       <Text style={detailStyles.sectionHeader}>Hämtas från</Text>
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.boundaryText}>
-          {productOwner.address
+          {productOwner && productOwner.address
             ? productOwner.address
             : 'Ingen address angiven'}
         </Text>
@@ -257,7 +259,7 @@ const ProductDetailScreen = props => {
       <Text style={detailStyles.sectionHeader}>Kontakt</Text>
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.boundaryText}>
-          {productOwner.phone
+          {productOwner && productOwner.phone
             ? productOwner.phone
             : 'Inget kontaktnummer angivet'}
         </Text>

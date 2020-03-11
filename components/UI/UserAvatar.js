@@ -1,9 +1,18 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+//Components
 import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
+import Loader from '../../components/UI/Loader';
+//Actions
+import * as productsActions from '../../store/actions/products';
+import * as projectsActions from '../../store/actions/projects';
+import * as proposalsActions from '../../store/actions/proposals';
 
 const UserAvatar = props => {
+  const isMountedRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -19,6 +28,35 @@ const UserAvatar = props => {
   );
 
   const userProducts = useSelector(state => state.products.userProducts);
+
+  const dispatch = useDispatch();
+
+  //Load products and projects
+  const loadProductsAndProjects = useCallback(async () => {
+    try {
+      console.log('fetching data: loadProductsAndProjects');
+      await dispatch(productsActions.fetchProducts());
+      await dispatch(projectsActions.fetchProjects());
+      await dispatch(proposalsActions.fetchProposals());
+    } catch (err) {
+      console.log(
+        'Error when trying to loadProductsAndProjects: ',
+        err.message
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    setIsLoading(true);
+    if (isMountedRef.current) {
+      loadProductsAndProjects().then(() => {
+        console.log('isMountedRef.current: ', isMountedRef.current);
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
+  }, [loadProductsAndProjects]);
 
   //Gets nr of all booked products
   const bookedUserProducts = userProducts.filter(
@@ -52,6 +90,10 @@ const UserAvatar = props => {
 
   const activeBadgeNr =
     bookedUserProductsNr + inProgressUserProductsNr + wantedUserProductsNr;
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <TouchableCmp
