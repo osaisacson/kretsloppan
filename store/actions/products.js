@@ -28,11 +28,13 @@ export const fetchProducts = () => {
 
       for (const key in resData) {
         const reservationExpiryDate = new Date(resData[key].reservedUntil);
+        const isPickedUp = resData[key].status === 'hämtad';
 
-        //If reservationExpiryDate is a date and it is less than today...
+        //If the product is not picked up, reservationExpiryDate is a date, and that date is less than today...
         if (
+          !isPickedUp &&
           reservationExpiryDate instanceof Date &&
-          reservationExpiryDate <= new Date()
+            reservationExpiryDate <= new Date()
         ) {
           const categoryName = resData[key].categoryName;
           const title = resData[key].title;
