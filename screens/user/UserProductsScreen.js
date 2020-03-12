@@ -42,8 +42,8 @@ const UserProductsScreen = props => {
     setError(null);
     setIsRefreshing(true);
     try {
+      console.log('UserProductsScreen: fetching Products');
       await dispatch(productsActions.fetchProducts());
-      console.log('loading products');
     } catch (err) {
       setError(err.message);
     }

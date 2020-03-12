@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Alert, TextInput } from 'react-native';
+
+//Components
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
@@ -39,13 +41,13 @@ const AddProfileScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
+  // const navigation = useNavigation(); //Lets us access navigation even although accessing this screen from the AppNavigator
+
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector(state => state.auth.userId);
   const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
     profile => profile.profileId === loggedInUserId
   );
-
-  const firebaseId = props.route.params ? props.route.params.detailId : null;
 
   //Currently edited profile
   const currentProfile = profilesArray[0];
@@ -54,20 +56,20 @@ const AddProfileScreen = props => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      profileName: currentProfile ? currentProfile.profileName : '',
-      email: currentProfile ? currentProfile.email : '',
-      phone: currentProfile ? currentProfile.phone : '',
-      address: currentProfile ? currentProfile.address : '',
-      image: currentProfile ? currentProfile.image : ''
+      profileName: '',
+      email: '',
+      phone: '',
+      address: '',
+      image: ''
     },
     inputValidities: {
-      profileName: currentProfile ? true : false,
-      email: currentProfile ? true : false,
-      phone: currentProfile ? true : false,
-      address: currentProfile ? true : false,
-      image: currentProfile ? true : false
+      profileName: false,
+      email: false,
+      phone: false,
+      address: false,
+      image: false
     },
-    formIsValid: currentProfile ? true : false
+    formIsValid: false
   });
 
   //Handlers
@@ -83,29 +85,17 @@ const AddProfileScreen = props => {
     setError(null);
     setIsLoading(true);
     try {
-      if (currentProfile) {
-        await dispatch(
-          profilesActions.updateProfile(
-            firebaseId,
-            formState.inputValues.profileName,
-            formState.inputValues.email,
-            formState.inputValues.phone,
-            formState.inputValues.address,
-            formState.inputValues.image
-          )
-        );
-      } else {
-        await dispatch(
-          profilesActions.createProfile(
-            formState.inputValues.profileName,
-            formState.inputValues.email,
-            formState.inputValues.phone,
-            formState.inputValues.address,
-            formState.inputValues.image
-          )
-        );
-      }
-      props.navigation.navigate('BottomTabs');
+      await dispatch(
+        profilesActions.createProfile(
+          formState.inputValues.profileName,
+          formState.inputValues.email,
+          formState.inputValues.phone,
+          formState.inputValues.address,
+          formState.inputValues.image
+        )
+      );
+
+      // () => navigation.navigate('Home');
     } catch (err) {
       setError(err.message);
     }

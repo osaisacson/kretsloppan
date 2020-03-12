@@ -32,6 +32,7 @@ const UserSpotlightScreen = props => {
   const loadProductsProposalsProjects = useCallback(async () => {
     setError(null);
     try {
+      console.log('UserSpotlightScreen: fetching Products/Projects/Proposals');
       await dispatch(productsActions.fetchProducts());
       await dispatch(projectsActions.fetchProjects());
       await dispatch(proposalsActions.fetchProposals());

@@ -81,13 +81,9 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2 //Because shadow only work on iOS, elevation is same thing but for android.
   },
-
   image: {
     width: '100%',
     height: '100%'
-  },
-  details: {
-    color: '#000'
   },
   title: {
     paddingLeft: 4,
@@ -95,18 +91,6 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
     marginLeft: 8
-  },
-  price: {
-    position: 'absolute',
-    right: -9,
-    bottom: 0,
-    padding: 5,
-    zIndex: 99,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    fontFamily: 'roboto-bold',
-    fontSize: 15,
-    textAlign: 'right',
-    marginRight: 8
   }
 });
 

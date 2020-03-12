@@ -105,7 +105,7 @@ const EditProfileScreen = props => {
           )
         );
       }
-      props.navigation.navigate('BottomTabs');
+      props.navigation.navigate('Home');
     } catch (err) {
       setError(err.message);
     }

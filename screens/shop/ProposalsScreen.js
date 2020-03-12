@@ -13,34 +13,34 @@ import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
-import ProjectItem from '../../components/UI/ProjectItem';
+import ProposalItem from '../../components/UI/ProposalItem';
 import { Ionicons } from '@expo/vector-icons';
 //Actions
-import * as projectsActions from '../../store/actions/projects';
+import * as proposalsActions from '../../store/actions/proposals';
 //Constants
 import Colors from '../../constants/Colors';
 
-const ProjectsScreen = props => {
+const ProposalsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  //Get original projects from state
-  const projects = useSelector(state => state.projects.availableProjects);
-  //Prepare for changing the rendered projects on search
-  const [renderedProjects, setRenderedProjects] = useState(projects);
+  //Get original proposals from state
+  const proposals = useSelector(state => state.proposals.availableProposals);
+  //Prepare for changing the rendered proposals on search
+  const [renderedProposals, setRenderedProposals] = useState(proposals);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const projectsSorted = renderedProjects.sort(function(a, b) {
+  const proposalsSorted = renderedProposals.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
   });
   const dispatch = useDispatch();
 
-  const loadProjects = useCallback(async () => {
+  const loadProposals = useCallback(async () => {
     setError(null);
     setIsRefreshing(true);
     try {
-      console.log('ProjectsScreen: fetching projects');
-      await dispatch(projectsActions.fetchProjects());
+      console.log('ProposalsScreen: fetching Proposals');
+      await dispatch(proposalsActions.fetchProposals());
     } catch (err) {
       setError(err.message);
     }
@@ -48,31 +48,31 @@ const ProjectsScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProjects);
+    const unsubscribe = props.navigation.addListener('focus', loadProposals);
     return () => {
       unsubscribe();
     };
-  }, [loadProjects]);
+  }, [loadProposals]);
 
   useEffect(() => {
     setIsLoading(true);
-    loadProjects().then(() => {
+    loadProposals().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadProjects]);
+  }, [dispatch, loadProposals]);
 
   const searchHandler = text => {
-    const newData = renderedProjects.filter(item => {
+    const newData = renderedProposals.filter(item => {
       const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
     });
-    setRenderedProjects(text.length ? newData : projects);
+    setRenderedProposals(text.length ? newData : proposals);
     setSearchQuery(text.length ? text : '');
   };
 
   const selectItemHandler = (id, ownerId, title) => {
-    props.navigation.navigate('ProjectDetail', {
+    props.navigation.navigate('ProposalDetail', {
       detailId: id,
       ownerId: ownerId,
       detailTitle: title
@@ -85,7 +85,7 @@ const ProjectsScreen = props => {
         <Text>Något gick fel</Text>
         <Button
           title="Prova igen"
-          onPress={loadProjects}
+          onPress={loadProposals}
           color={Colors.primary}
         />
       </View>
@@ -96,8 +96,8 @@ const ProjectsScreen = props => {
     return <Loader />;
   }
 
-  if (!isLoading && projects.length === 0) {
-    return <EmptyState text="Inga produkter hittade." />;
+  if (!isLoading && proposals.length === 0) {
+    return <EmptyState text="Inga efterlysningar hittade." />;
   }
 
   return (
@@ -107,25 +107,30 @@ const ProjectsScreen = props => {
         onChangeText={text => searchHandler(text)}
         value={searchQuery}
         underlineColorAndroid="transparent"
-        placeholder="Leta efter projekt"
+        placeholder="Leta bland efterlysningar"
       />
       <HeaderTwo
-        title={'Projekt'}
-        subTitle={'Projekt byggda med återbruk'}
+        title={'Efterlysningar'}
+        subTitle={'Efterlysningar av självbyggare'}
         icon={
-          <Ionicons name="ios-build" size={20} style={{ marginRight: 5 }} />
+          <Ionicons
+            name="ios-notifications"
+            size={20}
+            style={{ marginRight: 5 }}
+          />
         }
-        indicator={projectsSorted.length ? projectsSorted.length : 0}
+        indicator={proposalsSorted.length ? proposalsSorted.length : 0}
       />
       <FlatList
+        style={{ marginTop: 30 }}
         horizontal={false}
         numColumns={1}
-        onRefresh={loadProjects}
+        onRefresh={loadProposals}
         refreshing={isRefreshing}
-        data={projectsSorted}
+        data={proposalsSorted}
         keyExtractor={item => item.id}
         renderItem={itemData => (
-          <ProjectItem
+          <ProposalItem
             itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(
@@ -134,7 +139,7 @@ const ProjectsScreen = props => {
                 itemData.item.title
               );
             }}
-          ></ProjectItem>
+          ></ProposalItem>
         )}
       />
     </SaferArea>
@@ -156,4 +161,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProjectsScreen;
+export default ProposalsScreen;

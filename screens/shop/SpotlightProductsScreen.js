@@ -53,7 +53,7 @@ const SpotlightProductsScreen = props => {
   const loadProductsAndProjects = useCallback(async () => {
     setError(null);
     try {
-      console.log('fetching data: loadProductsAndProjects');
+      console.log('SpotlightScreen: fetching Products/Projects/Proposals');
       await dispatch(productsActions.fetchProducts());
       await dispatch(projectsActions.fetchProjects());
       await dispatch(proposalsActions.fetchProposals());
@@ -72,7 +72,6 @@ const SpotlightProductsScreen = props => {
 
     if (isMountedRef.current) {
       loadProductsAndProjects().then(() => {
-        console.log('isMountedRef.current: ', isMountedRef.current);
         setIsLoading(false);
       });
     }

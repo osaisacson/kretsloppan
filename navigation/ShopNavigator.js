@@ -15,7 +15,7 @@ import UserAvatar from '../components/UI/UserAvatar';
 import { Button } from 'react-native-paper';
 
 //Tabs
-import BottomTabs from '../screens/shop/BottomTabs';
+import Home from '../screens/shop/Home';
 
 //Details
 import ProductDetailScreen, {
@@ -102,8 +102,8 @@ export const ProductsNavigator = () => {
   return (
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
-        name="BottomTabs"
-        component={BottomTabs}
+        name="Home"
+        component={Home}
         options={defaultMainPageOptions}
       />
       {/* Details */}

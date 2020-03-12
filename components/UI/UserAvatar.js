@@ -37,7 +37,7 @@ const UserAvatar = props => {
   //Load products and projects
   const loadProducts = useCallback(async () => {
     try {
-      console.log('userAvatar fetching data: loadProducts');
+      console.log('UserAvatar: fetching products');
       await dispatch(productsActions.fetchProducts());
     } catch (err) {
       console.log(

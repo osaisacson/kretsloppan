@@ -41,6 +41,7 @@ const AllProfilesScreen = props => {
     setError(null);
     setIsRefreshing(true);
     try {
+      console.log('AllProfilesScreen: fetching profiles');
       await dispatch(profilesActions.fetchProfiles());
     } catch (err) {
       setError(err.message);
