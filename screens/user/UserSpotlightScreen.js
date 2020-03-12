@@ -26,6 +26,41 @@ const UserSpotlightScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
+  const dispatch = useDispatch();
+
+  //Load products and projects
+  const loadProductsProposalsProjects = useCallback(async () => {
+    setError(null);
+    try {
+      await dispatch(productsActions.fetchProducts());
+      await dispatch(projectsActions.fetchProjects());
+      await dispatch(proposalsActions.fetchProposals());
+    } catch (err) {
+      setError(err.message);
+    }
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener(
+      'focus',
+      loadProductsProposalsProjects
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, [loadProductsProposalsProjects]);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    setIsLoading(true);
+    if (isMountedRef.current) {
+      loadProductsProposalsProjects().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
+  }, [dispatch, loadProductsProposalsProjects]);
+
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector(state => state.auth.userId);
   const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
@@ -77,41 +112,6 @@ const UserSpotlightScreen = props => {
     props.navigation.navigate('EditProfile', { detailId: currentProfile.id });
   };
 
-  const dispatch = useDispatch();
-
-  //Load products and projects
-  const loadProductsProposalsProjects = useCallback(async () => {
-    setError(null);
-    try {
-      await dispatch(productsActions.fetchProducts());
-      await dispatch(projectsActions.fetchProjects());
-      await dispatch(proposalsActions.fetchProposals());
-    } catch (err) {
-      setError(err.message);
-    }
-  }, [dispatch, setIsLoading, setError]);
-
-  // useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener(
-  //     'focus',
-  //     loadProductsProposalsProjects
-  //   );
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [loadProductsProposalsProjects]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    setIsLoading(true);
-    if (isMountedRef.current) {
-      loadProductsProposalsProjects().then(() => {
-        setIsLoading(false);
-      });
-    }
-    return () => (isMountedRef.current = false);
-  }, [dispatch, loadProductsProposalsProjects]);
-
   if (error) {
     return (
       <View style={styles.centered}>
@@ -148,7 +148,6 @@ const UserSpotlightScreen = props => {
             size={80}
           />
           <ButtonIcon
-            style={{ marginTop: -20 }}
             icon="settings"
             color={Colors.neutral}
             onSelect={editProfileHandler}

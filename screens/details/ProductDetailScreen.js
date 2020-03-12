@@ -204,12 +204,22 @@ const ProductDetailScreen = props => {
         {!isReservedOrPickedUp && showUserProjects ? (
           <>
             <Text style={detailStyles.centeredHeader}>
-              Vilket projekt återbruket användas i?
+              Vilket projekt ska återbruket användas i?
             </Text>
             <HorizontalScrollContainer>
+              <RoundItem
+                itemData={{
+                  image: './../../assets/avatar-placeholder-image.png',
+                  title: 'Inget projekt'
+                }}
+                key={'000'}
+                isHorizontal={true}
+                onSelect={() => {
+                  reserveHandler('000');
+                }}
+              />
               {userProjects.map(item => (
                 <RoundItem
-                  title="välj vilket projekt återbruket ska användas i"
                   itemData={item}
                   key={item.id}
                   isHorizontal={true}
@@ -223,7 +233,7 @@ const ProductDetailScreen = props => {
         ) : null}
         {selectedProduct &&
         selectedProduct.projectId &&
-        selectedProduct.projectId.length > 2 &&
+        selectedProduct.projectId.length > 4 &&
         isReservedOrPickedUp ? (
           <View style={detailStyles.centered}>
             <Text style={detailStyles.centeredHeader}>

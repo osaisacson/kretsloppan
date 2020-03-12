@@ -197,7 +197,16 @@ export const ShopNavigator = () => {
                   props.navigation.closeDrawer();
                 }}
               /> */}
-              <Text>Ge igen</Text>
+              <Text
+                style={{
+                  fontFamily: 'bebas-neue-bold',
+                  fontSize: 25,
+                  marginLeft: 10,
+                  marginTop: 35
+                }}
+              >
+                Ge igen
+              </Text>
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
@@ -230,10 +239,10 @@ export const ShopNavigator = () => {
       }}
     >
       <ShopDrawerNavigator.Screen
-        name="Products"
+        name="Hem"
         component={ProductsNavigator}
         onPress={() => {
-          props.navigation.popToTop();
+          props.navigation.navigate('SpotlightProductsScreen');
         }}
         options={{
           drawerIcon: props => (
@@ -242,7 +251,7 @@ export const ShopNavigator = () => {
         }}
       />
       <ShopDrawerNavigator.Screen
-        name="Users"
+        name="Användare"
         component={UsersNavigator}
         options={{
           drawerIcon: props => (

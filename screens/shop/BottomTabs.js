@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
@@ -21,6 +21,8 @@ import * as profilesActions from '../../store/actions/profiles';
 import Colors from '../../constants/Colors';
 
 const BottomTabs = props => {
+  const isMountedRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -43,10 +45,21 @@ const BottomTabs = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', loadProfiles);
+    return () => {
+      unsubscribe();
+    };
+  }, [loadProfiles]);
+
+  useEffect(() => {
+    isMountedRef.current = true;
     setIsLoading(true);
-    loadProfiles().then(() => {
-      setIsLoading(false);
-    });
+    if (isMountedRef.current) {
+      loadProfiles().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
   }, []); //Passing empty array means this only loads once after mount
 
   if (error) {
@@ -93,52 +106,17 @@ const BottomTabs = props => {
           options={{
             tabBarIcon: ({ color }) => (
               <Ionicons
-                name={
-                  Platform.OS === 'android'
-                    ? 'md-notifications'
-                    : 'ios-notifications'
-                }
+                name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
                 color={color}
                 size={27}
                 style={{
-                  marginLeft: -35
+                  marginLeft: -100
                 }}
               />
             )
           }}
         />
-        <Tab.Screen
-          name="Förråd"
-          component={ProductsScreen}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons
-                name={'file-download'}
-                color={color}
-                size={27}
-                style={{
-                  marginLeft: -70
-                }}
-              />
-            )
-          }}
-        />
-        <Tab.Screen
-          name="Mitt Förråd"
-          component={UserProductsScreen}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons
-                name={'file-upload'}
-                color={color}
-                size={30}
-                style={{
-                  marginRight: -70
-                }}
-              />
-            )
-          }}
-        />
+
         <Tab.Screen
           name="Min Sida"
           component={UserSpotlightScreen}
@@ -149,7 +127,7 @@ const BottomTabs = props => {
                 color={color}
                 size={30}
                 style={{
-                  marginRight: -35
+                  marginRight: -100
                 }}
               />
             )
