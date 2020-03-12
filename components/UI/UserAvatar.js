@@ -97,7 +97,6 @@ const UserAvatar = props => {
             style={{
               fontWeight: 'bold',
               position: 'relative',
-              left: -35,
               bottom: 20
             }}
           >

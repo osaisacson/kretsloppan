@@ -84,15 +84,15 @@ const defaultMainPageOptions = navData => {
           }}
         />
       </HeaderButtons>
-    ),
-    headerRight: () => (
-      <UserAvatar
-        showBadge={true}
-        actionOnPress={() => {
-          navData.navigation.navigate('Min Sida');
-        }}
-      />
     )
+    // headerRight: () => (
+    //   <UserAvatar
+    //     showBadge={true}
+    //     actionOnPress={() => {
+    //       navData.navigation.navigate('Min Sida');
+    //     }}
+    //   />
+    // )
   };
 };
 
@@ -192,12 +192,25 @@ export const ShopNavigator = () => {
         return (
           <View style={{ flex: 1 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-              {/* <UserAvatar
-                actionOnPress={() => {
-                  props.navigation.closeDrawer();
-                }}
-              /> */}
-              <Text
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <UserAvatar
+                  showBadge={true}
+                  // centralAvatar={true}
+                  actionOnPress={() => {
+                    props.navigation.navigate('Min Sida');
+                    props.navigation.closeDrawer();
+                  }}
+                />
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    marginTop: 20
+                  }}
+                >
+                  Min sida
+                </Text>
+              </View>
+              {/* <Text
                 style={{
                   fontFamily: 'bebas-neue-bold',
                   fontSize: 25,
@@ -206,7 +219,7 @@ export const ShopNavigator = () => {
                 }}
               >
                 Ge igen
-              </Text>
+              </Text> */}
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />

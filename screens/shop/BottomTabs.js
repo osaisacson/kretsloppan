@@ -11,6 +11,8 @@ import Loader from '../../components/UI/Loader';
 import AddButton from '../../components/UI/AddButton';
 import SpotlightProductsScreen from './SpotlightProductsScreen';
 import ProductsScreen from './ProductsScreen';
+import ProjectsScreen from './ProjectsScreen';
+
 import UserSpotlightScreen from '../user/UserSpotlightScreen';
 import UserProductsScreen from '../user/UserProductsScreen';
 import AddProfileScreen from '../addAndEdit/AddProfileScreen';
@@ -93,15 +95,13 @@ const BottomTabs = props => {
     <>
       <AddButton navigation={props.navigation} />
       <Tab.Navigator
-        initialRouteName="Spotlight"
-        labeled={false}
-        shifting={true}
+        initialRouteName="Hem"
         activeColor="#f0edf6"
         inactiveColor="#3e2465"
         barStyle={{ backgroundColor: 'rgba(127,63,191,.9)' }}
       >
         <Tab.Screen
-          name="Spotlight"
+          name="Hem"
           component={SpotlightProductsScreen}
           options={{
             tabBarIcon: ({ color }) => (
@@ -109,14 +109,31 @@ const BottomTabs = props => {
                 name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
                 color={color}
                 size={27}
+                style={
+                  {
+                    // marginLeft: -100
+                  }
+                }
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Projekt"
+          component={ProjectsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-build' : 'ios-build'}
+                color={color}
+                size={27}
                 style={{
-                  marginLeft: -100
+                  marginLeft: -150
                 }}
               />
             )
           }}
         />
-
         <Tab.Screen
           name="Min Sida"
           component={UserSpotlightScreen}
@@ -126,9 +143,11 @@ const BottomTabs = props => {
                 name={'user'}
                 color={color}
                 size={30}
-                style={{
-                  marginRight: -100
-                }}
+                style={
+                  {
+                    // marginRight: -100
+                  }
+                }
               />
             )
           }}
