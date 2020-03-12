@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 //Components
@@ -9,6 +9,7 @@ import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import ButtonNormal from '../../components/UI/ButtonNormal';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
+import ButtonIcon from '../../components/UI/ButtonIcon';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
@@ -20,6 +21,8 @@ import Colors from '../../constants/Colors';
 import Styles from '../../constants/Styles';
 
 const UserSpotlightScreen = props => {
+  const isMountedRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -88,21 +91,25 @@ const UserSpotlightScreen = props => {
     }
   }, [dispatch, setIsLoading, setError]);
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener(
-      'focus',
-      loadProductsProposalsProjects
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProductsProposalsProjects]);
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener(
+  //     'focus',
+  //     loadProductsProposalsProjects
+  //   );
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProductsProposalsProjects]);
 
   useEffect(() => {
+    isMountedRef.current = true;
     setIsLoading(true);
-    loadProductsProposalsProjects().then(() => {
-      setIsLoading(false);
-    });
+    if (isMountedRef.current) {
+      loadProductsProposalsProjects().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
   }, [dispatch, loadProductsProposalsProjects]);
 
   if (error) {
@@ -126,22 +133,26 @@ const UserSpotlightScreen = props => {
     <SaferArea>
       <ScrollView>
         <View style={styles.userInfoSection}>
-          <Button mode="text" onPress={editProfileHandler}>
-            <Avatar.Image
-              style={{
-                color: '#fff',
-                backgroundColor: '#fff',
-                borderWidth: 0.3,
-                borderColor: '#000'
-              }}
-              source={
-                currentProfile.image
-                  ? { uri: currentProfile.image }
-                  : require('./../../assets/avatar-placeholder-image.png')
-              }
-              size={50}
-            />
-          </Button>
+          <Avatar.Image
+            style={{
+              color: '#fff',
+              backgroundColor: '#fff',
+              borderWidth: 0.3,
+              borderColor: '#000'
+            }}
+            source={
+              currentProfile.image
+                ? { uri: currentProfile.image }
+                : require('./../../assets/avatar-placeholder-image.png')
+            }
+            size={80}
+          />
+          <ButtonIcon
+            style={{ marginTop: -20 }}
+            icon="settings"
+            color={Colors.neutral}
+            onSelect={editProfileHandler}
+          />
           <Title style={styles.title}>{currentProfile.profileName}</Title>
           <View style={styles.row}>
             <View style={styles.section}>
@@ -170,20 +181,6 @@ const UserSpotlightScreen = props => {
         ) : (
           <>
             <HorizontalScroll
-              largeItem={true}
-              detailPath={'ProjectDetail'}
-              title={'Mina projekt'}
-              subTitle={'Projekt jag bygger med återbruk'}
-              scrollData={userProjects}
-              navigation={props.navigation}
-            />
-            <HorizontalScroll
-              title={'Upplagt av mig'}
-              subTitle={'Återbruk upplagt av dig'}
-              scrollData={readyUserProducts}
-              navigation={props.navigation}
-            />
-            <HorizontalScroll
               title={'Reserverade av mig'}
               subTitle={
                 'Väntas på att hämtas upp av dig - se kort för detaljer'
@@ -197,13 +194,17 @@ const UserSpotlightScreen = props => {
               navigation={props.navigation}
             />
             <HorizontalScroll
-              title={'Under bearbetning'}
-              subTitle={
-                "Material som håller på att fixas. När det är redo för hämtning öppna kortet och klicka 'Redo'"
-              }
-              bgColor={Colors.primaryLight}
-              scrollData={inProgressUserProducts}
-              showNotificationBadge={true}
+              largeItem={true}
+              detailPath={'ProjectDetail'}
+              title={'Mina projekt'}
+              subTitle={'Projekt jag bygger med återbruk'}
+              scrollData={userProjects}
+              navigation={props.navigation}
+            />
+            <HorizontalScroll
+              title={'Upplagt av mig'}
+              subTitle={'Återbruk upplagt av dig'}
+              scrollData={userProducts}
               navigation={props.navigation}
             />
             <HorizontalScroll
@@ -230,8 +231,9 @@ const UserSpotlightScreen = props => {
 const styles = StyleSheet.create({
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   userInfoSection: {
-    marginTop: -6,
-    paddingLeft: Styles.leftRight
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   title: {
     fontWeight: 'bold',

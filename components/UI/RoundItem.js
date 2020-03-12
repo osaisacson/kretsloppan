@@ -26,14 +26,11 @@ const RoundItem = props => {
     <View style={styles.project}>
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
-          {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
-          <View>
-            <View style={styles.imageContainer}>
-              <Image
-                style={styles.image}
-                source={{ uri: props.itemData.image }}
-              />
-            </View>
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.image}
+              source={{ uri: props.itemData.image }}
+            />
           </View>
         </TouchableCmp>
       </View>

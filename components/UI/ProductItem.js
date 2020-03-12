@@ -86,10 +86,10 @@ const ProductItem = props => {
                   source={{ uri: props.itemData.image }}
                 />
               </View>
+              <Text style={styles.price}>
+                {props.itemData.price ? props.itemData.price : 0} kr
+              </Text>
             </View>
-            <Text style={styles.price}>
-              {props.itemData.price ? props.itemData.price : 0} kr
-            </Text>
           </TouchableCmp>
         </View>
       </Card>

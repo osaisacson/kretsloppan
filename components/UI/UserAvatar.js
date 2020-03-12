@@ -9,11 +9,8 @@ import {
   View
 } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
-import Loader from '../../components/UI/Loader';
 //Actions
 import * as productsActions from '../../store/actions/products';
-import * as projectsActions from '../../store/actions/projects';
-import * as proposalsActions from '../../store/actions/proposals';
 
 const UserAvatar = props => {
   const isMountedRef = useRef(null);
@@ -38,15 +35,13 @@ const UserAvatar = props => {
   const dispatch = useDispatch();
 
   //Load products and projects
-  const loadProductsAndProjects = useCallback(async () => {
+  const loadProducts = useCallback(async () => {
     try {
-      console.log('fetching data: loadProductsAndProjects');
+      console.log('userAvatar fetching data: loadProducts');
       await dispatch(productsActions.fetchProducts());
-      await dispatch(projectsActions.fetchProjects());
-      await dispatch(proposalsActions.fetchProposals());
     } catch (err) {
       console.log(
-        'Error when trying to loadProductsAndProjects: ',
+        'Error when trying to loadProducts in userAvatar: ',
         err.message
       );
     }
@@ -56,13 +51,12 @@ const UserAvatar = props => {
     isMountedRef.current = true;
     setIsLoading(true);
     if (isMountedRef.current) {
-      loadProductsAndProjects().then(() => {
-        console.log('isMountedRef.current: ', isMountedRef.current);
+      loadProducts().then(() => {
         setIsLoading(false);
       });
     }
     return () => (isMountedRef.current = false);
-  }, [loadProductsAndProjects]);
+  }, [loadProducts]);
 
   //Gets nr of all booked products
   const bookedUserProducts = userProducts.filter(
@@ -73,33 +67,6 @@ const UserAvatar = props => {
     bookedUserProducts && bookedUserProducts.length > 0
       ? bookedUserProducts.length
       : 0;
-
-  //Gets nr of all currently being worked on products
-  const inProgressUserProducts = userProducts.filter(
-    product => product.status === 'bearbetas'
-  );
-
-  const inProgressUserProductsNr =
-    inProgressUserProducts && inProgressUserProducts.length > 0
-      ? inProgressUserProducts.length
-      : 0;
-
-  //Gets nr of all wanted products
-  const wantedUserProducts = userProducts.filter(
-    product => product.status === 'efterlyst'
-  );
-
-  const wantedUserProductsNr =
-    wantedUserProducts && wantedUserProducts.length > 0
-      ? wantedUserProducts.length
-      : 0;
-
-  const activeBadgeNr =
-    bookedUserProductsNr + inProgressUserProductsNr + wantedUserProductsNr;
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   return (
     <TouchableCmp
@@ -134,7 +101,7 @@ const UserAvatar = props => {
               bottom: 20
             }}
           >
-            {activeBadgeNr}
+            {bookedUserProductsNr}
           </Badge>
         ) : null}
       </View>

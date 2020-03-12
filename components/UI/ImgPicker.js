@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Button, Image, Text, StyleSheet, Alert } from 'react-native';
+import { View, Image, Text, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-
+import { Button } from 'react-native-paper';
 import Colors from '../../constants/Colors';
 
 const ImgPicker = props => {
@@ -52,11 +52,9 @@ const ImgPicker = props => {
           <Image style={styles.image} source={{ uri: pickedImage }} /> //Originally uses the locally stored image as a placeholder
         )}
       </View>
-      <Button
-        title={props.imagePrompt ? props.imagePrompt : 'Välj en bild'}
-        color={Colors.primary}
-        onPress={takeImageHandler}
-      />
+      <Button icon="camera" mode="contained" onPress={takeImageHandler}>
+        {props.imagePrompt ? props.imagePrompt : 'Välj en bild'}
+      </Button>
     </View>
   );
 };
