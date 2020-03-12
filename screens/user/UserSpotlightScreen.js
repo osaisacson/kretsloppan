@@ -131,7 +131,7 @@ const UserSpotlightScreen = props => {
               style={{
                 color: '#fff',
                 backgroundColor: '#fff',
-                borderWidth: '0.3',
+                borderWidth: 0.3,
                 borderColor: '#000'
               }}
               source={

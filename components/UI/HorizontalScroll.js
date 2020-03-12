@@ -35,6 +35,10 @@ const HorizontalScroll = props => {
 
   const scrollData = props.scrollData;
 
+  if (!scrollData.length) {
+    scrollHeight = 100;
+  }
+
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate(detailPath, {
       detailId: id,
@@ -100,7 +104,7 @@ const HorizontalScroll = props => {
               </ScrollView>
             </View>
           ) : (
-            <EmptyState style={{ height: 50 }}>Inget här ännu</EmptyState>
+            <EmptyState>Inget här ännu</EmptyState>
           )}
         </View>
       </ScrollView>

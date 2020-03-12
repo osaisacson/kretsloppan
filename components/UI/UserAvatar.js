@@ -1,7 +1,13 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+
+import {
+  Platform,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  View
+} from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
 import Loader from '../../components/UI/Loader';
 //Actions
@@ -104,32 +110,34 @@ const UserAvatar = props => {
         marginTop: 40
       }}
     >
-      <Avatar.Image
-        style={{
-          color: '#fff',
-          backgroundColor: '#fff',
-          borderWidth: '0.3',
-          borderColor: '#000'
-        }}
-        source={
-          currentUser
-            ? { uri: currentUser.image }
-            : require('./../../assets/avatar-placeholder-image.png')
-        }
-        size={50}
-      />
-      {props.showBadge ? (
-        <Badge
+      <View>
+        <Avatar.Image
           style={{
-            fontWeight: 'bold',
-            position: 'relative',
-            left: -35,
-            bottom: 20
+            color: '#fff',
+            backgroundColor: '#fff',
+            borderWidth: 0.3,
+            borderColor: '#000'
           }}
-        >
-          {activeBadgeNr}
-        </Badge>
-      ) : null}
+          source={
+            currentUser
+              ? { uri: currentUser.image }
+              : require('./../../assets/avatar-placeholder-image.png')
+          }
+          size={50}
+        />
+        {props.showBadge ? (
+          <Badge
+            style={{
+              fontWeight: 'bold',
+              position: 'relative',
+              left: -35,
+              bottom: 20
+            }}
+          >
+            {activeBadgeNr}
+          </Badge>
+        ) : null}
+      </View>
     </TouchableCmp>
   );
 };
