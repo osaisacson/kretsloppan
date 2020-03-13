@@ -46,12 +46,12 @@ const ProductsScreen = props => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  // useEffect(() => {
-  //   console.log(
-  //     'ProductsScreen: running useEffect where we setRenderedProducts to products'
-  //   );
-  //   setRenderedProducts(products);
-  // }, []);
+  useEffect(() => {
+    console.log(
+      'ProductsScreen: running useEffect where we setRenderedProducts to products'
+    );
+    setRenderedProducts(products);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', loadProducts);
@@ -111,53 +111,50 @@ const ProductsScreen = props => {
   }
 
   return (
-    console.log(products),
-    (
-      <SaferArea>
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={text => searchHandler(text)}
-          value={searchQuery}
-          underlineColorAndroid="transparent"
-          placeholder="Leta efter återbruk"
-        />
-        <HeaderTwo
-          title={'Allt återbruk'}
-          subTitle={
-            'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
-          }
-          icon={
-            <MaterialIcons
-              name="file-download"
-              size={20}
-              style={{ marginRight: 5 }}
-            />
-          }
-          indicator={renderedProducts.length ? renderedProducts.length : 0}
-        />
-        <FlatList
-          numColumns={3}
-          initialNumToRender={12}
-          onRefresh={loadProducts}
-          refreshing={isRefreshing}
-          data={renderedProducts}
-          extraData={renderedProducts}
-          keyExtractor={item => item.id}
-          renderItem={itemData => (
-            <ProductItem
-              itemData={itemData.item}
-              onSelect={() => {
-                selectItemHandler(
-                  itemData.item.id,
-                  itemData.item.ownerId,
-                  itemData.item.title
-                );
-              }}
-            ></ProductItem>
-          )}
-        />
-      </SaferArea>
-    )
+    <SaferArea>
+      <TextInput
+        style={styles.textInputStyle}
+        onChangeText={text => searchHandler(text)}
+        value={searchQuery}
+        underlineColorAndroid="transparent"
+        placeholder="Leta efter återbruk"
+      />
+      <HeaderTwo
+        title={'Allt återbruk'}
+        subTitle={
+          'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
+        }
+        icon={
+          <MaterialIcons
+            name="file-download"
+            size={20}
+            style={{ marginRight: 5 }}
+          />
+        }
+        indicator={renderedProducts.length ? renderedProducts.length : 0}
+      />
+      <FlatList
+        numColumns={3}
+        initialNumToRender={12}
+        onRefresh={loadProducts}
+        refreshing={isRefreshing}
+        data={renderedProducts}
+        extraData={renderedProducts}
+        keyExtractor={item => item.id}
+        renderItem={itemData => (
+          <ProductItem
+            itemData={itemData.item}
+            onSelect={() => {
+              selectItemHandler(
+                itemData.item.id,
+                itemData.item.ownerId,
+                itemData.item.title
+              );
+            }}
+          ></ProductItem>
+        )}
+      />
+    </SaferArea>
   );
 };
 
