@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import {
@@ -23,6 +23,8 @@ import * as profilesActions from '../../store/actions/profiles';
 import Colors from '../../constants/Colors';
 
 const AllProfilesScreen = props => {
+  const isMountedRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -49,19 +51,23 @@ const AllProfilesScreen = props => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProfiles);
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProfiles]);
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener('focus', loadProfiles);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProfiles]);
 
   useEffect(() => {
+    isMountedRef.current = true;
     setIsLoading(true);
-    loadProfiles().then(() => {
-      setIsLoading(false);
-    });
-  }, [dispatch, loadProfiles]);
+    if (isMountedRef.current) {
+      loadProfiles().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
+  }, [loadProfiles]);
 
   const searchHandler = text => {
     const newData = renderedProfiles.filter(item => {
@@ -133,29 +139,32 @@ const AllProfilesScreen = props => {
         data={profilesSorted}
         keyExtractor={item => item.id}
         renderItem={itemData => (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              padding: 10,
-              borderBottom: 0.2,
-              borderColor: '#666'
-            }}
-          >
-            <RoundItem
-              key={itemData.item.profileId}
-              itemData={itemData.item}
-              onSelect={() => {
-                selectItemHandler(
-                  itemData.item.id,
-                  itemData.item.profileId,
-                  itemData.item.title
-                );
+          <View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                padding: 10,
+                borderBottom: 0.2,
+                borderColor: '#666'
               }}
-            ></RoundItem>
-            <Text style={{ alignSelf: 'center', paddingLeft: 10 }}>
-              {itemData.item.profileName}
-            </Text>
+            >
+              <RoundItem
+                key={itemData.item.profileId}
+                itemData={itemData.item}
+                onSelect={() => {
+                  selectItemHandler(
+                    itemData.item.id,
+                    itemData.item.profileId,
+                    itemData.item.title
+                  );
+                }}
+              ></RoundItem>
+              <Text style={{ alignSelf: 'center', paddingLeft: 10 }}>
+                {itemData.item.profileName}
+              </Text>
+            </View>
+            <Divider />
           </View>
         )}
       />

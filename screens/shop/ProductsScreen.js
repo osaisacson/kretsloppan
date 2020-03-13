@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import {
@@ -21,6 +21,8 @@ import * as productsActions from '../../store/actions/products';
 import Colors from '../../constants/Colors';
 
 const ProductsScreen = props => {
+  const isMountedRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -30,9 +32,6 @@ const ProductsScreen = props => {
   const [renderedProducts, setRenderedProducts] = useState(products);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const productsSorted = renderedProducts.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(async () => {
@@ -47,6 +46,13 @@ const ProductsScreen = props => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
+  // useEffect(() => {
+  //   console.log(
+  //     'ProductsScreen: running useEffect where we setRenderedProducts to products'
+  //   );
+  //   setRenderedProducts(products);
+  // }, []);
+
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', loadProducts);
     return () => {
@@ -55,11 +61,15 @@ const ProductsScreen = props => {
   }, [loadProducts]);
 
   useEffect(() => {
+    isMountedRef.current = true;
     setIsLoading(true);
-    loadProducts().then(() => {
-      setIsLoading(false);
-    });
-  }, [dispatch, loadProducts]);
+    if (isMountedRef.current) {
+      loadProducts().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
+  }, [dispatch, renderedProducts, loadProducts]);
 
   const searchHandler = text => {
     const newData = renderedProducts.filter(item => {
@@ -101,49 +111,53 @@ const ProductsScreen = props => {
   }
 
   return (
-    <SaferArea>
-      <TextInput
-        style={styles.textInputStyle}
-        onChangeText={text => searchHandler(text)}
-        value={searchQuery}
-        underlineColorAndroid="transparent"
-        placeholder="Leta efter återbruk"
-      />
-      <HeaderTwo
-        title={'Allt återbruk'}
-        subTitle={
-          'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
-        }
-        icon={
-          <MaterialIcons
-            name="file-download"
-            size={20}
-            style={{ marginRight: 5 }}
-          />
-        }
-        indicator={productsSorted.length ? productsSorted.length : 0}
-      />
-      <FlatList
-        horizontal={false}
-        numColumns={3}
-        onRefresh={loadProducts}
-        refreshing={isRefreshing}
-        data={productsSorted}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
-          <ProductItem
-            itemData={itemData.item}
-            onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title
-              );
-            }}
-          ></ProductItem>
-        )}
-      />
-    </SaferArea>
+    console.log(products),
+    (
+      <SaferArea>
+        <TextInput
+          style={styles.textInputStyle}
+          onChangeText={text => searchHandler(text)}
+          value={searchQuery}
+          underlineColorAndroid="transparent"
+          placeholder="Leta efter återbruk"
+        />
+        <HeaderTwo
+          title={'Allt återbruk'}
+          subTitle={
+            'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
+          }
+          icon={
+            <MaterialIcons
+              name="file-download"
+              size={20}
+              style={{ marginRight: 5 }}
+            />
+          }
+          indicator={renderedProducts.length ? renderedProducts.length : 0}
+        />
+        <FlatList
+          numColumns={3}
+          initialNumToRender={12}
+          onRefresh={loadProducts}
+          refreshing={isRefreshing}
+          data={renderedProducts}
+          extraData={renderedProducts}
+          keyExtractor={item => item.id}
+          renderItem={itemData => (
+            <ProductItem
+              itemData={itemData.item}
+              onSelect={() => {
+                selectItemHandler(
+                  itemData.item.id,
+                  itemData.item.ownerId,
+                  itemData.item.title
+                );
+              }}
+            ></ProductItem>
+          )}
+        />
+      </SaferArea>
+    )
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import {
@@ -21,6 +21,8 @@ import * as proposalsActions from '../../store/actions/proposals';
 import Colors from '../../constants/Colors';
 
 const ProposalsScreen = props => {
+  const isMountedRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -30,9 +32,6 @@ const ProposalsScreen = props => {
   const [renderedProposals, setRenderedProposals] = useState(proposals);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const proposalsSorted = renderedProposals.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
   const dispatch = useDispatch();
 
   const loadProposals = useCallback(async () => {
@@ -48,6 +47,13 @@ const ProposalsScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
+    console.log(
+      'Proposals: running useEffect where we setRenderedProducts to proposals'
+    );
+    setRenderedProposals(proposals);
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', loadProposals);
     return () => {
       unsubscribe();
@@ -55,10 +61,14 @@ const ProposalsScreen = props => {
   }, [loadProposals]);
 
   useEffect(() => {
+    isMountedRef.current = true;
     setIsLoading(true);
-    loadProposals().then(() => {
-      setIsLoading(false);
-    });
+    if (isMountedRef.current) {
+      loadProposals().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
   }, [dispatch, loadProposals]);
 
   const searchHandler = text => {
@@ -119,15 +129,17 @@ const ProposalsScreen = props => {
             style={{ marginRight: 5 }}
           />
         }
-        indicator={proposalsSorted.length ? proposalsSorted.length : 0}
+        indicator={renderedProposals.length ? renderedProposals.length : 0}
       />
       <FlatList
         style={{ marginTop: 30 }}
         horizontal={false}
         numColumns={1}
+        initialNumToRender={20}
         onRefresh={loadProposals}
         refreshing={isRefreshing}
-        data={proposalsSorted}
+        data={proposals}
+        extraData={proposals}
         keyExtractor={item => item.id}
         renderItem={itemData => (
           <ProposalItem

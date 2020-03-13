@@ -37,6 +37,9 @@ const UserSpotlightScreen = props => {
       await dispatch(projectsActions.fetchProjects());
       await dispatch(proposalsActions.fetchProposals());
     } catch (err) {
+      console.log(
+        'UserSpotlightScreen: Error trying to fetch Products/Projects/Proposals'
+      );
       setError(err.message);
     }
   }, [dispatch, setIsLoading, setError]);

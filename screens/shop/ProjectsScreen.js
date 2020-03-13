@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import {
@@ -21,6 +21,8 @@ import * as projectsActions from '../../store/actions/projects';
 import Colors from '../../constants/Colors';
 
 const ProjectsScreen = props => {
+  const isMountedRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -30,9 +32,6 @@ const ProjectsScreen = props => {
   const [renderedProjects, setRenderedProjects] = useState(projects);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const projectsSorted = renderedProjects.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
   const dispatch = useDispatch();
 
   const loadProjects = useCallback(async () => {
@@ -44,8 +43,16 @@ const ProjectsScreen = props => {
     } catch (err) {
       setError(err.message);
     }
+    setRenderedProjects(projects);
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    console.log(
+      'ProjectsScreen: running useEffect where we setRenderedProjects to projects'
+    );
+    setRenderedProjects(projects);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', loadProjects);
@@ -55,10 +62,14 @@ const ProjectsScreen = props => {
   }, [loadProjects]);
 
   useEffect(() => {
+    isMountedRef.current = true;
     setIsLoading(true);
-    loadProjects().then(() => {
-      setIsLoading(false);
-    });
+    if (isMountedRef.current) {
+      loadProjects().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (isMountedRef.current = false);
   }, [dispatch, loadProjects]);
 
   const searchHandler = text => {
@@ -115,14 +126,16 @@ const ProjectsScreen = props => {
         icon={
           <Ionicons name="ios-build" size={20} style={{ marginRight: 5 }} />
         }
-        indicator={projectsSorted.length ? projectsSorted.length : 0}
+        indicator={renderedProjects.length ? renderedProjects.length : 0}
       />
       <FlatList
         horizontal={false}
         numColumns={1}
+        initialNumToRender={6}
         onRefresh={loadProjects}
         refreshing={isRefreshing}
-        data={projectsSorted}
+        data={projects}
+        extraData={projects}
         keyExtractor={item => item.id}
         renderItem={itemData => (
           <ProjectItem
