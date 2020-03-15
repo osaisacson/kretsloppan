@@ -139,8 +139,7 @@ const ProposalsScreen = props => {
         initialNumToRender={20}
         onRefresh={loadProposals}
         refreshing={isRefreshing}
-        data={proposals}
-        extraData={proposals}
+        data={renderedProposals}
         keyExtractor={item => item.id}
         renderItem={itemData => (
           <ProposalItem

@@ -135,8 +135,7 @@ const ProjectsScreen = props => {
         initialNumToRender={6}
         onRefresh={loadProjects}
         refreshing={isRefreshing}
-        data={projects}
-        extraData={projects}
+        data={renderedProjects}
         keyExtractor={item => item.id}
         renderItem={itemData => (
           <ProjectItem

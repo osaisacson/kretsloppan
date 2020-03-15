@@ -143,7 +143,6 @@ const ProductsScreen = props => {
         onRefresh={loadProducts}
         refreshing={isRefreshing}
         data={renderedProducts}
-        extraData={renderedProducts}
         keyExtractor={item => item.id}
         renderItem={itemData => (
           <ProductItem
