@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'; //Lets us use expo fonts
 import ReduxThunk from 'redux-thunk';
+import { Platform } from 'react-native';
 
 //Reducers
 import productsReducer from './store/reducers/products';
@@ -49,6 +50,35 @@ const fetchFonts = () => {
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+
+  //Prep for setting up notifications
+  // useEffect(async () => {
+  //   // get expo push token
+  //   const token = await Expo.Notifications.getExpoPushTokenAsync();
+
+  //   fetch('https://exp.host/--/api/v2/push/send', {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'accept-encoding': 'gzip, deflate',
+  //       host: 'exp.host'
+  //     },
+  //     body: JSON.stringify({
+  //       to: token,
+  //       title: 'New Notification',
+  //       body: 'The notification worked!',
+  //       priority: 'high',
+  //       sound: 'default',
+  //       channelId: 'default'
+  //     })
+  //   })
+  //     .then(response => response.json())
+  //     .then(responseJson => {})
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   //If font is not loaded yet (fontLoaded is false) return the AppLoading component which pauses the showing of the app until x has been met
   if (!fontLoaded) {
