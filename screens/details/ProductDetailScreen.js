@@ -34,12 +34,6 @@ const ProductDetailScreen = props => {
   const projectForProduct = userProjects.filter(
     proj => proj.id === selectedProduct.projectId
   );
-  //Find the profile that matches the ownerId of the current User
-  const productOwner = useSelector(state =>
-    state.profiles.allProfiles.find(
-      prof => prof.profileId === selectedProduct.ownerId
-    )
-  );
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -261,16 +255,16 @@ const ProductDetailScreen = props => {
       <Text style={detailStyles.sectionHeader}>Hämtas från</Text>
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.boundaryText}>
-          {productOwner && productOwner.address
-            ? productOwner.address
+          {selectedProduct.address
+            ? selectedProduct.address
             : 'Ingen address angiven'}
         </Text>
       </View>
       <Text style={detailStyles.sectionHeader}>Kontakt</Text>
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.boundaryText}>
-          {productOwner && productOwner.phone
-            ? productOwner.phone
+          {selectedProduct.phone
+            ? selectedProduct.phone
             : 'Inget kontaktnummer angivet'}
         </Text>
       </View>

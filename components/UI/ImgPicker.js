@@ -47,7 +47,7 @@ const ImgPicker = props => {
     <View style={styles.imagePicker}>
       <View style={styles.imagePreview}>
         {!pickedImage ? (
-          <Text>Ingen bild vald än</Text>
+          <Text>Lägg upp en bild</Text>
         ) : (
           <Image style={styles.image} source={{ uri: pickedImage }} /> //Originally uses the locally stored image as a placeholder
         )}

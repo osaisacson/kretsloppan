@@ -67,6 +67,7 @@ const Input = props => {
       <Text style={styles.label}>{props.label}</Text>
       <TextInput
         {...props}
+        placeholder={props.placeholder}
         style={styles.input}
         value={inputState.value}
         onChangeText={textChangeHandler}

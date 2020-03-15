@@ -145,7 +145,6 @@ const AddProfileScreen = props => {
       isLoading={isLoading}
     >
       <FormFieldWrapper
-        label="Profil bild"
         showPromptIf={!formState.inputValues.image}
         prompt="Välj en profilbild"
       >
@@ -155,11 +154,11 @@ const AddProfileScreen = props => {
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Användarnamn"
         showPromptIf={!formState.inputValues.profileName}
         prompt="Skriv in ett användarnamn"
       >
         <TextInput
+          placeholder="Användarnamn"
           style={formStyles.input}
           value={formState.inputValues.profileName}
           onChangeText={textChangeHandler.bind(this, 'profileName')}
@@ -170,11 +169,11 @@ const AddProfileScreen = props => {
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Telefon"
         showPromptIf={!formState.inputValues.phone}
         prompt="Lägg in ett kontaktnummer"
       >
         <TextInput
+          placeholder="Telefon"
           style={formStyles.input}
           value={formState.inputValues.phone.toString()}
           onChangeText={textChangeHandler.bind(this, 'phone')}
@@ -184,11 +183,11 @@ const AddProfileScreen = props => {
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Email"
         showPromptIf={!formState.inputValues.email}
         prompt="Skriv in den email folk kan kontakta dig på"
       >
         <TextInput
+          placeholder="Email"
           style={formStyles.input}
           value={formState.inputValues.email}
           onChangeText={textChangeHandler.bind(this, 'email')}
@@ -201,11 +200,11 @@ const AddProfileScreen = props => {
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Address"
         showPromptIf={!formState.inputValues.profileName}
         prompt="Skriv in addressen återbruket vanligtvis kan hämtas på"
       >
         <TextInput
+          placeholder="Address"
           style={formStyles.input}
           value={formState.inputValues.address}
           onChangeText={textChangeHandler.bind(this, 'address')}

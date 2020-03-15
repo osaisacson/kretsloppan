@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { Picker, Alert, TextInput } from 'react-native';
+import { Picker, Alert, TextInput, Text } from 'react-native';
+import { Button } from 'react-native-paper';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
@@ -9,9 +10,7 @@ import {
 } from '../../components/wrappers/FormFieldWrapper';
 import Filters from './../searchAndFilter/Filters';
 import ImagePicker from '../../components/UI/ImgPicker';
-import ButtonNormal from '../../components/UI/ButtonNormal';
-//Constants
-import Colors from '../../constants/Colors';
+
 //Actions
 import * as productsActions from '../../store/actions/products';
 
@@ -57,13 +56,10 @@ const EditProductScreen = props => {
   //Set states
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [usePreviousAddress, setUsePreviousAddress] = useState(true);
-  const [usePreviousPhone, setUsePreviousPhone] = useState(true);
+  const [useCurrAddress, setUseCurrAddress] = useState();
+  const [useCurrPhone, setUseCurrPhone] = useState();
 
   const dispatch = useDispatch();
-
-  const setNewAddress = editedProduct ? editedProduct.address : '';
-  const setNewPhone = editedProduct ? editedProduct.phone : '';
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -72,8 +68,8 @@ const EditProductScreen = props => {
       image: editedProduct ? editedProduct.image : '',
       description: editedProduct ? editedProduct.description : '',
       price: editedProduct ? editedProduct.price : '',
-      address: usePreviousAddress ? currentUser.address : setNewAddress,
-      phone: usePreviousPhone ? currentUser.phone : setNewPhone
+      address: editedProduct ? editedProduct.address : '',
+      phone: editedProduct ? editedProduct.phone : ''
     },
     inputValidities: {
       categoryName: editedProduct ? true : false,
@@ -81,8 +77,8 @@ const EditProductScreen = props => {
       image: editedProduct ? true : false,
       description: editedProduct ? true : false,
       price: editedProduct ? true : false,
-      address: editedProduct ? true : false,
-      phone: editedProduct ? true : false
+      address: true,
+      phone: true
     },
     formIsValid: editedProduct ? true : false
   });
@@ -114,8 +110,10 @@ const EditProductScreen = props => {
             formState.inputValues.description,
             +formState.inputValues.price,
             formState.inputValues.image,
-            formState.inputValues.address,
-            +formState.inputValues.phone
+            useCurrAddress
+              ? currentUser.address
+              : formState.inputValues.address,
+            useCurrAddress ? currentUser.phone : +formState.inputValues.phone
           )
         );
       } else {
@@ -126,8 +124,10 @@ const EditProductScreen = props => {
             formState.inputValues.description,
             +formState.inputValues.price,
             formState.inputValues.image,
-            formState.inputValues.address,
-            +formState.inputValues.phone
+            useCurrAddress
+              ? currentUser.address
+              : formState.inputValues.address,
+            useCurrAddress ? currentUser.phone : +formState.inputValues.phone
           )
         );
       }
@@ -158,14 +158,14 @@ const EditProductScreen = props => {
     });
   };
 
-  const toggleUseAddressButton = () => {
-    console.log('usePreviousAddress: ', usePreviousAddress);
-    setUsePreviousAddress(prevState => !prevState);
+  const toggleUseCurrAddress = () => {
+    console.log('useCurrAddress:', useCurrAddress);
+    setUseCurrAddress(!useCurrAddress);
   };
 
-  const toggleUsePhoneButton = () => {
-    console.log('usePreviousPhone: ', usePreviousPhone);
-    setUsePreviousPhone(prevState => !prevState);
+  const toggleUseCurrPhone = () => {
+    console.log('useCurrPhone:', useCurrPhone);
+    setUseCurrPhone(!useCurrPhone);
   };
 
   return (
@@ -175,7 +175,6 @@ const EditProductScreen = props => {
       isLoading={isLoading}
     >
       <FormFieldWrapper
-        label="Bild av återbruket"
         showPromptIf={!formState.inputValues.image}
         prompt="Välj en bild av återbruket"
       >
@@ -185,11 +184,11 @@ const EditProductScreen = props => {
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Titel"
         showPromptIf={!formState.inputValues.title}
         prompt="Skriv in en titel"
       >
         <TextInput
+          placeholder="Titel"
           style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}
@@ -200,12 +199,11 @@ const EditProductScreen = props => {
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Pris"
-        subLabel="Om du lägger upp som företag, ange pris inklusive moms"
         showPromptIf={!formState.inputValues.price}
         prompt="Lägg in ett pris (det kan vara 0)"
       >
         <TextInput
+          placeholder="Pris - Om du lägger upp som företag, ange pris inklusive moms"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
@@ -215,13 +213,15 @@ const EditProductScreen = props => {
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Beskrivning"
         showPromptIf={!formState.inputValues.description}
         prompt="Skriv in en kort beskrivning"
       >
         <TextInput
+          placeholder="Beskrivning"
           style={formStyles.input}
           value={formState.inputValues.description}
+          multiline
+          numberOfLines={4}
           onChangeText={textChangeHandler.bind(this, 'description')}
           autoCorrect={false}
           returnKeyType="next"
@@ -251,23 +251,32 @@ const EditProductScreen = props => {
           />
         </Picker>
       </FormFieldWrapper>
-      <FormFieldWrapper
-        label="Address"
-        showPromptIf={!formState.inputValues.address}
-        prompt="Den address återbruket kan hämtas på"
+      {useCurrAddress ? <Text>{currentUser.address}</Text> : null}
+      <Button
+        mode="contained"
+        style={{
+          marginTop: 10,
+          marginBottom: 20,
+          width: '50%',
+          alignSelf: 'center'
+        }}
+        labelStyle={{
+          paddingTop: 2,
+          fontFamily: 'roboto-light',
+          fontSize: 10
+        }}
+        compact={true}
+        onPress={toggleUseCurrAddress.bind(this)}
       >
-        <ButtonNormal
-          color={Colors.primary}
-          disabled={!currentUser.address}
-          actionOnPress={toggleUseAddressButton}
-          text={
-            usePreviousAddress
-              ? 'Byt till ny address'
-              : `Använd ${currentUser.address}`
-          }
-        />
-        {usePreviousAddress ? null : (
+        {useCurrAddress ? 'Ange ny address' : 'Använd min vanliga address'}
+      </Button>
+      {useCurrAddress ? null : (
+        <FormFieldWrapper
+          showPromptIf={!formState.inputValues.address}
+          prompt="Den address återbruket kan hämtas på"
+        >
           <TextInput
+            placeholder="Address"
             style={formStyles.input}
             value={formState.inputValues.address}
             onChangeText={textChangeHandler.bind(this, 'address')}
@@ -275,25 +284,34 @@ const EditProductScreen = props => {
             autoCorrect={false}
             returnKeyType="next"
           />
-        )}
-      </FormFieldWrapper>
-      <FormFieldWrapper
-        label="phone"
-        showPromptIf={!formState.inputValues.phone}
-        prompt="Det telefonnummer man bäst kan kontakta dig på "
+        </FormFieldWrapper>
+      )}
+      {useCurrPhone ? <Text>{currentUser.phone}</Text> : null}
+      <Button
+        mode="contained"
+        style={{
+          marginTop: 10,
+          marginBottom: 20,
+          width: '60%',
+          alignSelf: 'center'
+        }}
+        labelStyle={{
+          paddingTop: 2,
+          fontFamily: 'roboto-light',
+          fontSize: 11
+        }}
+        compact={true}
+        onPress={toggleUseCurrPhone.bind(this)}
       >
-        <ButtonNormal
-          color={Colors.primary}
-          disabled={!currentUser.phone}
-          actionOnPress={toggleUsePhoneButton}
-          text={
-            usePreviousPhone
-              ? 'Byt till nytt nummer'
-              : `Använd ${currentUser.phone}`
-          }
-        />
-        {usePreviousPhone ? null : (
+        {useCurrPhone ? 'Ange ny telefon' : 'Använd min vanliga telefon'}
+      </Button>
+      {useCurrPhone ? null : (
+        <FormFieldWrapper
+          showPromptIf={!formState.inputValues.phone}
+          prompt="Det telefonnummer man bäst kan kontakta dig på "
+        >
           <TextInput
+            placeholder="Telefon"
             style={formStyles.input}
             value={formState.inputValues.phone.toString()}
             onChangeText={textChangeHandler.bind(this, 'phone')}
@@ -301,8 +319,8 @@ const EditProductScreen = props => {
             autoCorrect={false}
             returnKeyType="done"
           />
-        )}
-      </FormFieldWrapper>
+        </FormFieldWrapper>
+      )}
     </FormWrapper>
   );
 };

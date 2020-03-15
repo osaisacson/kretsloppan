@@ -132,11 +132,11 @@ const EditProposalScreen = props => {
       isLoading={isLoading}
     >
       <FormFieldWrapper
-        label="Jag efterlyser..."
         showPromptIf={!formState.inputValues.title}
         prompt="Skriv in titeln på din efterlysning"
       >
         <TextInput
+          placeholder="Jag efterlyser..."
           style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}
@@ -148,25 +148,27 @@ const EditProposalScreen = props => {
       </FormFieldWrapper>
 
       <FormFieldWrapper
-        label="Beskrivning"
         showPromptIf={!formState.inputValues.description}
         prompt="Skriv in en kort beskrivning av vad du efterlyser"
       >
         <TextInput
+          placeholder="Beskrivning"
           style={formStyles.input}
           value={formState.inputValues.description}
+          multiline
+          numberOfLines={4}
           onChangeText={textChangeHandler.bind(this, 'description')}
           autoCorrect={false}
           returnKeyType="done"
         />
       </FormFieldWrapper>
       <FormFieldWrapper
-        label="Ersättning (skriv 0 för om du söker voluntärer/donationer)"
         subLabel="Om du lägger upp som företag, ange pris inklusive moms"
         showPromptIf={!formState.inputValues.price}
         prompt="Skriv in en ersättning, 0 för voluntärer/donationer"
       >
         <TextInput
+          placeholder="Ersättning (skriv 0 för om du söker voluntärer/donationer)"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}

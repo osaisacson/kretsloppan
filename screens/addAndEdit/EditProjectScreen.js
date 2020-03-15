@@ -129,7 +129,6 @@ const EditProjectScreen = props => {
       isLoading={isLoading}
     >
       <FormFieldWrapper
-        label="Projekt bild"
         showPromptIf={!formState.inputValues.image}
         prompt="Välj en bild som representerar projektet"
       >
@@ -140,11 +139,11 @@ const EditProjectScreen = props => {
       </FormFieldWrapper>
 
       <FormFieldWrapper
-        label="Titel"
         showPromptIf={!formState.inputValues.title}
         prompt="Skriv in en titel"
       >
         <TextInput
+          placeholder="Titel"
           style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}
@@ -156,11 +155,11 @@ const EditProjectScreen = props => {
       </FormFieldWrapper>
 
       <FormFieldWrapper
-        label="Slogan"
         showPromptIf={!formState.inputValues.slogan}
         prompt="Skriv in en kort slogan för ditt projekt"
       >
         <TextInput
+          placeholder="Slogan"
           style={formStyles.input}
           value={formState.inputValues.slogan}
           onChangeText={textChangeHandler.bind(this, 'slogan')}

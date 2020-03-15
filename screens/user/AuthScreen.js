@@ -111,7 +111,7 @@ const AuthScreen = props => {
       <ImageBackground
         source={{
           uri:
-            'https://images.unsplash.com/photo-1534328564742-a5e0c9d80f7d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'
+            'https://images.unsplash.com/photo-1496439653932-606caa506e0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2011&q=80'
         }}
         style={styles.centeredContent}
       >
@@ -119,7 +119,7 @@ const AuthScreen = props => {
           <ScrollView>
             <Input
               id="email"
-              label="E-Mail"
+              placeholder="E-Mail"
               keyboardType="email-address"
               required
               email
@@ -130,7 +130,7 @@ const AuthScreen = props => {
             />
             <Input
               id="password"
-              label="Password"
+              placeholder="Password"
               keyboardType="default"
               secureTextEntry
               required
@@ -165,7 +165,7 @@ const AuthScreen = props => {
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                color={'#666'}
+                color={Colors.primary}
                 mode="contained"
                 style={{
                   width: '60%',
