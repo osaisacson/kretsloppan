@@ -1,5 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+//Components
+import FormErrorText from './FormErrorText';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_BLUR = 'INPUT_BLUR';
@@ -74,9 +76,7 @@ const Input = props => {
         onBlur={lostFocusHandler}
       />
       {!inputState.isValid && inputState.touched && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{props.errorText}</Text>
-        </View>
+        <FormErrorText text={props.errorText} />
       )}
     </View>
   );
@@ -94,14 +94,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1
-  },
-  errorContainer: {
-    marginVertical: 5
-  },
-  errorText: {
-    fontFamily: 'roboto-regular',
-    color: 'red',
-    fontSize: 13
   }
 });
 

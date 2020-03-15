@@ -93,15 +93,6 @@ export const detailStyles = StyleSheet.create({
   subLabel: {
     fontFamily: 'roboto-light-italic'
   },
-  errorContainer: {
-    marginVertical: 5
-  },
-  errorText: {
-    fontFamily: 'roboto-regular',
-    color: 'grey',
-    fontSize: 13,
-    textAlign: 'right'
-  },
   emptyState: {
     padding: 20,
     color: '#c0c0c0'
