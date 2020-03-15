@@ -43,6 +43,7 @@ const ProductsScreen = props => {
     } catch (err) {
       setError(err.message);
     }
+    setRenderedProducts(products);
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
@@ -69,7 +70,7 @@ const ProductsScreen = props => {
       });
     }
     return () => (isMountedRef.current = false);
-  }, [dispatch, renderedProducts, loadProducts]);
+  }, [dispatch, loadProducts]);
 
   const searchHandler = text => {
     const newData = renderedProducts.filter(item => {
@@ -114,7 +115,9 @@ const ProductsScreen = props => {
     <SaferArea>
       <TextInput
         style={styles.textInputStyle}
-        onChangeText={text => searchHandler(text)}
+        onChangeText={text => {
+          searchHandler(text);
+        }}
         value={searchQuery}
         underlineColorAndroid="transparent"
         placeholder="Leta efter återbruk"

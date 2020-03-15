@@ -108,7 +108,7 @@ const ProjectsScreen = props => {
   }
 
   if (!isLoading && projects.length === 0) {
-    return <EmptyState text="Inga produkter hittade." />;
+    return <EmptyState text="Inga projekt hittade." />;
   }
 
   return (

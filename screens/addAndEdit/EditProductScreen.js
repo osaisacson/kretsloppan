@@ -229,7 +229,7 @@ const EditProductScreen = props => {
       </FormFieldWrapper>
       <Filters />
 
-      {/* <FormFieldWrapper
+      <FormFieldWrapper
         label="Kategori"
         showPromptIf={!formState.inputValues.categoryName}
         prompt="Välj en kategori"
@@ -250,7 +250,7 @@ const EditProductScreen = props => {
             value={'dörr'.toLowerCase()}
           />
         </Picker>
-      </FormFieldWrapper> */}
+      </FormFieldWrapper>
       <FormFieldWrapper
         label="Address"
         showPromptIf={!formState.inputValues.address}
