@@ -149,7 +149,7 @@ const AuthScreen = props => {
                   mode="outlined"
                   contentStyle={{
                     justifyContent: 'center',
-                    borderWidth: 0.1
+                    borderWidth: 0.15
                   }}
                   labelStyle={{
                     paddingTop: 13,
@@ -165,7 +165,7 @@ const AuthScreen = props => {
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                color={Colors.primary}
+                color={isSignUp ? Colors.darkPrimary : Colors.primary}
                 mode="contained"
                 style={{
                   width: '60%',
