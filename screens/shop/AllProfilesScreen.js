@@ -122,6 +122,7 @@ const AllProfilesScreen = props => {
       <HeaderTwo
         title={'Användare'}
         subTitle={'Allt som har skapat sig en profil'}
+        questionText={'Här ska det vara en förklaring'}
         icon={
           <FontAwesome
             name="users"

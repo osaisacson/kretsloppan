@@ -1,9 +1,9 @@
 import React from 'react';
 //Components
 import { ScrollView, View } from 'react-native';
-import HeaderTwo from './HeaderTwo';
+import HeaderTwo from './../../components/UI/HeaderTwo';
 
-const HorizontalScrollContainer = props => {
+const Filters = props => {
   //Change scrollHeight according to which component we are rendering
   let scrollHeight = props.scrollHeight ? props.scrollHeight : 160;
 
@@ -14,7 +14,7 @@ const HorizontalScrollContainer = props => {
           title={props.title}
           subTitle={props.subTitle}
           extraSubTitle={props.extraSubTitle}
-          questionText={props.questionText}
+          questionText={'Här ska det vara en förklaring'}
           icon={props.icon}
           showNotificationBadge={props.showNotificationBadge}
         />
@@ -33,4 +33,4 @@ const HorizontalScrollContainer = props => {
   );
 };
 
-export default HorizontalScrollContainer;
+export default Filters;

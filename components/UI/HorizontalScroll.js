@@ -61,6 +61,7 @@ const HorizontalScroll = props => {
             title={props.title}
             subTitle={props.subTitle}
             extraSubTitle={props.extraSubTitle}
+            questionText={props.questionText}
             icon={props.icon}
             indicator={scrollData.length ? scrollData.length : 0}
             showNotificationBadge={props.showNotificationBadge}

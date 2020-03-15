@@ -100,6 +100,7 @@ const ProjectDetailScreen = props => {
         title={'Återbruk'}
         subTitle={'Återbruk som är använt/kommer användas i projektet'}
         indicator={associatedProducts.length ? associatedProducts.length : 0}
+        questionText={'Här ska det vara en förklaring'}
       />
     </View>
   );

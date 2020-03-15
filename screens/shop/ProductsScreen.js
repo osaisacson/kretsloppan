@@ -124,6 +124,7 @@ const ProductsScreen = props => {
         subTitle={
           'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
         }
+        questionText={'Här ska det vara en förklaring'}
         icon={
           <MaterialIcons
             name="file-download"

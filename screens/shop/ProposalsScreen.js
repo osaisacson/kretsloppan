@@ -122,6 +122,7 @@ const ProposalsScreen = props => {
       <HeaderTwo
         title={'Efterlysningar'}
         subTitle={'Efterlysningar av självbyggare'}
+        questionText={'Här ska det vara en förklaring'}
         icon={
           <Ionicons
             name="ios-notifications"

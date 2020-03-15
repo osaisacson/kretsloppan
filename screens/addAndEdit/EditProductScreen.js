@@ -7,6 +7,7 @@ import {
   FormFieldWrapper,
   formStyles
 } from '../../components/wrappers/FormFieldWrapper';
+import Filters from './../searchAndFilter/Filters';
 import ImagePicker from '../../components/UI/ImgPicker';
 import ButtonNormal from '../../components/UI/ButtonNormal';
 //Constants
@@ -226,7 +227,9 @@ const EditProductScreen = props => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
+      <Filters />
+
+      {/* <FormFieldWrapper
         label="Kategori"
         showPromptIf={!formState.inputValues.categoryName}
         prompt="Välj en kategori"
@@ -247,7 +250,7 @@ const EditProductScreen = props => {
             value={'dörr'.toLowerCase()}
           />
         </Picker>
-      </FormFieldWrapper>
+      </FormFieldWrapper> */}
       <FormFieldWrapper
         label="Address"
         showPromptIf={!formState.inputValues.address}

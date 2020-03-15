@@ -123,6 +123,7 @@ const ProjectsScreen = props => {
       <HeaderTwo
         title={'Projekt'}
         subTitle={'Projekt byggda med återbruk'}
+        questionText={'Här ska det vara en förklaring'}
         icon={
           <Ionicons name="ios-build" size={20} style={{ marginRight: 5 }} />
         }
