@@ -103,19 +103,6 @@ const AllProfilesScreen = props => {
         searchQuery={searchQuery}
         placeholder="Leta bland användare"
       />
-      <HeaderTwo
-        title={'Användare'}
-        subTitle={'Allt som har skapat sig en profil'}
-        questionText={'Här ska det vara en förklaring'}
-        icon={
-          <FontAwesome
-            name="users"
-            size={18}
-            style={{ marginRight: 5, paddingBottom: 2 }}
-          />
-        }
-        indicator={profilesSorted.length ? profilesSorted.length : 0}
-      />
       <FlatList
         horizontal={false}
         numColumns={1}
@@ -152,6 +139,21 @@ const AllProfilesScreen = props => {
             <Divider />
           </View>
         )}
+        ListHeaderComponent={
+          <HeaderTwo
+            title={'Användare'}
+            subTitle={'Allt som har skapat sig en profil'}
+            questionText={'Här ska det vara en förklaring'}
+            icon={
+              <FontAwesome
+                name="users"
+                size={18}
+                style={{ marginRight: 5, paddingBottom: 2 }}
+              />
+            }
+            indicator={profilesSorted.length ? profilesSorted.length : 0}
+          />
+        }
       />
     </SaferArea>
   );
