@@ -27,7 +27,7 @@ const UserSpotlightScreen = props => {
 
   const dispatch = useDispatch();
 
-  //Load products and projects
+  //Load products, projects and projects
   const loadProductsProposalsProjects = useCallback(async () => {
     setError(null);
     try {

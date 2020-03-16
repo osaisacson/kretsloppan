@@ -8,11 +8,15 @@ import {
   FormFieldWrapper,
   formStyles
 } from '../../components/wrappers/FormFieldWrapper';
-import Filters from './../searchAndFilter/Filters';
 import ImagePicker from '../../components/UI/ImgPicker';
+import IconItem from '../../components/UI/IconItem';
+import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
+
+//Data
+import { PART, CONDITION, OTHER } from './../../data/categories';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -117,6 +121,7 @@ const EditProductScreen = props => {
           )
         );
       } else {
+        console.log('formState.inputValues', formState.inputValues);
         await dispatch(
           productsActions.createProduct(
             formState.inputValues.categoryName,
@@ -145,10 +150,10 @@ const EditProductScreen = props => {
 
     let isValid = true;
 
-    //If we haven't entered any value (its empty) set form validity to false
-    if (text.trim().length === 0) {
-      isValid = false;
-    }
+    // //If we haven't entered any value (its empty) set form validity to false
+    // if (text.trim().length === 0) {
+    //   isValid = false;
+    // }
 
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
@@ -227,9 +232,49 @@ const EditProductScreen = props => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <Filters />
-
+      {/* Part of the building */}
       <FormFieldWrapper
+        label="Kategori"
+        showPromptIf={!formState.inputValues.categoryName}
+        prompt="Välj en kategori"
+      >
+        <HorizontalScrollContainer scrollHeight={90}>
+          {PART.map(item => (
+            <IconItem
+              isSelected={formState.inputValues.categoryName === item.title}
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              // value={formState.inputValues.categoryName}
+              // onSelect={textChangeHandler.bind(this, 'categoryName')}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </FormFieldWrapper>
+
+      {/* Condition of the item */}
+      <HorizontalScrollContainer scrollHeight={90}>
+        {CONDITION.map(item => (
+          <IconItem
+            itemData={item}
+            key={item.id}
+            isHorizontal={true}
+            onSelect={() => {}}
+          />
+        ))}
+      </HorizontalScrollContainer>
+      {/* Something else of the item */}
+      <HorizontalScrollContainer scrollHeight={90}>
+        {OTHER.map(item => (
+          <IconItem
+            itemData={item}
+            key={item.id}
+            isHorizontal={true}
+            onSelect={() => {}}
+          />
+        ))}
+      </HorizontalScrollContainer>
+      {/* <FormFieldWrapper
         label="Kategori"
         showPromptIf={!formState.inputValues.categoryName}
         prompt="Välj en kategori"
@@ -250,7 +295,7 @@ const EditProductScreen = props => {
             value={'dörr'.toLowerCase()}
           />
         </Picker>
-      </FormFieldWrapper>
+      </FormFieldWrapper> */}
       {useCurrAddress ? <Text>{currentUser.address}</Text> : null}
       <Button
         mode="contained"
