@@ -89,7 +89,11 @@ const AddButton = props => {
             backgroundColor: Colors.primary
           }}
         >
-          <MaterialIcons name="file-upload" size={25} color={'#F8F8F8'} />
+          <MaterialIcons
+            name="file-upload"
+            size={25}
+            color={Colors.lightPrimary}
+          />
         </TouchableHighlight>
       </Animated.View>
       <Animated.View
@@ -114,7 +118,7 @@ const AddButton = props => {
             backgroundColor: Colors.primary
           }}
         >
-          <Entypo name="address" size={20} color={'#F8F8F8'} />
+          <Entypo name="address" size={20} color={Colors.lightPrimary} />
         </TouchableHighlight>
       </Animated.View>
       <Animated.View
@@ -142,7 +146,7 @@ const AddButton = props => {
           <MaterialCommunityIcons
             name="comment-plus"
             size={21}
-            color={'#F8F8F8'}
+            color={Colors.lightPrimary}
           />
         </TouchableHighlight>
       </Animated.View>
@@ -163,7 +167,7 @@ const AddButton = props => {
             transform: [{ rotate: rotation }]
           }}
         >
-          <Icon name="plus" size={24} color={'#F8F8F8'} />
+          <Icon name="plus" size={24} color={Colors.lightPrimary} />
         </Animated.View>
       </TouchableHighlight>
     </View>

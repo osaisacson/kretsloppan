@@ -191,7 +191,7 @@ const UserSpotlightScreen = props => {
               extraSubTitle={
                 'Notera att reservationen upphör gälla efter en vecka'
               }
-              bgColor={Colors.primaryLight}
+              bgColor={Colors.lightPrimary}
               scrollData={bookedUserProducts}
               showNotificationBadge={true}
               navigation={props.navigation}

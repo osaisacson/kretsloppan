@@ -1,6 +1,7 @@
 export default {
   primary: '#C2185B',
-  primaryLight: '#f2e1e8',
+  lightPrimary: '#f2e1e8',
+  mediumPrimary: '#f2e1e8',
   darkPrimary: '#5c003c',
   accent: '#FFC107',
   completed: '#3CB371',

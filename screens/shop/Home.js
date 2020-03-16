@@ -9,6 +9,9 @@ import AddButton from '../../components/UI/AddButton';
 import ProposalsScreen from './ProposalsScreen';
 import UserSpotlightScreen from '../user/UserSpotlightScreen';
 
+//Constants
+import Colors from '../../constants/Colors';
+
 const Home = props => {
   //Get down to business
   const Tab = createMaterialBottomTabNavigator();
@@ -20,9 +23,9 @@ const Home = props => {
         initialRouteName="Hem"
         labeled={false}
         shifting={true}
-        activeColor="#f0edf6"
-        inactiveColor="#3e2465"
-        barStyle={{ backgroundColor: 'rgba(127,63,191,.9)' }}
+        activeColor={Colors.lightPrimary}
+        inactiveColor={Colors.mediumPrimary}
+        barStyle={{ backgroundColor: Colors.darkPrimary }}
       >
         <Tab.Screen
           name="Hem"
