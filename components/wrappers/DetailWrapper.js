@@ -1,14 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+//Components
+import ScrollViewToTop from './ScrollViewToTop';
 import SaferArea from '../UI/SaferArea';
+//Constants
 import Colors from '../../constants/Colors';
 
 export const DetailWrapper = props => {
   return (
     <SaferArea>
-      <ScrollView>
+      <ScrollViewToTop>
         <View style={detailStyles.mainDetailWrap}>{props.children}</View>
-      </ScrollView>
+      </ScrollViewToTop>
     </SaferArea>
   );
 };

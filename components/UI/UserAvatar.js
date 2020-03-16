@@ -72,10 +72,14 @@ const UserAvatar = props => {
     <TouchableCmp
       activeOpacity={0.5}
       onPress={props.actionOnPress}
-      style={{
-        marginHorizontal: 10,
-        marginTop: 40
-      }}
+      style={
+        props.style
+          ? props.style
+          : {
+              marginHorizontal: 10,
+              marginTop: 40
+            }
+      }
     >
       <View>
         <Avatar.Image

@@ -1,12 +1,8 @@
 import React from 'react';
 //Components
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  KeyboardAvoidingView
-} from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import ButtonNormal from '../UI/ButtonNormal';
+import ScrollViewToTop from './ScrollViewToTop';
 
 const FormWrapper = props => {
   return (
@@ -15,13 +11,13 @@ const FormWrapper = props => {
       behavior="padding"
       keyboardVerticalOffset={100}
     >
-      <ScrollView>
+      <ScrollViewToTop>
         <View style={styles.formWrapper}>{props.children}</View>
         <ButtonNormal
           text={props.submitButtonText}
           actionOnPress={props.handlerForButtonSubmit}
         />
-      </ScrollView>
+      </ScrollViewToTop>
     </KeyboardAvoidingView>
   );
 };

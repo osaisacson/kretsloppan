@@ -9,12 +9,15 @@ import {
   StyleSheet,
   TextInput
 } from 'react-native';
+import { Banner } from 'react-native-paper';
+import { MaterialIcons } from '@expo/vector-icons';
 import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
-import { MaterialIcons } from '@expo/vector-icons';
+import HorizontalPicker from '../../components/UI/HorizontalPicker';
+
 //Actions
 import * as productsActions from '../../store/actions/products';
 //Constants
@@ -30,6 +33,7 @@ const ProductsScreen = props => {
   const products = useSelector(state => state.products.availableProducts);
   //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(products);
+  const [visibleBanner, setVisibleBanner] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
@@ -90,6 +94,25 @@ const ProductsScreen = props => {
     });
   };
 
+  const introductionData = [
+    {
+      image:
+        'https://images.unsplash.com/photo-1501366062246-723b4d3e4eb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1973&q=80',
+      title: 'Välkommen!'
+    },
+    {
+      image:
+        'https://images.unsplash.com/photo-1516383740770-fbcc5ccbece0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80',
+
+      title: 'Introduktion'
+    },
+    {
+      image:
+        'https://images.unsplash.com/photo-1455849318743-b2233052fcff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+      title: 'Avslutning'
+    }
+  ];
+
   if (error) {
     return (
       <View style={styles.centered}>
@@ -112,52 +135,66 @@ const ProductsScreen = props => {
   }
 
   return (
-    <SaferArea>
-      <TextInput
-        style={styles.textInputStyle}
-        onChangeText={text => {
-          searchHandler(text);
-        }}
-        value={searchQuery}
-        underlineColorAndroid="transparent"
-        placeholder="Leta efter återbruk"
-      />
-      <HeaderTwo
-        title={'Allt återbruk'}
-        subTitle={
-          'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
-        }
-        questionText={'Här ska det vara en förklaring'}
-        icon={
-          <MaterialIcons
-            name="file-download"
-            size={20}
-            style={{ marginRight: 5 }}
-          />
-        }
-        indicator={renderedProducts.length ? renderedProducts.length : 0}
-      />
-      <FlatList
-        numColumns={3}
-        initialNumToRender={12}
-        onRefresh={loadProducts}
-        refreshing={isRefreshing}
-        data={renderedProducts}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
-          <ProductItem
-            itemData={itemData.item}
-            onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title
-              );
-            }}
-          ></ProductItem>
-        )}
-      />
-    </SaferArea>
+    <>
+      <Banner
+        visible={visibleBanner}
+        actions={[
+          {
+            label: 'Stäng introduktionen',
+            onPress: () => setVisibleBanner(false)
+          }
+        ]}
+      >
+        Här kan vi ha en liten introduktionstext med fina bilder.
+      </Banner>
+
+      <SaferArea>
+        <TextInput
+          style={styles.textInputStyle}
+          onChangeText={text => {
+            searchHandler(text);
+          }}
+          value={searchQuery}
+          underlineColorAndroid="transparent"
+          placeholder="Leta efter återbruk"
+        />
+        <HeaderTwo
+          title={'Allt återbruk'}
+          subTitle={
+            'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
+          }
+          questionText={'Här ska det vara en förklaring'}
+          icon={
+            <MaterialIcons
+              name="file-download"
+              size={20}
+              style={{ marginRight: 5 }}
+            />
+          }
+          indicator={renderedProducts.length ? renderedProducts.length : 0}
+        />
+        <FlatList
+          numColumns={3}
+          initialNumToRender={12}
+          onRefresh={loadProducts}
+          refreshing={isRefreshing}
+          data={renderedProducts}
+          keyExtractor={item => item.id}
+          renderItem={itemData => (
+            <ProductItem
+              itemData={itemData.item}
+              onSelect={() => {
+                selectItemHandler(
+                  itemData.item.id,
+                  itemData.item.ownerId,
+                  itemData.item.title
+                );
+              }}
+            ></ProductItem>
+          )}
+        />
+      </SaferArea>
+    </>
   );
 };
 

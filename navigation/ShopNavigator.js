@@ -65,7 +65,7 @@ import Colors from '../constants/Colors';
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-    height: 70
+    height: 94
   },
   headerTitleStyle: {
     fontFamily: 'roboto-bold'
@@ -89,15 +89,33 @@ const defaultMainPageOptions = navData => {
           }}
         />
       </HeaderButtons>
+    ),
+    headerRight: () => (
+      <UserAvatar
+        style={{ marginTop: 15, marginRight: 10 }}
+        showBadge={true}
+        actionOnPress={() => {
+          navData.navigation.navigate('Min Sida');
+        }}
+      />
     )
-    // headerRight: () => (
-    //   <UserAvatar
-    //     showBadge={true}
-    //     actionOnPress={() => {
-    //       navData.navigation.navigate('Min Sida');
-    //     }}
-    //   />
-    // )
+  };
+};
+
+const mainPageOptionsNoUser = navData => {
+  return {
+    headerTitle: '',
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    )
   };
 };
 
@@ -187,7 +205,7 @@ export const UserNavigator = () => {
       <UserStackNavigator.Screen
         name="UserSpotlight"
         component={UserSpotlightScreen}
-        options={defaultMainPageOptions}
+        options={mainPageOptionsNoUser}
       />
       <UserStackNavigator.Screen
         name="Profil"

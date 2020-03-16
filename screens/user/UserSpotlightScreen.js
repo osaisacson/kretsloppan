@@ -10,7 +10,7 @@ import Loader from '../../components/UI/Loader';
 import ButtonNormal from '../../components/UI/ButtonNormal';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ButtonIcon from '../../components/UI/ButtonIcon';
-
+import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
 //Actions
 import * as productsActions from '../../store/actions/products';
 import * as projectsActions from '../../store/actions/projects';
@@ -134,100 +134,96 @@ const UserSpotlightScreen = props => {
   }
 
   return (
-    <SaferArea>
-      <ScrollView>
-        <View style={styles.userInfoSection}>
-          <Avatar.Image
-            style={{
-              color: '#fff',
-              backgroundColor: '#fff',
-              borderWidth: 0.3,
-              borderColor: '#000'
-            }}
-            source={
-              currentProfile.image
-                ? { uri: currentProfile.image }
-                : require('./../../assets/avatar-placeholder-image.png')
-            }
-            size={80}
-          />
-          <ButtonIcon
-            icon="settings"
-            color={Colors.neutral}
-            onSelect={editProfileHandler}
-          />
-          <Title style={styles.title}>{currentProfile.profileName}</Title>
-          <View style={styles.row}>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                {added ? added : 0}
-              </Paragraph>
-              <Caption style={styles.caption}>Upplagda</Caption>
-            </View>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                {collected ? collected : 0}
-              </Paragraph>
-              <Caption style={styles.caption}>Hämtade</Caption>
-            </View>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                {nrOfProjects ? nrOfProjects : 0}
-              </Paragraph>
-              <Caption style={styles.caption}>Projekt</Caption>
-            </View>
+    <ScrollViewToTop>
+      <View style={styles.userInfoSection}>
+        <Avatar.Image
+          style={{
+            color: '#fff',
+            backgroundColor: '#fff',
+            borderWidth: 0.3,
+            borderColor: '#000'
+          }}
+          source={
+            currentProfile.image
+              ? { uri: currentProfile.image }
+              : require('./../../assets/avatar-placeholder-image.png')
+          }
+          size={80}
+        />
+        <ButtonIcon
+          icon="settings"
+          color={Colors.neutral}
+          onSelect={editProfileHandler}
+        />
+        <Title style={styles.title}>{currentProfile.profileName}</Title>
+        <View style={styles.row}>
+          <View style={styles.section}>
+            <Paragraph style={[styles.paragraph, styles.caption]}>
+              {added ? added : 0}
+            </Paragraph>
+            <Caption style={styles.caption}>Upplagda</Caption>
+          </View>
+          <View style={styles.section}>
+            <Paragraph style={[styles.paragraph, styles.caption]}>
+              {collected ? collected : 0}
+            </Paragraph>
+            <Caption style={styles.caption}>Hämtade</Caption>
+          </View>
+          <View style={styles.section}>
+            <Paragraph style={[styles.paragraph, styles.caption]}>
+              {nrOfProjects ? nrOfProjects : 0}
+            </Paragraph>
+            <Caption style={styles.caption}>Projekt</Caption>
           </View>
         </View>
+      </View>
 
-        {!isLoading && userProducts.length === 0 ? (
-          <EmptyState text="Inga produkter ännu, prova lägga till några." />
-        ) : (
-          <>
-            <HorizontalScroll
-              title={'Reserverade av mig'}
-              subTitle={
-                'Väntas på att hämtas upp av dig - se kort för detaljer'
-              }
-              extraSubTitle={
-                'Notera att reservationen upphör gälla efter en vecka'
-              }
-              bgColor={Colors.lightPrimary}
-              scrollData={bookedUserProducts}
-              showNotificationBadge={true}
-              navigation={props.navigation}
-            />
-            <HorizontalScroll
-              largeItem={true}
-              detailPath={'ProjectDetail'}
-              title={'Mina projekt'}
-              subTitle={'Projekt jag bygger med återbruk'}
-              scrollData={userProjects}
-              navigation={props.navigation}
-            />
-            <HorizontalScroll
-              title={'Upplagt av mig'}
-              subTitle={'Återbruk upplagt av dig'}
-              scrollData={userProducts}
-              navigation={props.navigation}
-            />
-            <HorizontalScroll
-              textItem={true}
-              detailPath="ProposalDetail"
-              title={'Efterlysta produkter'}
-              subTitle={'Mina efterlysningar'}
-              scrollData={userProposals}
-              navigation={props.navigation}
-            />
-            <HorizontalScroll
-              title={'Gett Igen'}
-              subTitle={'Återbruk använt av mig'}
-              scrollData={doneUserProducts}
-              navigation={props.navigation}
-            />
-          </>
-        )}
-      </ScrollView>
-    </SaferArea>
+      {!isLoading && userProducts.length === 0 ? (
+        <EmptyState text="Inga produkter ännu, prova lägga till några." />
+      ) : (
+        <>
+          <HorizontalScroll
+            title={'Reserverade av mig'}
+            subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
+            extraSubTitle={
+              'Notera att reservationen upphör gälla efter en vecka'
+            }
+            bgColor={Colors.lightPrimary}
+            scrollData={bookedUserProducts}
+            showNotificationBadge={true}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            largeItem={true}
+            detailPath={'ProjectDetail'}
+            title={'Mina projekt'}
+            subTitle={'Projekt jag bygger med återbruk'}
+            scrollData={userProjects}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            title={'Upplagt av mig'}
+            subTitle={'Återbruk upplagt av dig'}
+            scrollData={userProducts}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            textItem={true}
+            detailPath="ProposalDetail"
+            title={'Efterlysta produkter'}
+            subTitle={'Mina efterlysningar'}
+            scrollData={userProposals}
+            navigation={props.navigation}
+          />
+          <HorizontalScroll
+            title={'Gett Igen'}
+            subTitle={'Återbruk använt av mig'}
+            scrollData={doneUserProducts}
+            navigation={props.navigation}
+          />
+        </>
+      )}
+    </ScrollViewToTop>
   );
 };
 

@@ -105,7 +105,7 @@ const EditProfileScreen = props => {
           )
         );
       }
-      props.navigation.navigate('Home');
+      props.navigation.navigate('Products');
     } catch (err) {
       setError(err.message);
     }

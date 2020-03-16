@@ -94,8 +94,6 @@ const AddProfileScreen = props => {
           formState.inputValues.image
         )
       );
-
-      // () => navigation.navigate('Home');
     } catch (err) {
       setError(err.message);
     }
