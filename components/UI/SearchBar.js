@@ -3,7 +3,6 @@ import React from 'react';
 //Components
 import { StyleSheet, TextInput } from 'react-native';
 
-import SearchBar from '../../components/UI/SearchBar';
 //Constants
 import Colors from '../../constants/Colors';
 
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     paddingLeft: 10,
-    borderColor: Colors.darkPrimary,
+    borderColor: Colors.neutral,
     backgroundColor: '#FFFFFF'
   }
 });

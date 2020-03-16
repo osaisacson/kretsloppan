@@ -293,7 +293,7 @@ export const TabNavigator = props => {
       <AddButton navigation={props.navigation} />
       <TabStackNavigator.Navigator
         initialRouteName="Products"
-        labeled={true}
+        labeled={false}
         shifting={true}
         activeColor={Colors.lightPrimary}
         inactiveColor={Colors.mediumPrimary}
@@ -361,7 +361,7 @@ export const TabNavigator = props => {
                 color={color}
                 size={30}
                 style={{
-                  marginRight: -30
+                  marginRight: -200
                 }}
               />
             )
