@@ -9,7 +9,7 @@ import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import ProjectItem from '../../components/UI/ProjectItem';
 import SearchBar from '../../components/UI/SearchBar';
-import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 //Constants
@@ -130,7 +130,13 @@ const ProjectsScreen = props => {
             subTitle={'Projekt byggda med återbruk'}
             questionText={'Här ska det vara en förklaring'}
             icon={
-              <Ionicons name="ios-build" size={20} style={{ marginRight: 5 }} />
+              <Entypo
+                name={'tools'}
+                size={20}
+                style={{
+                  marginRight: 5
+                }}
+              />
             }
             indicator={renderedProjects.length ? renderedProjects.length : 0}
           />

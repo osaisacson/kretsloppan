@@ -12,7 +12,12 @@ import HeaderButton from './../components/UI/HeaderButton';
 import { Platform, SafeAreaView, View, Text } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
-import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
+import {
+  FontAwesome,
+  Entypo,
+  MaterialIcons,
+  AntDesign
+} from '@expo/vector-icons';
 import AddButton from '../components/UI/AddButton';
 import UserAvatar from '../components/UI/UserAvatar';
 
@@ -334,8 +339,8 @@ export const TabNavigator = props => {
           component={ProductsNavigator}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
+              <MaterialIcons
+                name={'home'}
                 color={color}
                 size={27}
                 style={{
@@ -350,10 +355,10 @@ export const TabNavigator = props => {
           component={ProjectsNavigator}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-build' : 'ios-build'}
-                color={color}
+              <Entypo
+                name={'tools'}
                 size={27}
+                color={color}
                 style={{
                   marginLeft: -70
                 }}
@@ -366,15 +371,12 @@ export const TabNavigator = props => {
           component={ProposalsNavigator}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons
-                name={
-                  Platform.OS === 'android'
-                    ? 'md-notifications'
-                    : 'ios-notifications'
-                }
+              <AntDesign
+                name={'pushpin'}
                 color={color}
                 size={27}
                 style={{
+                  transform: [{ rotate: '90deg' }],
                   marginRight: -70
                 }}
               />
@@ -478,7 +480,7 @@ export const ShopNavigator = () => {
         component={TabNavigator}
         options={{
           drawerIcon: props => (
-            <Entypo name={'tools'} size={23} color={props.color} />
+            <MaterialIcons name={'home'} size={23} color={props.color} />
           )
         }}
       />

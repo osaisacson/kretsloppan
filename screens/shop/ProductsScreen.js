@@ -167,7 +167,7 @@ const ProductsScreen = props => {
               questionText={'Här ska det vara en förklaring'}
               icon={
                 <MaterialIcons
-                  name="file-download"
+                  name="home"
                   size={20}
                   style={{ marginRight: 5 }}
                 />

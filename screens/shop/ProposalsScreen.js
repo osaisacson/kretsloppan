@@ -9,7 +9,7 @@ import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import ProposalItem from '../../components/UI/ProposalItem';
 import SearchBar from '../../components/UI/SearchBar';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
 //Constants
@@ -129,10 +129,13 @@ const ProposalsScreen = props => {
             subTitle={'Efterlysningar av självbyggare'}
             questionText={'Här ska det vara en förklaring'}
             icon={
-              <Ionicons
-                name="ios-notifications"
+              <AntDesign
+                name={'pushpin'}
                 size={20}
-                style={{ marginRight: 5 }}
+                style={{
+                  transform: [{ rotate: '90deg' }],
+                  marginRight: 5
+                }}
               />
             }
             indicator={renderedProposals.length ? renderedProposals.length : 0}
