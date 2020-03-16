@@ -81,11 +81,11 @@ const AllProfilesScreen = props => {
     setSearchQuery(text.length ? text : '');
   };
 
-  const selectItemHandler = (id, profileId, title) => {
-    props.navigation.navigate('ProfileDetail', {
+  const selectItemHandler = (id, profileId, profileName) => {
+    props.navigation.navigate('Profil', {
       detailId: id,
       ownerId: profileId,
-      detailTitle: title
+      detailTitle: profileName
     });
   };
 
@@ -157,7 +157,7 @@ const AllProfilesScreen = props => {
                   selectItemHandler(
                     itemData.item.id,
                     itemData.item.profileId,
-                    itemData.item.title
+                    itemData.item.profileName
                   );
                 }}
               ></RoundItem>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {
   createDrawerNavigator,
   DrawerItemList
@@ -10,12 +11,16 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from './../components/UI/HeaderButton';
 import { Platform, SafeAreaView, View, Text } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { FontAwesome, Entypo } from '@expo/vector-icons';
-import UserAvatar from '../components/UI/UserAvatar';
 import { Button } from 'react-native-paper';
+import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
+import AddButton from '../components/UI/AddButton';
+import UserAvatar from '../components/UI/UserAvatar';
 
-//Tabs
-import Home from '../screens/shop/Home';
+//Tab screens
+import ProductsScreen from '../screens/shop/ProductsScreen';
+import ProjectsScreen from '../screens/shop/ProjectsScreen';
+import ProposalsScreen from '../screens/shop/ProposalsScreen';
+import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 
 //Details
 import ProductDetailScreen, {
@@ -102,8 +107,8 @@ export const ProductsNavigator = () => {
   return (
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
-        name="Home"
-        component={Home}
+        name="Products"
+        component={ProductsScreen}
         options={defaultMainPageOptions}
       />
       {/* Details */}
@@ -112,72 +117,240 @@ export const ProductsNavigator = () => {
         component={ProductDetailScreen}
         options={productDetailScreenOptions}
       />
-      <ProductsStackNavigator.Screen
-        name="ProjectDetail"
-        component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
-        name="ProposalDetail"
-        component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
-      />
       {/* Edits */}
       <ProductsStackNavigator.Screen
         name="EditProduct"
         component={EditProductScreen}
         options={editProductScreenOptions}
       />
-      <ProductsStackNavigator.Screen
-        name="EditProject"
-        component={EditProjectScreen}
-        options={editProjectScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
-        name="EditProposal"
-        component={EditProposalScreen}
-        options={editProposalScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
-        name="EditProfile"
-        component={EditProfileScreen}
-        options={editProfileScreenOptions}
-      />
     </ProductsStackNavigator.Navigator>
   );
 };
 
-const UsersStackNavigator = createStackNavigator();
+const ProjectsStackNavigator = createStackNavigator();
 
-export const UsersNavigator = () => {
+export const ProjectsNavigator = () => {
   return (
-    <UsersStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <UsersStackNavigator.Screen
-        name="AllProfiles"
-        component={AllProfilesScreen}
+    <ProjectsStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProjectsStackNavigator.Screen
+        name="Projects"
+        component={ProjectsScreen}
         options={defaultMainPageOptions}
       />
-      <UsersStackNavigator.Screen
-        name="ProfileDetail"
-        component={ProfileDetailScreen}
-        options={profileDetailScreenOptions}
-      />
-      <UsersStackNavigator.Screen
+      {/* Details */}
+      <ProjectsStackNavigator.Screen
         name="ProjectDetail"
         component={ProjectDetailScreen}
         options={projectDetailScreenOptions}
       />
-      <UsersStackNavigator.Screen
-        name="ProductDetail"
-        component={ProductDetailScreen}
-        options={productDetailScreenOptions}
+      {/* Edits */}
+      <ProjectsStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
       />
-      <UsersStackNavigator.Screen
+    </ProjectsStackNavigator.Navigator>
+  );
+};
+
+const ProposalsStackNavigator = createStackNavigator();
+
+export const ProposalsNavigator = () => {
+  return (
+    <ProposalsStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProposalsStackNavigator.Screen
+        name="Proposals"
+        component={ProposalsScreen}
+        options={defaultMainPageOptions}
+      />
+      {/* Details */}
+      <ProposalsStackNavigator.Screen
         name="ProposalDetail"
         component={ProposalDetailScreen}
         options={proposalDetailScreenOptions}
       />
-    </UsersStackNavigator.Navigator>
+      {/* Edits */}
+      <ProposalsStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
+    </ProposalsStackNavigator.Navigator>
+  );
+};
+
+const UserStackNavigator = createStackNavigator();
+
+export const UserNavigator = () => {
+  return (
+    <UserStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <UserStackNavigator.Screen
+        name="UserSpotlight"
+        component={UserSpotlightScreen}
+        options={defaultMainPageOptions}
+      />
+      <UserStackNavigator.Screen
+        name="Profil"
+        component={ProfileDetailScreen}
+        options={profileDetailScreenOptions}
+      />
+      <UserStackNavigator.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={editProfileScreenOptions}
+      />
+      <UserStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <UserStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
+      <UserStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+      <UserStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <UserStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
+      <UserStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
+    </UserStackNavigator.Navigator>
+  );
+};
+
+const ProfilesStackNavigator = createStackNavigator();
+
+export const ProfilesNavigator = () => {
+  return (
+    <ProfilesStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProfilesStackNavigator.Screen
+        name="AllProfiles"
+        component={AllProfilesScreen}
+        options={defaultMainPageOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="Profil"
+        component={ProfileDetailScreen}
+        options={profileDetailScreenOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
+    </ProfilesStackNavigator.Navigator>
+  );
+};
+
+const TabStackNavigator = createMaterialBottomTabNavigator();
+
+export const TabNavigator = props => {
+  return (
+    <>
+      <AddButton navigation={props.navigation} />
+      <TabStackNavigator.Navigator
+        initialRouteName="Products"
+        labeled={true}
+        shifting={true}
+        activeColor={Colors.lightPrimary}
+        inactiveColor={Colors.mediumPrimary}
+        barStyle={{ backgroundColor: Colors.darkPrimary }}
+      >
+        <TabStackNavigator.Screen
+          name="Products"
+          component={ProductsNavigator}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
+                color={color}
+                size={27}
+                style={{
+                  marginLeft: -30
+                }}
+              />
+            )
+          }}
+        />
+        <TabStackNavigator.Screen
+          name="Projekt"
+          component={ProjectsNavigator}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-build' : 'ios-build'}
+                color={color}
+                size={27}
+                style={{
+                  marginLeft: -70
+                }}
+              />
+            )
+          }}
+        />
+        <TabStackNavigator.Screen
+          name="Efterlysningar"
+          component={ProposalsNavigator}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Ionicons
+                name={
+                  Platform.OS === 'android'
+                    ? 'md-notifications'
+                    : 'ios-notifications'
+                }
+                color={color}
+                size={27}
+                style={{
+                  marginRight: -70
+                }}
+              />
+            )
+          }}
+        />
+        <TabStackNavigator.Screen
+          name="Min Sida"
+          component={UserNavigator}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <FontAwesome
+                name={'user'}
+                color={color}
+                size={30}
+                style={{
+                  marginRight: -30
+                }}
+              />
+            )
+          }}
+        />
+      </TabStackNavigator.Navigator>
+    </>
   );
 };
 
@@ -247,16 +420,14 @@ export const ShopNavigator = () => {
           </View>
         );
       }}
+      initialRouteName={'Home'}
       drawerContentOptions={{
         activeTintColor: Colors.primary
       }}
     >
       <ShopDrawerNavigator.Screen
         name="Hem"
-        component={ProductsNavigator}
-        onPress={() => {
-          props.navigation.navigate('SpotlightProductsScreen');
-        }}
+        component={TabNavigator}
         options={{
           drawerIcon: props => (
             <Entypo name={'tools'} size={23} color={props.color} />
@@ -265,7 +436,7 @@ export const ShopNavigator = () => {
       />
       <ShopDrawerNavigator.Screen
         name="Användare"
-        component={UsersNavigator}
+        component={ProfilesNavigator}
         options={{
           drawerIcon: props => (
             <FontAwesome name={'users'} size={23} color={props.color} />

@@ -5,6 +5,8 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font'; //Lets us use expo fonts
 import ReduxThunk from 'redux-thunk';
 import { Platform } from 'react-native';
+// Before rendering any navigation stack
+import { enableScreens } from 'react-native-screens';
 
 //Reducers
 import productsReducer from './store/reducers/products';
@@ -86,6 +88,7 @@ export default function App() {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => {
+          enableScreens(); //optimise navigation
           setFontLoaded(true);
         }}
       />
