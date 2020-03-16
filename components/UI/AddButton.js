@@ -1,11 +1,6 @@
 import React from 'react';
-import { Animated, TouchableHighlight, View } from 'react-native';
+import { Animated, TouchableHighlight, View, Text } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome';
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  Entypo
-} from '@expo/vector-icons';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -24,27 +19,27 @@ const AddButton = props => {
 
   const firstX = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [20, -40]
+    outputRange: [0, 0]
   });
   const firstY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -30]
+    outputRange: [0, -210]
   });
   const secondX = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [20, 20]
+    outputRange: [0, 2]
   });
   const secondY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -55]
+    outputRange: [0, -140]
   });
   const thirdX = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [20, 80]
+    outputRange: [0, -13]
   });
   const thirdY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -30]
+    outputRange: [0, -70]
   });
   const opacity = mode.interpolate({
     inputRange: [0, 1],
@@ -54,6 +49,34 @@ const AddButton = props => {
     inputRange: [0, 1],
     outputRange: ['0deg', '45deg']
   });
+
+  const ClickedItem = props => {
+    return (
+      <TouchableHighlight
+        onPress={props.actionOnPress}
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: 12,
+          paddingVertical: 6,
+          height: 30,
+          borderRadius: SIZE / 4,
+          backgroundColor: Colors.primary
+        }}
+      >
+        <Text style={{ fontSize: 11, color: Colors.lightPrimary }}>
+          {props.label}
+        </Text>
+        {/* <MaterialCommunityIcons
+      name="comment-plus"
+      size={21}
+      color={Colors.lightPrimary}
+    /> */}
+      </TouchableHighlight>
+    );
+  };
+
   return (
     <View
       style={{
@@ -76,25 +99,12 @@ const AddButton = props => {
           opacity
         }}
       >
-        <TouchableHighlight
-          onPress={() => {
+        <ClickedItem
+          actionOnPress={() => {
             props.navigation.navigate('EditProduct');
           }}
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: SIZE / 2,
-            height: SIZE / 2,
-            borderRadius: SIZE / 4,
-            backgroundColor: Colors.primary
-          }}
-        >
-          <MaterialIcons
-            name="file-upload"
-            size={25}
-            color={Colors.lightPrimary}
-          />
-        </TouchableHighlight>
+          label="ÅTERBRUK"
+        />
       </Animated.View>
       <Animated.View
         style={{
@@ -104,22 +114,12 @@ const AddButton = props => {
           opacity
         }}
       >
-        <TouchableHighlight
-          onPress={() => {
+        <ClickedItem
+          actionOnPress={() => {
             props.navigation.navigate('EditProject');
           }}
-          style={{
-            position: 'absolute',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: SIZE / 2,
-            height: SIZE / 2,
-            borderRadius: SIZE / 4,
-            backgroundColor: Colors.primary
-          }}
-        >
-          <Entypo name="address" size={20} color={Colors.lightPrimary} />
-        </TouchableHighlight>
+          label="PROJEKT"
+        />
       </Animated.View>
       <Animated.View
         style={{
@@ -129,26 +129,12 @@ const AddButton = props => {
           opacity
         }}
       >
-        <TouchableHighlight
-          onPress={() => {
+        <ClickedItem
+          actionOnPress={() => {
             props.navigation.navigate('EditProposal');
           }}
-          style={{
-            position: 'absolute',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: SIZE / 2,
-            height: SIZE / 2,
-            borderRadius: SIZE / 4,
-            backgroundColor: Colors.primary
-          }}
-        >
-          <MaterialCommunityIcons
-            name="comment-plus"
-            size={21}
-            color={Colors.lightPrimary}
-          />
-        </TouchableHighlight>
+          label="EFTERLYSNING"
+        />
       </Animated.View>
       <TouchableHighlight
         onPress={toggleView}

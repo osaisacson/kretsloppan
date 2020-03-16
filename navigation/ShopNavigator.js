@@ -141,6 +141,16 @@ export const ProductsNavigator = () => {
         component={EditProductScreen}
         options={editProductScreenOptions}
       />
+      <ProductsStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
     </ProductsStackNavigator.Navigator>
   );
 };
@@ -163,9 +173,19 @@ export const ProjectsNavigator = () => {
       />
       {/* Edits */}
       <ProjectsStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <ProjectsStackNavigator.Screen
         name="EditProject"
         component={EditProjectScreen}
         options={editProjectScreenOptions}
+      />
+      <ProjectsStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
       />
     </ProjectsStackNavigator.Navigator>
   );
@@ -188,6 +208,16 @@ export const ProposalsNavigator = () => {
         options={proposalDetailScreenOptions}
       />
       {/* Edits */}
+      <ProposalsStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <ProposalsStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
       <ProposalsStackNavigator.Screen
         name="EditProposal"
         component={EditProposalScreen}
