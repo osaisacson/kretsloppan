@@ -30,6 +30,13 @@ const ProposalItem = props => {
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.title}>
               {props.itemData.title}
             </Text>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode={'tail'}
+              style={styles.subTitle}
+            >
+              {props.itemData.description}
+            </Text>
           </TouchableCmp>
         </View>
       </View>
@@ -47,10 +54,18 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.primary,
-    paddingVertical: 25,
+    paddingTop: 25,
     width: '90%',
-    fontFamily: 'roboto-light-italic',
+    fontFamily: 'roboto-bold',
     fontSize: 18,
+    marginLeft: 15
+  },
+  subTitle: {
+    color: Colors.primary,
+    paddingBottom: 25,
+    width: '80%',
+    fontFamily: 'roboto-light-italic',
+    fontSize: 16,
     marginLeft: 15
   }
 });

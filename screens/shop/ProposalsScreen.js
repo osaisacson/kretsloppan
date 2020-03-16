@@ -104,7 +104,6 @@ const ProposalsScreen = props => {
         placeholder="Leta bland efterlysningar"
       />
       <FlatList
-        style={{ marginTop: 30 }}
         horizontal={false}
         numColumns={1}
         initialNumToRender={20}
