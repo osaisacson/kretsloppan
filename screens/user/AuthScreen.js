@@ -149,7 +149,7 @@ const AuthScreen = props => {
                   mode="outlined"
                   contentStyle={{
                     justifyContent: 'center',
-                    borderWidth: 0.15
+                    borderWidth: 0.25
                   }}
                   labelStyle={{
                     paddingTop: 13,
