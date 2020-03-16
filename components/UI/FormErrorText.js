@@ -4,10 +4,10 @@ import { View, Text, StyleSheet } from 'react-native';
 //Constants
 import Colors from './../../constants/Colors';
 
-const FormErrorText = () => {
+const FormErrorText = props => {
   return (
     <View style={styles.errorContainer}>
-      <Text style={styles.errorText}></Text>
+      <Text style={styles.errorText}>{props.errorText}</Text>
     </View>
   );
 };
@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   errorText: {
     fontFamily: 'roboto-regular',
     color: Colors.primary,
-    fontSize: 13
+    fontSize: 13,
+    textAlign: 'right'
   }
 });
 

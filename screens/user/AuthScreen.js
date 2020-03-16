@@ -165,7 +165,7 @@ const AuthScreen = props => {
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                color={isSignUp ? Colors.darkPrimary : Colors.primary}
+                color={isSignup ? Colors.darkPrimary : Colors.primary}
                 mode="contained"
                 style={{
                   width: '60%',

@@ -76,7 +76,7 @@ const Input = props => {
         onBlur={lostFocusHandler}
       />
       {!inputState.isValid && inputState.touched && (
-        <FormErrorText text={props.errorText} />
+        <FormErrorText errorText={props.errorText} />
       )}
     </View>
   );
