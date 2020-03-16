@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { ShopNavigator, AuthNavigator } from './ShopNavigator';
 //Components
-import { View, Text, Button } from 'react-native';
 import Loader from '../components/UI/Loader';
+import Error from '../components/UI/Error';
 //Screens
 import AddProfileScreen from '../screens/addAndEdit/AddProfileScreen';
 import StartupScreen from '../screens/StartupScreen';
@@ -58,16 +58,7 @@ const AppNavigator = props => {
   }, []); //Passing empty array means this only loads once after mount
 
   if (error) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Något gick fel</Text>
-        <Button
-          title="Prova igen"
-          onPress={loadProfiles}
-          color={Colors.primary}
-        />
-      </View>
-    );
+    return <Error actionOnPress={loadProfiles} />;
   }
 
   if (isLoading) {

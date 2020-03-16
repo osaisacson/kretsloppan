@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 //Components
-import { View, Text, ScrollView, Button } from 'react-native';
+import { ScrollView } from 'react-native';
 import SaferArea from '../../components/UI/SaferArea';
 import EmptyState from '../../components/UI/EmptyState';
+import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HorizontalPicker from '../../components/UI/HorizontalPicker';
@@ -99,16 +100,7 @@ const SpotlightProductsScreen = props => {
 
   //Error handling
   if (error) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Något gick fel</Text>
-        <Button
-          title="Prova igen"
-          onPress={loadProductsAndProjects}
-          color={Colors.primary}
-        />
-      </View>
-    );
+    return <Error actionOnPress={loadProductsAndProjects} />;
   }
 
   if (isLoading) {

@@ -65,7 +65,7 @@ import Colors from '../constants/Colors';
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-    height: 94
+    height: 70
   },
   headerTitleStyle: {
     fontFamily: 'roboto-bold'
@@ -92,7 +92,7 @@ const defaultMainPageOptions = navData => {
     ),
     headerRight: () => (
       <UserAvatar
-        style={{ marginTop: 15, marginRight: 10 }}
+        style={{ marginTop: 10, marginRight: 10 }}
         showBadge={true}
         actionOnPress={() => {
           navData.navigation.navigate('Min Sida');

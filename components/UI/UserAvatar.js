@@ -94,7 +94,7 @@ const UserAvatar = props => {
               ? { uri: currentUser.image }
               : require('./../../assets/avatar-placeholder-image.png')
           }
-          size={50}
+          size={40}
         />
         {props.showBadge ? (
           <Badge

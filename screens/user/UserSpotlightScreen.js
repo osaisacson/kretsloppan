@@ -2,12 +2,11 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 //Components
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
-import SaferArea from '../../components/UI/SaferArea';
+import { View, StyleSheet } from 'react-native';
+import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import EmptyState from '../../components/UI/EmptyState';
+import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
-import ButtonNormal from '../../components/UI/ButtonNormal';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
@@ -117,16 +116,7 @@ const UserSpotlightScreen = props => {
   };
 
   if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text>Något gick fel</Text>
-        <ButtonNormal
-          actionOnPress={loadProductsProposalsProjects}
-          color={Colors.primary}
-          text="Prova igen"
-        />
-      </View>
-    );
+    return <Error actionOnPress={loadProductsProposalsProjects} />;
   }
 
   if (isLoading) {
@@ -228,7 +218,6 @@ const UserSpotlightScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   userInfoSection: {
     textAlign: 'center',
     alignItems: 'center',

@@ -1,19 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import {
-  View,
-  Text,
-  FlatList,
-  Button,
-  StyleSheet,
-  TextInput
-} from 'react-native';
+import { FlatList } from 'react-native';
 import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
+import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import ProposalItem from '../../components/UI/ProposalItem';
+import SearchBar from '../../components/UI/SearchBar';
 import { Ionicons } from '@expo/vector-icons';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
@@ -90,16 +85,7 @@ const ProposalsScreen = props => {
   };
 
   if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text>Något gick fel</Text>
-        <Button
-          title="Prova igen"
-          onPress={loadProposals}
-          color={Colors.primary}
-        />
-      </View>
-    );
+    return <Error actionOnPress={loadProducts} />;
   }
 
   if (isLoading) {
@@ -112,25 +98,10 @@ const ProposalsScreen = props => {
 
   return (
     <SaferArea>
-      <TextInput
-        style={styles.textInputStyle}
-        onChangeText={text => searchHandler(text)}
-        value={searchQuery}
-        underlineColorAndroid="transparent"
+      <SearchBar
+        actionOnChangeText={text => searchHandler(text)}
+        searchQuery={searchQuery}
         placeholder="Leta bland efterlysningar"
-      />
-      <HeaderTwo
-        title={'Efterlysningar'}
-        subTitle={'Efterlysningar av självbyggare'}
-        questionText={'Här ska det vara en förklaring'}
-        icon={
-          <Ionicons
-            name="ios-notifications"
-            size={20}
-            style={{ marginRight: 5 }}
-          />
-        }
-        indicator={renderedProposals.length ? renderedProposals.length : 0}
       />
       <FlatList
         style={{ marginTop: 30 }}
@@ -153,24 +124,24 @@ const ProposalsScreen = props => {
             }}
           ></ProposalItem>
         )}
+        ListHeaderComponent={
+          <HeaderTwo
+            title={'Efterlysningar'}
+            subTitle={'Efterlysningar av självbyggare'}
+            questionText={'Här ska det vara en förklaring'}
+            icon={
+              <Ionicons
+                name="ios-notifications"
+                size={20}
+                style={{ marginRight: 5 }}
+              />
+            }
+            indicator={renderedProposals.length ? renderedProposals.length : 0}
+          />
+        }
       />
     </SaferArea>
   );
 };
-
-const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  textStyle: {
-    padding: 10
-  },
-  textInputStyle: {
-    textAlign: 'center',
-    height: 40,
-    borderWidth: 1,
-    paddingLeft: 10,
-    borderColor: '#009688',
-    backgroundColor: '#FFFFFF'
-  }
-});
 
 export default ProposalsScreen;
