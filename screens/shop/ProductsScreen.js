@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { FlatList } from 'react-native';
+import { FlatList, View, Image, Text } from 'react-native';
 import { Banner } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
-import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
 import SearchBar from '../../components/UI/SearchBar';
-
 //Actions
 import * as productsActions from '../../store/actions/products';
-//Constants
-import Colors from '../../constants/Colors';
 
 const ProductsScreen = props => {
   const isMountedRef = useRef(null);
@@ -45,12 +41,12 @@ const ProductsScreen = props => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  useEffect(() => {
-    console.log(
-      'ProductsScreen: running useEffect where we setRenderedProducts to products'
-    );
-    setRenderedProducts(products);
-  }, []);
+  // useEffect(() => {
+  //   console.log(
+  //     'ProductsScreen: running useEffect where we setRenderedProducts to products'
+  //   );
+  //   setRenderedProducts(products);
+  // }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', loadProducts);
@@ -88,25 +84,6 @@ const ProductsScreen = props => {
     });
   };
 
-  const introductionData = [
-    {
-      image:
-        'https://images.unsplash.com/photo-1501366062246-723b4d3e4eb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1973&q=80',
-      title: 'Välkommen!'
-    },
-    {
-      image:
-        'https://images.unsplash.com/photo-1516383740770-fbcc5ccbece0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80',
-
-      title: 'Introduktion'
-    },
-    {
-      image:
-        'https://images.unsplash.com/photo-1455849318743-b2233052fcff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-      title: 'Avslutning'
-    }
-  ];
-
   if (error) {
     return <Error actionOnPress={loadProducts} />;
   }
@@ -120,7 +97,7 @@ const ProductsScreen = props => {
   }
 
   return (
-    <>
+    <View>
       <Banner
         visible={visibleBanner}
         actions={[
@@ -130,54 +107,65 @@ const ProductsScreen = props => {
           }
         ]}
       >
-        Här kan vi ha en liten introduktionstext med fina bilder.
+        <Image
+          style={{
+            width: 380,
+            height: 150,
+            borderRadius: 6
+          }}
+          source={{
+            uri:
+              'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
+          }}
+        />
+        <Text
+          style={{
+            fontFamily: 'roboto-light-italic',
+            paddingVertical: 10
+          }}
+        >
+          Här kan vi ha en liten introduktionstext med fina bilder.
+        </Text>
       </Banner>
-
-      <SaferArea>
-        <SearchBar
-          actionOnChangeText={text => searchHandler(text)}
-          searchQuery={searchQuery}
-          placeholder="Leta bland återbruk"
-        />
-        <FlatList
-          numColumns={3}
-          initialNumToRender={12}
-          onRefresh={loadProducts}
-          refreshing={isRefreshing}
-          data={renderedProducts}
-          keyExtractor={item => item.id}
-          renderItem={itemData => (
-            <ProductItem
-              itemData={itemData.item}
-              onSelect={() => {
-                selectItemHandler(
-                  itemData.item.id,
-                  itemData.item.ownerId,
-                  itemData.item.title
-                );
-              }}
-            ></ProductItem>
-          )}
-          ListHeaderComponent={
-            <HeaderTwo
-              title={'Allt återbruk'}
-              subTitle={
-                'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
-              }
-              questionText={'Här ska det vara en förklaring'}
-              icon={
-                <MaterialIcons
-                  name="home"
-                  size={20}
-                  style={{ marginRight: 5 }}
-                />
-              }
-              indicator={renderedProducts.length ? renderedProducts.length : 0}
-            />
-          }
-        />
-      </SaferArea>
-    </>
+      <SearchBar
+        actionOnChangeText={text => searchHandler(text)}
+        searchQuery={searchQuery}
+        placeholder="Leta bland återbruk"
+      />
+      <FlatList
+        numColumns={3}
+        initialNumToRender={12}
+        onRefresh={loadProducts}
+        refreshing={isRefreshing}
+        data={renderedProducts}
+        keyExtractor={item => item.id}
+        renderItem={itemData => (
+          <ProductItem
+            itemData={itemData.item}
+            onSelect={() => {
+              selectItemHandler(
+                itemData.item.id,
+                itemData.item.ownerId,
+                itemData.item.title
+              );
+            }}
+          ></ProductItem>
+        )}
+        ListHeaderComponent={
+          <HeaderTwo
+            title={'Allt återbruk'}
+            subTitle={
+              'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
+            }
+            questionText={'Här ska det vara en förklaring'}
+            icon={
+              <MaterialIcons name="home" size={20} style={{ marginRight: 5 }} />
+            }
+            indicator={renderedProducts.length ? renderedProducts.length : 0}
+          />
+        }
+      />
+    </View>
   );
 };
 
