@@ -9,6 +9,9 @@ import {
   Platform
 } from 'react-native';
 
+//Constants
+import Colors from '../../constants/Colors';
+
 const IconItem = props => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
@@ -25,7 +28,9 @@ const IconItem = props => {
         <TouchableCmp
           onPress={props.onSelect}
           style={{
-            backgroundColor: props.isSelected ? '#000' : props.itemData.color
+            backgroundColor: props.isSelected
+              ? Colors.primary
+              : props.itemData.color
           }}
           useForeground
         >

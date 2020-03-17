@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//Components
-import { Picker, Alert, TextInput, Text } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import { Button } from 'react-native-paper';
+
+//Components
+import { Alert, TextInput, Text, View, Image, StyleSheet } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
   formStyles
 } from '../../components/wrappers/FormFieldWrapper';
-import ImagePicker from '../../components/UI/ImgPicker';
 import IconItem from '../../components/UI/IconItem';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 
@@ -44,7 +46,7 @@ const formReducer = (state, action) => {
 };
 
 const EditProductScreen = props => {
-  const prodId = props.route.params ? props.route.params.detailId : null;
+  const prodId = props.route.params ? props.route.params.detailId : null; //Get the id of the currently edited product, passed from previous screen
   const loggedInUserId = useSelector(state => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
@@ -60,25 +62,31 @@ const EditProductScreen = props => {
   //Set states
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [useCurrAddress, setUseCurrAddress] = useState();
-  const [useCurrPhone, setUseCurrPhone] = useState();
+  const [selectedCategory, setSelectedCategory] = useState(
+    editedProduct ? editedProduct.categoryName : 'Inget'
+  );
+  const [placeholderPic, setPlaceholderPic] = useState(
+    editedProduct ? editedProduct.image : ''
+  ); //Set placeholder to be a previously taken picture if we have one.
+  const [selectedImage, setSelectedImage] = useState(
+    editedProduct ? editedProduct.image : ''
+  ); //Set state to be a previously taken picture if we have one.
 
   const dispatch = useDispatch();
 
+  const defaultAddress = currentUser.address ? currentUser.address : '';
+  const defaultPhone = currentUser.phone ? currentUser.phone : '';
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      categoryName: editedProduct ? editedProduct.categoryName : '',
       title: editedProduct ? editedProduct.title : '',
-      image: editedProduct ? editedProduct.image : '',
       description: editedProduct ? editedProduct.description : '',
       price: editedProduct ? editedProduct.price : '',
-      address: editedProduct ? editedProduct.address : '',
-      phone: editedProduct ? editedProduct.phone : ''
+      address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
+      phone: editedProduct ? editedProduct.phone : defaultPhone //set current phone as default if have one
     },
     inputValidities: {
-      categoryName: editedProduct ? true : false,
       title: editedProduct ? true : false,
-      image: editedProduct ? true : false,
       description: editedProduct ? true : false,
       price: editedProduct ? true : false,
       address: true,
@@ -86,6 +94,42 @@ const EditProductScreen = props => {
     },
     formIsValid: editedProduct ? true : false
   });
+
+  //Permissions for camera
+  const verifyPermissions = async () => {
+    const result = await Permissions.askAsync(
+      //Will open up a prompt (on iOS particularly) and wait until the user clicks ok
+      Permissions.CAMERA_ROLL, //permissions for gallery
+      Permissions.CAMERA //permissions for taking photo
+    );
+    if (result.status !== 'granted') {
+      Alert.alert(
+        'Å Nej!',
+        'Du måste tillåta att öppna kameran för att kunna ta ett kort.',
+        [{ text: 'Ok' }]
+      );
+      return false;
+    }
+    return true;
+  };
+
+  //Opens up the camera
+  const takeImageHandler = async () => {
+    const hasPermission = await verifyPermissions(); //Checks the permissions we define in verifyPermissions
+    if (!hasPermission) {
+      return;
+    }
+    const image = await ImagePicker.launchImageLibraryAsync({
+      //We could also open the camera here instead of the gallery
+      base64: true, //lets us get and use the base64 encoded image to pass to storage
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.6
+    });
+
+    setPlaceholderPic(image.uri); //show image from local storage
+    setSelectedImage(image.base64); //Forwards the taken picture as base64
+  };
 
   useEffect(() => {
     if (error) {
@@ -106,33 +150,47 @@ const EditProductScreen = props => {
     setIsLoading(true);
     try {
       if (editedProduct) {
+        console.log('--------EDIT PRODUCT: dispatch--------');
+        console.log('prodId:', prodId);
+        console.log('selectedCategory:', selectedCategory);
+        console.log('title:', formState.inputValues.title);
+        console.log('description:', formState.inputValues.description);
+        console.log('price:', +formState.inputValues.price);
+        console.log('image:', selectedImage);
+        console.log('address:', formState.inputValues.address);
+        console.log('phone:', +formState.inputValues.phone);
+        console.log('---------------------------------------');
         await dispatch(
           productsActions.updateProduct(
             prodId,
-            formState.inputValues.categoryName,
+            selectedCategory,
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image,
-            useCurrAddress
-              ? currentUser.address
-              : formState.inputValues.address,
-            useCurrAddress ? currentUser.phone : +formState.inputValues.phone
+            selectedImage,
+            formState.inputValues.address,
+            +formState.inputValues.phone
           )
         );
       } else {
-        console.log('formState.inputValues', formState.inputValues);
+        console.log('--------CREATE PRODUCT: dispatch--------');
+        console.log('selectedCategory:', selectedCategory);
+        console.log('title:', formState.inputValues.title);
+        console.log('description:', formState.inputValues.description);
+        console.log('price:', +formState.inputValues.price);
+        console.log('image:', selectedImage);
+        console.log('address:', formState.inputValues.address);
+        console.log('phone:', +formState.inputValues.phone);
+        console.log('---------------------------------------');
         await dispatch(
           productsActions.createProduct(
-            formState.inputValues.categoryName,
+            selectedCategory,
             formState.inputValues.title,
             formState.inputValues.description,
             +formState.inputValues.price,
-            formState.inputValues.image,
-            useCurrAddress
-              ? currentUser.address
-              : formState.inputValues.address,
-            useCurrAddress ? currentUser.phone : +formState.inputValues.phone
+            selectedImage,
+            formState.inputValues.address,
+            +formState.inputValues.phone
           )
         );
       }
@@ -147,13 +205,17 @@ const EditProductScreen = props => {
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
     //inputIdentifier and text will act as key:value in the form reducer
+    console.log('-------TEXTCHANGEHANDLER, received values-------');
+    console.log('inputIdentifier:', inputIdentifier);
+    console.log('text:', text);
+    console.log('------------------------------------------------');
 
     let isValid = true;
 
     // //If we haven't entered any value (its empty) set form validity to false
-    // if (text.trim().length === 0) {
-    //   isValid = false;
-    // }
+    if (text.trim().length === 0) {
+      isValid = false;
+    }
 
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
@@ -161,16 +223,6 @@ const EditProductScreen = props => {
       isValid: isValid,
       input: inputIdentifier
     });
-  };
-
-  const toggleUseCurrAddress = () => {
-    console.log('useCurrAddress:', useCurrAddress);
-    setUseCurrAddress(!useCurrAddress);
-  };
-
-  const toggleUseCurrPhone = () => {
-    console.log('useCurrPhone:', useCurrPhone);
-    setUseCurrPhone(!useCurrPhone);
   };
 
   return (
@@ -183,10 +235,18 @@ const EditProductScreen = props => {
         showPromptIf={!formState.inputValues.image}
         prompt="Välj en bild av återbruket"
       >
-        <ImagePicker
-          onImageTaken={textChangeHandler.bind(this, 'image')}
-          passedImage={formState.inputValues.image}
-        />
+        <View style={styles.imagePicker}>
+          <View style={styles.imagePreview}>
+            {!placeholderPic ? (
+              <Text>Lägg upp en bild</Text>
+            ) : (
+              <Image style={styles.image} source={{ uri: placeholderPic }} /> //Originally uses the locally stored image as a placeholder
+            )}
+          </View>
+          <Button icon="camera" mode="contained" onPress={takeImageHandler}>
+            Välj en bild
+          </Button>
+        </View>
       </FormFieldWrapper>
       <FormFieldWrapper
         showPromptIf={!formState.inputValues.title}
@@ -235,18 +295,31 @@ const EditProductScreen = props => {
       {/* Part of the building */}
       <FormFieldWrapper
         label="Kategori"
-        showPromptIf={!formState.inputValues.categoryName}
+        showPromptIf={!selectedCategory}
         prompt="Välj en kategori"
       >
         <HorizontalScrollContainer scrollHeight={90}>
           {PART.map(item => (
             <IconItem
-              isSelected={formState.inputValues.categoryName === item.title}
               itemData={item}
               key={item.id}
               isHorizontal={true}
-              // value={formState.inputValues.categoryName}
-              // onSelect={textChangeHandler.bind(this, 'categoryName')}
+              isSelected={selectedCategory === item.title}
+              onSelect={
+                () => {
+                  setSelectedCategory(item.title);
+                  console.log('selectedCategory', selectedCategory);
+                  console.log('clicked category: ', item.title);
+                }
+                // (setSelectedCategory(item.title),
+                // textChangeHandler.bind(item.title, 'categoryName')
+                // console.log('selectedCategory: ', selectedCategory),
+                // console.log('item clicked: ', item),
+                // console.log(
+                //   'formState.inputValues.categoryName: ',
+                //   formState.inputValues.categoryName
+                // ))
+              }
             />
           ))}
         </HorizontalScrollContainer>
@@ -296,79 +369,58 @@ const EditProductScreen = props => {
           />
         </Picker>
       </FormFieldWrapper> */}
-      {useCurrAddress ? <Text>{currentUser.address}</Text> : null}
-      <Button
-        mode="contained"
-        style={{
-          marginTop: 10,
-          marginBottom: 20,
-          width: '50%',
-          alignSelf: 'center'
-        }}
-        labelStyle={{
-          paddingTop: 2,
-          fontFamily: 'roboto-light',
-          fontSize: 10
-        }}
-        compact={true}
-        onPress={toggleUseCurrAddress.bind(this)}
+
+      <FormFieldWrapper
+        showPromptIf={!formState.inputValues.address}
+        prompt="Den address återbruket kan hämtas på"
       >
-        {useCurrAddress ? 'Ange ny address' : 'Använd min vanliga address'}
-      </Button>
-      {useCurrAddress ? null : (
-        <FormFieldWrapper
-          showPromptIf={!formState.inputValues.address}
-          prompt="Den address återbruket kan hämtas på"
-        >
-          <TextInput
-            placeholder="Address"
-            style={formStyles.input}
-            value={formState.inputValues.address}
-            onChangeText={textChangeHandler.bind(this, 'address')}
-            keyboardType="default"
-            autoCorrect={false}
-            returnKeyType="next"
-          />
-        </FormFieldWrapper>
-      )}
-      {useCurrPhone ? <Text>{currentUser.phone}</Text> : null}
-      <Button
-        mode="contained"
-        style={{
-          marginTop: 10,
-          marginBottom: 20,
-          width: '60%',
-          alignSelf: 'center'
-        }}
-        labelStyle={{
-          paddingTop: 2,
-          fontFamily: 'roboto-light',
-          fontSize: 11
-        }}
-        compact={true}
-        onPress={toggleUseCurrPhone.bind(this)}
+        <TextInput
+          placeholder="Address"
+          style={formStyles.input}
+          value={formState.inputValues.address}
+          onChangeText={textChangeHandler.bind(this, 'address')}
+          keyboardType="default"
+          autoCorrect={false}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper
+        showPromptIf={!formState.inputValues.phone}
+        prompt="Det telefonnummer man bäst kan kontakta dig på "
       >
-        {useCurrPhone ? 'Ange ny telefon' : 'Använd min vanliga telefon'}
-      </Button>
-      {useCurrPhone ? null : (
-        <FormFieldWrapper
-          showPromptIf={!formState.inputValues.phone}
-          prompt="Det telefonnummer man bäst kan kontakta dig på "
-        >
-          <TextInput
-            placeholder="Telefon"
-            style={formStyles.input}
-            value={formState.inputValues.phone.toString()}
-            onChangeText={textChangeHandler.bind(this, 'phone')}
-            keyboardType="number-pad"
-            autoCorrect={false}
-            returnKeyType="done"
-          />
-        </FormFieldWrapper>
-      )}
+        <TextInput
+          placeholder="Telefon"
+          style={formStyles.input}
+          value={formState.inputValues.phone.toString()}
+          onChangeText={textChangeHandler.bind(this, 'phone')}
+          keyboardType="number-pad"
+          autoCorrect={false}
+          returnKeyType="done"
+        />
+      </FormFieldWrapper>
     </FormWrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  imagePicker: {
+    alignItems: 'center',
+    marginBottom: 15
+  },
+  imagePreview: {
+    width: '100%',
+    height: 300,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#ccc',
+    borderWidth: 1
+  },
+  image: {
+    width: '100%',
+    height: '100%'
+  }
+});
 
 export const screenOptions = navData => {
   const routeParams = navData.route.params ? navData.route.params : {};
