@@ -9,7 +9,7 @@ import { Alert, TextInput, Text, View, Image, StyleSheet } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
-  formStyles
+  formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
 import IconItem from '../../components/UI/IconItem';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
@@ -26,11 +26,11 @@ const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
-      [action.input]: action.value // From textChangeHandler = (inputIdentifier, text)
+      [action.input]: action.value, // From textChangeHandler = (inputIdentifier, text)
     };
     const updatedValidities = {
       ...state.inputValidities,
-      [action.input]: action.isValid
+      [action.input]: action.isValid,
     };
     let updatedFormIsValid = true;
     for (const key in updatedValidities) {
@@ -39,24 +39,24 @@ const formReducer = (state, action) => {
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
-      inputValues: updatedValues
+      inputValues: updatedValues,
     };
   }
   return state;
 };
 
-const EditProductScreen = props => {
+const EditProductScreen = (props) => {
   const prodId = props.route.params ? props.route.params.detailId : null; //Get the id of the currently edited product, passed from previous screen
-  const loggedInUserId = useSelector(state => state.auth.userId);
+  const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
-  const currentUser = useSelector(state =>
-    state.profiles.allProfiles.find(prof => prof.profileId === loggedInUserId)
+  const currentUser = useSelector((state) =>
+    state.profiles.allProfiles.find((prof) => prof.profileId === loggedInUserId)
   );
 
   //Find product
-  const editedProduct = useSelector(state =>
-    state.products.userProducts.find(prod => prod.id === prodId)
+  const editedProduct = useSelector((state) =>
+    state.products.userProducts.find((prod) => prod.id === prodId)
   );
 
   //Set states
@@ -83,16 +83,16 @@ const EditProductScreen = props => {
       description: editedProduct ? editedProduct.description : '',
       price: editedProduct ? editedProduct.price : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
-      phone: editedProduct ? editedProduct.phone : defaultPhone //set current phone as default if have one
+      phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
     },
     inputValidities: {
       title: editedProduct ? true : false,
       description: editedProduct ? true : false,
       price: editedProduct ? true : false,
       address: true,
-      phone: true
+      phone: true,
     },
-    formIsValid: editedProduct ? true : false
+    formIsValid: editedProduct ? true : false,
   });
 
   //Permissions for camera
@@ -124,7 +124,7 @@ const EditProductScreen = props => {
       base64: true, //lets us get and use the base64 encoded image to pass to storage
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.6
+      quality: 0.6,
     });
 
     setPlaceholderPic(image.uri); //show image from local storage
@@ -221,7 +221,7 @@ const EditProductScreen = props => {
       type: FORM_INPUT_UPDATE,
       value: text,
       isValid: isValid,
-      input: inputIdentifier
+      input: inputIdentifier,
     });
   };
 
@@ -299,7 +299,7 @@ const EditProductScreen = props => {
         prompt="Välj en kategori"
       >
         <HorizontalScrollContainer scrollHeight={90}>
-          {PART.map(item => (
+          {PART.map((item) => (
             <IconItem
               itemData={item}
               key={item.id}
@@ -327,7 +327,7 @@ const EditProductScreen = props => {
 
       {/* Condition of the item */}
       <HorizontalScrollContainer scrollHeight={90}>
-        {CONDITION.map(item => (
+        {CONDITION.map((item) => (
           <IconItem
             itemData={item}
             key={item.id}
@@ -338,7 +338,7 @@ const EditProductScreen = props => {
       </HorizontalScrollContainer>
       {/* Something else of the item */}
       <HorizontalScrollContainer scrollHeight={90}>
-        {OTHER.map(item => (
+        {OTHER.map((item) => (
           <IconItem
             itemData={item}
             key={item.id}
@@ -405,7 +405,7 @@ const EditProductScreen = props => {
 const styles = StyleSheet.create({
   imagePicker: {
     alignItems: 'center',
-    marginBottom: 15
+    marginBottom: 15,
   },
   imagePreview: {
     width: '100%',
@@ -414,20 +414,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#ccc',
-    borderWidth: 1
+    borderWidth: 1,
   },
   image: {
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 });
 
-export const screenOptions = navData => {
+export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
     headerTitle: routeParams.detailId
       ? 'Redigera återbruk'
-      : 'Lägg till återbruk'
+      : 'Lägg till återbruk',
   };
 };
 

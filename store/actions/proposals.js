@@ -37,6 +37,8 @@ export const fetchProposals = () => {
         );
       }
 
+      console.log('loadedProposals in actions', loadedProposals);
+
       dispatch({
         type: SET_PROPOSALS,
         proposals: loadedProposals,
