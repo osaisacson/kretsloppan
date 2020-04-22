@@ -16,9 +16,6 @@ import StartupScreen from '../screens/StartupScreen';
 //Actions
 import * as profilesActions from '../store/actions/profiles';
 
-//Constants
-import Colors from '../constants/Colors';
-
 const AppNavigator = (props) => {
   const isAuth = useSelector((state) => !!state.auth.token);
   const didTryAutoLogin = useSelector((state) => state.auth.didTryAutoLogin);

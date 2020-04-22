@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Alert, TextInput } from 'react-native';
+import { ActivityIndicator, Alert, TextInput } from 'react-native';
 
 //Components
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
-  formStyles
+  formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
@@ -18,11 +18,11 @@ const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
-      [action.input]: action.value // From textChangeHandler = (inputIdentifier, text)
+      [action.input]: action.value, // From textChangeHandler = (inputIdentifier, text)
     };
     const updatedValidities = {
       ...state.inputValidities,
-      [action.input]: action.isValid
+      [action.input]: action.isValid,
     };
     let updatedFormIsValid = true;
     for (const key in updatedValidities) {
@@ -31,23 +31,21 @@ const formReducer = (state, action) => {
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
-      inputValues: updatedValues
+      inputValues: updatedValues,
     };
   }
   return state;
 };
 
-const AddProfileScreen = props => {
+const AddProfileScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  // const navigation = useNavigation(); //Lets us access navigation even although accessing this screen from the AppNavigator
-
   //Get profiles, return only the one which matches the logged in id
-  const loggedInUserId = useSelector(state => state.auth.userId);
-  const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
-    profile => profile.profileId === loggedInUserId
-  );
+  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const profilesArray = useSelector(
+    (state) => state.profiles.allProfiles
+  ).filter((profile) => profile.profileId === loggedInUserId);
 
   //Currently edited profile
   const currentProfile = profilesArray[0];
@@ -60,16 +58,16 @@ const AddProfileScreen = props => {
       email: '',
       phone: '',
       address: '',
-      image: ''
+      image: '',
     },
     inputValidities: {
       profileName: false,
       email: false,
       phone: false,
       address: false,
-      image: false
+      image: false,
     },
-    formIsValid: false
+    formIsValid: false,
   });
 
   //Handlers
@@ -115,7 +113,7 @@ const AddProfileScreen = props => {
       type: FORM_INPUT_UPDATE,
       value: text,
       isValid: isValid,
-      input: inputIdentifier
+      input: inputIdentifier,
     });
   };
 
@@ -135,6 +133,14 @@ const AddProfileScreen = props => {
       );
     }
   }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {isLoading && <ActivityIndicator color={'#ff0000'} />}
+      </View>
+    );
+  }
 
   return (
     <FormWrapper
@@ -216,11 +222,11 @@ const AddProfileScreen = props => {
   );
 };
 
-export const screenOptions = navData => {
+export const screenOptions = (navData) => {
   return {
     headerLeft: '',
     headerTitle: 'Skapa profil',
-    headerRight: ''
+    headerRight: '',
   };
 };
 

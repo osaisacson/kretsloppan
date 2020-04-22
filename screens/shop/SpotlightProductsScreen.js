@@ -11,9 +11,6 @@ import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-//Screens
-import ProductsScreen from '../shop/ProductsScreen';
-
 //Actions
 import * as productsActions from '../../store/actions/products';
 import * as projectsActions from '../../store/actions/projects';
@@ -21,7 +18,6 @@ import * as proposalsActions from '../../store/actions/proposals';
 
 const SpotlightProductsScreen = (props) => {
   const isMountedRef = useRef(null);
-  const Tab = createMaterialTopTabNavigator();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -92,63 +88,54 @@ const SpotlightProductsScreen = (props) => {
     return <EmptyState>Inga produkter ännu. Lägg till några!</EmptyState>;
   }
 
-  const Spotlight = (props) => {
-    return (
-      <SaferArea>
-        <Introduction
-          pic={
-            'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
-          }
-          text={'Här kan vi ha en liten introduktionstext med fina bilder.'}
-        />
-        <ScrollView nestedScrollEnabled={true}>
-          {/* <HorizontalPicker pickerData={introductionData} /> */}
-          <HorizontalScroll
-            roundItem={true}
-            detailPath="ProjectDetail"
-            title={'Projekt'}
-            subTitle={'Projekt som håller på att byggas med återbruk'}
-            scrollData={allProjects}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'nya tillskott'}
-            subTitle={'Det fräschaste, det nyaste'}
-            scrollData={recentProducts}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'under bearbetning'}
-            subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
-            scrollData={inProgressProducts}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'nyligen reserverat'}
-            subTitle={
-              'Reserverade produkter, blir tillgängliga igen om om de inte hämtas inom en vecka.'
-            }
-            scrollData={bookedProducts}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            textItem={true}
-            detailPath="ProposalDetail"
-            title={'efterlysningar'}
-            subTitle={'Material som önskas. Kontakta efterlysaren.'}
-            scrollData={allProposals}
-            navigation={props.navigation}
-          />
-        </ScrollView>
-      </SaferArea>
-    );
-  };
-
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Spotlight" component={Spotlight} />
-      <Tab.Screen name="Allt återbruk" component={ProductsScreen} />
-    </Tab.Navigator>
+    <SaferArea>
+      <Introduction
+        pic={
+          'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
+        }
+        text={'Här kan vi ha en introduktionstext med fina bilder.'}
+      />
+      <ScrollView nestedScrollEnabled={true}>
+        {/* <HorizontalPicker pickerData={introductionData} /> */}
+        <HorizontalScroll
+          roundItem={true}
+          detailPath="ProjectDetail"
+          title={'Projekt'}
+          subTitle={'Projekt som håller på att byggas med återbruk'}
+          scrollData={allProjects}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          title={'nya tillskott'}
+          subTitle={'Det fräschaste, det nyaste'}
+          scrollData={recentProducts}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          title={'under bearbetning'}
+          subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
+          scrollData={inProgressProducts}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          title={'nyligen reserverat'}
+          subTitle={
+            'Reserverade produkter, blir tillgängliga igen om om de inte hämtas inom en vecka.'
+          }
+          scrollData={bookedProducts}
+          navigation={props.navigation}
+        />
+        <HorizontalScroll
+          textItem={true}
+          detailPath="ProposalDetail"
+          title={'efterlysningar'}
+          subTitle={'Material som önskas. Kontakta efterlysaren.'}
+          scrollData={allProposals}
+          navigation={props.navigation}
+        />
+      </ScrollView>
+    </SaferArea>
   );
 };
 

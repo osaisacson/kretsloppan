@@ -5,52 +5,52 @@ import Icon from '@expo/vector-icons/FontAwesome';
 //Constants
 import Colors from '../../constants/Colors';
 
-const AddButton = props => {
-  const SIZE = 80;
+const AddButton = (props) => {
+  const SIZE = 40;
 
   const mode = new Animated.Value(0);
 
   const toggleView = () => {
     Animated.timing(mode, {
       toValue: mode._value === 0 ? 1 : 0,
-      duration: 300
+      duration: 300,
     }).start();
   };
 
   const firstX = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 0]
+    outputRange: [0, 0],
   });
   const firstY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -210]
+    outputRange: [0, -210],
   });
   const secondX = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 2]
+    outputRange: [0, 2],
   });
   const secondY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -140]
+    outputRange: [0, -140],
   });
   const thirdX = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -13]
+    outputRange: [0, -13],
   });
   const thirdY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -70]
+    outputRange: [0, -70],
   });
   const opacity = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 1]
+    outputRange: [0, 1],
   });
   const rotation = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '45deg']
+    outputRange: ['0deg', '45deg'],
   });
 
-  const ClickedItem = props => {
+  const ClickedItem = (props) => {
     return (
       <TouchableHighlight
         onPress={props.actionOnPress}
@@ -58,11 +58,11 @@ const AddButton = props => {
           position: 'absolute',
           alignItems: 'center',
           justifyContent: 'center',
-          paddingHorizontal: 12,
-          paddingVertical: 6,
-          height: 30,
+          paddingHorizontal: 6,
+          paddingVertical: 3,
+          height: 15,
           borderRadius: SIZE / 4,
-          backgroundColor: Colors.primary
+          backgroundColor: Colors.primary,
         }}
       >
         <Text style={{ fontSize: 11, color: Colors.lightPrimary }}>
@@ -80,15 +80,13 @@ const AddButton = props => {
   return (
     <View
       style={{
-        position: 'absolute',
         zIndex: 99,
-        bottom: 5,
         alignSelf: 'center',
         shadowColor: 'black',
         shadowOpacity: 0.15,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 8,
-        elevation: 3 //Because shadow only work on iOS, elevation is same thing but for android.
+        elevation: 3, //Because shadow only work on iOS, elevation is same thing but for android.
       }}
     >
       <Animated.View
@@ -96,7 +94,7 @@ const AddButton = props => {
           position: 'absolute',
           left: firstX,
           top: firstY,
-          opacity
+          opacity,
         }}
       >
         <ClickedItem
@@ -111,7 +109,7 @@ const AddButton = props => {
           position: 'absolute',
           left: secondX,
           top: secondY,
-          opacity
+          opacity,
         }}
       >
         <ClickedItem
@@ -126,7 +124,7 @@ const AddButton = props => {
           position: 'absolute',
           left: thirdX,
           top: thirdY,
-          opacity
+          opacity,
         }}
       >
         <ClickedItem
@@ -145,15 +143,15 @@ const AddButton = props => {
           width: SIZE,
           height: SIZE,
           borderRadius: SIZE / 2,
-          backgroundColor: Colors.primary
+          backgroundColor: Colors.primary,
         }}
       >
         <Animated.View
           style={{
-            transform: [{ rotate: rotation }]
+            transform: [{ rotate: rotation }],
           }}
         >
-          <Icon name="plus" size={24} color={Colors.lightPrimary} />
+          <Icon name="plus" size={10} color={Colors.lightPrimary} />
         </Animated.View>
       </TouchableHighlight>
     </View>

@@ -17,12 +17,14 @@ import {
   Entypo,
   MaterialIcons,
   AntDesign,
+  MaterialCommunityIcons,
 } from '@expo/vector-icons';
 import AddButton from '../components/UI/AddButton';
 import UserAvatar from '../components/UI/UserAvatar';
 
 //Tab screens
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
+import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
@@ -41,7 +43,7 @@ import ProfileDetailScreen, {
   screenOptions as profileDetailScreenOptions,
 } from '../screens/details/ProfileDetailScreen';
 
-//Edit/Add screens
+//Edit screens
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
@@ -54,9 +56,12 @@ import EditProposalScreen, {
 import EditProfileScreen, {
   screenOptions as editProfileScreenOptions,
 } from '../screens/addAndEdit/EditProfileScreen';
+
+//Add screens
 import AddProfileScreen from '../screens/addAndEdit/AddProfileScreen';
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
 
+//Auth screens
 import AuthScreen, {
   screenOptions as authScreenOptions,
 } from '../screens/user/AuthScreen';
@@ -70,10 +75,11 @@ import Colors from '../constants/Colors';
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-    height: 70,
+    height: 90,
   },
   headerTitleStyle: {
-    fontFamily: 'roboto-bold',
+    fontFamily: 'bebas-neue-bold',
+    fontSize: 25,
   },
   headerBackTitleStyle: {
     fontFamily: 'roboto-regular',
@@ -83,7 +89,6 @@ const defaultNavOptions = {
 
 const defaultMainPageOptions = (navData) => {
   return {
-    headerTitle: '',
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -97,7 +102,7 @@ const defaultMainPageOptions = (navData) => {
     ),
     headerRight: () => (
       <UserAvatar
-        style={{ marginTop: 10, marginRight: 10 }}
+        style={{ marginTop: 20, marginRight: 10 }}
         showBadge={true}
         actionOnPress={() => {
           navData.navigation.navigate('Min Sida');
@@ -121,213 +126,21 @@ const mainPageOptionsNoUser = (navData) => {
         />
       </HeaderButtons>
     ),
+    headerRight: () => (
+      <AddButton
+        style={{ marginTop: 25, marginRight: 20 }}
+        navigation={navData.navigation}
+      />
+    ),
   };
 };
 
-const ProductsStackNavigator = createStackNavigator();
-
-export const ProductsNavigator = () => {
-  return (
-    <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <ProductsStackNavigator.Screen
-        name="Products"
-        component={SpotlightProductsScreen}
-        options={defaultMainPageOptions}
-      />
-      {/* Details */}
-      <ProductsStackNavigator.Screen
-        name="ProductDetail"
-        component={ProductDetailScreen}
-        options={productDetailScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
-        name="ProjectDetail"
-        component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
-        name="ProposalDetail"
-        component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
-      />
-      {/* Edits */}
-      <ProductsStackNavigator.Screen
-        name="EditProduct"
-        component={EditProductScreen}
-        options={editProductScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
-        name="EditProject"
-        component={EditProjectScreen}
-        options={editProjectScreenOptions}
-      />
-      <ProductsStackNavigator.Screen
-        name="EditProposal"
-        component={EditProposalScreen}
-        options={editProposalScreenOptions}
-      />
-    </ProductsStackNavigator.Navigator>
-  );
-};
-
-const ProjectsStackNavigator = createStackNavigator();
-
-export const ProjectsNavigator = () => {
-  return (
-    <ProjectsStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <ProjectsStackNavigator.Screen
-        name="Projects"
-        component={ProjectsScreen}
-        options={defaultMainPageOptions}
-      />
-      {/* Details */}
-      <ProjectsStackNavigator.Screen
-        name="ProjectDetail"
-        component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
-      />
-      {/* Edits */}
-      <ProjectsStackNavigator.Screen
-        name="EditProduct"
-        component={EditProductScreen}
-        options={editProductScreenOptions}
-      />
-      <ProjectsStackNavigator.Screen
-        name="EditProject"
-        component={EditProjectScreen}
-        options={editProjectScreenOptions}
-      />
-      <ProjectsStackNavigator.Screen
-        name="EditProposal"
-        component={EditProposalScreen}
-        options={editProposalScreenOptions}
-      />
-    </ProjectsStackNavigator.Navigator>
-  );
-};
-
-const ProposalsStackNavigator = createStackNavigator();
-
-export const ProposalsNavigator = () => {
-  return (
-    <ProposalsStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <ProposalsStackNavigator.Screen
-        name="Proposals"
-        component={ProposalsScreen}
-        options={defaultMainPageOptions}
-      />
-      {/* Details */}
-      <ProposalsStackNavigator.Screen
-        name="ProposalDetail"
-        component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
-      />
-      {/* Edits */}
-      <ProposalsStackNavigator.Screen
-        name="EditProduct"
-        component={EditProductScreen}
-        options={editProductScreenOptions}
-      />
-      <ProposalsStackNavigator.Screen
-        name="EditProject"
-        component={EditProjectScreen}
-        options={editProjectScreenOptions}
-      />
-      <ProposalsStackNavigator.Screen
-        name="EditProposal"
-        component={EditProposalScreen}
-        options={editProposalScreenOptions}
-      />
-    </ProposalsStackNavigator.Navigator>
-  );
-};
-
-const UserStackNavigator = createStackNavigator();
-
-export const UserNavigator = () => {
-  return (
-    <UserStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <UserStackNavigator.Screen
-        name="UserSpotlight"
-        component={UserSpotlightScreen}
-        options={mainPageOptionsNoUser}
-      />
-      <UserStackNavigator.Screen
-        name="Profil"
-        component={ProfileDetailScreen}
-        options={profileDetailScreenOptions}
-      />
-      <UserStackNavigator.Screen
-        name="EditProfile"
-        component={EditProfileScreen}
-        options={editProfileScreenOptions}
-      />
-      <UserStackNavigator.Screen
-        name="ProjectDetail"
-        component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
-      />
-      <UserStackNavigator.Screen
-        name="EditProject"
-        component={EditProjectScreen}
-        options={editProjectScreenOptions}
-      />
-      <UserStackNavigator.Screen
-        name="ProductDetail"
-        component={ProductDetailScreen}
-        options={productDetailScreenOptions}
-      />
-      <UserStackNavigator.Screen
-        name="EditProduct"
-        component={EditProductScreen}
-        options={editProductScreenOptions}
-      />
-      <UserStackNavigator.Screen
-        name="ProposalDetail"
-        component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
-      />
-      <UserStackNavigator.Screen
-        name="EditProposal"
-        component={EditProposalScreen}
-        options={editProposalScreenOptions}
-      />
-    </UserStackNavigator.Navigator>
-  );
-};
-
-const ProfilesStackNavigator = createStackNavigator();
-
-export const ProfilesNavigator = () => {
-  return (
-    <ProfilesStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <ProfilesStackNavigator.Screen
-        name="AllProfiles"
-        component={AllProfilesScreen}
-        options={defaultMainPageOptions}
-      />
-      <ProfilesStackNavigator.Screen
-        name="Profil"
-        component={ProfileDetailScreen}
-        options={profileDetailScreenOptions}
-      />
-      <ProfilesStackNavigator.Screen
-        name="ProjectDetail"
-        component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
-      />
-      <ProfilesStackNavigator.Screen
-        name="ProductDetail"
-        component={ProductDetailScreen}
-        options={productDetailScreenOptions}
-      />
-      <ProfilesStackNavigator.Screen
-        name="ProposalDetail"
-        component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
-      />
-    </ProfilesStackNavigator.Navigator>
-  );
+export const emptyHeader = (navData) => {
+  return {
+    headerLeft: '',
+    headerTitle: '',
+    headerRight: '',
+  };
 };
 
 const TabStackNavigator = createMaterialBottomTabNavigator();
@@ -335,28 +148,30 @@ const TabStackNavigator = createMaterialBottomTabNavigator();
 export const TabNavigator = (props) => {
   return (
     <>
-      <AddButton navigation={props.navigation} />
+      {/* <AddButton navigation={props.navigation} /> */}
       <TabStackNavigator.Navigator
-        initialRouteName="Products"
-        labeled={false}
+        initialRouteName="Ge Igen"
+        labeled={true}
         shifting={true}
         activeColor={Colors.lightPrimary}
         inactiveColor={Colors.mediumPrimary}
         barStyle={{ backgroundColor: Colors.darkPrimary }}
       >
         <TabStackNavigator.Screen
-          name="Products"
+          name="Ge Igen"
+          component={SpotlightNavigator}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name={'home'} color={color} size={23} />
+            ),
+          }}
+        />
+        <TabStackNavigator.Screen
+          name="Återbruk"
           component={ProductsNavigator}
           options={{
             tabBarIcon: ({ color }) => (
-              <MaterialIcons
-                name={'home'}
-                color={color}
-                size={27}
-                style={{
-                  marginLeft: -30,
-                }}
-              />
+              <MaterialCommunityIcons name={'hammer'} color={color} size={23} />
             ),
           }}
         />
@@ -365,14 +180,7 @@ export const TabNavigator = (props) => {
           component={ProjectsNavigator}
           options={{
             tabBarIcon: ({ color }) => (
-              <Entypo
-                name={'tools'}
-                size={27}
-                color={color}
-                style={{
-                  marginLeft: -70,
-                }}
-              />
+              <Entypo name={'tools'} size={23} color={color} />
             ),
           }}
         />
@@ -381,31 +189,7 @@ export const TabNavigator = (props) => {
           component={ProposalsNavigator}
           options={{
             tabBarIcon: ({ color }) => (
-              <AntDesign
-                name={'pushpin'}
-                color={color}
-                size={27}
-                style={{
-                  transform: [{ rotate: '90deg' }],
-                  marginRight: -70,
-                }}
-              />
-            ),
-          }}
-        />
-        <TabStackNavigator.Screen
-          name="Min Sida"
-          component={UserNavigator}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <FontAwesome
-                name={'user'}
-                color={color}
-                size={30}
-                style={{
-                  marginRight: -200,
-                }}
-              />
+              <AntDesign name={'exclamationcircle'} color={color} size={23} />
             ),
           }}
         />
@@ -486,7 +270,7 @@ export const ShopNavigator = () => {
       }}
     >
       <ShopDrawerNavigator.Screen
-        name="Hem"
+        name="Ge Igen"
         component={TabNavigator}
         options={{
           drawerIcon: (props) => (
@@ -507,14 +291,6 @@ export const ShopNavigator = () => {
   );
 };
 
-export const emptyHeader = (navData) => {
-  return {
-    headerLeft: '',
-    headerTitle: '',
-    headerRight: '',
-  };
-};
-
 const AuthProfileStackNavigator = createStackNavigator();
 
 export const AuthProfileNavigator = () => {
@@ -529,7 +305,7 @@ export const AuthProfileNavigator = () => {
       <AuthProfileStackNavigator.Screen
         name="AddProfile"
         component={AddProfileScreen}
-        options={authScreenOptions}
+        options={emptyHeader}
       />
     </AuthProfileStackNavigator.Navigator>
   );
@@ -552,5 +328,222 @@ export const AuthNavigator = () => {
         options={authScreenOptions}
       />
     </AuthStackNavigator.Navigator>
+  );
+};
+const SpotlightStackNavigator = createStackNavigator();
+
+export const SpotlightNavigator = () => {
+  return (
+    <SpotlightStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <SpotlightStackNavigator.Screen
+        name="Ge Igen"
+        component={SpotlightProductsScreen}
+        options={defaultMainPageOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Min Sida"
+        component={UserSpotlightScreen}
+        options={mainPageOptionsNoUser}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Profil"
+        component={ProfileDetailScreen}
+        options={profileDetailScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={editProfileScreenOptions}
+      />
+      {/* Details */}
+      <SpotlightStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
+      {/* Edits */}
+      <SpotlightStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
+    </SpotlightStackNavigator.Navigator>
+  );
+};
+
+const ProductsStackNavigator = createStackNavigator();
+
+export const ProductsNavigator = () => {
+  return (
+    <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProductsStackNavigator.Screen
+        name="Återbruk"
+        component={ProductsScreen}
+        options={defaultMainPageOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="Min Sida"
+        component={UserSpotlightScreen}
+        options={mainPageOptionsNoUser}
+      />
+      <ProductsStackNavigator.Screen
+        name="Profil"
+        component={ProfileDetailScreen}
+        options={profileDetailScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={editProfileScreenOptions}
+      />
+      {/* Details */}
+      <ProductsStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      {/* Edits */}
+      <ProductsStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
+    </ProductsStackNavigator.Navigator>
+  );
+};
+
+const ProjectsStackNavigator = createStackNavigator();
+
+export const ProjectsNavigator = () => {
+  return (
+    <ProjectsStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProjectsStackNavigator.Screen
+        name="Projekt"
+        component={ProjectsScreen}
+        options={defaultMainPageOptions}
+      />
+      {/* Details */}
+      <ProjectsStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      {/* Edits */}
+      <ProjectsStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <ProjectsStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
+      <ProjectsStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
+    </ProjectsStackNavigator.Navigator>
+  );
+};
+
+const ProposalsStackNavigator = createStackNavigator();
+
+export const ProposalsNavigator = () => {
+  return (
+    <ProposalsStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProposalsStackNavigator.Screen
+        name="Efterlysningar"
+        component={ProposalsScreen}
+        options={defaultMainPageOptions}
+      />
+      {/* Details */}
+      <ProposalsStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
+      {/* Edits */}
+      <ProposalsStackNavigator.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <ProposalsStackNavigator.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
+      <ProposalsStackNavigator.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
+    </ProposalsStackNavigator.Navigator>
+  );
+};
+
+const ProfilesStackNavigator = createStackNavigator();
+
+export const ProfilesNavigator = () => {
+  return (
+    <ProfilesStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProfilesStackNavigator.Screen
+        name="Användare"
+        component={AllProfilesScreen}
+        options={defaultMainPageOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="Profil"
+        component={ProfileDetailScreen}
+        options={profileDetailScreenOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+      <ProfilesStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
+    </ProfilesStackNavigator.Navigator>
   );
 };

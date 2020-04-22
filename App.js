@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'; //Lets us use expo fonts
 import ReduxThunk from 'redux-thunk';
-import { Platform } from 'react-native';
+import I18n from 'ex-react-native-i18n';
 // Before rendering any navigation stack
 import { enableScreens } from 'react-native-screens';
 
@@ -24,8 +24,10 @@ const rootReducer = combineReducers({
   projects: projectsReducer,
   profiles: profilesReducer,
   proposals: proposalsReducer,
-  auth: authReducer
+  auth: authReducer,
 });
+
+I18n.default_locale = 'sv-SE';
 
 //NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
 // const store = createStore(rootReducer, composeWithDevTools());
@@ -46,7 +48,7 @@ const fetchFonts = () => {
     'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
     'roboto-light': require('./assets/fonts/Roboto-Light.ttf'),
     'roboto-light-italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
-    'roboto-thin': require('./assets/fonts/Roboto-Thin.ttf')
+    'roboto-thin': require('./assets/fonts/Roboto-Thin.ttf'),
   });
 };
 
