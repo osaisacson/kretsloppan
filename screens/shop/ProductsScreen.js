@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { FlatList, View, Image, Text } from 'react-native';
-import { Banner } from 'react-native-paper';
+import { FlatList, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
@@ -23,7 +22,6 @@ const ProductsScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
   //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(products);
-  const [visibleBanner, setVisibleBanner] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
@@ -98,35 +96,6 @@ const ProductsScreen = (props) => {
 
   return (
     <View>
-      <Banner
-        visible={visibleBanner}
-        actions={[
-          {
-            label: 'Stäng introduktionen',
-            onPress: () => setVisibleBanner(false),
-          },
-        ]}
-      >
-        <Image
-          style={{
-            width: 380,
-            height: 150,
-            borderRadius: 6,
-          }}
-          source={{
-            uri:
-              'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80',
-          }}
-        />
-        <Text
-          style={{
-            fontFamily: 'roboto-light-italic',
-            paddingVertical: 10,
-          }}
-        >
-          Här kan vi ha en liten introduktionstext med fina bilder.
-        </Text>
-      </Banner>
       <SearchBar
         actionOnChangeText={(text) => searchHandler(text)}
         searchQuery={searchQuery}
