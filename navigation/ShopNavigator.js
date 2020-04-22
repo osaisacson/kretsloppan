@@ -23,7 +23,6 @@ import UserAvatar from '../components/UI/UserAvatar';
 
 //Tab screens
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
-import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
@@ -516,6 +515,26 @@ export const emptyHeader = (navData) => {
   };
 };
 
+const AuthProfileStackNavigator = createStackNavigator();
+
+export const AuthProfileNavigator = () => {
+  return (
+    <AuthProfileStackNavigator.Navigator
+      screenOptions={{
+        headerStyle: {
+          height: 0,
+        },
+      }}
+    >
+      <AuthProfileStackNavigator.Screen
+        name="AddProfile"
+        component={AddProfileScreen}
+        options={authScreenOptions}
+      />
+    </AuthProfileStackNavigator.Navigator>
+  );
+};
+
 const AuthStackNavigator = createStackNavigator();
 
 export const AuthNavigator = () => {
@@ -531,11 +550,6 @@ export const AuthNavigator = () => {
         name="Auth"
         component={AuthScreen}
         options={authScreenOptions}
-      />
-      <AuthStackNavigator.Screen
-        name="AddProfile"
-        component={AddProfileScreen}
-        options={emptyHeader}
       />
     </AuthStackNavigator.Navigator>
   );

@@ -3,14 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 //Components
 import { ScrollView } from 'react-native';
-import { Image, Text } from 'react-native';
+import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/UI/SaferArea';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Banner } from 'react-native-paper';
 
 //Screens
 import ProductsScreen from '../shop/ProductsScreen';
@@ -26,7 +25,6 @@ const SpotlightProductsScreen = (props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [visibleBanner, setVisibleBanner] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -66,9 +64,10 @@ const SpotlightProductsScreen = (props) => {
     (state) => state.proposals.availableProposals
   );
 
+  //Gets all products with the tag 'redo'
   const recentProducts = allProducts.filter(
     (product) => product.status === 'redo'
-  ); //Gets last 10 items uploaded that have the status of 'redo'
+  );
 
   //Gets all currently being worked on products
   const inProgressProducts = allProducts.filter(
@@ -96,35 +95,12 @@ const SpotlightProductsScreen = (props) => {
   const Spotlight = (props) => {
     return (
       <SaferArea>
-        <Banner
-          visible={visibleBanner}
-          actions={[
-            {
-              label: 'Stäng introduktionen',
-              onPress: () => setVisibleBanner(false),
-            },
-          ]}
-        >
-          <Image
-            style={{
-              width: 380,
-              height: 150,
-              borderRadius: 6,
-            }}
-            source={{
-              uri:
-                'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80',
-            }}
-          />
-          <Text
-            style={{
-              fontFamily: 'roboto-light-italic',
-              paddingVertical: 10,
-            }}
-          >
-            Här kan vi ha en liten introduktionstext med fina bilder.
-          </Text>
-        </Banner>
+        <Introduction
+          pic={
+            'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
+          }
+          text={'Här kan vi ha en liten introduktionstext med fina bilder.'}
+        />
         <ScrollView nestedScrollEnabled={true}>
           {/* <HorizontalPicker pickerData={introductionData} /> */}
           <HorizontalScroll
