@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {
   createDrawerNavigator,
-  DrawerItemList
+  DrawerItemList,
 } from '@react-navigation/drawer';
 //Components
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -16,12 +16,13 @@ import {
   FontAwesome,
   Entypo,
   MaterialIcons,
-  AntDesign
+  AntDesign,
 } from '@expo/vector-icons';
 import AddButton from '../components/UI/AddButton';
 import UserAvatar from '../components/UI/UserAvatar';
 
 //Tab screens
+import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
@@ -29,36 +30,36 @@ import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 
 //Details
 import ProductDetailScreen, {
-  screenOptions as productDetailScreenOptions
+  screenOptions as productDetailScreenOptions,
 } from '../screens/details/ProductDetailScreen';
 import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions
+  screenOptions as projectDetailScreenOptions,
 } from '../screens/details/ProjectDetailScreen';
 import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions
+  screenOptions as proposalDetailScreenOptions,
 } from '../screens/details/ProposalDetailScreen';
 import ProfileDetailScreen, {
-  screenOptions as profileDetailScreenOptions
+  screenOptions as profileDetailScreenOptions,
 } from '../screens/details/ProfileDetailScreen';
 
 //Edit/Add screens
 import EditProductScreen, {
-  screenOptions as editProductScreenOptions
+  screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
 import EditProjectScreen, {
-  screenOptions as editProjectScreenOptions
+  screenOptions as editProjectScreenOptions,
 } from '../screens/addAndEdit/EditProjectScreen';
 import EditProposalScreen, {
-  screenOptions as editProposalScreenOptions
+  screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
 import EditProfileScreen, {
-  screenOptions as editProfileScreenOptions
+  screenOptions as editProfileScreenOptions,
 } from '../screens/addAndEdit/EditProfileScreen';
 import AddProfileScreen from '../screens/addAndEdit/AddProfileScreen';
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
 
 import AuthScreen, {
-  screenOptions as authScreenOptions
+  screenOptions as authScreenOptions,
 } from '../screens/user/AuthScreen';
 
 //Actions
@@ -70,18 +71,18 @@ import Colors from '../constants/Colors';
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-    height: 70
+    height: 70,
   },
   headerTitleStyle: {
-    fontFamily: 'roboto-bold'
+    fontFamily: 'roboto-bold',
   },
   headerBackTitleStyle: {
-    fontFamily: 'roboto-regular'
+    fontFamily: 'roboto-regular',
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
 };
 
-const defaultMainPageOptions = navData => {
+const defaultMainPageOptions = (navData) => {
   return {
     headerTitle: '',
     headerLeft: () => (
@@ -103,11 +104,11 @@ const defaultMainPageOptions = navData => {
           navData.navigation.navigate('Min Sida');
         }}
       />
-    )
+    ),
   };
 };
 
-const mainPageOptionsNoUser = navData => {
+const mainPageOptionsNoUser = (navData) => {
   return {
     headerTitle: '',
     headerLeft: () => (
@@ -120,7 +121,7 @@ const mainPageOptionsNoUser = navData => {
           }}
         />
       </HeaderButtons>
-    )
+    ),
   };
 };
 
@@ -131,7 +132,7 @@ export const ProductsNavigator = () => {
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
         name="Products"
-        component={ProductsScreen}
+        component={SpotlightProductsScreen}
         options={defaultMainPageOptions}
       />
       {/* Details */}
@@ -139,6 +140,16 @@ export const ProductsNavigator = () => {
         name="ProductDetail"
         component={ProductDetailScreen}
         options={productDetailScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
       />
       {/* Edits */}
       <ProductsStackNavigator.Screen
@@ -322,7 +333,7 @@ export const ProfilesNavigator = () => {
 
 const TabStackNavigator = createMaterialBottomTabNavigator();
 
-export const TabNavigator = props => {
+export const TabNavigator = (props) => {
   return (
     <>
       <AddButton navigation={props.navigation} />
@@ -344,10 +355,10 @@ export const TabNavigator = props => {
                 color={color}
                 size={27}
                 style={{
-                  marginLeft: -30
+                  marginLeft: -30,
                 }}
               />
-            )
+            ),
           }}
         />
         <TabStackNavigator.Screen
@@ -360,10 +371,10 @@ export const TabNavigator = props => {
                 size={27}
                 color={color}
                 style={{
-                  marginLeft: -70
+                  marginLeft: -70,
                 }}
               />
-            )
+            ),
           }}
         />
         <TabStackNavigator.Screen
@@ -377,10 +388,10 @@ export const TabNavigator = props => {
                 size={27}
                 style={{
                   transform: [{ rotate: '90deg' }],
-                  marginRight: -70
+                  marginRight: -70,
                 }}
               />
-            )
+            ),
           }}
         />
         <TabStackNavigator.Screen
@@ -393,10 +404,10 @@ export const TabNavigator = props => {
                 color={color}
                 size={30}
                 style={{
-                  marginRight: -200
+                  marginRight: -200,
                 }}
               />
-            )
+            ),
           }}
         />
       </TabStackNavigator.Navigator>
@@ -411,7 +422,7 @@ export const ShopNavigator = () => {
 
   return (
     <ShopDrawerNavigator.Navigator
-      drawerContent={props => {
+      drawerContent={(props) => {
         return (
           <View style={{ flex: 1 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -427,7 +438,7 @@ export const ShopNavigator = () => {
                 <Text
                   style={{
                     marginLeft: 5,
-                    marginTop: 20
+                    marginTop: 20,
                   }}
                 >
                   Min sida
@@ -452,12 +463,12 @@ export const ShopNavigator = () => {
                 style={{
                   marginTop: 200,
                   width: '60%',
-                  alignSelf: 'center'
+                  alignSelf: 'center',
                 }}
                 labelStyle={{
                   paddingTop: 2,
                   fontFamily: 'bebas-neue-bold',
-                  fontSize: 14
+                  fontSize: 14,
                 }}
                 compact={true}
                 onPress={() => {
@@ -472,36 +483,36 @@ export const ShopNavigator = () => {
       }}
       initialRouteName={'Home'}
       drawerContentOptions={{
-        activeTintColor: Colors.primary
+        activeTintColor: Colors.primary,
       }}
     >
       <ShopDrawerNavigator.Screen
         name="Hem"
         component={TabNavigator}
         options={{
-          drawerIcon: props => (
+          drawerIcon: (props) => (
             <MaterialIcons name={'home'} size={23} color={props.color} />
-          )
+          ),
         }}
       />
       <ShopDrawerNavigator.Screen
         name="Användare"
         component={ProfilesNavigator}
         options={{
-          drawerIcon: props => (
+          drawerIcon: (props) => (
             <FontAwesome name={'users'} size={23} color={props.color} />
-          )
+          ),
         }}
       />
     </ShopDrawerNavigator.Navigator>
   );
 };
 
-export const emptyHeader = navData => {
+export const emptyHeader = (navData) => {
   return {
     headerLeft: '',
     headerTitle: '',
-    headerRight: ''
+    headerRight: '',
   };
 };
 
@@ -512,8 +523,8 @@ export const AuthNavigator = () => {
     <AuthStackNavigator.Navigator
       screenOptions={{
         headerStyle: {
-          height: 0
-        }
+          height: 0,
+        },
       }}
     >
       <AuthStackNavigator.Screen

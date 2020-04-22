@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, Alert } from 'react-native';
 import {
   DetailWrapper,
-  detailStyles
+  detailStyles,
 } from '../../components/wrappers/DetailWrapper';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
@@ -18,21 +18,21 @@ import Colors from '../../constants/Colors';
 //Actions
 import * as productsActions from '../../store/actions/products';
 
-const ProductDetailScreen = props => {
+const ProductDetailScreen = (props) => {
   const [isToggled, setIsToggled] = useState(false);
   const [showUserProjects, setShowUserProjects] = useState(false);
   const productId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
-  const loggedInUserId = useSelector(state => state.auth.userId);
+  const loggedInUserId = useSelector((state) => state.auth.userId);
   //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
-  const selectedProduct = useSelector(state =>
-    state.products.availableProducts.find(prod => prod.id === productId)
+  const selectedProduct = useSelector((state) =>
+    state.products.availableProducts.find((prod) => prod.id === productId)
   );
   //projects
-  const userProjects = useSelector(state => state.projects.userProjects);
+  const userProjects = useSelector((state) => state.projects.userProjects);
   const projectForProduct = userProjects.filter(
-    proj => proj.id === selectedProduct.projectId
+    (proj) => proj.id === selectedProduct.projectId
   );
 
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const ProductDetailScreen = props => {
 
   const hasEditPermission = ownerId === loggedInUserId;
 
-  const editProductHandler = id => {
+  const editProductHandler = (id) => {
     navigation.navigate('EditProduct', { detailId: id });
   };
 
@@ -60,8 +60,8 @@ const ProductDetailScreen = props => {
           style: 'destructive',
           onPress: () => {
             dispatch(productsActions.deleteProduct(id));
-          }
-        }
+          },
+        },
       ]
     );
     navigation.goBack();
@@ -79,25 +79,25 @@ const ProductDetailScreen = props => {
           style: 'destructive',
           onPress: () => {
             dispatch(productsActions.changeProductStatus(id, 'hämtad'));
-          }
-        }
+          },
+        },
       ]
     );
   };
 
   const toggleIsReadyHandle = () => {
     const id = selectedProduct.id;
-    setIsToggled(prevState => !prevState);
+    setIsToggled((prevState) => !prevState);
     let status = selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
     dispatch(productsActions.changeProductStatus(id, status));
     props.navigation.goBack();
   };
 
   const toggleReserveButton = () => {
-    setShowUserProjects(prevState => !prevState);
+    setShowUserProjects((prevState) => !prevState);
   };
 
-  const reserveHandler = clickedProjectId => {
+  const reserveHandler = (clickedProjectId) => {
     const id = selectedProduct.id;
     const projectId = clickedProjectId ? clickedProjectId : '';
 
@@ -108,7 +108,7 @@ const ProductDetailScreen = props => {
 
     Alert.alert(
       'Kom ihåg',
-      'Du måste själv kontakta säljaren för att komma överens om hämtningstid',
+      'Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
       [
         { text: 'Cancel', style: 'default' },
         {
@@ -124,8 +124,8 @@ const ProductDetailScreen = props => {
               )
             );
             navigation.navigate('Products');
-          }
-        }
+          },
+        },
       ]
     );
   };
@@ -204,7 +204,7 @@ const ProductDetailScreen = props => {
               <RoundItem
                 itemData={{
                   image: './../../assets/avatar-placeholder-image.png',
-                  title: 'Inget projekt'
+                  title: 'Inget projekt',
                 }}
                 key={'000'}
                 isHorizontal={true}
@@ -212,7 +212,7 @@ const ProductDetailScreen = props => {
                   reserveHandler('000');
                 }}
               />
-              {userProjects.map(item => (
+              {userProjects.map((item) => (
                 <RoundItem
                   itemData={item}
                   key={item.id}
@@ -280,9 +280,9 @@ const ProductDetailScreen = props => {
 };
 
 //Sets/overrides the default navigation options in the ShopNavigator
-export const screenOptions = navData => {
+export const screenOptions = (navData) => {
   return {
-    headerTitle: navData.route.params.detailTitle
+    headerTitle: navData.route.params.detailTitle,
   };
 };
 

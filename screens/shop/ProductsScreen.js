@@ -13,14 +13,14 @@ import SearchBar from '../../components/UI/SearchBar';
 //Actions
 import * as productsActions from '../../store/actions/products';
 
-const ProductsScreen = props => {
+const ProductsScreen = (props) => {
   const isMountedRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   //Get original products from state
-  const products = useSelector(state => state.products.availableProducts);
+  const products = useSelector((state) => state.products.availableProducts);
   //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(products);
   const [visibleBanner, setVisibleBanner] = useState(true);
@@ -66,8 +66,8 @@ const ProductsScreen = props => {
     return () => (isMountedRef.current = false);
   }, [dispatch, loadProducts]);
 
-  const searchHandler = text => {
-    const newData = renderedProducts.filter(item => {
+  const searchHandler = (text) => {
+    const newData = renderedProducts.filter((item) => {
       const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
@@ -80,7 +80,7 @@ const ProductsScreen = props => {
     props.navigation.navigate('ProductDetail', {
       detailId: id,
       ownerId: ownerId,
-      detailTitle: title
+      detailTitle: title,
     });
   };
 
@@ -103,32 +103,32 @@ const ProductsScreen = props => {
         actions={[
           {
             label: 'Stäng introduktionen',
-            onPress: () => setVisibleBanner(false)
-          }
+            onPress: () => setVisibleBanner(false),
+          },
         ]}
       >
         <Image
           style={{
             width: 380,
             height: 150,
-            borderRadius: 6
+            borderRadius: 6,
           }}
           source={{
             uri:
-              'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
+              'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80',
           }}
         />
         <Text
           style={{
             fontFamily: 'roboto-light-italic',
-            paddingVertical: 10
+            paddingVertical: 10,
           }}
         >
           Här kan vi ha en liten introduktionstext med fina bilder.
         </Text>
       </Banner>
       <SearchBar
-        actionOnChangeText={text => searchHandler(text)}
+        actionOnChangeText={(text) => searchHandler(text)}
         searchQuery={searchQuery}
         placeholder="Leta bland återbruk"
       />
@@ -138,11 +138,12 @@ const ProductsScreen = props => {
         onRefresh={loadProducts}
         refreshing={isRefreshing}
         data={renderedProducts}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
           <ProductItem
             itemData={itemData.item}
             onSelect={() => {
+              console.log('CLICKED itemData: ', itemData);
               selectItemHandler(
                 itemData.item.id,
                 itemData.item.ownerId,
