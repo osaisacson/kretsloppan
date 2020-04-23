@@ -2,14 +2,15 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 
-import {
-  ShopNavigator,
-  AuthNavigator,
-  AuthProfileNavigator,
-} from './ShopNavigator';
+//Navigators
+import { ShopNavigator } from './ShopNavigator';
+import { AuthNavigator } from './AuthNavigator';
+import { AuthProfileNavigator } from './AuthProfileNavigator';
 //Components
+
 import Loader from '../components/UI/Loader';
 import Error from '../components/UI/Error';
+
 //Screens
 import StartupScreen from '../screens/StartupScreen';
 

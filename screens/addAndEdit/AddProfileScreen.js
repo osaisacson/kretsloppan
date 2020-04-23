@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ActivityIndicator, Alert, TextInput } from 'react-native';
+import { ActivityIndicator, Alert, TextInput, View } from 'react-native';
 
 //Components
 import FormWrapper from '../../components/wrappers/FormWrapper';
@@ -120,7 +120,7 @@ const AddProfileScreen = (props) => {
   //Alert if error
   useEffect(() => {
     if (error) {
-      Alert.alert('Oj!', error, [{ text: 'OK' }]);
+      Alert.alert('Oj, det blev fel! Försök igen.', error, [{ text: 'OK' }]);
     }
   }, [error]);
 
