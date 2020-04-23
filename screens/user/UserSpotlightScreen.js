@@ -19,7 +19,7 @@ import * as proposalsActions from '../../store/actions/proposals';
 import Colors from '../../constants/Colors';
 import Styles from '../../constants/Styles';
 
-const UserSpotlightScreen = props => {
+const UserSpotlightScreen = (props) => {
   const isMountedRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -65,44 +65,44 @@ const UserSpotlightScreen = props => {
   }, [dispatch, loadProductsProposalsProjects]);
 
   //Get profiles, return only the one which matches the logged in id
-  const loggedInUserId = useSelector(state => state.auth.userId);
-  const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
-    profile => profile.profileId === loggedInUserId
-  );
+  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const profilesArray = useSelector(
+    (state) => state.profiles.allProfiles
+  ).filter((profile) => profile.profileId === loggedInUserId);
   const currentProfile = profilesArray[0];
 
   //Get projects, return only the one which matches the logged in id
   const userProjects = useSelector(
-    state => state.projects.availableProjects
-  ).filter(proj => proj.ownerId === loggedInUserId);
+    (state) => state.projects.availableProjects
+  ).filter((proj) => proj.ownerId === loggedInUserId);
 
   //Get user products
-  const userProducts = useSelector(state => state.products.userProducts);
-  const userProductsSorted = userProducts.sort(function(a, b) {
+  const userProducts = useSelector((state) => state.products.userProducts);
+  const userProductsSorted = userProducts.sort(function (a, b) {
     return new Date(b.date) - new Date(a.date);
   });
 
   //Get user proposals
-  const userProposals = useSelector(state => state.proposals.userProposals);
+  const userProposals = useSelector((state) => state.proposals.userProposals);
 
   //Gets all ready products
   const readyUserProducts = userProductsSorted.filter(
-    product => product.status === 'redo'
+    (product) => product.status === 'redo'
   );
 
   //Gets all booked products
   const bookedUserProducts = userProductsSorted.filter(
-    product => product.status === 'reserverad'
+    (product) => product.status === 'reserverad'
   );
 
   //Gets all currently being worked on products
   const inProgressUserProducts = userProductsSorted.filter(
-    product => product.status === 'bearbetas'
+    (product) => product.status === 'bearbetas'
   );
 
   //Gets all done (given) products
   const doneUserProducts = userProductsSorted.filter(
-    product => product.status === 'hämtad'
+    (product) => product.status === 'hämtad'
   );
 
   //Sets indicator numbers
@@ -131,10 +131,10 @@ const UserSpotlightScreen = props => {
             color: '#fff',
             backgroundColor: '#fff',
             borderWidth: 0.3,
-            borderColor: '#000'
+            borderColor: '#000',
           }}
           source={
-            currentProfile.image
+            currentProfile && currentProfile.image
               ? { uri: currentProfile.image }
               : require('./../../assets/avatar-placeholder-image.png')
           }
@@ -221,30 +221,30 @@ const styles = StyleSheet.create({
   userInfoSection: {
     textAlign: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: -6
+    marginTop: -6,
   },
   row: {
     marginTop: 0,
     marginBottom: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   section: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: Styles.leftRight
+    marginRight: Styles.leftRight,
   },
   paragraph: {
     fontWeight: 'bold',
     textAlign: 'center',
-    marginRight: 3
-  }
+    marginRight: 3,
+  },
 });
 
 export default UserSpotlightScreen;

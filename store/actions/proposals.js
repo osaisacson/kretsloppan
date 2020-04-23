@@ -37,12 +37,14 @@ export const fetchProposals = () => {
         );
       }
 
-      console.log('loadedProposals in actions', loadedProposals);
+      console.log('store/actions/proposals/fetchProposals: fetching proposals');
 
       dispatch({
         type: SET_PROPOSALS,
         proposals: loadedProposals,
-        userProposals: loadedProposals.filter(prod => prod.ownerId === userId)
+        userProposals: loadedProposals.filter(
+          (prod) => prod.ownerId === userId
+        ),
       });
     } catch (err) {
       // send to custom analytics server
@@ -51,13 +53,13 @@ export const fetchProposals = () => {
   };
 };
 
-export const deleteProposal = proposalId => {
+export const deleteProposal = (proposalId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(
       `https://egnahemsfabriken.firebaseio.com/proposals/${proposalId}.json?auth=${token}`,
       {
-        method: 'DELETE'
+        method: 'DELETE',
       }
     );
 
@@ -82,7 +84,7 @@ export const createProposal = (title, description, price) => {
       title,
       description,
       price,
-      date: date.toISOString()
+      date: date.toISOString(),
     };
 
     //Then upload the rest of the data to realtime database on firebase
@@ -90,17 +92,17 @@ export const createProposal = (title, description, price) => {
       `https://egnahemsfabriken.firebaseio.com/proposals.json?auth=${token}`,
       {
         method: 'POST',
-        body: JSON.stringify(proposalData)
+        body: JSON.stringify(proposalData),
       }
     )
-      .catch(err =>
+      .catch((err) =>
         console.log(
           'Error when attempting to save to firebase realtime database: ',
           err
         )
       )
-      .then(finalRes => finalRes.json())
-      .then(finalResParsed => {
+      .then((finalRes) => finalRes.json())
+      .then((finalResParsed) => {
         dispatch({
           type: CREATE_PROPOSAL,
           proposalData: {
@@ -109,8 +111,8 @@ export const createProposal = (title, description, price) => {
             title,
             description,
             price,
-            date: date.toISOString()
-          }
+            date: date.toISOString(),
+          },
         });
       });
   };
@@ -124,25 +126,25 @@ export const updateProposal = (id, title, description, price) => {
       `https://egnahemsfabriken.firebaseio.com/proposals/${id}.json?auth=${token}`,
       {
         method: 'PATCH',
-        body: JSON.stringify(proposalData)
+        body: JSON.stringify(proposalData),
       }
     )
-      .catch(err =>
+      .catch((err) =>
         console.log(
           'Error when attempting to save to firebase realtime database: ',
           err
         )
       )
-      .then(finalRes => finalRes.json())
-      .then(finalResParsed => {
+      .then((finalRes) => finalRes.json())
+      .then((finalResParsed) => {
         dispatch({
           type: UPDATE_PROPOSAL,
           pid: id,
           proposalData: {
             title,
             description,
-            price
-          }
+            price,
+          },
         });
       });
   };

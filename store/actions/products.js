@@ -34,7 +34,7 @@ export const fetchProducts = () => {
         if (
           !isPickedUp &&
           reservationExpiryDate instanceof Date &&
-            reservationExpiryDate <= new Date()
+          reservationExpiryDate <= new Date()
         ) {
           const categoryName = resData[key].categoryName;
           const title = resData[key].title;
@@ -63,7 +63,7 @@ export const fetchProducts = () => {
             {
               method: 'PATCH',
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
               body: JSON.stringify({
                 categoryName,
@@ -75,8 +75,8 @@ export const fetchProducts = () => {
                 phone,
                 status,
                 reservedUntil,
-                projectId
-              })
+                projectId,
+              }),
             }
           );
 
@@ -103,8 +103,8 @@ export const fetchProducts = () => {
               phone,
               status,
               reservedUntil,
-              projectId
-            }
+              projectId,
+            },
           });
         }
 
@@ -126,11 +126,12 @@ export const fetchProducts = () => {
           )
         );
       }
+      console.log('store/actions/proposals/fetchProducts: fetching products');
 
       dispatch({
         type: SET_PRODUCTS,
         products: loadedProducts,
-        userProducts: loadedProducts.filter(prod => prod.ownerId === userId)
+        userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
       });
     } catch (err) {
       // send to custom analytics server
@@ -139,13 +140,13 @@ export const fetchProducts = () => {
   };
 };
 
-export const deleteProduct = productId => {
+export const deleteProduct = (productId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(
       `https://egnahemsfabriken.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
-        method: 'DELETE'
+        method: 'DELETE',
       }
     );
 
@@ -177,15 +178,15 @@ export const createProduct = (
       {
         method: 'POST',
         body: JSON.stringify({
-          image: image //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-        })
+          image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+        }),
       }
     )
-      .catch(err =>
+      .catch((err) =>
         console.log('error when trying to post to cloudfunctions', err)
       )
-      .then(res => res.json())
-      .then(parsedRes => {
+      .then((res) => res.json())
+      .then((parsedRes) => {
         const productData = {
           categoryName,
           title,
@@ -197,24 +198,26 @@ export const createProduct = (
           ownerId: userId,
           date: date.toISOString(),
           status: 'redo',
-          reservedUntil: ''
+          reservedUntil: '',
         };
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
           `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
           {
             method: 'POST',
-            body: JSON.stringify(productData)
+            body: JSON.stringify(productData),
           }
         )
-          .catch(err =>
+          .catch((err) =>
             console.log(
               'Error when attempting to save to firebase realtime database: ',
               err
             )
           )
-          .then(finalRes => finalRes.json())
-          .then(finalResParsed => {
+          .then((finalRes) => finalRes.json())
+          .then((finalResParsed) => {
+            console.log('store/actions/products/createProduct called');
+
             dispatch({
               type: CREATE_PRODUCT,
               productData: {
@@ -229,8 +232,8 @@ export const createProduct = (
                 ownerId: userId,
                 date: date,
                 status: 'redo',
-                reservedUntil: ''
-              }
+                reservedUntil: '',
+              },
             });
           });
       });
@@ -255,15 +258,15 @@ export const updateProduct = (
       {
         method: 'POST',
         body: JSON.stringify({
-          image: image //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-        })
+          image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+        }),
       }
     )
-      .catch(err =>
+      .catch((err) =>
         console.log('error when trying to post to cloudfunctions', err)
       )
-      .then(res => res.json())
-      .then(parsedRes => {
+      .then((res) => res.json())
+      .then((parsedRes) => {
         const productData = {
           categoryName,
           title,
@@ -271,24 +274,24 @@ export const updateProduct = (
           price,
           image: parsedRes.image, //This is how we link to the image we store above
           address,
-          phone
+          phone,
         };
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
           `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
           {
             method: 'PATCH',
-            body: JSON.stringify(productData)
+            body: JSON.stringify(productData),
           }
         )
-          .catch(err =>
+          .catch((err) =>
             console.log(
               'Error when attempting to save to firebase realtime database: ',
               err
             )
           )
-          .then(finalRes => finalRes.json())
-          .then(finalResParsed => {
+          .then((finalRes) => finalRes.json())
+          .then((finalResParsed) => {
             dispatch({
               type: UPDATE_PRODUCT,
               pid: id,
@@ -299,8 +302,8 @@ export const updateProduct = (
                 price,
                 image,
                 address,
-                phone
-              }
+                phone,
+              },
             });
           });
       });
@@ -316,11 +319,11 @@ export const changeProductStatus = (id, status) => {
       {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          status
-        })
+          status,
+        }),
       }
     );
 
@@ -335,8 +338,8 @@ export const changeProductStatus = (id, status) => {
       type: CHANGE_PRODUCT_STATUS,
       pid: id,
       productData: {
-        status
-      }
+        status,
+      },
     });
   };
 };
@@ -350,13 +353,13 @@ export const reserveProduct = (id, status, reservedUntil, projectId) => {
       {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           status,
           reservedUntil,
-          projectId
-        })
+          projectId,
+        }),
       }
     );
 
@@ -373,8 +376,8 @@ export const reserveProduct = (id, status, reservedUntil, projectId) => {
       productData: {
         status,
         reservedUntil,
-        projectId
-      }
+        projectId,
+      },
     });
   };
 };

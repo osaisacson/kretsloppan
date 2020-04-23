@@ -5,7 +5,7 @@ export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 
 export const fetchProfiles = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
         'https://egnahemsfabriken.firebaseio.com/profiles.json'
@@ -39,7 +39,7 @@ export const fetchProfiles = () => {
 
       dispatch({
         type: SET_PROFILES,
-        allProfiles: loadedProfiles
+        allProfiles: loadedProfiles,
       });
     } catch (err) {
       // send to custom analytics server
@@ -58,39 +58,39 @@ export const createProfile = (profileName, email, phone, address, image) => {
       {
         method: 'POST',
         body: JSON.stringify({
-          image: image //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-        })
+          image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+        }),
       }
     )
-      .catch(err =>
+      .catch((err) =>
         console.log('error when trying to post to cloudfunctions', err)
       )
-      .then(res => res.json())
-      .then(parsedRes => {
+      .then((res) => res.json())
+      .then((parsedRes) => {
         const profileData = {
           profileId: userId, //Set profileId to be the userId of the logged in user: we get this from auth
           profileName,
           email,
           phone,
           address,
-          image: parsedRes.image //This is how we link to the image we store above
+          image: parsedRes.image, //This is how we link to the image we store above
         };
 
         return fetch(
           `https://egnahemsfabriken.firebaseio.com/profiles.json?auth=${token}`,
           {
             method: 'POST',
-            body: JSON.stringify(profileData)
+            body: JSON.stringify(profileData),
           }
         )
-          .catch(err =>
+          .catch((err) =>
             console.log(
               'Error when attempting to save profile to firebase realtime database: ',
               err
             )
           )
-          .then(finalRes => finalRes.json())
-          .then(finalResParsed => {
+          .then((finalRes) => finalRes.json())
+          .then((finalResParsed) => {
             dispatch({
               type: CREATE_PROFILE,
               profileData: {
@@ -100,8 +100,8 @@ export const createProfile = (profileName, email, phone, address, image) => {
                 email,
                 phone,
                 address,
-                image
-              }
+                image,
+              },
             });
           });
       });
@@ -125,21 +125,21 @@ export const updateProfile = (
       {
         method: 'POST',
         body: JSON.stringify({
-          image: image //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-        })
+          image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+        }),
       }
     )
-      .catch(err =>
+      .catch((err) =>
         console.log('error when trying to post to cloudfunctions', err)
       )
-      .then(res => res.json())
-      .then(parsedRes => {
+      .then((res) => res.json())
+      .then((parsedRes) => {
         const profileData = {
           profileName,
           email,
           phone,
           address,
-          image: parsedRes.image //This is how we link to the image we store above
+          image: parsedRes.image, //This is how we link to the image we store above
         };
 
         return fetch(
@@ -147,19 +147,19 @@ export const updateProfile = (
           {
             method: 'PATCH',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(profileData)
+            body: JSON.stringify(profileData),
           }
         )
-          .catch(err =>
+          .catch((err) =>
             console.log(
               'Error when attempting to save profile to firebase realtime database: ',
               err
             )
           )
-          .then(finalRes => finalRes.json())
-          .then(finalResParsed => {
+          .then((finalRes) => finalRes.json())
+          .then((finalResParsed) => {
             dispatch({
               type: UPDATE_PROFILE,
               currUser: userId,
@@ -169,8 +169,8 @@ export const updateProfile = (
                 email,
                 phone,
                 address,
-                image
-              }
+                image,
+              },
             });
           });
       });

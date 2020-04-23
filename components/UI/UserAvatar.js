@@ -6,13 +6,13 @@ import {
   Platform,
   TouchableOpacity,
   TouchableNativeFeedback,
-  View
+  View,
 } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
 //Actions
 import * as productsActions from '../../store/actions/products';
 
-const UserAvatar = props => {
+const UserAvatar = (props) => {
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,25 +23,27 @@ const UserAvatar = props => {
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
 
-  const loggedInUserId = useSelector(state => state.auth.userId);
+  const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
-  const currentUser = useSelector(state =>
-    state.profiles.allProfiles.find(prof => prof.profileId === loggedInUserId)
+  const currentUser = useSelector((state) =>
+    state.profiles.allProfiles.find((prof) => prof.profileId === loggedInUserId)
   );
 
-  const userProducts = useSelector(state => state.products.userProducts);
+  const userProducts = useSelector((state) => state.products.userProducts);
 
   const dispatch = useDispatch();
 
   //Load products and projects
   const loadProducts = useCallback(async () => {
     try {
-      console.log('UserAvatar: fetching products');
+      console.log(
+        'Components/UI/UserAvatar: fetching products to show in indicator'
+      );
       await dispatch(productsActions.fetchProducts());
     } catch (err) {
       console.log(
-        'Error when trying to loadProducts in userAvatar: ',
+        'Components/UI/UserAvatar: Error when trying to loadProducts: ',
         err.message
       );
     }
@@ -56,11 +58,11 @@ const UserAvatar = props => {
       });
     }
     return () => (isMountedRef.current = false);
-  }, [loadProducts]);
+  }, []);
 
   //Gets nr of all booked products
   const bookedUserProducts = userProducts.filter(
-    product => product.status === 'reserverad'
+    (product) => product.status === 'reserverad'
   );
 
   const bookedUserProductsNr =
@@ -77,7 +79,7 @@ const UserAvatar = props => {
           ? props.style
           : {
               marginHorizontal: 10,
-              marginTop: 40
+              marginTop: 40,
             }
       }
     >
@@ -87,7 +89,7 @@ const UserAvatar = props => {
             color: '#fff',
             backgroundColor: '#fff',
             borderWidth: 0.3,
-            borderColor: '#000'
+            borderColor: '#000',
           }}
           source={
             currentUser
@@ -101,7 +103,7 @@ const UserAvatar = props => {
             style={{
               fontWeight: 'bold',
               position: 'relative',
-              bottom: 20
+              bottom: 20,
             }}
           >
             {bookedUserProductsNr}
