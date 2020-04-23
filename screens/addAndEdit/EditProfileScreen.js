@@ -4,7 +4,7 @@ import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
-  formStyles
+  formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
@@ -16,11 +16,11 @@ const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
-      [action.input]: action.value // From textChangeHandler = (inputIdentifier, text)
+      [action.input]: action.value, // From textChangeHandler = (inputIdentifier, text)
     };
     const updatedValidities = {
       ...state.inputValidities,
-      [action.input]: action.isValid
+      [action.input]: action.isValid,
     };
     let updatedFormIsValid = true;
     for (const key in updatedValidities) {
@@ -29,21 +29,21 @@ const formReducer = (state, action) => {
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
-      inputValues: updatedValues
+      inputValues: updatedValues,
     };
   }
   return state;
 };
 
-const EditProfileScreen = props => {
+const EditProfileScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   //Get profiles, return only the one which matches the logged in id
-  const loggedInUserId = useSelector(state => state.auth.userId);
-  const profilesArray = useSelector(state => state.profiles.allProfiles).filter(
-    profile => profile.profileId === loggedInUserId
-  );
+  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const profilesArray = useSelector(
+    (state) => state.profiles.allProfiles
+  ).filter((profile) => profile.profileId === loggedInUserId);
 
   const firebaseId = props.route.params ? props.route.params.detailId : null;
 
@@ -58,16 +58,16 @@ const EditProfileScreen = props => {
       email: currentProfile ? currentProfile.email : '',
       phone: currentProfile ? currentProfile.phone : '',
       address: currentProfile ? currentProfile.address : '',
-      image: currentProfile ? currentProfile.image : ''
+      image: currentProfile ? currentProfile.image : '',
     },
     inputValidities: {
       profileName: currentProfile ? true : false,
       email: currentProfile ? true : false,
       phone: currentProfile ? true : false,
       address: currentProfile ? true : false,
-      image: currentProfile ? true : false
+      image: currentProfile ? true : false,
     },
-    formIsValid: currentProfile ? true : false
+    formIsValid: currentProfile ? true : false,
   });
 
   //Handlers
@@ -105,7 +105,7 @@ const EditProfileScreen = props => {
           )
         );
       }
-      props.navigation.navigate('Products');
+      props.navigation.navigate('Återbruk');
     } catch (err) {
       setError(err.message);
     }
@@ -127,7 +127,7 @@ const EditProfileScreen = props => {
       type: FORM_INPUT_UPDATE,
       value: text,
       isValid: isValid,
-      input: inputIdentifier
+      input: inputIdentifier,
     });
   };
 
@@ -228,11 +228,11 @@ const EditProfileScreen = props => {
   );
 };
 
-export const screenOptions = navData => {
+export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
     // headerLeft: routeParams.detailId ? null : '',
-    headerTitle: routeParams.detailId ? 'Redigera profil' : 'Skapa profil'
+    headerTitle: routeParams.detailId ? 'Redigera profil' : 'Skapa profil',
     // headerRight: routeParams.detailId ? 'X' : ''
   };
 };

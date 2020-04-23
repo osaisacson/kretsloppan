@@ -44,7 +44,7 @@ export const fetchProducts = () => {
           const address = resData[key].address;
           const phone = resData[key].phone;
           const reservedUntil = `expired ${resData[key].reservedUntil}`;
-          const projectId = resData[key].projectId;
+          const projectId = ''; //reset the project that the product used to be reserved for
           const status =
             resData[key].status === 'reserverad' ? 'redo' : resData[key].status; //If the passed status is 'reserved' then update that product's status to 'redo'
           console.log('EXPIRED');
