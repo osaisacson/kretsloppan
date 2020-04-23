@@ -23,7 +23,7 @@ const AddButton = (props) => {
   });
   const firstY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -210],
+    outputRange: [0, 210],
   });
   const secondX = mode.interpolate({
     inputRange: [0, 1],
@@ -31,15 +31,15 @@ const AddButton = (props) => {
   });
   const secondY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -140],
+    outputRange: [0, 140],
   });
   const thirdX = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -13],
+    outputRange: [0, 13],
   });
   const thirdY = mode.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -70],
+    outputRange: [0, 70],
   });
   const opacity = mode.interpolate({
     inputRange: [0, 1],
@@ -151,7 +151,7 @@ const AddButton = (props) => {
             transform: [{ rotate: rotation }],
           }}
         >
-          <Icon name="plus" size={10} color={Colors.lightPrimary} />
+          <Icon name="plus" size={15} color={Colors.lightPrimary} />
         </Animated.View>
       </TouchableHighlight>
     </View>

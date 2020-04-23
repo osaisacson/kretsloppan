@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { FlatList, View } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
@@ -129,7 +129,11 @@ const ProductsScreen = (props) => {
             }
             questionText={'Här ska det vara en förklaring'}
             icon={
-              <MaterialIcons name="home" size={20} style={{ marginRight: 5 }} />
+              <MaterialCommunityIcons
+                name="hammer"
+                size={20}
+                style={{ marginRight: 5 }}
+              />
             }
             indicator={renderedProducts.length ? renderedProducts.length : 0}
           />

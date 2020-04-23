@@ -9,20 +9,20 @@ import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import ProposalItem from '../../components/UI/ProposalItem';
 import SearchBar from '../../components/UI/SearchBar';
-import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
 //Constants
 import Colors from '../../constants/Colors';
 
-const ProposalsScreen = props => {
+const ProposalsScreen = (props) => {
   const isMountedRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   //Get original proposals from state
-  const proposals = useSelector(state => state.proposals.availableProposals);
+  const proposals = useSelector((state) => state.proposals.availableProposals);
   //Prepare for changing the rendered proposals on search
   const [renderedProposals, setRenderedProposals] = useState(proposals);
   const [searchQuery, setSearchQuery] = useState('');
@@ -66,8 +66,8 @@ const ProposalsScreen = props => {
     return () => (isMountedRef.current = false);
   }, [dispatch, loadProposals]);
 
-  const searchHandler = text => {
-    const newData = renderedProposals.filter(item => {
+  const searchHandler = (text) => {
+    const newData = renderedProposals.filter((item) => {
       const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
@@ -80,7 +80,7 @@ const ProposalsScreen = props => {
     props.navigation.navigate('ProposalDetail', {
       detailId: id,
       ownerId: ownerId,
-      detailTitle: title
+      detailTitle: title,
     });
   };
 
@@ -99,7 +99,7 @@ const ProposalsScreen = props => {
   return (
     <SaferArea>
       <SearchBar
-        actionOnChangeText={text => searchHandler(text)}
+        actionOnChangeText={(text) => searchHandler(text)}
         searchQuery={searchQuery}
         placeholder="Leta bland efterlysningar"
       />
@@ -110,8 +110,8 @@ const ProposalsScreen = props => {
         onRefresh={loadProposals}
         refreshing={isRefreshing}
         data={renderedProposals}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
           <ProposalItem
             itemData={itemData.item}
             onSelect={() => {
@@ -129,12 +129,12 @@ const ProposalsScreen = props => {
             subTitle={'Efterlysningar av självbyggare'}
             questionText={'Här ska det vara en förklaring'}
             icon={
-              <AntDesign
-                name={'pushpin'}
+              <Entypo
+                name={'tools'}
                 size={20}
                 style={{
                   transform: [{ rotate: '90deg' }],
-                  marginRight: 5
+                  marginRight: 5,
                 }}
               />
             }
