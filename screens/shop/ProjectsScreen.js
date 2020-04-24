@@ -15,14 +15,14 @@ import * as projectsActions from '../../store/actions/projects';
 //Constants
 import Colors from '../../constants/Colors';
 
-const ProjectsScreen = props => {
+const ProjectsScreen = (props) => {
   const isMountedRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   //Get original projects from state
-  const projects = useSelector(state => state.projects.availableProjects);
+  const projects = useSelector((state) => state.projects.availableProjects);
   //Prepare for changing the rendered projects on search
   const [renderedProjects, setRenderedProjects] = useState(projects);
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,12 +49,12 @@ const ProjectsScreen = props => {
     setRenderedProjects(projects);
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProjects);
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProjects]);
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener('focus', loadProjects);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProjects]);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -67,8 +67,8 @@ const ProjectsScreen = props => {
     return () => (isMountedRef.current = false);
   }, [dispatch, loadProjects]);
 
-  const searchHandler = text => {
-    const newData = renderedProjects.filter(item => {
+  const searchHandler = (text) => {
+    const newData = renderedProjects.filter((item) => {
       const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
@@ -81,7 +81,7 @@ const ProjectsScreen = props => {
     props.navigation.navigate('ProjectDetail', {
       detailId: id,
       ownerId: ownerId,
-      detailTitle: title
+      detailTitle: title,
     });
   };
 
@@ -100,7 +100,7 @@ const ProjectsScreen = props => {
   return (
     <SaferArea>
       <SearchBar
-        actionOnChangeText={text => searchHandler(text)}
+        actionOnChangeText={(text) => searchHandler(text)}
         searchQuery={searchQuery}
         placeholder="Leta bland projekt"
       />
@@ -111,8 +111,8 @@ const ProjectsScreen = props => {
         onRefresh={loadProjects}
         refreshing={isRefreshing}
         data={renderedProjects}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
           <ProjectItem
             itemData={itemData.item}
             onSelect={() => {
@@ -134,7 +134,7 @@ const ProjectsScreen = props => {
                 name={'tools'}
                 size={20}
                 style={{
-                  marginRight: 5
+                  marginRight: 5,
                 }}
               />
             }
