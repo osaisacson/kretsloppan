@@ -67,7 +67,7 @@ export const mainPageOptionsNoUser = (navData) => {
     ),
     headerRight: () => (
       <AddButton
-        style={{ marginTop: 25, marginRight: 20 }}
+        style={{ position: 'fixed', top: 30, right: 0, zIndex: 99 }}
         navigation={navData.navigation}
       />
     ),

@@ -53,6 +53,7 @@ export const fetchProducts = () => {
           console.log('thats a date?:', reservationExpiryDate instanceof Date);
           console.log('original status:', resData[key].status);
           console.log('new status:', status);
+          console.log('reset project id, should be empty string:', projectId);
           console.log('original reservedUntil:', resData[key].reservedUntil);
           console.log('sets new reservedUntil as:', reservedUntil);
           console.log('----------');

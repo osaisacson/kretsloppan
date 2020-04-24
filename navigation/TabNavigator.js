@@ -21,7 +21,6 @@ const TabStackNavigator = createMaterialBottomTabNavigator();
 export const TabNavigator = (props) => {
   return (
     <>
-      {/* <AddButton navigation={props.navigation} /> */}
       <TabStackNavigator.Navigator
         initialRouteName="Ge Igen"
         labeled={true}
