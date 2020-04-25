@@ -19,25 +19,30 @@ import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
 
 const ProductDetailScreen = (props) => {
-  const [isToggled, setIsToggled] = useState(false);
-  const [showUserProjects, setShowUserProjects] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  //Get product and owner id from navigation params (from parent screen) and current user id from state
   const productId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
-
   const loggedInUserId = useSelector((state) => state.auth.userId);
-  //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
+
+  const [isToggled, setIsToggled] = useState(false);
+  const [showUserProjects, setShowUserProjects] = useState(false);
+
+  //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((prod) => prod.id === productId)
   );
-  //projects
+
+  //Get all projects from state, and then return the ones that matches the id of the current product
+  //TODO: if has no matching project, return visual for no project
   const userProjects = useSelector((state) => state.projects.userProjects);
   const projectForProduct = userProjects.filter(
     (proj) => proj.id === selectedProduct.projectId
   );
 
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-
+  //Check if the currently logged in user is the one who created the product, and thereby should have editing privileges
   const hasEditPermission = ownerId === loggedInUserId;
 
   const editProductHandler = (id) => {
@@ -99,12 +104,7 @@ const ProductDetailScreen = (props) => {
 
   const reserveHandler = (clickedProjectId) => {
     const id = selectedProduct.id;
-    const projectId = clickedProjectId ? clickedProjectId : '';
-
-    var firstDay = new Date();
-    const oneWeekFromNow = new Date(
-      firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
-    ).toISOString();
+    const projectId = clickedProjectId ? clickedProjectId : '000';
 
     Alert.alert(
       'Kom ihåg',
@@ -116,14 +116,9 @@ const ProductDetailScreen = (props) => {
           style: 'destructive',
           onPress: () => {
             dispatch(
-              productsActions.reserveProduct(
-                id,
-                'reserverad',
-                oneWeekFromNow,
-                projectId
-              )
+              productsActions.changeProductStatus(id, 'reserverad', projectId)
             );
-            navigation.navigate('Återbruk');
+            props.navigation.navigate('Min Sida');
           },
         },
       ]

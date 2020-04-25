@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 //Components
 import { View, StyleSheet } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
-import EmptyState from '../../components/UI/EmptyState';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
@@ -26,38 +25,49 @@ const UserSpotlightScreen = (props) => {
     (state) => state.projects.availableProjects
   ).filter((proj) => proj.ownerId === loggedInUserId);
 
-  //Get user products
-  const userProducts = useSelector((state) => state.products.userProducts);
-  const userProductsSorted = userProducts.sort(function (a, b) {
+  //Get all products
+  const allProducts = useSelector((state) => state.products.availableProducts);
+
+  console.log('UserSpotlightScreen: allProducts from state: ', allProducts);
+
+  const allProductsSorted = allProducts.sort(function (a, b) {
     return new Date(b.date) - new Date(a.date);
   });
 
   //Get user proposals
   const userProposals = useSelector((state) => state.proposals.userProposals);
 
-  //Gets all ready products
-  const readyUserProducts = userProductsSorted.filter(
+  //Gets all  products where the ownerId matches the id of our currently logged in user
+  const userProducts = allProductsSorted.filter(
+    (product) => product.ownerId === loggedInUserId
+  );
+
+  //Gets all ready products  where the ownerId matches the id of our currently logged in user
+  const readyUserProducts = userProducts.filter(
     (product) => product.status === 'redo'
   );
 
-  //Gets all booked products
-  const bookedUserProducts = userProductsSorted.filter(
-    (product) => product.status === 'reserverad'
-  );
-
-  //Gets all currently being worked on products
-  const inProgressUserProducts = userProductsSorted.filter(
+  //Gets all currently being worked on products where the ownerId matches the id of our currently logged in user
+  const inProgressUserProducts = userProducts.filter(
     (product) => product.status === 'bearbetas'
   );
 
-  //Gets all done (given) products
-  const doneUserProducts = userProductsSorted.filter(
-    (product) => product.status === 'hämtad'
+  //Gets all reserved products where the reservedUserId matches the id of our currently logged in user
+  const reservedByUser = allProductsSorted.filter(
+    (product) =>
+      product.status === 'reserverad' &&
+      product.reservedUserId === loggedInUserId
+  );
+
+  //Gets all collected products where the newOwnerId matches the id of our currently logged in user
+  const collectedByUser = allProductsSorted.filter(
+    (product) =>
+      product.status === 'hämtad' && product.newOwnerId === loggedInUserId
   );
 
   //Sets indicator numbers
   const added = inProgressUserProducts.length + readyUserProducts.length;
-  const collected = doneUserProducts.length;
+  const collected = collectedByUser.length;
   const nrOfProjects = userProjects.length;
 
   //Navigate to the edit screen and forward the product id
@@ -116,7 +126,7 @@ const UserSpotlightScreen = (props) => {
         subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
         extraSubTitle={'Notera att reservationen upphör gälla efter en vecka'}
         bgColor={Colors.lightPrimary}
-        scrollData={bookedUserProducts}
+        scrollData={reservedByUser}
         showNotificationBadge={true}
         navigation={props.navigation}
       />
@@ -145,7 +155,7 @@ const UserSpotlightScreen = (props) => {
       <HorizontalScroll
         title={'Gett Igen'}
         subTitle={'Återbruk använt av mig'}
-        scrollData={doneUserProducts}
+        scrollData={collectedByUser}
         navigation={props.navigation}
       />
     </ScrollViewToTop>

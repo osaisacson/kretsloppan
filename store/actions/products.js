@@ -3,14 +3,13 @@ import Product from '../../models/product';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
-export const RESERVE_PRODUCT = 'RESERVE_PRODUCT';
 export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export const fetchProducts = () => {
   return async (dispatch, getState) => {
-    // any async code you want!
     const userId = getState().auth.userId;
+
     try {
       const response = await fetch(
         'https://egnahemsfabriken.firebaseio.com/products.json'
@@ -27,8 +26,29 @@ export const fetchProducts = () => {
       const loadedProducts = [];
 
       for (const key in resData) {
+        //Set the expiry date to be the date which the product has been reserved until
         const reservationExpiryDate = new Date(resData[key].reservedUntil);
+        //Check if the product has been picked up or not
         const isPickedUp = resData[key].status === 'hämtad';
+        //Set default values
+        let ownerId = resData[key].ownerId;
+        let reservedUserId = resData[key].reservedUserId;
+        let newOwnerId = resData[key].newOwnerId;
+        let categoryName = resData[key].categoryName;
+        let title = resData[key].title;
+        let image = resData[key].image;
+        let address = resData[key].address;
+        let phone = resData[key].phone;
+        let description = resData[key].description;
+        let price = resData[key].price;
+        let date = resData[key].date;
+        let status = resData[key].status;
+        let readyDate = resData[key].readyDate;
+        let pauseDate = resData[key].pauseDate;
+        let reservedDate = resData[key].reservedDate;
+        let reservedUntil = resData[key].reservedUntil;
+        let collectedDate = resData[key].collectedDate;
+        let projectId = resData[key].projectId;
 
         //If the product is not picked up, reservationExpiryDate is a date, and that date is less than today...
         if (
@@ -36,27 +56,35 @@ export const fetchProducts = () => {
           reservationExpiryDate instanceof Date &&
           reservationExpiryDate <= new Date()
         ) {
-          const categoryName = resData[key].categoryName;
-          const title = resData[key].title;
-          const description = resData[key].description;
-          const price = resData[key].price;
-          const image = resData[key].image;
-          const address = resData[key].address;
-          const phone = resData[key].phone;
-          const reservedUntil = `expired ${resData[key].reservedUntil}`;
-          const projectId = ''; //reset the project that the product used to be reserved for
-          const status =
-            resData[key].status === 'reserverad' ? 'redo' : resData[key].status; //If the passed status is 'reserved' then update that product's status to 'redo'
-          console.log('EXPIRED');
+          //...set the default values to be these instead:
+          reservedUserId = '';
+          newOwnerId = '';
+          status = 'redo';
+          pauseDate = '';
+          readyDate = new Date().toISOString(); //Current date
+          reservedDate = '';
+          reservedUntil = '';
+          collectedDate = '';
+          projectId = '';
+
+          //Checks
+          console.log('------------EXPIRED------------');
           console.log('title:', title);
           console.log('reservationExpiryDate:', reservationExpiryDate);
           console.log('thats a date?:', reservationExpiryDate instanceof Date);
           console.log('original status:', resData[key].status);
           console.log('new status:', status);
-          console.log('reset project id, should be empty string:', projectId);
+          console.log('reset project id as empty string: ', projectId);
           console.log('original reservedUntil:', resData[key].reservedUntil);
-          console.log('sets new reservedUntil as:', reservedUntil);
-          console.log('----------');
+          console.log('sets new reservedUntil as empty string:', reservedUntil);
+          console.log('original reservedUserId:', resData[key].reservedUserId);
+          console.log(
+            'sets new reservedUserId as empty string:',
+            reservedUserId
+          );
+          console.log('original reservedDate:', resData[key].reservedDate);
+          console.log('sets new reservedDate as empty string: ', reservedDate);
+          console.log('--------------------------------------');
 
           const token = getState().auth.token;
           const response = await fetch(
@@ -67,15 +95,14 @@ export const fetchProducts = () => {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                categoryName,
-                title,
-                description,
-                price,
-                image,
-                address,
-                phone,
+                reservedUserId,
+                newOwnerId,
                 status,
+                pauseDate,
+                readyDate,
+                reservedDate,
                 reservedUntil,
+                collectedDate,
                 projectId,
               }),
             }
@@ -92,18 +119,17 @@ export const fetchProducts = () => {
           }
 
           dispatch({
-            type: UPDATE_PRODUCT,
+            type: CHANGE_PRODUCT_STATUS,
             pid: key,
             productData: {
-              categoryName,
-              title,
-              description,
-              price,
-              image,
-              address,
-              phone,
+              reservedUserId,
+              newOwnerId,
               status,
+              pauseDate,
+              readyDate,
+              reservedDate,
               reservedUntil,
+              collectedDate,
               projectId,
             },
           });
@@ -112,18 +138,24 @@ export const fetchProducts = () => {
         loadedProducts.push(
           new Product(
             key,
-            resData[key].ownerId,
-            resData[key].categoryName,
-            resData[key].title,
-            resData[key].image,
-            resData[key].address,
-            resData[key].phone,
-            resData[key].description,
-            resData[key].price,
-            resData[key].date,
-            resData[key].status,
-            resData[key].reservedUntil,
-            resData[key].projectId
+            ownerId,
+            reservedUserId,
+            newOwnerId,
+            categoryName,
+            title,
+            image,
+            address,
+            phone,
+            description,
+            price,
+            date,
+            status,
+            pauseDate,
+            readyDate,
+            reservedDate,
+            reservedUntil,
+            collectedDate,
+            projectId
           )
         );
       }
@@ -164,16 +196,16 @@ export const deleteProduct = (productId) => {
 export const createProduct = (
   categoryName,
   title,
-  description,
-  price,
   image,
   address,
-  phone
+  phone,
+  description,
+  price
 ) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
-    const date = new Date();
+    const currentDate = new Date().toISOString();
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
       {
@@ -189,17 +221,24 @@ export const createProduct = (
       .then((res) => res.json())
       .then((parsedRes) => {
         const productData = {
+          ownerId: userId,
+          reservedUserId: '',
+          newOwnerId: '',
           categoryName,
           title,
-          description,
-          price,
           image: parsedRes.image, //This is how we link to the image we store above
           address,
           phone,
-          ownerId: userId,
-          date: date.toISOString(),
+          description,
+          price,
+          date: currentDate,
           status: 'redo',
+          pauseDate: '',
+          readyDate: currentDate,
+          reservedDate: '',
           reservedUntil: '',
+          collectedDate: '',
+          projectId: '000',
         };
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
@@ -223,17 +262,25 @@ export const createProduct = (
               type: CREATE_PRODUCT,
               productData: {
                 id: finalResParsed.name,
+                ownerId: userId,
+                reservedUserId: '',
+                newOwnerId: '',
                 categoryName,
                 title,
-                description,
-                price,
                 image,
                 address,
                 phone,
-                ownerId: userId,
-                date: date,
+                description,
+                price,
+                date: currentDate,
                 status: 'redo',
+                readyDate: currentDate,
+                pauseDate: '',
+                readyDate: currentDate,
+                reservedDate: '',
                 reservedUntil: '',
+                collectedDate: '',
+                projectId: '000',
               },
             });
           });
@@ -245,11 +292,11 @@ export const updateProduct = (
   id,
   categoryName,
   title,
-  description,
-  price,
   image,
   address,
-  phone
+  phone,
+  description,
+  price
 ) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
@@ -271,11 +318,11 @@ export const updateProduct = (
         const productData = {
           categoryName,
           title,
-          description,
-          price,
           image: parsedRes.image, //This is how we link to the image we store above
           address,
           phone,
+          description,
+          price,
         };
         //Then upload the rest of the data to realtime database on firebase
         return fetch(
@@ -299,11 +346,11 @@ export const updateProduct = (
               productData: {
                 categoryName,
                 title,
-                description,
-                price,
                 image,
                 address,
                 phone,
+                description,
+                price,
               },
             });
           });
@@ -311,9 +358,38 @@ export const updateProduct = (
   };
 };
 
-export const changeProductStatus = (id, status) => {
+export const changeProductStatus = (id, status, projectId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const currentUserId = getState().auth.userId;
+    const currentDate = new Date().toISOString();
+
+    const isReady = status === 'redo';
+    const isPaused = status === 'bearbetas';
+    const isReserved = status === 'reserverad';
+    const isCollected = status === 'hämtad';
+
+    //Getting a date one week from now, to use for updated reservedUntil if status is 'reserved'
+    var firstDay = new Date();
+    const oneWeekFromNow = new Date(
+      firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
+    ).toISOString();
+
+    //If we are updating the status to reserved, change the reserved fields to match the current user and date.
+    let updatedReservedUserId = isReserved ? currentUserId : '';
+    let updatedReservedDate = isReserved ? currentDate : '';
+    let updatedReservedUntil = isReserved ? oneWeekFromNow : '';
+    let updatedProjectId = projectId ? projectId : '000';
+
+    //If we are updating the status to collected, set the new owner if and the date it was collected.
+    let updatedNewOwnerId = isCollected ? currentUserId : '';
+    let updatedCollectedDate = isCollected ? currentDate : '';
+
+    //If we are updating the status to paused, set the date when the product was paused to today.
+    let updatedPauseDate = isPaused ? currentDate : '';
+
+    //If we are updating the status to ready, set the date when the product was made available again to today.
+    let updatedReadyDate = isReady ? currentDate : '';
 
     const response = await fetch(
       `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
@@ -323,7 +399,15 @@ export const changeProductStatus = (id, status) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          reservedUserId: updatedReservedUserId,
+          newOwnerId: updatedNewOwnerId,
           status,
+          pauseDate: updatedPauseDate,
+          readyDate: updatedReadyDate,
+          reservedDate: updatedReservedDate,
+          reservedUntil: updatedReservedUntil,
+          collectedDate: updatedCollectedDate,
+          projectId: updatedProjectId,
         }),
       }
     );
@@ -339,45 +423,15 @@ export const changeProductStatus = (id, status) => {
       type: CHANGE_PRODUCT_STATUS,
       pid: id,
       productData: {
+        reservedUserId: updatedReservedUserId,
+        newOwnerId: updatedNewOwnerId,
         status,
-      },
-    });
-  };
-};
-
-export const reserveProduct = (id, status, reservedUntil, projectId) => {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
-
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          status,
-          reservedUntil,
-          projectId,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = errorId;
-      throw new Error(message);
-    }
-
-    dispatch({
-      type: RESERVE_PRODUCT,
-      pid: id,
-      productData: {
-        status,
-        reservedUntil,
-        projectId,
+        pauseDate: updatedPauseDate,
+        readyDate: updatedReadyDate,
+        reservedDate: updatedReservedDate,
+        reservedUntil: updatedReservedUntil,
+        collectedDate: updatedCollectedDate,
+        projectId: updatedProjectId,
       },
     });
   };

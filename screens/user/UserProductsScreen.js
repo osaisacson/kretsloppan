@@ -15,16 +15,18 @@ import { MaterialIcons } from '@expo/vector-icons';
 import * as productsActions from '../../store/actions/products';
 
 const UserProductsScreen = (props) => {
+  //Get user products from state
+  const userProducts = useSelector((state) => state.products.userProducts);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
-  //Get user products with the status 'redo' or 'bearbetas'
-  const userProducts = useSelector((state) => state.products.userProducts);
   //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(userProducts);
   const [searchQuery, setSearchQuery] = useState('');
 
+  //Sort products by date
   const productsSorted = renderedProducts.sort(function (a, b) {
     return new Date(b.date) - new Date(a.date);
   });
@@ -36,26 +38,19 @@ const UserProductsScreen = (props) => {
     setIsRefreshing(true);
     try {
       console.log('UserProductsScreen: fetching Products');
-      await dispatch(productsActions.fetchProducts());
+      dispatch(productsActions.fetchProducts());
     } catch (err) {
       setError(err.message);
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  // useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener('focus', loadProducts);
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [loadProducts]);
-
   useEffect(() => {
-    setIsLoading(true);
-    loadProducts().then(() => {
-      setIsLoading(false);
-    });
-  }, [dispatch, loadProducts]);
+    const unsubscribe = props.navigation.addListener('focus', loadProducts);
+    return () => {
+      unsubscribe();
+    };
+  }, [loadProducts]);
 
   const searchHandler = (text) => {
     const newData = renderedProducts.filter((item) => {

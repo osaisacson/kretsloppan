@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
   createDrawerNavigator,
   DrawerItemList,
 } from '@react-navigation/drawer';
 
 //Components
-import Loader from '../components/UI/Loader';
-import Error from '../components/UI/Error';
 import { SafeAreaView, View, Text } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
@@ -20,7 +18,6 @@ import { ProfilesNavigator } from './ProfilesNavigator';
 
 //Actions
 import * as authActions from '../store/actions/auth';
-// import * as profilesActions from '../store/actions/profiles';
 
 //Constants
 import Colors from '../constants/Colors';
@@ -28,52 +25,8 @@ import Colors from '../constants/Colors';
 const ShopDrawerNavigator = createDrawerNavigator();
 
 export const ShopNavigator = () => {
-  // // Get profiles, return only the one which matches the logged in id
-  // const loggedInUserId = useSelector((state) => state.auth.userId);
-  // const allProfiles = useSelector((state) => state.profiles.allProfiles);
-  // const [currentProfile, setCurrentProfile] = useState();
-  // const loadProfiles = useCallback(async () => {
-  //   setError(null);
-  //   try {
-  //     console.log(
-  //       'Fetching profiles in ShopNavigator, to load the data of the current user'
-  //     );
-  //     await dispatch(profilesActions.fetchProfiles());
-  //   } catch (err) {
-  //     setError(err.message);
-  //   }
-  // }, [dispatch, setIsLoading, setError]);
-
-  // useEffect(() => {
-  //   isMountedRef.current = true;
-  //   setIsLoading(true);
-  //   if (isMountedRef.current) {
-  //     loadProfiles()
-  //       .then(() => {
-  //         const getCurrentProfile = allProfiles.filter(
-  //           (prof) => prof.profileId === loggedInUserId
-  //         );
-  //         setCurrentProfile(getCurrentProfile);
-  //       })
-  //       .then(() => {
-  //         if (!currentProfile) {
-  //           console.log('ShopNavigator: No profile loaded yet');
-  //         }
-  //         if (
-  //           currentProfile &&
-  //           currentProfile.image &&
-  //           currentProfile.image.length > 100
-  //         ) {
-  //           console.log(
-  //             'ShopNavigator: the image is bigger than 100 characters, length: ',
-  //             currentProfile.image.length
-  //           );
-  //         }
-  //         setIsLoading(false);
-  //       });
-  //   }
-  //   return () => (isMountedRef.current = false);
-  // }, []); //Passing empty array means this only loads once after mount
+  const dispatch = useDispatch();
+  console.log('Calling ShopNavigator');
 
   return (
     <ShopDrawerNavigator.Navigator

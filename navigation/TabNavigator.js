@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {
   Entypo,
@@ -34,6 +34,7 @@ export const TabNavigator = (props) => {
   const isMountedRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
+
   const [error, setError] = useState();
 
   const dispatch = useDispatch();

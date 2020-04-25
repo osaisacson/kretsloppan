@@ -2,7 +2,6 @@ import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
-  RESERVE_PRODUCT,
   CHANGE_PRODUCT_STATUS,
   SET_PRODUCTS,
 } from '../actions/products';
@@ -24,6 +23,8 @@ export default (state = initialState, action) => {
       const newProduct = new Product(
         action.productData.id,
         action.productData.ownerId,
+        action.productData.reservedUserId,
+        action.productData.newOwnerId,
         action.productData.categoryName,
         action.productData.title,
         action.productData.image,
@@ -33,7 +34,11 @@ export default (state = initialState, action) => {
         action.productData.price,
         action.productData.date,
         action.productData.status,
+        action.productData.pauseDate,
+        action.productData.readyDate,
+        action.productData.reservedDate,
         action.productData.reservedUntil,
+        action.productData.collectedDate,
         action.productData.projectId
       );
       console.log(
@@ -52,6 +57,8 @@ export default (state = initialState, action) => {
       const updatedUserProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
         state.userProducts[userProductIndex].ownerId,
+        state.userProducts[userProductIndex].reservedUserId,
+        state.userProducts[userProductIndex].newOwnerId,
         action.productData.categoryName,
         action.productData.title,
         action.productData.image,
@@ -59,9 +66,13 @@ export default (state = initialState, action) => {
         action.productData.phone,
         action.productData.description,
         action.productData.price,
-        state.userProducts[userProductIndex].date,
+        action.productData.date,
         state.userProducts[userProductIndex].status,
+        state.userProducts[userProductIndex].pauseDate,
+        state.userProducts[userProductIndex].readyDate,
+        state.userProducts[userProductIndex].reservedDate,
         state.userProducts[userProductIndex].reservedUntil,
+        state.userProducts[userProductIndex].collectedDate,
         state.userProducts[userProductIndex].projectId
       );
       console.log(
@@ -93,7 +104,9 @@ export default (state = initialState, action) => {
 
       const updatedProductCPS = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
-        state.availableProducts[allProductsIndexCPS].ownerId, //Keep all the same except...
+        state.availableProducts[allProductsIndexCPS].ownerId,
+        action.productData.reservedUserId,
+        action.productData.newOwnerId,
         state.availableProducts[allProductsIndexCPS].categoryName,
         state.availableProducts[allProductsIndexCPS].title,
         state.availableProducts[allProductsIndexCPS].image,
@@ -102,70 +115,33 @@ export default (state = initialState, action) => {
         state.availableProducts[allProductsIndexCPS].description,
         state.availableProducts[allProductsIndexCPS].price,
         state.availableProducts[allProductsIndexCPS].date,
-        action.productData.status, //...status
-        state.availableProducts[allProductsIndexCPS].reservedUntil,
-        state.availableProducts[allProductsIndexCPS].projectId
+        action.productData.status,
+        action.productData.pauseDate,
+        action.productData.readyDate,
+        action.productData.reservedDate,
+        action.productData.reservedUntil,
+        action.productData.collectedDate,
+        action.productData.projectId
       );
 
       console.log(
         'store/reducers/products/CHANGE_PRODUCT_STATUS, updated product: ',
         updatedProductCPS
       );
+      //Update this product in availableProducts
+      const updatedAllProductsCPS = [...state.availableProducts];
+      updatedAllProductsCPS[allProductsIndexCPS] = updatedProductCPS;
+      //Update this product in userProducts
       const updatedUserProductsCPS = [...state.userProducts];
       const userProductIndexCPS = state.userProducts.findIndex(
         (prod) => prod.id === action.pid
       );
       updatedUserProductsCPS[userProductIndexCPS] = updatedProductCPS;
-      const updatedAllProductsCPS = [...state.availableProducts];
-      updatedAllProductsCPS[allProductsIndexCPS] = updatedProductCPS;
+
       return {
         ...state,
         availableProducts: updatedAllProductsCPS,
         userProducts: updatedUserProductsCPS,
-      };
-    case RESERVE_PRODUCT:
-      const allProdIndex = state.availableProducts.findIndex(
-        //Look through all products, not just userProducts as when we update a product above
-        (prod) => prod.id === action.pid
-      );
-      console.log(
-        'store/reducers/products/RESERVE_PRODUCT, action.pid: ',
-        action.pid
-      );
-      console.log(
-        'store/reducers/products/RESERVE_PRODUCT, original product: ',
-        state.availableProducts[allProdIndex]
-      );
-      const updatedProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
-        action.pid,
-        state.availableProducts[allProdIndex].ownerId, //Keep all the same except...
-        state.availableProducts[allProdIndex].categoryName,
-        state.availableProducts[allProdIndex].title,
-        state.availableProducts[allProdIndex].image,
-        state.availableProducts[allProdIndex].address,
-        state.availableProducts[allProdIndex].phone,
-        state.availableProducts[allProdIndex].description,
-        state.availableProducts[allProdIndex].price,
-        state.availableProducts[allProdIndex].date,
-        action.productData.status, //...status
-        action.productData.reservedUntil, //...reservedUntil
-        action.productData.projectId //...project the product is tied to. Defaults to '' if not present.
-      );
-      console.log(
-        'store/reducers/products/RESERVE_PRODUCT, updated product: ',
-        updatedProduct
-      );
-      const updatedStatusUserProducts = [...state.userProducts];
-      const userProdIndex = state.userProducts.findIndex(
-        (prod) => prod.id === action.pid
-      );
-      updatedStatusUserProducts[userProdIndex] = updatedProduct;
-      const updatedAllProducts = [...state.availableProducts];
-      updatedAllProducts[allProdIndex] = updatedProduct;
-      return {
-        ...state,
-        availableProducts: updatedAllProducts,
-        userProducts: updatedStatusUserProducts,
       };
     case DELETE_PRODUCT:
       return {
