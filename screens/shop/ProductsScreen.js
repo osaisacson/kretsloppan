@@ -13,56 +13,33 @@ import SearchBar from '../../components/UI/SearchBar';
 import * as productsActions from '../../store/actions/products';
 
 const ProductsScreen = (props) => {
-  const isMountedRef = useRef(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+
   //Get original products from state
   const products = useSelector((state) => state.products.availableProducts);
+
   //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(products);
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
 
+  //Load products
   const loadProducts = useCallback(async () => {
     setError(null);
     setIsRefreshing(true);
     try {
-      console.log('ProductsScreen: fetching products');
-      await dispatch(productsActions.fetchProducts());
+      console.log('ProductsScreen: fetching products...');
+      dispatch(productsActions.fetchProducts());
     } catch (err) {
+      console.log('Error in loadProducts from ProductsScreen ', err.message);
       setError(err.message);
     }
-    setRenderedProducts(products);
     setIsRefreshing(false);
+    console.log('...products fetched!');
   }, [dispatch, setIsLoading, setError]);
-
-  // useEffect(() => {
-  //   console.log(
-  //     'ProductsScreen: running useEffect where we setRenderedProducts to products'
-  //   );
-  //   setRenderedProducts(products);
-  // }, []);
-
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProducts);
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProducts]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    setIsLoading(true);
-    if (isMountedRef.current) {
-      loadProducts().then(() => {
-        setIsLoading(false);
-      });
-    }
-    return () => (isMountedRef.current = false);
-  }, [dispatch, loadProducts]);
 
   const searchHandler = (text) => {
     const newData = renderedProducts.filter((item) => {

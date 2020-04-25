@@ -1,7 +1,7 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-//Components
+import React from 'react';
+import { useSelector } from 'react-redux';
 
+//Components
 import {
   Platform,
   TouchableOpacity,
@@ -9,20 +9,10 @@ import {
   View,
 } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
-//Actions
-import * as productsActions from '../../store/actions/products';
 
 const UserAvatar = (props) => {
-  const isMountedRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
-  //If platform is android and the version is the one which supports the ripple effect
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-    //Set TouchableCmp to instead be TouchableNativeFeedback
-  }
-
+  //Get userProducts and logged in userId from state
+  const userProducts = useSelector((state) => state.products.userProducts);
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
@@ -30,35 +20,12 @@ const UserAvatar = (props) => {
     state.profiles.allProfiles.find((prof) => prof.profileId === loggedInUserId)
   );
 
-  const userProducts = useSelector((state) => state.products.userProducts);
-
-  const dispatch = useDispatch();
-
-  //Load products and projects
-  const loadProducts = useCallback(async () => {
-    try {
-      console.log(
-        'Components/UI/UserAvatar: fetching products to show in indicator'
-      );
-      await dispatch(productsActions.fetchProducts());
-    } catch (err) {
-      console.log(
-        'Components/UI/UserAvatar: Error when trying to loadProducts: ',
-        err.message
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    setIsLoading(true);
-    if (isMountedRef.current) {
-      loadProducts().then(() => {
-        setIsLoading(false);
-      });
-    }
-    return () => (isMountedRef.current = false);
-  }, []);
+  let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
+  //If platform is android and the version is the one which supports the ripple effect
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+    //Set TouchableCmp to instead be TouchableNativeFeedback
+  }
 
   //Gets nr of all booked products
   const bookedUserProducts = userProducts.filter(

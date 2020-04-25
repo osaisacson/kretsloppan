@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Text, FlatList } from 'react-native';
@@ -14,21 +14,21 @@ import { Divider } from 'react-native-paper';
 
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
-//Constants
-import Colors from '../../constants/Colors';
 
-const AllProfilesScreen = props => {
-  const isMountedRef = useRef(null);
-
+const AllProfilesScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  const profiles = useSelector(state => state.profiles.allProfiles);
+
+  //Get profiles from state
+  const profiles = useSelector((state) => state.profiles.allProfiles);
+
   //Prepare for changing the rendered profiles on search
   const [renderedProfiles, setRenderedProfiles] = useState(profiles);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const profilesSorted = renderedProfiles.sort(function(a, b) {
+  //Sort profiles by name
+  const profilesSorted = renderedProfiles.sort(function (a, b) {
     return b.profileName - a.profileName;
   });
 
@@ -46,26 +46,8 @@ const AllProfilesScreen = props => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  // useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener('focus', loadProfiles);
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [loadProfiles]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    setIsLoading(true);
-    if (isMountedRef.current) {
-      loadProfiles().then(() => {
-        setIsLoading(false);
-      });
-    }
-    return () => (isMountedRef.current = false);
-  }, [loadProfiles]);
-
-  const searchHandler = text => {
-    const newData = renderedProfiles.filter(item => {
+  const searchHandler = (text) => {
+    const newData = renderedProfiles.filter((item) => {
       const itemData = item.profileName
         ? item.profileName.toUpperCase()
         : ''.toUpperCase();
@@ -80,7 +62,7 @@ const AllProfilesScreen = props => {
     props.navigation.navigate('Profil', {
       detailId: id,
       ownerId: profileId,
-      detailTitle: profileName
+      detailTitle: profileName,
     });
   };
 
@@ -99,7 +81,7 @@ const AllProfilesScreen = props => {
   return (
     <SaferArea>
       <SearchBar
-        actionOnChangeText={text => searchHandler(text)}
+        actionOnChangeText={(text) => searchHandler(text)}
         searchQuery={searchQuery}
         placeholder="Leta bland användare"
       />
@@ -109,8 +91,8 @@ const AllProfilesScreen = props => {
         onRefresh={loadProfiles}
         refreshing={isRefreshing}
         data={profilesSorted}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
           <View>
             <View
               style={{
@@ -118,7 +100,7 @@ const AllProfilesScreen = props => {
                 flexDirection: 'row',
                 padding: 10,
                 borderBottom: 0.2,
-                borderColor: '#666'
+                borderColor: '#666',
               }}
             >
               <RoundItem

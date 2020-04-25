@@ -9,7 +9,7 @@ import TextItem from '../../components/UI/TextItem';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from './HeaderTwo';
 
-const HorizontalScroll = props => {
+const HorizontalScroll = (props) => {
   //By default sets the rendered item to be product
   let RenderedItem = ProductItem;
   let scrollHeight = 250;
@@ -43,7 +43,7 @@ const HorizontalScroll = props => {
     props.navigation.navigate(detailPath, {
       detailId: id,
       ownerId: ownerId,
-      detailTitle: title
+      detailTitle: title,
     });
   };
 
@@ -53,7 +53,7 @@ const HorizontalScroll = props => {
       <ScrollView
         scrollEventThrottle={16}
         style={{
-          backgroundColor: props.bgColor ? props.bgColor : 'transparent'
+          backgroundColor: props.bgColor ? props.bgColor : 'transparent',
         }}
       >
         {props.title ? (
@@ -70,21 +70,22 @@ const HorizontalScroll = props => {
         <View
           style={{
             flex: 1,
-            height: scrollHeight
+            height: scrollHeight,
           }}
         >
+          {/* If dataset passed is not mpty  */}
           {scrollData.length ? (
             <View
               style={{
                 height: scrollHeight,
-                marginTop: 20
+                marginTop: 20,
               }}
             >
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
               >
-                {scrollData.map(item => (
+                {scrollData.map((item) => (
                   <RenderedItem
                     itemData={item}
                     key={item.id}

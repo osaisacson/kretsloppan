@@ -12,59 +12,35 @@ import SearchBar from '../../components/UI/SearchBar';
 import { Entypo } from '@expo/vector-icons';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
-//Constants
-import Colors from '../../constants/Colors';
 
 const ProposalsScreen = (props) => {
-  const isMountedRef = useRef(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+
   //Get original proposals from state
   const proposals = useSelector((state) => state.proposals.availableProposals);
+
   //Prepare for changing the rendered proposals on search
   const [renderedProposals, setRenderedProposals] = useState(proposals);
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
 
+  //Load proposals
   const loadProposals = useCallback(async () => {
     setError(null);
     setIsRefreshing(true);
     try {
-      console.log('ProposalsScreen: fetching Proposals');
-      await dispatch(proposalsActions.fetchProposals());
+      console.log('ProposalsScreen: fetching proposals...');
+      dispatch(proposalsActions.fetchProposals());
     } catch (err) {
+      console.log('Error in loadProposals from ProposalsScreen ', err.message);
       setError(err.message);
     }
     setIsRefreshing(false);
+    console.log('...proposals fetched!');
   }, [dispatch, setIsLoading, setError]);
-
-  useEffect(() => {
-    console.log(
-      'Proposals: running useEffect where we setRenderedProducts to proposals'
-    );
-    setRenderedProposals(proposals);
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProposals);
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProposals]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    setIsLoading(true);
-    if (isMountedRef.current) {
-      loadProposals().then(() => {
-        setIsLoading(false);
-      });
-    }
-    return () => (isMountedRef.current = false);
-  }, [dispatch, loadProposals]);
 
   const searchHandler = (text) => {
     const newData = renderedProposals.filter((item) => {
@@ -85,7 +61,7 @@ const ProposalsScreen = (props) => {
   };
 
   if (error) {
-    return <Error actionOnPress={loadProducts} />;
+    return <Error actionOnPress={loadProposals} />;
   }
 
   if (isLoading) {

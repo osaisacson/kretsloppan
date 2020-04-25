@@ -1,69 +1,19 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 //Components
 import { View, StyleSheet } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import EmptyState from '../../components/UI/EmptyState';
-import Error from '../../components/UI/Error';
-import Loader from '../../components/UI/Loader';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
-//Actions
-import * as productsActions from '../../store/actions/products';
-import * as projectsActions from '../../store/actions/projects';
-import * as proposalsActions from '../../store/actions/proposals';
 
 //Constants
 import Colors from '../../constants/Colors';
 import Styles from '../../constants/Styles';
 
 const UserSpotlightScreen = (props) => {
-  const isMountedRef = useRef(null);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
-
-  const dispatch = useDispatch();
-
-  //Load products, projects and projects
-  const loadProductsProposalsProjects = useCallback(async () => {
-    setError(null);
-    try {
-      console.log('UserSpotlightScreen: fetching Products/Projects/Proposals');
-      await dispatch(productsActions.fetchProducts());
-      await dispatch(projectsActions.fetchProjects());
-      await dispatch(proposalsActions.fetchProposals());
-    } catch (err) {
-      console.log(
-        'UserSpotlightScreen: Error trying to fetch Products/Projects/Proposals'
-      );
-      setError(err.message);
-    }
-  }, [dispatch, setIsLoading, setError]);
-
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener(
-      'focus',
-      loadProductsProposalsProjects
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProductsProposalsProjects]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    setIsLoading(true);
-    if (isMountedRef.current) {
-      loadProductsProposalsProjects().then(() => {
-        setIsLoading(false);
-      });
-    }
-    return () => (isMountedRef.current = false);
-  }, [dispatch, loadProductsProposalsProjects]);
-
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector((state) => state.auth.userId);
   const profilesArray = useSelector(
@@ -115,14 +65,6 @@ const UserSpotlightScreen = (props) => {
     props.navigation.navigate('EditProfile', { detailId: currentProfile.id });
   };
 
-  if (error) {
-    return <Error actionOnPress={loadProductsProposalsProjects} />;
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <ScrollViewToTop>
       <View style={styles.userInfoSection}>
@@ -168,51 +110,44 @@ const UserSpotlightScreen = (props) => {
         </View>
       </View>
 
-      {!isLoading && userProducts.length === 0 ? (
-        <EmptyState text="Inga produkter ännu, prova lägga till några." />
-      ) : (
-        <>
-          <HorizontalScroll
-            title={'Reserverade av mig'}
-            subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
-            extraSubTitle={
-              'Notera att reservationen upphör gälla efter en vecka'
-            }
-            bgColor={Colors.lightPrimary}
-            scrollData={bookedUserProducts}
-            showNotificationBadge={true}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            largeItem={true}
-            detailPath={'ProjectDetail'}
-            title={'Mina projekt'}
-            subTitle={'Projekt jag bygger med återbruk'}
-            scrollData={userProjects}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'Upplagt av mig'}
-            subTitle={'Återbruk upplagt av dig'}
-            scrollData={userProducts}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            textItem={true}
-            detailPath="ProposalDetail"
-            title={'Efterlysta produkter'}
-            subTitle={'Mina efterlysningar'}
-            scrollData={userProposals}
-            navigation={props.navigation}
-          />
-          <HorizontalScroll
-            title={'Gett Igen'}
-            subTitle={'Återbruk använt av mig'}
-            scrollData={doneUserProducts}
-            navigation={props.navigation}
-          />
-        </>
-      )}
+      {/* Product, project and propsal sections */}
+      <HorizontalScroll
+        title={'Reserverade av mig'}
+        subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
+        extraSubTitle={'Notera att reservationen upphör gälla efter en vecka'}
+        bgColor={Colors.lightPrimary}
+        scrollData={bookedUserProducts}
+        showNotificationBadge={true}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        largeItem={true}
+        detailPath={'ProjectDetail'}
+        title={'Mina projekt'}
+        subTitle={'Projekt jag bygger med återbruk'}
+        scrollData={userProjects}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        title={'Upplagt av mig'}
+        subTitle={'Återbruk upplagt av dig'}
+        scrollData={userProducts}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        textItem={true}
+        detailPath="ProposalDetail"
+        title={'Efterlysta produkter'}
+        subTitle={'Mina efterlysningar'}
+        scrollData={userProposals}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        title={'Gett Igen'}
+        subTitle={'Återbruk använt av mig'}
+        scrollData={doneUserProducts}
+        navigation={props.navigation}
+      />
     </ScrollViewToTop>
   );
 };

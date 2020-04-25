@@ -13,21 +13,19 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 //Actions
 import * as productsActions from '../../store/actions/products';
-//Constants
-import Colors from '../../constants/Colors';
 
-const UserProductsScreen = props => {
+const UserProductsScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
   //Get user products with the status 'redo' or 'bearbetas'
-  const userProducts = useSelector(state => state.products.userProducts);
+  const userProducts = useSelector((state) => state.products.userProducts);
   //Prepare for changing the rendered products on search
   const [renderedProducts, setRenderedProducts] = useState(userProducts);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const productsSorted = renderedProducts.sort(function(a, b) {
+  const productsSorted = renderedProducts.sort(function (a, b) {
     return new Date(b.date) - new Date(a.date);
   });
 
@@ -59,8 +57,8 @@ const UserProductsScreen = props => {
     });
   }, [dispatch, loadProducts]);
 
-  const searchHandler = text => {
-    const newData = renderedProducts.filter(item => {
+  const searchHandler = (text) => {
+    const newData = renderedProducts.filter((item) => {
       const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
@@ -73,7 +71,7 @@ const UserProductsScreen = props => {
     props.navigation.navigate(detailPath, {
       detailId: id,
       ownerId: ownerId,
-      detailTitle: title
+      detailTitle: title,
     });
   };
 
@@ -92,7 +90,7 @@ const UserProductsScreen = props => {
   return (
     <SaferArea>
       <SearchBar
-        actionOnChangeText={text => searchHandler(text)}
+        actionOnChangeText={(text) => searchHandler(text)}
         searchQuery={searchQuery}
         placeholder="Leta bland ditt återbruk"
       />
@@ -117,8 +115,8 @@ const UserProductsScreen = props => {
         onRefresh={loadProducts}
         refreshing={isRefreshing}
         data={productsSorted}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
           <ProductItem
             itemData={itemData.item}
             onSelect={() => {

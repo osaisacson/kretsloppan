@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { FlatList } from 'react-native';
@@ -10,62 +10,35 @@ import Loader from '../../components/UI/Loader';
 import ProjectItem from '../../components/UI/ProjectItem';
 import SearchBar from '../../components/UI/SearchBar';
 import { Entypo } from '@expo/vector-icons';
-//Actions
-import * as projectsActions from '../../store/actions/projects';
-//Constants
-import Colors from '../../constants/Colors';
 
 const ProjectsScreen = (props) => {
-  const isMountedRef = useRef(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+
   //Get original projects from state
   const projects = useSelector((state) => state.projects.availableProjects);
+
   //Prepare for changing the rendered projects on search
   const [renderedProjects, setRenderedProjects] = useState(projects);
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
 
+  //Load projects
   const loadProjects = useCallback(async () => {
     setError(null);
     setIsRefreshing(true);
     try {
-      console.log('ProjectsScreen: fetching projects');
-      await dispatch(projectsActions.fetchProjects());
+      console.log('ProjectsScreen: fetching projects...');
+      dispatch(projectsActions.fetchProjects());
     } catch (err) {
+      console.log('Error in loadProjects from ProjectsScreen ', err.message);
       setError(err.message);
     }
-    setRenderedProjects(projects);
     setIsRefreshing(false);
+    console.log('...projects fetched!');
   }, [dispatch, setIsLoading, setError]);
-
-  useEffect(() => {
-    console.log(
-      'ProjectsScreen: running useEffect where we setRenderedProjects to projects'
-    );
-    setRenderedProjects(projects);
-  }, []);
-
-  // useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener('focus', loadProjects);
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [loadProjects]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    setIsLoading(true);
-    if (isMountedRef.current) {
-      loadProjects().then(() => {
-        setIsLoading(false);
-      });
-    }
-    return () => (isMountedRef.current = false);
-  }, [dispatch, loadProjects]);
 
   const searchHandler = (text) => {
     const newData = renderedProjects.filter((item) => {
@@ -86,7 +59,7 @@ const ProjectsScreen = (props) => {
   };
 
   if (error) {
-    return <Error actionOnPress={loadProducts} />;
+    return <Error actionOnPress={loadProjects} />;
   }
 
   if (isLoading) {
