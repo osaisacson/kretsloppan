@@ -20,27 +20,25 @@ const UserSpotlightScreen = (props) => {
   ).filter((profile) => profile.profileId === loggedInUserId);
   const currentProfile = profilesArray[0];
 
-  //Get projects, return only the one which matches the logged in id
+  //Get all products
+  const availableProducts = useSelector(
+    (state) => state.products.availableProducts
+  );
+
+  const availableProductsSorted = availableProducts.sort(function (a, b) {
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  //Gets all user products where the ownerId matches the id of our currently logged in user
+  const userProducts = useSelector((state) => state.products.userProducts);
+
+  //Get all projects, return only the ones which matches the logged in id
   const userProjects = useSelector(
     (state) => state.projects.availableProjects
   ).filter((proj) => proj.ownerId === loggedInUserId);
 
-  //Get all products
-  const allProducts = useSelector((state) => state.products.availableProducts);
-
-  console.log('UserSpotlightScreen: allProducts from state: ', allProducts);
-
-  const allProductsSorted = allProducts.sort(function (a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
-
   //Get user proposals
   const userProposals = useSelector((state) => state.proposals.userProposals);
-
-  //Gets all  products where the ownerId matches the id of our currently logged in user
-  const userProducts = allProductsSorted.filter(
-    (product) => product.ownerId === loggedInUserId
-  );
 
   //Gets all ready products  where the ownerId matches the id of our currently logged in user
   const readyUserProducts = userProducts.filter(
@@ -53,14 +51,14 @@ const UserSpotlightScreen = (props) => {
   );
 
   //Gets all reserved products where the reservedUserId matches the id of our currently logged in user
-  const reservedByUser = allProductsSorted.filter(
+  const reservedByUser = availableProductsSorted.filter(
     (product) =>
       product.status === 'reserverad' &&
       product.reservedUserId === loggedInUserId
   );
 
   //Gets all collected products where the newOwnerId matches the id of our currently logged in user
-  const collectedByUser = allProductsSorted.filter(
+  const collectedByUser = availableProductsSorted.filter(
     (product) =>
       product.status === 'hämtad' && product.newOwnerId === loggedInUserId
   );

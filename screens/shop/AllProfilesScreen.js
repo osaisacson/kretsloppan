@@ -16,6 +16,8 @@ import { Divider } from 'react-native-paper';
 import * as profilesActions from '../../store/actions/profiles';
 
 const AllProfilesScreen = (props) => {
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -31,8 +33,6 @@ const AllProfilesScreen = (props) => {
   const profilesSorted = renderedProfiles.sort(function (a, b) {
     return b.profileName - a.profileName;
   });
-
-  const dispatch = useDispatch();
 
   const loadProfiles = useCallback(async () => {
     setError(null);

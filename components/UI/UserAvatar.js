@@ -11,8 +11,16 @@ import {
 import { Avatar, Badge } from 'react-native-paper';
 
 const UserAvatar = (props) => {
-  //Get userProducts and logged in userId from state
-  const userProducts = useSelector((state) => state.products.userProducts);
+  //Get all reserved products, and logged in userId from state
+  const reservedProducts = useSelector(
+    (state) => state.products.reservedProducts
+  );
+
+  const reservedProductsNr =
+    reservedProducts && reservedProducts.length > 0
+      ? reservedProducts.length
+      : 0;
+
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
@@ -26,16 +34,6 @@ const UserAvatar = (props) => {
     TouchableCmp = TouchableNativeFeedback;
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
-
-  //Gets nr of all booked products
-  const bookedUserProducts = userProducts.filter(
-    (product) => product.status === 'reserverad'
-  );
-
-  const bookedUserProductsNr =
-    bookedUserProducts && bookedUserProducts.length > 0
-      ? bookedUserProducts.length
-      : 0;
 
   return (
     <TouchableCmp
@@ -59,7 +57,7 @@ const UserAvatar = (props) => {
             borderColor: '#000',
           }}
           source={
-            currentUser
+            currentUser && currentUser.image
               ? { uri: currentUser.image }
               : require('./../../assets/avatar-placeholder-image.png')
           }
@@ -73,7 +71,7 @@ const UserAvatar = (props) => {
               bottom: 20,
             }}
           >
-            {bookedUserProductsNr}
+            {reservedProductsNr}
           </Badge>
         ) : null}
       </View>

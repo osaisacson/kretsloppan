@@ -165,6 +165,10 @@ export const fetchProducts = () => {
         type: SET_PRODUCTS,
         products: loadedProducts,
         userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
+        reservedProducts: loadedProducts.filter(
+          (prod) =>
+            prod.status === 'reserverad' && prod.reservedUserId === userId
+        ),
       });
     } catch (err) {
       // send to custom analytics server

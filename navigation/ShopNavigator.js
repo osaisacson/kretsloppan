@@ -1,9 +1,15 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   createDrawerNavigator,
   DrawerItemList,
 } from '@react-navigation/drawer';
+
+//Actions
+import * as profilesActions from './../store/actions/profiles';
+import * as productsActions from './../store/actions/products';
+import * as projectsActions from './../store/actions/projects';
+import * as proposalsActions from './../store/actions/proposals';
 
 //Components
 import { SafeAreaView, View, Text } from 'react-native';
@@ -11,6 +17,8 @@ import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import UserAvatar from '../components/UI/UserAvatar';
+import Error from '../components/UI/Error';
+import Loader from '../components/UI/Loader';
 
 //Navigators
 import { TabNavigator } from './TabNavigator';
@@ -24,9 +32,138 @@ import Colors from '../constants/Colors';
 
 const ShopDrawerNavigator = createDrawerNavigator();
 
-export const ShopNavigator = () => {
-  const dispatch = useDispatch();
+export const ShopNavigator = (props) => {
   console.log('Calling ShopNavigator');
+
+  const dispatch = useDispatch();
+
+  const isMountedRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
+  //Load profiles
+  const loadProfiles = useCallback(async () => {
+    setError(null);
+    try {
+      console.log('ShopNavigator: fetching profiles...');
+      dispatch(profilesActions.fetchProfiles());
+    } catch (err) {
+      console.log('Error in loadProfiles from ShopNavigator ', err.message);
+      setError(err.message);
+    }
+    console.log('...profiles fetched!');
+  }, [dispatch, setIsLoading, setError]);
+
+  //Load products
+  const loadProducts = useCallback(async () => {
+    setError(null);
+    try {
+      console.log('ShopNavigator: fetching products...');
+      dispatch(productsActions.fetchProducts());
+    } catch (err) {
+      console.log('Error in loadProducts from ShopNavigator', err.message);
+      setError(err.message);
+    }
+    console.log('...products fetched!');
+  }, [dispatch, setIsLoading, setError]);
+
+  //Load projects
+  const loadProjects = useCallback(async () => {
+    setError(null);
+    try {
+      console.log('ShopNavigator: fetching projects...');
+      dispatch(projectsActions.fetchProjects());
+    } catch (err) {
+      console.log('Error in loadProjects from ShopNavigator', err.message);
+      setError(err.message);
+    }
+    console.log('...projects fetched!');
+  }, [dispatch, setIsLoading, setError]);
+
+  //Load proposals
+  const loadProposals = useCallback(async () => {
+    setError(null);
+    try {
+      console.log('ShopNavigator: fetching proposals...');
+      dispatch(proposalsActions.fetchProposals());
+    } catch (err) {
+      console.log('Error in loadProposals from ShopNavigator ', err.message);
+      setError(err.message);
+    }
+    console.log('...proposals fetched!');
+  }, [dispatch, setIsLoading, setError]);
+
+  //TODO: 1. Check if the below is necessary 2. If so, fix error undefined is not an object (evaluating 'navigation.addListener')
+  // useEffect(() => {
+  //   const unsubscribeProfiles = props.navigation.addListener(
+  //     'focus',
+  //     loadProfiles
+  //   );
+  //   const unsubscribeProducts = props.navigation.addListener(
+  //     'focus',
+  //     loadProducts
+  //   );
+  //   const unsubscribeProjects = props.navigation.addListener(
+  //     'focus',
+  //     loadProjects
+  //   );
+  //   const unsubscribeProposals = props.navigation.addListener(
+  //     'focus',
+  //     loadProposals
+  //   );
+  //   return () => {
+  //     console.log(
+  //       'UseEffect in ShopNavigator: unsubscribing to loadProfiles, loadProducts, loadProjects, loadProposals'
+  //     );
+  //     unsubscribeProfiles();
+  //     unsubscribeProducts();
+  //     unsubscribeProjects();
+  //     unsubscribeProposals();
+  //   };
+  // }, [loadProfiles, loadProducts, loadProjects, loadProposals]);
+
+  useEffect(() => {
+    console.log(
+      'UseEffect in ShopNavigator: setting isLoading to true while attempting to fetch profiles, products, projects and proposals.........................START'
+    );
+    isMountedRef.current = true;
+    setIsLoading(true);
+    if (isMountedRef.current) {
+      loadProfiles()
+        .then(() => {
+          loadProducts();
+        })
+        .then(() => {
+          loadProjects();
+        })
+        .then(() => {
+          loadProposals();
+        })
+        .then(() => {
+          console.log(
+            '.................................END: UseEffect in ShopNavigator: profiles, products, projects & proposals fetched, setting isLoading to false.'
+          );
+          setIsLoading(false);
+        });
+    }
+    return () => (isMountedRef.current = false);
+  }, [loadProfiles, loadProducts, loadProjects, loadProposals]);
+
+  //Error handling
+  if (error) {
+    return (
+      <>
+        <Error actionOnPress={loadProfiles} />
+        <Error actionOnPress={loadProducts} />
+        <Error actionOnPress={loadProjects} />
+        <Error actionOnPress={loadProposals} />
+      </>
+    );
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <ShopDrawerNavigator.Navigator
@@ -37,7 +174,6 @@ export const ShopNavigator = () => {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <UserAvatar
                   showBadge={true}
-                  // centralAvatar={true}
                   actionOnPress={() => {
                     props.navigation.navigate('Min Sida');
                     props.navigation.closeDrawer();
