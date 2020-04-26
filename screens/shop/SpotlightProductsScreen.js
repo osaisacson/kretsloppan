@@ -16,19 +16,31 @@ const SpotlightProductsScreen = (props) => {
   );
 
   //Filters all products with the tag 'redo'
-  const recentProducts = allProducts.filter(
+  const recentProductsRaw = allProducts.filter(
     (product) => product.status === 'redo'
   );
 
+  const recentProducts = recentProductsRaw.sort(function (a, b) {
+    return new Date(b.readyDate) - new Date(a.readyDate);
+  });
+
   //Filters all currently being worked on products
-  const inProgressProducts = allProducts.filter(
+  const pausedProductsRaw = allProducts.filter(
     (product) => product.status === 'bearbetas'
   );
 
+  const pausedProducts = pausedProductsRaw.sort(function (a, b) {
+    return new Date(b.pauseDate) - new Date(a.pauseDate);
+  });
+
   //Filters all booked products
-  const bookedProducts = allProducts.filter(
+  const bookedProductsRaw = allProducts.filter(
     (product) => product.status === 'reserverad'
   );
+
+  const bookedProducts = bookedProductsRaw.sort(function (a, b) {
+    return new Date(b.reservedDate) - new Date(a.reservedDate);
+  });
 
   return (
     <SaferArea>
@@ -57,7 +69,7 @@ const SpotlightProductsScreen = (props) => {
         <HorizontalScroll
           title={'under bearbetning'}
           subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
-          scrollData={inProgressProducts}
+          scrollData={pausedProducts}
           navigation={props.navigation}
         />
         <HorizontalScroll

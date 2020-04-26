@@ -20,17 +20,68 @@ const UserSpotlightScreen = (props) => {
   ).filter((profile) => profile.profileId === loggedInUserId);
   const currentProfile = profilesArray[0];
 
-  //Get all products
+  //Gets all products
   const availableProducts = useSelector(
     (state) => state.products.availableProducts
   );
 
-  const availableProductsSorted = availableProducts.sort(function (a, b) {
-    return new Date(b.date) - new Date(a.date);
+  //Gets all products by the logged in user
+  const userProducts = useSelector((state) => state.products.userProducts);
+
+  //COLLECTED: Gets all collected products from all products
+  const collectedItemsRawAll = availableProducts.filter(
+    (product) => product.status === 'hämtad'
+  );
+
+  const collectedItemsAll = collectedItemsRawAll.sort(function (a, b) {
+    return new Date(b.collectedDate) - new Date(a.collectedDate);
   });
 
-  //Gets all user products where the ownerId matches the id of our currently logged in user
-  const userProducts = useSelector((state) => state.products.userProducts);
+  //COLLECTED: Gets all collected products from user products
+  const collectedItemsRawUser = userProducts.filter(
+    (product) => product.status === 'hämtad'
+  );
+
+  const collectedItemsUser = collectedItemsRawUser.sort(function (a, b) {
+    return new Date(b.collectedDate) - new Date(a.collectedDate);
+  });
+
+  //BY USER
+  const collectedByUser = collectedItemsAll.filter(
+    (product) => product.newOwnerId === loggedInUserId
+  );
+
+  //FROM USER
+  const givenByUser = collectedItemsUser.filter(
+    (product) => product.newOwnerId !== loggedInUserId
+  );
+
+  //RESERVED: Gets all products reserved by the user
+  const reservedByUserRaw = useSelector(
+    (state) => state.products.reservedProducts
+  );
+
+  const reservedByUser = reservedByUserRaw.sort(function (a, b) {
+    return new Date(b.reservedDate) - new Date(a.reservedDate);
+  });
+
+  //PAUSED: Gets all products which the user has put on hold
+  const pausedUserProductsRaw = userProducts.filter(
+    (product) => product.status === 'bearbetas'
+  );
+
+  const pausedUserProducts = pausedUserProductsRaw.sort(function (a, b) {
+    return new Date(b.pauseDate) - new Date(a.pauseDate);
+  });
+
+  //READY: Gets all ready products where the ownerId matches the id of our currently logged in user
+  const readyUserProductsRaw = userProducts.filter(
+    (product) => product.status === 'redo'
+  );
+
+  const readyUserProducts = readyUserProductsRaw.sort(function (a, b) {
+    return new Date(b.readyDate) - new readyDate(a.date);
+  });
 
   //Get all projects, return only the ones which matches the logged in id
   const userProjects = useSelector(
@@ -40,31 +91,8 @@ const UserSpotlightScreen = (props) => {
   //Get user proposals
   const userProposals = useSelector((state) => state.proposals.userProposals);
 
-  //Gets all ready products  where the ownerId matches the id of our currently logged in user
-  const readyUserProducts = userProducts.filter(
-    (product) => product.status === 'redo'
-  );
-
-  //Gets all currently being worked on products where the ownerId matches the id of our currently logged in user
-  const inProgressUserProducts = userProducts.filter(
-    (product) => product.status === 'bearbetas'
-  );
-
-  //Gets all reserved products where the reservedUserId matches the id of our currently logged in user
-  const reservedByUser = availableProductsSorted.filter(
-    (product) =>
-      product.status === 'reserverad' &&
-      product.reservedUserId === loggedInUserId
-  );
-
-  //Gets all collected products where the newOwnerId matches the id of our currently logged in user
-  const collectedByUser = availableProductsSorted.filter(
-    (product) =>
-      product.status === 'hämtad' && product.newOwnerId === loggedInUserId
-  );
-
   //Sets indicator numbers
-  const added = inProgressUserProducts.length + readyUserProducts.length;
+  const added = userProducts.length;
   const collected = collectedByUser.length;
   const nrOfProjects = userProjects.length;
 
@@ -120,12 +148,36 @@ const UserSpotlightScreen = (props) => {
 
       {/* Product, project and propsal sections */}
       <HorizontalScroll
-        title={'Reserverade av mig'}
+        title={'Reserverat av mig'}
         subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
         extraSubTitle={'Notera att reservationen upphör gälla efter en vecka'}
         bgColor={Colors.lightPrimary}
         scrollData={reservedByUser}
         showNotificationBadge={true}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        title={'Upplagt av mig'}
+        subTitle={'Återbruk upplagt av mig'}
+        scrollData={readyUserProducts}
+        navigation={props.navigation}
+      />
+      {pausedUserProducts.length ? (
+        <HorizontalScroll
+          title={'Pausat'}
+          subTitle={
+            'Återbruk jag lagt upp och pausat för bearbetning - glöm inte att markera dom som "redo" när dom är klara'
+          }
+          scrollData={pausedUserProducts}
+          navigation={props.navigation}
+        />
+      ) : null}
+      <HorizontalScroll
+        textItem={true}
+        detailPath="ProposalDetail"
+        title={'Efterlysta produkter'}
+        subTitle={'Mina efterlysningar'}
+        scrollData={userProposals}
         navigation={props.navigation}
       />
       <HorizontalScroll
@@ -136,26 +188,22 @@ const UserSpotlightScreen = (props) => {
         scrollData={userProjects}
         navigation={props.navigation}
       />
-      <HorizontalScroll
-        title={'Upplagt av mig'}
-        subTitle={'Återbruk upplagt av dig'}
-        scrollData={userProducts}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        textItem={true}
-        detailPath="ProposalDetail"
-        title={'Efterlysta produkter'}
-        subTitle={'Mina efterlysningar'}
-        scrollData={userProposals}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        title={'Gett Igen'}
-        subTitle={'Återbruk använt av mig'}
-        scrollData={collectedByUser}
-        navigation={props.navigation}
-      />
+      {collectedByUser.length ? (
+        <HorizontalScroll
+          title={'Hämtat'}
+          subTitle={'Återbruk använt av mig'}
+          scrollData={collectedByUser}
+          navigation={props.navigation}
+        />
+      ) : null}
+      {givenByUser.length ? (
+        <HorizontalScroll
+          title={'Gett Igen'}
+          subTitle={'Återbruk jag gett till andra'}
+          scrollData={givenByUser}
+          navigation={props.navigation}
+        />
+      ) : null}
     </ScrollViewToTop>
   );
 };
