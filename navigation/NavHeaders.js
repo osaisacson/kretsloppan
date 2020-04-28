@@ -65,12 +65,13 @@ export const mainPageOptionsNoUser = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: () => (
-      <AddButton
-        style={{ position: 'fixed', top: 30, right: 0, zIndex: 99 }}
-        navigation={navData.navigation}
-      />
-    ),
+    headerRight: '',
+    //() => (
+    // <AddButton
+    //   style={{ position: 'fixed', top: 30, right: 0, zIndex: 99 }}
+    //   navigation={navData.navigation}
+    // />
+    //),
   };
 };
 

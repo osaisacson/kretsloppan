@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 
 //Components
 import { View, StyleSheet } from 'react-native';
-import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
+import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
+// import AddButton from '../../components/UI/AddButton';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
 
@@ -123,6 +124,8 @@ const UserSpotlightScreen = (props) => {
           color={Colors.neutral}
           onSelect={editProfileHandler}
         />
+
+        {/* <AddButton navigation={props.navigation} /> */}
         <Title style={styles.title}>{currentProfile.profileName}</Title>
         <View style={styles.row}>
           <View style={styles.section}>
@@ -143,6 +146,34 @@ const UserSpotlightScreen = (props) => {
             </Paragraph>
             <Caption style={styles.caption}>Projekt</Caption>
           </View>
+        </View>
+        <View style={styles.row}>
+          <Button
+            style={{ marginRight: 5 }}
+            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
+            icon="plus"
+            mode="contained"
+            onPress={() => props.navigation.navigate('EditProduct')}
+          >
+            Återbruk
+          </Button>
+          <Button
+            style={{ marginRight: 5 }}
+            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
+            icon="plus"
+            mode="contained"
+            onPress={() => props.navigation.navigate('EditProject')}
+          >
+            Projekt
+          </Button>
+          <Button
+            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
+            icon="plus"
+            mode="contained"
+            onPress={() => props.navigation.navigate('EditProposal')}
+          >
+            Efterlysning
+          </Button>
         </View>
       </View>
 

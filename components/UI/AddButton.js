@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { FAB, Portal, Provider } from 'react-native-paper';
 
-//Constants
-import Colors from '../../constants/Colors';
-
 const AddButton = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -13,7 +10,7 @@ const AddButton = (props) => {
 
   return (
     <Provider>
-      <Portal>
+      <Portal direction={'down'}>
         <FAB.Group
           open={isOpen}
           icon={isOpen ? 'plus' : 'plus'}
@@ -36,7 +33,7 @@ const AddButton = (props) => {
           ]}
           onStateChange={toggleOpen}
           onPress={() => {
-            if (open) {
+            if (isOpen) {
               // do something if the speed dial is open
             }
           }}

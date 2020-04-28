@@ -41,10 +41,13 @@ export const signup = (email, password, profileName, phone, address, image) => {
       const errorId = errorResData.error.message;
       let message = errorId;
       if (errorId === 'EMAIL_EXISTS') {
+        alert('Den här emailen finns redan');
         message = 'Den här emailen finns redan';
       }
+      alert(message);
+      return;
       //TODO: Customised error messages
-      throw new Error(message);
+      // throw new Error(message);
     }
 
     await response
