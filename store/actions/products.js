@@ -35,6 +35,7 @@ export const fetchProducts = () => {
         let reservedUserId = resData[key].reservedUserId;
         let newOwnerId = resData[key].newOwnerId;
         let categoryName = resData[key].categoryName;
+        let condition = resData[key].condition;
         let title = resData[key].title;
         let image = resData[key].image;
         let address = resData[key].address;
@@ -87,6 +88,7 @@ export const fetchProducts = () => {
           console.log('--------------------------------------');
 
           const token = getState().auth.token;
+
           const response = await fetch(
             `https://egnahemsfabriken.firebaseio.com/products/${key}.json?auth=${token}`,
             {
@@ -142,6 +144,7 @@ export const fetchProducts = () => {
             reservedUserId,
             newOwnerId,
             categoryName,
+            condition,
             title,
             image,
             address,
@@ -199,6 +202,7 @@ export const deleteProduct = (productId) => {
 
 export const createProduct = (
   categoryName,
+  condition,
   title,
   image,
   address,
@@ -210,6 +214,15 @@ export const createProduct = (
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
+
+    // Handle HTTP errors since fetch won't.
+    function handleErrors(response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }
+
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
       {
@@ -219,9 +232,7 @@ export const createProduct = (
         }),
       }
     )
-      .catch((err) =>
-        console.log('error when trying to post to cloudfunctions', err)
-      )
+      .then(handleErrors)
       .then((res) => res.json())
       .then((parsedRes) => {
         const productData = {
@@ -229,6 +240,7 @@ export const createProduct = (
           reservedUserId: '',
           newOwnerId: '',
           categoryName,
+          condition,
           title,
           image: parsedRes.image, //This is how we link to the image we store above
           address,
@@ -270,6 +282,7 @@ export const createProduct = (
                 reservedUserId: '',
                 newOwnerId: '',
                 categoryName,
+                condition,
                 title,
                 image,
                 address,
@@ -288,13 +301,17 @@ export const createProduct = (
               },
             });
           });
-      });
+      })
+      .catch((err) =>
+        console.log('error when trying to post to cloudfunctions', err)
+      );
   };
 };
 
 export const updateProduct = (
   id,
   categoryName,
+  condition,
   title,
   image,
   address,
@@ -305,6 +322,14 @@ export const updateProduct = (
   return (dispatch, getState) => {
     const token = getState().auth.token;
 
+    // Handle HTTP errors since fetch won't.
+    function handleErrors(response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }
+
     fetch(
       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
       {
@@ -314,13 +339,12 @@ export const updateProduct = (
         }),
       }
     )
-      .catch((err) =>
-        console.log('error when trying to post to cloudfunctions', err)
-      )
+      .then(handleErrors)
       .then((res) => res.json())
       .then((parsedRes) => {
         const productData = {
           categoryName,
+          condition,
           title,
           image: parsedRes.image, //This is how we link to the image we store above
           address,
@@ -349,6 +373,7 @@ export const updateProduct = (
               pid: id,
               productData: {
                 categoryName,
+                condition,
                 title,
                 image,
                 address,
@@ -358,7 +383,10 @@ export const updateProduct = (
               },
             });
           });
-      });
+      })
+      .catch((err) =>
+        console.log('error when trying to post to cloudfunctions', err)
+      );
   };
 };
 

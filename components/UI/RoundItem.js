@@ -7,12 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 //Constants
 import Styles from '../../constants/Styles';
 
-const RoundItem = props => {
+const RoundItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -45,37 +45,38 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-bold-italic',
     fontSize: 13,
     textAlign: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   project: {
-    height: 80,
-    width: 80,
+    height: 90,
+    width: 90,
     marginLeft: 10,
-    borderRadius: 100 / 2
+    marginRight: 10,
+    borderRadius: 100 / 2,
   },
   touchable: {
-    height: 80,
-    width: 80,
+    height: 90,
+    width: 90,
     borderRadius: 100 / 2,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#000'
+    borderColor: '#000',
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
     height: '100%',
     borderRadius: 100 / 2,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 100 / 2
+    borderRadius: 100 / 2,
   },
   details: {
-    color: '#000'
-  }
+    color: '#000',
+  },
 });
 
 export default RoundItem;

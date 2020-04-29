@@ -1,4 +1,4 @@
-class Condition {
+class Category {
   constructor(id, title, color) {
     this.id = id;
     this.title = title;
@@ -6,4 +6,4 @@ class Condition {
   }
 }
 
-export default Condition;
+export default Category;

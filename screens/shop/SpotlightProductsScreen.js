@@ -48,7 +48,9 @@ const SpotlightProductsScreen = (props) => {
         pic={
           'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
         }
-        text={'Här kan vi ha en introduktionstext med fina bilder.'}
+        text={
+          'Välkommen! Se en översikt av nya projekt, återbruk och efterlysningar nedan. Lägg upp eget material genom att gå till din profil.'
+        }
       />
       <ScrollView nestedScrollEnabled={true}>
         {/* <HorizontalPicker pickerData={introductionData} /> */}
@@ -75,7 +77,7 @@ const SpotlightProductsScreen = (props) => {
         <HorizontalScroll
           title={'nyligen reserverat'}
           subTitle={
-            'Reserverade produkter, blir tillgängliga igen om om de inte hämtas inom en vecka.'
+            'Reserverade produkter, blir tillgängliga igen om de inte hämtas inom en vecka.'
           }
           scrollData={bookedProducts}
           navigation={props.navigation}

@@ -1,3 +1,4 @@
+import { getIndex, updateCollection } from './helperFunctions';
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
@@ -14,23 +15,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  //Helper functions
-  const getIndex = (stateSegment, itemId) => {
-    return stateSegment.findIndex((prod) => prod.id === itemId);
-  };
-  const updateCollection = (stateSegment, itemId, itemToUpdateWith) => {
-    console.log('----------------updateCollection---------------');
-
-    console.log('statesegment.length', stateSegment.length);
-    console.log('itemId', itemId);
-    console.log('itemToUpdateWith', itemToUpdateWith);
-    console.log('-------------------------------------------------');
-
-    const itemIndex = getIndex(stateSegment, itemId); //get the index of the passed item
-    const updatedCollection = [...stateSegment]; //copy current state
-    updatedCollection[itemIndex] = itemToUpdateWith; //find the position of the passed item index, and replace it with the passed item
-    return updatedCollection;
-  };
   //Switch cases
   switch (action.type) {
     case SET_PRODUCTS:
@@ -46,6 +30,7 @@ export default (state = initialState, action) => {
         action.productData.reservedUserId,
         action.productData.newOwnerId,
         action.productData.categoryName,
+        action.productData.condition,
         action.productData.title,
         action.productData.image,
         action.productData.address,
@@ -73,13 +58,13 @@ export default (state = initialState, action) => {
       };
     case UPDATE_PRODUCT:
       const userProductIndex = getIndex(state.userProducts, action.pid);
-
       const updatedUserProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
         state.userProducts[userProductIndex].ownerId,
         state.userProducts[userProductIndex].reservedUserId,
         state.userProducts[userProductIndex].newOwnerId,
         action.productData.categoryName,
+        action.productData.condition,
         action.productData.title,
         action.productData.image,
         action.productData.address,
@@ -140,6 +125,7 @@ export default (state = initialState, action) => {
         action.productData.reservedUserId,
         action.productData.newOwnerId,
         state.availableProducts[availableProductsIndexCPS].categoryName,
+        state.availableProducts[availableProductsIndexCPS].condition,
         state.availableProducts[availableProductsIndexCPS].title,
         state.availableProducts[availableProductsIndexCPS].image,
         state.availableProducts[availableProductsIndexCPS].address,

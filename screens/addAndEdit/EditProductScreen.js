@@ -18,7 +18,7 @@ import HorizontalScrollContainer from '../../components/UI/HorizontalScrollConta
 import * as productsActions from '../../store/actions/products';
 
 //Data
-import { PART, CONDITION, OTHER } from './../../data/categories';
+import { PART, CONDITION } from './../../data/categories';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -63,7 +63,10 @@ const EditProductScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [selectedCategory, setSelectedCategory] = useState(
-    editedProduct ? editedProduct.categoryName : 'Inget'
+    editedProduct ? editedProduct.categoryName : 'Ingen'
+  );
+  const [selectedCondition, setSelectedCondition] = useState(
+    editedProduct ? editedProduct.condition : 'Inget'
   );
   const [placeholderPic, setPlaceholderPic] = useState(
     editedProduct ? editedProduct.image : ''
@@ -133,7 +136,7 @@ const EditProductScreen = (props) => {
 
   useEffect(() => {
     if (error) {
-      Alert.alert('Oj!', error, [{ text: 'OK' }]);
+      Alert.alert('Oj! Något gick fel, försök igen.', error, [{ text: 'OK' }]);
     }
   }, [error]);
 
@@ -153,6 +156,7 @@ const EditProductScreen = (props) => {
         console.log('--------EDIT PRODUCT: dispatch--------');
         console.log('prodId:', prodId);
         console.log('selectedCategory:', selectedCategory);
+        console.log('selectedCondition:', selectedCondition);
         console.log('title:', formState.inputValues.title);
         console.log('description:', formState.inputValues.description);
         console.log('price:', +formState.inputValues.price);
@@ -164,17 +168,19 @@ const EditProductScreen = (props) => {
           productsActions.updateProduct(
             prodId,
             selectedCategory,
+            selectedCondition,
             formState.inputValues.title,
-            formState.inputValues.description,
-            +formState.inputValues.price,
             selectedImage,
             formState.inputValues.address,
-            +formState.inputValues.phone
+            +formState.inputValues.phone,
+            formState.inputValues.description,
+            +formState.inputValues.price
           )
         );
       } else {
         console.log('--------CREATE PRODUCT: dispatch--------');
         console.log('selectedCategory:', selectedCategory);
+        console.log('selectedCondition:', selectedCondition);
         console.log('title:', formState.inputValues.title);
         console.log('description:', formState.inputValues.description);
         console.log('price:', +formState.inputValues.price);
@@ -185,12 +191,13 @@ const EditProductScreen = (props) => {
         await dispatch(
           productsActions.createProduct(
             selectedCategory,
+            selectedCondition,
             formState.inputValues.title,
-            formState.inputValues.description,
-            +formState.inputValues.price,
             selectedImage,
             formState.inputValues.address,
-            +formState.inputValues.phone
+            +formState.inputValues.phone,
+            formState.inputValues.description,
+            +formState.inputValues.price
           )
         );
       }
@@ -205,10 +212,10 @@ const EditProductScreen = (props) => {
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
     //inputIdentifier and text will act as key:value in the form reducer
-    console.log('-------TEXTCHANGEHANDLER, received values-------');
-    console.log('inputIdentifier:', inputIdentifier);
-    console.log('text:', text);
-    console.log('------------------------------------------------');
+    // console.log('-------TEXTCHANGEHANDLER, received values-------');
+    // console.log('inputIdentifier:', inputIdentifier);
+    // console.log('text:', text);
+    // console.log('------------------------------------------------');
 
     let isValid = true;
 
@@ -305,71 +312,38 @@ const EditProductScreen = (props) => {
               key={item.id}
               isHorizontal={true}
               isSelected={selectedCategory === item.title}
-              onSelect={
-                () => {
-                  setSelectedCategory(item.title);
-                  console.log('selectedCategory', selectedCategory);
-                  console.log('clicked category: ', item.title);
-                }
-                // (setSelectedCategory(item.title),
-                // textChangeHandler.bind(item.title, 'categoryName')
-                // console.log('selectedCategory: ', selectedCategory),
-                // console.log('item clicked: ', item),
-                // console.log(
-                //   'formState.inputValues.categoryName: ',
-                //   formState.inputValues.categoryName
-                // ))
-              }
+              onSelect={() => {
+                setSelectedCategory(item.title);
+                console.log('selectedCategory', selectedCategory);
+                console.log('clicked category: ', item.title);
+              }}
             />
           ))}
         </HorizontalScrollContainer>
       </FormFieldWrapper>
 
       {/* Condition of the item */}
-      <HorizontalScrollContainer scrollHeight={90}>
-        {CONDITION.map((item) => (
-          <IconItem
-            itemData={item}
-            key={item.id}
-            isHorizontal={true}
-            onSelect={() => {}}
-          />
-        ))}
-      </HorizontalScrollContainer>
-      {/* Something else of the item */}
-      <HorizontalScrollContainer scrollHeight={90}>
-        {OTHER.map((item) => (
-          <IconItem
-            itemData={item}
-            key={item.id}
-            isHorizontal={true}
-            onSelect={() => {}}
-          />
-        ))}
-      </HorizontalScrollContainer>
-      {/* <FormFieldWrapper
-        label="Kategori"
-        showPromptIf={!formState.inputValues.categoryName}
-        prompt="Välj en kategori"
+      <FormFieldWrapper
+        label="Skick"
+        showPromptIf={!selectedCondition}
+        prompt="Välj skick på ditt upplagda återbruk"
       >
-        <Picker
-          selectedValue={formState.inputValues.categoryName}
-          onValueChange={textChangeHandler.bind(this, 'categoryName')}
-        >
-          <Picker.Item key={'tak'} label={'tak'} value={'tak'.toLowerCase()} />
-          <Picker.Item
-            key={'golv'}
-            label={'golv'}
-            value={'golv'.toLowerCase()}
-          />
-          <Picker.Item
-            key={'dörr'}
-            label={'dörr'}
-            value={'dörr'.toLowerCase()}
-          />
-        </Picker>
-      </FormFieldWrapper> */}
-
+        <HorizontalScrollContainer scrollHeight={90}>
+          {CONDITION.map((item) => (
+            <IconItem
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              isSelected={selectedCondition === item.title}
+              onSelect={() => {
+                setSelectedCondition(item.title);
+                console.log('selectedCondition', selectedCondition);
+                console.log('clicked condition: ', item.title);
+              }}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </FormFieldWrapper>
       <FormFieldWrapper
         showPromptIf={!formState.inputValues.address}
         prompt="Den address återbruket kan hämtas på"

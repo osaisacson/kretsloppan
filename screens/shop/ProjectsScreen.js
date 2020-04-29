@@ -10,6 +10,8 @@ import Loader from '../../components/UI/Loader';
 import ProjectItem from '../../components/UI/ProjectItem';
 import SearchBar from '../../components/UI/SearchBar';
 import { Entypo } from '@expo/vector-icons';
+//Actions
+import * as projectsActions from '../../store/actions/projects';
 
 const ProjectsScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);

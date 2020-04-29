@@ -4,14 +4,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 import { Badge } from 'react-native-paper';
 import { Tooltip, Text } from 'react-native-elements';
 import Colors from './../../constants/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const HeaderTwo = props => {
+const HeaderTwo = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -59,35 +59,35 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   textAndBadge: {
     flexDirection: 'row',
     paddingLeft: 15,
     paddingTop: 20,
-    alignItems: 'baseline'
+    alignItems: 'baseline',
   },
   contentHeader: {
     fontFamily: 'bebas-neue-bold',
     fontSize: 25,
-    marginRight: 6
+    marginRight: 6,
   },
   indicator: {
     fontFamily: 'roboto-regular',
     fontSize: 16,
-    paddingBottom: 2
+    paddingBottom: 2,
   },
   subTitle: {
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
     paddingLeft: 15,
-    paddingBottom: 2
+    paddingBottom: 2,
   },
   extraSubTitle: {
     fontFamily: 'roboto-bold-italic',
     fontSize: 16,
     paddingLeft: 15,
-    paddingBottom: 2
+    paddingBottom: 2,
   },
   questionMarkSection: {
     alignItems: 'center',
@@ -96,11 +96,11 @@ const styles = StyleSheet.create({
     width: 20,
     marginRight: 10,
     backgroundColor: Colors.neutral,
-    borderRadius: 100 / 2
+    borderRadius: 100 / 2,
   },
   questionMark: {
-    color: '#fff'
-  }
+    color: '#fff',
+  },
 });
 
 export default HeaderTwo;

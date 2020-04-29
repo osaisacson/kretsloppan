@@ -67,7 +67,7 @@ export const signup = (email, password, profileName, phone, address, image) => {
       })
       .then(() => {
         console.log(
-          'store/actions/auth: trying to create a profile with this data:'
+          'store/actions/auth: attempting to create a profile with this data:'
         );
         console.log('profileName: ', profileName);
         console.log('email: ', email);

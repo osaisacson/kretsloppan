@@ -73,7 +73,7 @@ const HorizontalScroll = (props) => {
             height: scrollHeight,
           }}
         >
-          {/* If dataset passed is not mpty  */}
+          {/* If dataset passed is not empty  */}
           {scrollData.length ? (
             <View
               style={{

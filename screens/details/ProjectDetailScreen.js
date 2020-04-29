@@ -9,7 +9,7 @@ import {
   Image,
   StyleSheet,
   Alert,
-  FlatList
+  FlatList,
 } from 'react-native';
 import SaferArea from '../../components/UI/SaferArea';
 import HeaderTwo from '../../components/UI/HeaderTwo';
@@ -20,19 +20,19 @@ import Colors from '../../constants/Colors';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
-const ProjectDetailScreen = props => {
+const ProjectDetailScreen = (props) => {
   const projectId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
-  const loggedInUserId = useSelector(state => state.auth.userId);
+  const loggedInUserId = useSelector((state) => state.auth.userId);
 
-  const selectedProject = useSelector(state =>
-    state.projects.availableProjects.find(proj => proj.id === projectId)
+  const selectedProject = useSelector((state) =>
+    state.projects.availableProjects.find((proj) => proj.id === projectId)
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
-  const associatedProducts = useSelector(state =>
+  const associatedProducts = useSelector((state) =>
     state.products.availableProducts.filter(
-      prod => prod.projectId === projectId
+      (prod) => prod.projectId === projectId
     )
   );
 
@@ -41,7 +41,7 @@ const ProjectDetailScreen = props => {
 
   const hasEditPermission = ownerId === loggedInUserId;
 
-  const editProjectHandler = id => {
+  const editProjectHandler = (id) => {
     navigation.navigate('EditProject', { detailId: id });
   };
 
@@ -49,7 +49,7 @@ const ProjectDetailScreen = props => {
     props.navigation.navigate('ProductDetail', {
       detailId: id,
       ownerId: ownerId,
-      detailTitle: title
+      detailTitle: title,
     });
   };
 
@@ -65,8 +65,8 @@ const ProjectDetailScreen = props => {
           style: 'destructive',
           onPress: () => {
             dispatch(projectsActions.deleteProject(id));
-          }
-        }
+          },
+        },
       ]
     );
   };
@@ -98,7 +98,7 @@ const ProjectDetailScreen = props => {
       <Text style={styles.description}>{selectedProject.slogan}</Text>
       <HeaderTwo
         title={'Återbruk'}
-        subTitle={'Återbruk som är använt/kommer användas i projektet'}
+        subTitle={'Återbruk som används i projektet'}
         indicator={associatedProducts.length ? associatedProducts.length : 0}
         questionText={'Här ska det vara en förklaring'}
       />
@@ -111,9 +111,9 @@ const ProjectDetailScreen = props => {
         horizontal={false}
         numColumns={3}
         data={associatedProducts}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         ListHeaderComponent={projectHeader}
-        renderItem={itemData => (
+        renderItem={(itemData) => (
           <UsedItem
             key={itemData.item.id}
             isHorizontal={true}
@@ -135,16 +135,16 @@ const ProjectDetailScreen = props => {
 };
 
 //Sets/overrides the default navigation options in the ShopNavigator
-export const screenOptions = navData => {
+export const screenOptions = (navData) => {
   return {
-    headerTitle: navData.route.params.detailTitle
+    headerTitle: navData.route.params.detailTitle,
   };
 };
 
 const styles = StyleSheet.create({
   image: {
     height: 300,
-    width: '100%'
+    width: '100%',
   },
   actions: {
     flex: 1,
@@ -152,25 +152,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: -30,
     marginBottom: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   toggles: {
     flex: 1,
     marginBottom: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   price: {
     fontFamily: 'roboto-regular',
     fontSize: 20,
     textAlign: 'right',
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   description: {
     fontFamily: 'roboto-light-italic',
     fontSize: 14,
     textAlign: 'center',
-    marginHorizontal: 20
-  }
+    marginHorizontal: 20,
+  },
 });
 
 export default ProjectDetailScreen;

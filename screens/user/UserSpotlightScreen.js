@@ -80,9 +80,12 @@ const UserSpotlightScreen = (props) => {
     (product) => product.status === 'redo'
   );
 
-  const readyUserProducts = readyUserProductsRaw.sort(function (a, b) {
-    return new Date(b.readyDate) - new readyDate(a.date);
-  });
+  //TODO: make sorting below work
+  const readyUserProducts = readyUserProductsRaw;
+  // const readyUserProducts = readyUserProductsRaw.sort(function (a, b) {
+  //     return new Date(b.readyDate) - new readyDate(a.date);
+  //   return readyUserProductsRaw;
+  // });
 
   //Get all projects, return only the ones which matches the logged in id
   const userProjects = useSelector(
@@ -197,7 +200,7 @@ const UserSpotlightScreen = (props) => {
         <HorizontalScroll
           title={'Pausat'}
           subTitle={
-            'Återbruk jag lagt upp och pausat för bearbetning - glöm inte att markera dom som "redo" när dom är klara'
+            'Återbruk jag lagt upp och pausat för bearbetning - glöm inte att markera som "redo" när klart'
           }
           scrollData={pausedUserProducts}
           navigation={props.navigation}
