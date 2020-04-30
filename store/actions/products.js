@@ -1,169 +1,202 @@
 import Product from '../../models/product';
 
+export const LOADING_BEGIN = 'LOADING_BEGIN';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
-export const fetchProducts = () => {
+export function updateReservedProduct(key, product, token) {
+  return async (dispatch) => {
+    // Set a loading flag to true in the reducer
+    dispatch({ type: 'LOADING', loading: true });
+    try {
+      console.log(
+        'START----------actions/products/updateReservedProduct--------'
+      );
+      console.log('key: ', key);
+      console.log('unchanged product: ', product);
+      console.log('token: ', token);
+
+      //Since the products reservation date has passed, reset these values:
+      product.reservedUserId = '';
+      product.newOwnerId = '';
+      product.status = 'redo';
+      product.pauseDate = '';
+      product.readyDate = new Date().toISOString(); //Current date
+      product.eservedDate = '';
+      product.reservedUntil = '';
+      product.collectedDate = '';
+      product.projectId = '';
+
+      console.log('product values after update, to be sent to API: ', product);
+
+      // Perform the API call - update the product that has been expired
+      const response = await fetch(
+        `https://egnahemsfabriken.firebaseio.com/products/${key}.json?auth=${token}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            reservedUserId: product.reservedUserId,
+            newOwnerId: product.newOwnerId,
+            status: product.status,
+            pauseDate: product.pauseDate,
+            readyDate: product.readyDate,
+            reservedDate: product.reservedDate,
+            reservedUntil: product.reservedUntil,
+            collectedDate: product.collectedDate,
+            projectId: product.projectId,
+          }),
+        }
+      );
+      const updatedData = response.json();
+      console.log(
+        'actions/products/updateReservedProduct returned updated data after API call',
+        updatedData
+      );
+      dispatch({
+        type: CHANGE_PRODUCT_STATUS,
+        pid: key,
+        productData: {
+          reservedUserId: updatedData.reservedUserId,
+          newOwnerId: updatedData.newOwnerId,
+          status: updatedData.status,
+          pauseDate: updatedData.pauseDate,
+          readyDate: updatedData.readyDate,
+          reservedDate: updatedData.reservedDate,
+          reservedUntil: updatedData.reservedUntil,
+          collectedDate: updatedData.collectedDate,
+          projectId: updatedData.projectId,
+        },
+      });
+      console.log(
+        '----------actions/products/updateReservedProduct--------END'
+      );
+      return updatedData;
+    } catch (error) {
+      console.log('ERROR: ', error);
+      console.log('Error when updating products, setting is loading to false');
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/products/updateReservedProduct--------END');
+      // Rethrow so returned Promise is rejected
+      throw error;
+    }
+  };
+}
+
+export function fetchProducts() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
+    console.log(
+      'Starting to fetch/update products, setting is loading to true'
+    );
+    // Set a loading flag to true in the reducer
+    dispatch({ type: 'LOADING', loading: true });
+    ('START----------actions/products/fetchProducts--------');
 
+    // Perform the API call - fetching all products
     try {
       const response = await fetch(
         'https://egnahemsfabriken.firebaseio.com/products.json'
       );
-
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorId = errorResData.error.message;
-        let message = errorId;
-        throw new Error(message);
-      }
-
       const resData = await response.json();
+      console.log(
+        'Fetched data from API, length: ',
+        resData && resData.length
+          ? resData.length
+          : 'resData && resData.length evaluated to false'
+      );
       const loadedProducts = [];
-
+      console.log(
+        'Checking if any of the product reservation dates has passed'
+      );
       for (const key in resData) {
-        //Set the expiry date to be the date which the product has been reserved until
+        //Is the product reservation expired?
         const reservationExpiryDate = new Date(resData[key].reservedUntil);
-        //Check if the product has been picked up or not
         const isPickedUp = resData[key].status === 'hämtad';
-        //Set default values
-        let ownerId = resData[key].ownerId;
-        let reservedUserId = resData[key].reservedUserId;
-        let newOwnerId = resData[key].newOwnerId;
-        let categoryName = resData[key].categoryName;
-        let condition = resData[key].condition;
-        let title = resData[key].title;
-        let image = resData[key].image;
-        let address = resData[key].address;
-        let phone = resData[key].phone;
-        let description = resData[key].description;
-        let price = resData[key].price;
-        let date = resData[key].date;
-        let status = resData[key].status;
-        let readyDate = resData[key].readyDate;
-        let pauseDate = resData[key].pauseDate;
-        let reservedDate = resData[key].reservedDate;
-        let reservedUntil = resData[key].reservedUntil;
-        let collectedDate = resData[key].collectedDate;
-        let projectId = resData[key].projectId;
-
-        //If the product is not picked up, reservationExpiryDate is a date, and that date is less than today...
-        if (
+        const shouldBeReset =
           !isPickedUp &&
           reservationExpiryDate instanceof Date &&
-          reservationExpiryDate <= new Date()
-        ) {
-          //...set the default values to be these instead:
-          reservedUserId = '';
-          newOwnerId = '';
-          status = 'redo';
-          pauseDate = '';
-          readyDate = new Date().toISOString(); //Current date
-          reservedDate = '';
-          reservedUntil = '';
-          collectedDate = '';
-          projectId = '';
-
-          //Checks
-          console.log('------------EXPIRED------------');
-          console.log('title:', title);
-          console.log('reservationExpiryDate:', reservationExpiryDate);
-          console.log('thats a date?:', reservationExpiryDate instanceof Date);
-          console.log('original status:', resData[key].status);
-          console.log('new status:', status);
-          console.log('reset project id as empty string: ', projectId);
-          console.log('original reservedUntil:', resData[key].reservedUntil);
-          console.log('sets new reservedUntil as empty string:', reservedUntil);
-          console.log('original reservedUserId:', resData[key].reservedUserId);
-          console.log(
-            'sets new reservedUserId as empty string:',
-            reservedUserId
-          );
-          console.log('original reservedDate:', resData[key].reservedDate);
-          console.log('sets new reservedDate as empty string: ', reservedDate);
-          console.log('--------------------------------------');
-
+          reservationExpiryDate <= new Date();
+        console.log('Is it expired? ', shouldBeReset);
+        //If it is not picked up and the reservation has passed...
+        if (shouldBeReset) {
           const token = getState().auth.token;
-
-          const response = await fetch(
-            `https://egnahemsfabriken.firebaseio.com/products/${key}.json?auth=${token}`,
-            {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                reservedUserId,
-                newOwnerId,
-                status,
-                pauseDate,
-                readyDate,
-                reservedDate,
-                reservedUntil,
-                collectedDate,
-                projectId,
-              }),
+          //...call the function which updates the product data, and pass it the product and auth token
+          console.log(
+            'Found expired product, calling updateReservedProduct ------>'
+          );
+          return updateReservedProduct(key, resData[key], token).then(
+            (updatedResult) => {
+              console.log(
+                '---------> ...updated result received from updateReservedProduct, updating product with: '
+              );
+              console.log('key: ', key);
+              console.log('updatedResult: ', updatedResult);
+              console.log(
+                `${key} product was expired, pushing updated product to loadedProducts`
+              );
+              loadedProducts.push(
+                new Product(
+                  key,
+                  updatedResult.ownerId,
+                  updatedResult.reservedUserId,
+                  updatedResult.newOwnerId,
+                  updatedResult.categoryName,
+                  updatedResult.condition,
+                  updatedResult.title,
+                  updatedResult.image,
+                  updatedResult.address,
+                  updatedResult.phone,
+                  updatedResult.description,
+                  updatedResult.price,
+                  updatedResult.date,
+                  updatedResult.status,
+                  updatedResult.pauseDate,
+                  updatedResult.readyDate,
+                  updatedResult.reservedDate,
+                  updatedResult.reservedUntil,
+                  updatedResult.collectedDate,
+                  updatedResult.projectId
+                )
+              );
             }
           );
-
-          if (!response.ok) {
-            console.log(
-              'actions/products.js fetchProducts: Something went wrong in attempting to update expired products'
-            );
-            const errorResData = await response.json();
-            const errorId = errorResData.error.message;
-            let message = errorId;
-            throw new Error(message);
-          }
-
-          dispatch({
-            type: CHANGE_PRODUCT_STATUS,
-            pid: key,
-            productData: {
-              reservedUserId,
-              newOwnerId,
-              status,
-              pauseDate,
-              readyDate,
-              reservedDate,
-              reservedUntil,
-              collectedDate,
-              projectId,
-            },
-          });
         }
-
+        console.log(
+          `${key} product was not expired, pushing original product to loadedProducts`
+        );
         loadedProducts.push(
           new Product(
             key,
-            ownerId,
-            reservedUserId,
-            newOwnerId,
-            categoryName,
-            condition,
-            title,
-            image,
-            address,
-            phone,
-            description,
-            price,
-            date,
-            status,
-            pauseDate,
-            readyDate,
-            reservedDate,
-            reservedUntil,
-            collectedDate,
-            projectId
+            resData[key].ownerId,
+            resData[key].reservedUserId,
+            resData[key].newOwnerId,
+            resData[key].categoryName,
+            resData[key].condition,
+            resData[key].title,
+            resData[key].image,
+            resData[key].address,
+            resData[key].phone,
+            resData[key].description,
+            resData[key].price,
+            resData[key].date,
+            resData[key].status,
+            resData[key].pauseDate,
+            resData[key].readyDate,
+            resData[key].reservedDate,
+            resData[key].reservedUntil,
+            resData[key].collectedDate,
+            resData[key].projectId
           )
         );
       }
-      console.log('store/actions/proposals/fetchProducts: fetching products');
-
+      console.log('Dispatch SET_PRODUCTS, passing it loadedProducts');
+      // Set our products in the reducer
       dispatch({
         type: SET_PRODUCTS,
         products: loadedProducts,
@@ -173,12 +206,208 @@ export const fetchProducts = () => {
             prod.status === 'reserverad' && prod.reservedUserId === userId
         ),
       });
-    } catch (err) {
-      // send to custom analytics server
-      throw err;
+      console.log(
+        'Done with fetching/updating products, setting is loading to false'
+      );
+      // Set a loading flag to false in the reducer
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/products/fetchProducts--------END');
+    } catch (error) {
+      console.log('ERROR: ', error);
+      console.log(
+        'Error when fetching/updating products, setting is loading to false'
+      );
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/products/fetchProducts--------END');
+      // Rethrow so returned Promise is rejected
+      throw error;
     }
   };
-};
+}
+
+// export const fetchProducts = () => {
+//   return async (dispatch, getState) => {
+//     const userId = getState().auth.userId;
+
+//     try {
+//       console.log('actions/products.js fetchProducts: setting loading to true');
+//       dispatch({
+//         type: LOADING_BEGIN,
+//       });
+//       const response = await fetch(
+//         'https://egnahemsfabriken.firebaseio.com/products.json'
+//       );
+
+//       if (!response.ok) {
+//         const errorResData = await response.json();
+//         const errorId = errorResData.error.message;
+//         let message = errorId;
+//         throw new Error(message);
+//       }
+
+//       const resData = await response.json();
+//       const loadedProducts = [];
+
+//       for (const key in resData) {
+//         //Set the expiry date to be the date which the product has been reserved until
+//         const reservationExpiryDate = new Date(resData[key].reservedUntil);
+//         //Check if the product has been picked up or not
+//         const isPickedUp = resData[key].status === 'hämtad';
+//         //Set default values
+//         let ownerId = resData[key].ownerId;
+//         let reservedUserId = resData[key].reservedUserId;
+//         let newOwnerId = resData[key].newOwnerId;
+//         let categoryName = resData[key].categoryName;
+//         let condition = resData[key].condition;
+//         let title = resData[key].title;
+//         let image = resData[key].image;
+//         let address = resData[key].address;
+//         let phone = resData[key].phone;
+//         let description = resData[key].description;
+//         let price = resData[key].price;
+//         let date = resData[key].date;
+//         let status = resData[key].status;
+//         let readyDate = resData[key].readyDate;
+//         let pauseDate = resData[key].pauseDate;
+//         let reservedDate = resData[key].reservedDate;
+//         let reservedUntil = resData[key].reservedUntil;
+//         let collectedDate = resData[key].collectedDate;
+//         let projectId = resData[key].projectId;
+
+//         //If the product is not picked up, reservationExpiryDate is a date, and that date is less than today...
+//         if (
+//           !isPickedUp &&
+//           reservationExpiryDate instanceof Date &&
+//           reservationExpiryDate <= new Date()
+//         ) {
+//           const token = getState().auth.token;
+
+//           //...set the default values to be these instead:
+//           reservedUserId = '';
+//           newOwnerId = '';
+//           status = 'redo';
+//           pauseDate = '';
+//           readyDate = new Date().toISOString(); //Current date
+//           reservedDate = '';
+//           reservedUntil = '';
+//           collectedDate = '';
+//           projectId = '';
+
+//           //Checks
+//           // console.log('------------EXPIRED------------');
+//           // console.log('title:', title);
+//           // console.log('reservationExpiryDate:', reservationExpiryDate);
+//           // console.log('thats a date?:', reservationExpiryDate instanceof Date);
+//           // console.log('original status:', resData[key].status);
+//           // console.log('new status:', status);
+//           // console.log('reset project id as empty string: ', projectId);
+//           // console.log('original reservedUntil:', resData[key].reservedUntil);
+//           // console.log('sets new reservedUntil as empty string:', reservedUntil);
+//           // console.log('original reservedUserId:', resData[key].reservedUserId);
+//           // console.log(
+//           //   'sets new reservedUserId as empty string:',
+//           //   reservedUserId
+//           // );
+//           // console.log('original reservedDate:', resData[key].reservedDate);
+//           // console.log('sets new reservedDate as empty string: ', reservedDate);
+//           // console.log('--------------------------------------');
+
+//           const response = await fetch(
+//             `https://egnahemsfabriken.firebaseio.com/products/${key}.json?auth=${token}`,
+//             {
+//               method: 'PATCH',
+//               headers: {
+//                 'Content-Type': 'application/json',
+//               },
+//               body: JSON.stringify({
+//                 reservedUserId,
+//                 newOwnerId,
+//                 status,
+//                 pauseDate,
+//                 readyDate,
+//                 reservedDate,
+//                 reservedUntil,
+//                 collectedDate,
+//                 projectId,
+//               }),
+//             }
+//           );
+
+//           if (!response.ok) {
+//             console.log(
+//               'actions/products.js fetchProducts: Something went wrong in attempting to update expired products'
+//             );
+//             const errorResData = await response.json();
+//             const errorId = errorResData.error.message;
+//             let message = errorId;
+//             throw new Error(message);
+//           }
+
+//           dispatch({
+//             type: CHANGE_PRODUCT_STATUS,
+//             pid: key,
+//             productData: {
+//               reservedUserId,
+//               newOwnerId,
+//               status,
+//               pauseDate,
+//               readyDate,
+//               reservedDate,
+//               reservedUntil,
+//               collectedDate,
+//               projectId,
+//             },
+//           });
+//         }
+//         dispatch({
+//           type: LOADING_BEGIN,
+//         });
+//         console.log(
+//           'actions/products.js fetchProducts: setting loading to true again, after having dispatched CHANGE_PRODUCT_STATUS, which if successful sets it to false. This is because we need to now update the full set of products.'
+//         );
+
+//         loadedProducts.push(
+//           new Product(
+//             key,
+//             ownerId,
+//             reservedUserId,
+//             newOwnerId,
+//             categoryName,
+//             condition,
+//             title,
+//             image,
+//             address,
+//             phone,
+//             description,
+//             price,
+//             date,
+//             status,
+//             pauseDate,
+//             readyDate,
+//             reservedDate,
+//             reservedUntil,
+//             collectedDate,
+//             projectId
+//           )
+//         );
+//       }
+//       console.log('store/actions/proposals/fetchProducts: fetching products');
+
+//       dispatch({
+//         type: SET_PRODUCTS,
+//         products: loadedProducts,
+//         userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
+//         reservedProducts: loadedProducts.filter(
+//           (prod) =>
+//             prod.status === 'reserverad' && prod.reservedUserId === userId
+//         ),
+//       });
+//     } catch (err) {
+//       // send to custom analytics server
+//       throw err;
+//     }
+//   };
+// };
 
 export const deleteProduct = (productId) => {
   return async (dispatch, getState) => {
