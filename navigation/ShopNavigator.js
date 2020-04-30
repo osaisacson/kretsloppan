@@ -123,9 +123,6 @@ export const ShopNavigator = (props) => {
   // }, [loadProfiles, loadProducts, loadProjects, loadProposals]);
 
   useEffect(() => {
-    console.log(
-      'UseEffect in ShopNavigator: setting isLoading to true while attempting to fetch profiles, products, projects and proposals.........................START'
-    );
     isMountedRef.current = true;
     setIsLoading(true);
     if (isMountedRef.current) {
@@ -140,9 +137,6 @@ export const ShopNavigator = (props) => {
           loadProposals();
         })
         .then(() => {
-          console.log(
-            '.................................END: UseEffect in ShopNavigator: profiles, products, projects & proposals fetched, setting isLoading to false.'
-          );
           setIsLoading(false);
         });
     }

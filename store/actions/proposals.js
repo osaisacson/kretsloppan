@@ -36,9 +36,6 @@ export const fetchProposals = () => {
           )
         );
       }
-
-      console.log('store/actions/proposals/fetchProposals: fetching proposals');
-
       dispatch({
         type: SET_PROPOSALS,
         proposals: loadedProposals,

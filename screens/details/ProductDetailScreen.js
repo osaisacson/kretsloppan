@@ -57,7 +57,7 @@ const ProductDetailScreen = (props) => {
     const id = selectedProduct.id;
     Alert.alert(
       'Är du säker?',
-      'Vill du verkligen radera den här produkten? Det går inte att gå ändra sig sen.',
+      'Vill du verkligen radera den här produkten? Det går inte att gå ändra sig när det väl är gjort.',
       [
         { text: 'Nej', style: 'default' },
         {

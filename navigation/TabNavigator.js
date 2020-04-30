@@ -19,8 +19,6 @@ import Colors from '../constants/Colors';
 const TabStackNavigator = createMaterialBottomTabNavigator();
 
 export const TabNavigator = () => {
-  console.log('calling component TabNavigator');
-
   return (
     <TabStackNavigator.Navigator
       initialRouteName="Ge Igen"
