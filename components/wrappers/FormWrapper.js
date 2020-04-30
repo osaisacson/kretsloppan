@@ -4,7 +4,7 @@ import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import ButtonNormal from '../UI/ButtonNormal';
 import ScrollViewToTop from './ScrollViewToTop';
 
-const FormWrapper = props => {
+const FormWrapper = (props) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -14,6 +14,7 @@ const FormWrapper = props => {
       <ScrollViewToTop>
         <View style={styles.formWrapper}>{props.children}</View>
         <ButtonNormal
+          disabled={props.isLoading}
           text={props.submitButtonText}
           actionOnPress={props.handlerForButtonSubmit}
         />
@@ -24,8 +25,8 @@ const FormWrapper = props => {
 
 const styles = StyleSheet.create({
   formWrapper: {
-    paddingHorizontal: 8
-  }
+    paddingHorizontal: 8,
+  },
 });
 
 export default FormWrapper;

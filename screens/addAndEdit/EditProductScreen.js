@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Button } from 'react-native-paper';
 
 //Components
+import { Button } from 'react-native-paper';
 import { Alert, TextInput, Text, View, Image, StyleSheet } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
@@ -12,6 +12,7 @@ import {
   formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
 import IconItem from '../../components/UI/IconItem';
+import Loader from '../../components/UI/Loader';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 
 //Actions
@@ -201,11 +202,10 @@ const EditProductScreen = (props) => {
           )
         );
       }
-      props.navigation.goBack();
     } catch (err) {
       setError(err.message);
     }
-
+    props.navigation.goBack();
     setIsLoading(false);
   }, [dispatch, prodId, formState]);
 
@@ -231,6 +231,10 @@ const EditProductScreen = (props) => {
       input: inputIdentifier,
     });
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <FormWrapper

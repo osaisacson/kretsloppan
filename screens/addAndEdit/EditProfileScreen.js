@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+//Components
 import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
   formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
+import Loader from '../../components/UI/Loader';
 import ImagePicker from '../../components/UI/ImgPicker';
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
@@ -105,10 +108,10 @@ const EditProfileScreen = (props) => {
           )
         );
       }
-      props.navigation.navigate('Återbruk');
     } catch (err) {
       setError(err.message);
     }
+    props.navigation.goBack();
     setIsLoading(false);
   }, [dispatch, currentProfile, formState]);
 
@@ -138,15 +141,9 @@ const EditProfileScreen = (props) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (isLoading) {
-      Alert.alert(
-        'Laddar upp din profil, ändringarna syns om några sekunder',
-        error,
-        [{ text: 'OK' }]
-      );
-    }
-  }, [isLoading]);
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <FormWrapper

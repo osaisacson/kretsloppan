@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 //Components
 import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
-  formStyles
+  formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
+import Loader from '../../components/UI/Loader';
 
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
@@ -17,11 +19,11 @@ const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
-      [action.input]: action.value // From textChangeHandler = (inputIdentifier, text)
+      [action.input]: action.value, // From textChangeHandler = (inputIdentifier, text)
     };
     const updatedValidities = {
       ...state.inputValidities,
-      [action.input]: action.isValid
+      [action.input]: action.isValid,
     };
     let updatedFormIsValid = true;
     for (const key in updatedValidities) {
@@ -30,21 +32,21 @@ const formReducer = (state, action) => {
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
-      inputValues: updatedValues
+      inputValues: updatedValues,
     };
   }
   return state;
 };
 
-const EditProposalScreen = props => {
+const EditProposalScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const proposalId = props.route.params ? props.route.params.detailId : null;
 
   //Find proposal
-  const editedProposal = useSelector(state =>
-    state.proposals.userProposals.find(proposal => proposal.id === proposalId)
+  const editedProposal = useSelector((state) =>
+    state.proposals.userProposals.find((proposal) => proposal.id === proposalId)
   );
   const dispatch = useDispatch();
 
@@ -52,14 +54,14 @@ const EditProposalScreen = props => {
     inputValues: {
       title: editedProposal ? editedProposal.title : '',
       description: editedProposal ? editedProposal.description : '',
-      price: editedProposal ? editedProposal.price : ''
+      price: editedProposal ? editedProposal.price : '',
     },
     inputValidities: {
       title: editedProposal ? true : false,
       description: editedProposal ? true : false,
-      price: editedProposal ? true : false
+      price: editedProposal ? true : false,
     },
-    formIsValid: editedProposal ? true : false
+    formIsValid: editedProposal ? true : false,
   });
 
   useEffect(() => {
@@ -98,11 +100,10 @@ const EditProposalScreen = props => {
           )
         );
       }
-      props.navigation.goBack();
     } catch (err) {
       setError(err.message);
     }
-
+    props.navigation.goBack();
     setIsLoading(false);
   }, [dispatch, proposalId, formState]);
 
@@ -121,9 +122,13 @@ const EditProposalScreen = props => {
       type: FORM_INPUT_UPDATE,
       value: text,
       isValid: isValid,
-      input: inputIdentifier
+      input: inputIdentifier,
     });
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <FormWrapper
@@ -181,12 +186,12 @@ const EditProposalScreen = props => {
   );
 };
 
-export const screenOptions = navData => {
+export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
     headerTitle: routeParams.detailId
       ? 'Redigera efterlysning'
-      : 'Lägg till ny efterlysning'
+      : 'Lägg till ny efterlysning',
   };
 };
 

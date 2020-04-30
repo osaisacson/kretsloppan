@@ -58,8 +58,10 @@ const UserSpotlightScreen = (props) => {
   );
 
   //RESERVED: Gets all products reserved by the user
-  const reservedByUserRaw = useSelector(
-    (state) => state.products.reservedProducts
+  const reservedByUserRaw = availableProducts.filter(
+    (product) =>
+      product.status === 'reserverad' &&
+      product.reservedUserId === loggedInUserId
   );
 
   const reservedByUser = reservedByUserRaw.sort(function (a, b) {
@@ -80,12 +82,9 @@ const UserSpotlightScreen = (props) => {
     (product) => product.status === 'redo'
   );
 
-  //TODO: make sorting below work
-  const readyUserProducts = readyUserProductsRaw;
-  // const readyUserProducts = readyUserProductsRaw.sort(function (a, b) {
-  //     return new Date(b.readyDate) - new readyDate(a.date);
-  //   return readyUserProductsRaw;
-  // });
+  const readyUserProducts = readyUserProductsRaw.sort(function (a, b) {
+    return new Date(b.readyDate) - new Date(a.readyDate);
+  });
 
   //Get all projects, return only the ones which matches the logged in id
   const userProjects = useSelector(

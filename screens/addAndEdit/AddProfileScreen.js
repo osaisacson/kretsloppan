@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ActivityIndicator, Alert, TextInput, View } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 
 //Components
 import FormWrapper from '../../components/wrappers/FormWrapper';
@@ -9,6 +9,8 @@ import {
   formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
+import Loader from '../../components/UI/Loader';
+
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
 
@@ -83,7 +85,7 @@ const AddProfileScreen = (props) => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(
+      dispatch(
         profilesActions.createProfile(
           formState.inputValues.profileName,
           formState.inputValues.email,
@@ -95,6 +97,7 @@ const AddProfileScreen = (props) => {
     } catch (err) {
       setError(err.message);
     }
+    props.navigation.navigate('Ge Igen');
     setIsLoading(false);
   }, [dispatch, currentProfile, formState]);
 
@@ -124,22 +127,8 @@ const AddProfileScreen = (props) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (isLoading) {
-      Alert.alert(
-        'Laddar upp din profil, ändringarna syns om några sekunder',
-        error,
-        [{ text: 'OK' }]
-      );
-    }
-  }, [isLoading]);
-
   if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {isLoading && <ActivityIndicator color={'#ff0000'} />}
-      </View>
-    );
+    return <Loader />;
   }
 
   return (

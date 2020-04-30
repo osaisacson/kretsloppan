@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
-  formStyles
+  formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
+import Loader from '../../components/UI/Loader';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
@@ -16,11 +17,11 @@ const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
-      [action.input]: action.value // From textChangeHandler = (inputIdentifier, text)
+      [action.input]: action.value, // From textChangeHandler = (inputIdentifier, text)
     };
     const updatedValidities = {
       ...state.inputValidities,
-      [action.input]: action.isValid
+      [action.input]: action.isValid,
     };
     let updatedFormIsValid = true;
     for (const key in updatedValidities) {
@@ -29,21 +30,21 @@ const formReducer = (state, action) => {
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
-      inputValues: updatedValues
+      inputValues: updatedValues,
     };
   }
   return state;
 };
 
-const EditProjectScreen = props => {
+const EditProjectScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const projId = props.route.params ? props.route.params.detailId : null;
 
   //Find project
-  const editedProject = useSelector(state =>
-    state.projects.userProjects.find(proj => proj.id === projId)
+  const editedProject = useSelector((state) =>
+    state.projects.userProjects.find((proj) => proj.id === projId)
   );
   const dispatch = useDispatch();
 
@@ -51,14 +52,14 @@ const EditProjectScreen = props => {
     inputValues: {
       title: editedProject ? editedProject.title : '',
       image: editedProject ? editedProject.image : '',
-      slogan: editedProject ? editedProject.slogan : ''
+      slogan: editedProject ? editedProject.slogan : '',
     },
     inputValidities: {
       title: editedProject ? true : false,
       image: editedProject ? true : false,
-      slogan: editedProject ? true : false
+      slogan: editedProject ? true : false,
     },
-    formIsValid: editedProject ? true : false
+    formIsValid: editedProject ? true : false,
   });
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const EditProjectScreen = props => {
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert('Wrong input!', 'Please check the errors in the form.', [
-        { text: 'Okay' }
+        { text: 'Okay' },
       ]);
       return;
     }
@@ -95,11 +96,10 @@ const EditProjectScreen = props => {
           )
         );
       }
-      props.navigation.goBack();
     } catch (err) {
       setError(err.message);
     }
-
+    props.navigation.goBack();
     setIsLoading(false);
   }, [dispatch, projId, formState]);
 
@@ -118,9 +118,13 @@ const EditProjectScreen = props => {
       type: FORM_INPUT_UPDATE,
       value: text,
       isValid: isValid,
-      input: inputIdentifier
+      input: inputIdentifier,
     });
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <FormWrapper
@@ -171,12 +175,12 @@ const EditProjectScreen = props => {
   );
 };
 
-export const screenOptions = navData => {
+export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
     headerTitle: routeParams.projectId
       ? 'Redigera projekt'
-      : 'Lägg till projekt'
+      : 'Lägg till projekt',
   };
 };
 
