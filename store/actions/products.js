@@ -53,7 +53,7 @@ export function updateReservedProduct(key, product, token) {
           }),
         }
       );
-      const updatedData = response.json();
+      const updatedData = await response.json();
       console.log(
         'actions/products/updateReservedProduct returned updated data after API call',
         updatedData
@@ -225,190 +225,6 @@ export function fetchProducts() {
   };
 }
 
-// export const fetchProducts = () => {
-//   return async (dispatch, getState) => {
-//     const userId = getState().auth.userId;
-
-//     try {
-//       console.log('actions/products.js fetchProducts: setting loading to true');
-//       dispatch({
-//         type: LOADING_BEGIN,
-//       });
-//       const response = await fetch(
-//         'https://egnahemsfabriken.firebaseio.com/products.json'
-//       );
-
-//       if (!response.ok) {
-//         const errorResData = await response.json();
-//         const errorId = errorResData.error.message;
-//         let message = errorId;
-//         throw new Error(message);
-//       }
-
-//       const resData = await response.json();
-//       const loadedProducts = [];
-
-//       for (const key in resData) {
-//         //Set the expiry date to be the date which the product has been reserved until
-//         const reservationExpiryDate = new Date(resData[key].reservedUntil);
-//         //Check if the product has been picked up or not
-//         const isPickedUp = resData[key].status === 'hämtad';
-//         //Set default values
-//         let ownerId = resData[key].ownerId;
-//         let reservedUserId = resData[key].reservedUserId;
-//         let newOwnerId = resData[key].newOwnerId;
-//         let categoryName = resData[key].categoryName;
-//         let condition = resData[key].condition;
-//         let title = resData[key].title;
-//         let image = resData[key].image;
-//         let address = resData[key].address;
-//         let phone = resData[key].phone;
-//         let description = resData[key].description;
-//         let price = resData[key].price;
-//         let date = resData[key].date;
-//         let status = resData[key].status;
-//         let readyDate = resData[key].readyDate;
-//         let pauseDate = resData[key].pauseDate;
-//         let reservedDate = resData[key].reservedDate;
-//         let reservedUntil = resData[key].reservedUntil;
-//         let collectedDate = resData[key].collectedDate;
-//         let projectId = resData[key].projectId;
-
-//         //If the product is not picked up, reservationExpiryDate is a date, and that date is less than today...
-//         if (
-//           !isPickedUp &&
-//           reservationExpiryDate instanceof Date &&
-//           reservationExpiryDate <= new Date()
-//         ) {
-//           const token = getState().auth.token;
-
-//           //...set the default values to be these instead:
-//           reservedUserId = '';
-//           newOwnerId = '';
-//           status = 'redo';
-//           pauseDate = '';
-//           readyDate = new Date().toISOString(); //Current date
-//           reservedDate = '';
-//           reservedUntil = '';
-//           collectedDate = '';
-//           projectId = '';
-
-//           //Checks
-//           // console.log('------------EXPIRED------------');
-//           // console.log('title:', title);
-//           // console.log('reservationExpiryDate:', reservationExpiryDate);
-//           // console.log('thats a date?:', reservationExpiryDate instanceof Date);
-//           // console.log('original status:', resData[key].status);
-//           // console.log('new status:', status);
-//           // console.log('reset project id as empty string: ', projectId);
-//           // console.log('original reservedUntil:', resData[key].reservedUntil);
-//           // console.log('sets new reservedUntil as empty string:', reservedUntil);
-//           // console.log('original reservedUserId:', resData[key].reservedUserId);
-//           // console.log(
-//           //   'sets new reservedUserId as empty string:',
-//           //   reservedUserId
-//           // );
-//           // console.log('original reservedDate:', resData[key].reservedDate);
-//           // console.log('sets new reservedDate as empty string: ', reservedDate);
-//           // console.log('--------------------------------------');
-
-//           const response = await fetch(
-//             `https://egnahemsfabriken.firebaseio.com/products/${key}.json?auth=${token}`,
-//             {
-//               method: 'PATCH',
-//               headers: {
-//                 'Content-Type': 'application/json',
-//               },
-//               body: JSON.stringify({
-//                 reservedUserId,
-//                 newOwnerId,
-//                 status,
-//                 pauseDate,
-//                 readyDate,
-//                 reservedDate,
-//                 reservedUntil,
-//                 collectedDate,
-//                 projectId,
-//               }),
-//             }
-//           );
-
-//           if (!response.ok) {
-//             console.log(
-//               'actions/products.js fetchProducts: Something went wrong in attempting to update expired products'
-//             );
-//             const errorResData = await response.json();
-//             const errorId = errorResData.error.message;
-//             let message = errorId;
-//             throw new Error(message);
-//           }
-
-//           dispatch({
-//             type: CHANGE_PRODUCT_STATUS,
-//             pid: key,
-//             productData: {
-//               reservedUserId,
-//               newOwnerId,
-//               status,
-//               pauseDate,
-//               readyDate,
-//               reservedDate,
-//               reservedUntil,
-//               collectedDate,
-//               projectId,
-//             },
-//           });
-//         }
-//         dispatch({
-//           type: LOADING_BEGIN,
-//         });
-//         console.log(
-//           'actions/products.js fetchProducts: setting loading to true again, after having dispatched CHANGE_PRODUCT_STATUS, which if successful sets it to false. This is because we need to now update the full set of products.'
-//         );
-
-//         loadedProducts.push(
-//           new Product(
-//             key,
-//             ownerId,
-//             reservedUserId,
-//             newOwnerId,
-//             categoryName,
-//             condition,
-//             title,
-//             image,
-//             address,
-//             phone,
-//             description,
-//             price,
-//             date,
-//             status,
-//             pauseDate,
-//             readyDate,
-//             reservedDate,
-//             reservedUntil,
-//             collectedDate,
-//             projectId
-//           )
-//         );
-//       }
-//       console.log('store/actions/proposals/fetchProducts: fetching products');
-
-//       dispatch({
-//         type: SET_PRODUCTS,
-//         products: loadedProducts,
-//         userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
-//         reservedProducts: loadedProducts.filter(
-//           (prod) =>
-//             prod.status === 'reserverad' && prod.reservedUserId === userId
-//         ),
-//       });
-//     } catch (err) {
-//       // send to custom analytics server
-//       throw err;
-//     }
-//   };
-// };
-
 export const deleteProduct = (productId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -429,7 +245,42 @@ export const deleteProduct = (productId) => {
   };
 };
 
-export const createProduct = (
+export function createImage(image) {
+  return async (dispatch) => {
+    // Set a loading flag to true in the reducer
+    dispatch({ type: 'LOADING', loading: true });
+    try {
+      console.log('START----------actions/products/createImage--------');
+      console.log('Attempting to convert image from base64 to firebase url');
+      console.log('image.length: ', image.length);
+
+      // Perform the API call - convert image from base64 to a firebase url
+      const response = await fetch(
+        'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+          }),
+        }
+      );
+
+      const firebaseImageUrl = await response.json();
+      console.log('returned image url from firebase', firebaseImageUrl);
+      console.log('----------actions/products/createImage--------END');
+      return firebaseImageUrl;
+    } catch (error) {
+      console.log('ERROR: ', error);
+      console.log('Error when updating products, setting is loading to false');
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/products/updateReservedProduct--------END');
+      // Rethrow so returned Promise is rejected
+      throw error;
+    }
+  };
+}
+
+export function createProduct(
   categoryName,
   condition,
   title,
@@ -438,104 +289,214 @@ export const createProduct = (
   phone,
   description,
   price
-) => {
-  return (dispatch, getState) => {
+) {
+  return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
 
-    // Handle HTTP errors since fetch won't.
-    function handleErrors(response) {
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      return response;
-    }
+    // Set a loading flag to true in the reducer
+    dispatch({ type: 'LOADING', loading: true });
+    try {
+      console.log('START----------actions/products/createProduct--------');
 
-    fetch(
-      'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-        }),
-      }
-    )
-      .then(handleErrors)
-      .then((res) => res.json())
-      .then((parsedRes) => {
-        const productData = {
-          ownerId: userId,
-          reservedUserId: '',
-          newOwnerId: '',
-          categoryName,
-          condition,
-          title,
-          image: parsedRes.image, //This is how we link to the image we store above
-          address,
-          phone,
-          description,
-          price,
-          date: currentDate,
-          status: 'redo',
-          pauseDate: '',
-          readyDate: currentDate,
-          reservedDate: '',
-          reservedUntil: '',
-          collectedDate: '',
-          projectId: '000',
-        };
-        //Then upload the rest of the data to realtime database on firebase
-        return fetch(
-          `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
-          {
-            method: 'POST',
-            body: JSON.stringify(productData),
-          }
-        )
-          .catch((err) =>
-            console.log(
-              'Error when attempting to save to firebase realtime database: ',
-              err
-            )
-          )
-          .then((finalRes) => finalRes.json())
-          .then((finalResParsed) => {
-            console.log('store/actions/products/createProduct called');
+      //First convert the base64 image to a firebase url...
+      return dispatch(createImage(image)).then(
+        async (parsedRes) => {
+          //...then take the returned image and...
+          console.log(
+            'returned result from the createImage function: ',
+            parsedRes
+          );
 
-            dispatch({
-              type: CREATE_PRODUCT,
-              productData: {
-                id: finalResParsed.name,
-                ownerId: userId,
-                reservedUserId: '',
-                newOwnerId: '',
-                categoryName,
-                condition,
-                title,
-                image,
-                address,
-                phone,
-                description,
-                price,
-                date: currentDate,
-                status: 'redo',
-                readyDate: currentDate,
-                pauseDate: '',
-                readyDate: currentDate,
-                reservedDate: '',
-                reservedUntil: '',
-                collectedDate: '',
-                projectId: '000',
-              },
-            });
+          //...together with the rest of the data create the productData object.
+          const productData = {
+            ownerId: userId,
+            reservedUserId: '',
+            newOwnerId: '',
+            categoryName,
+            condition,
+            title,
+            image: parsedRes.image, //This is how we link to the image we create through the createImage function
+            address,
+            phone,
+            description,
+            price,
+            date: currentDate,
+            status: 'redo',
+            pauseDate: '',
+            readyDate: currentDate,
+            reservedDate: '',
+            reservedUntil: '',
+            collectedDate: '',
+            projectId: '000',
+          };
+
+          // Perform the API call - create the product, passing the productData object above
+          const response = await fetch(
+            `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
+            {
+              method: 'POST',
+              body: JSON.stringify(productData),
+            }
+          );
+          const returnedProductData = await response.json();
+
+          console.log('dispatching CREATE_PRODUCT');
+
+          dispatch({
+            type: CREATE_PRODUCT,
+            productData: {
+              id: returnedProductData.name,
+              ownerId: userId,
+              reservedUserId: '',
+              newOwnerId: '',
+              categoryName,
+              condition,
+              title,
+              image: parsedRes.image,
+              address,
+              phone,
+              description,
+              price,
+              date: currentDate,
+              status: 'redo',
+              readyDate: currentDate,
+              pauseDate: '',
+              readyDate: currentDate,
+              reservedDate: '',
+              reservedUntil: '',
+              collectedDate: '',
+              projectId: '000',
+            },
           });
-      })
-      .catch((err) =>
-        console.log('error when trying to post to cloudfunctions', err)
+          console.log('----------actions/products/createProduct--------END');
+          dispatch({ type: 'LOADING', loading: false });
+        },
+        (error) => {
+          dispatch({ type: 'LOADING', loading: false });
+          console.log(
+            'Error when creating product, setting is loading to false'
+          );
+          throw error;
+        }
       );
+    } catch (error) {
+      console.log('ERROR: ', error);
+      console.log('Error when creating product, setting is loading to false');
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/products/createProduct--------END');
+      // Rethrow so returned Promise is rejected
+      throw error;
+    }
   };
-};
+}
+
+// export const createProduct = (
+//   categoryName,
+//   condition,
+//   title,
+//   image,
+//   address,
+//   phone,
+//   description,
+//   price
+// ) => {
+//   return (dispatch, getState) => {
+//     const token = getState().auth.token;
+//     const userId = getState().auth.userId;
+//     const currentDate = new Date().toISOString();
+
+//     ('START----------actions/products/createProduct--------');
+//     console.log('Set loading to true');
+//     dispatch({ type: 'LOADING', loading: true });
+
+//     //First convert the base64 image to a firebase url...
+//     return createImage(image)
+//       .then((parsedRes) => {
+//         //...then take the returned image and...
+//         console.log(
+//           'returned result from the createImage function: ',
+//           parsedRes
+//         );
+//         //...together with the rest of the data create the productData object.
+//         const productData = {
+//           ownerId: userId,
+//           reservedUserId: '',
+//           newOwnerId: '',
+//           categoryName,
+//           condition,
+//           title,
+//           image: parsedRes.image, //This is how we link to the image we create through the createImage function
+//           address,
+//           phone,
+//           description,
+//           price,
+//           date: currentDate,
+//           status: 'redo',
+//           pauseDate: '',
+//           readyDate: currentDate,
+//           reservedDate: '',
+//           reservedUntil: '',
+//           collectedDate: '',
+//           projectId: '000',
+//         };
+//         //Then post our projectData object to the realtime database on firebase
+//         return fetch(
+//           `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
+//           {
+//             method: 'POST',
+//             body: JSON.stringify(productData),
+//           }
+//         )
+//           .then((finalRes) => finalRes.json())
+//           .then((finalResParsed) => {
+//             console.log(
+//               'returned data from firebase after post of productData',
+//               finalResParsed
+//             );
+//             console.log('dispatching CREATE_PRODUCT');
+
+//             dispatch({
+//               type: CREATE_PRODUCT,
+//               productData: {
+//                 id: finalResParsed.name,
+//                 ownerId: userId,
+//                 reservedUserId: '',
+//                 newOwnerId: '',
+//                 categoryName,
+//                 condition,
+//                 title,
+//                 image,
+//                 address,
+//                 phone,
+//                 description,
+//                 price,
+//                 date: currentDate,
+//                 status: 'redo',
+//                 readyDate: currentDate,
+//                 pauseDate: '',
+//                 readyDate: currentDate,
+//                 reservedDate: '',
+//                 reservedUntil: '',
+//                 collectedDate: '',
+//                 projectId: '000',
+//               },
+//             }),
+//               (error) => {
+//                 console.log(
+//                   'ERROR when trying to dispatch CREATE_PRODUCT: ',
+//                   error
+//                 );
+//                 throw error;
+//               };
+//           });
+//       })
+//       .catch((err) =>
+//         console.log('ERROR when trying to create product: ', err)
+//       );
+//   };
+// };
 
 export const updateProduct = (
   id,
