@@ -165,7 +165,7 @@ const EditProductScreen = (props) => {
         console.log('address:', formState.inputValues.address);
         console.log('phone:', +formState.inputValues.phone);
         console.log('---------------------------------------');
-        await dispatch(
+        dispatch(
           productsActions.updateProduct(
             prodId,
             selectedCategory,
@@ -189,7 +189,7 @@ const EditProductScreen = (props) => {
         console.log('address:', formState.inputValues.address);
         console.log('phone:', +formState.inputValues.phone);
         console.log('---------------------------------------');
-        await dispatch(
+        dispatch(
           productsActions.createProduct(
             selectedCategory,
             selectedCondition,
@@ -205,7 +205,7 @@ const EditProductScreen = (props) => {
     } catch (err) {
       setError(err.message);
     }
-    props.navigation.goBack();
+    props.navigation.navigate('Min Sida');
     setIsLoading(false);
   }, [dispatch, prodId, formState]);
 

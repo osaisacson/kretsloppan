@@ -114,6 +114,7 @@ const AuthScreen = (props) => {
   useEffect(() => {
     if (error) {
       Alert.alert('Oj, något gick åt pipsvängen!', error, [{ text: 'OK' }]);
+      setIsLoading(false);
     }
   }, [error]);
 
@@ -123,6 +124,7 @@ const AuthScreen = (props) => {
       Alert.alert('Å Nej!', 'Du måste välja en profilbild först', [
         { text: 'Ok' },
       ]);
+      setIsLoading(false);
       return;
     }
     if (isSignup) {
@@ -134,14 +136,15 @@ const AuthScreen = (props) => {
         formState.inputValues.address,
         selectedImage
       );
+      setIsLoading(true);
     } else {
       action = authActions.login(
         formState.inputValues.email,
         formState.inputValues.password
       );
+      setIsLoading(true);
     }
     setError(null);
-    setIsLoading(true);
     try {
       dispatch(action);
     } catch (err) {

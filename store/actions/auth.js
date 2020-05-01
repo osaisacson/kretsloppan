@@ -1,4 +1,4 @@
-import { AsyncStorage, Alert } from 'react-native';
+import { AsyncStorage } from 'react-native';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
@@ -22,7 +22,7 @@ export const authenticate = (userId, token, expiryTime) => {
 export const signup = (email, password, profileName, phone, address, image) => {
   return async (dispatch) => {
     try {
-      return fetch(
+      const response = await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${ENV.googleApiKey}`,
         {
           method: 'POST',
@@ -35,22 +35,24 @@ export const signup = (email, password, profileName, phone, address, image) => {
             returnSecureToken: true,
           }),
         }
-      )
-        .then((response) => response.json())
+      );
 
+      if (!response.ok) {
+        const errorResData = await response.json();
+        const errorId = errorResData.error.message;
+        let message = errorId;
+        //TODO: Customised error messages
+        if (errorId === 'EMAIL_EXISTS') {
+          alert('Den här emailen finns redan');
+          message = 'Den här emailen finns redan';
+        }
+        alert(message);
+        throw new Error(message);
+      }
+
+      await response
+        .json()
         .then((resData) => {
-          if (!resData.ok) {
-            const errorId = resData.error.message;
-            //TODO: More customised error messages by errorId
-            if (errorId === 'EMAIL_EXISTS') {
-              alert('Den här emailen finns redan');
-              throw new Error(errorId);
-            }
-
-            alert(errorId);
-            throw new Error(errorId);
-          }
-
           dispatch(
             authenticate(
               resData.localId,
@@ -63,7 +65,6 @@ export const signup = (email, password, profileName, phone, address, image) => {
           );
           saveDataToStorage(resData.idToken, resData.localId, expirationDate);
         })
-
         .then(() => {
           console.log(
             'store/actions/auth: attempting to create a profile with this data:'
@@ -102,7 +103,7 @@ export const signup = (email, password, profileName, phone, address, image) => {
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      return fetch(
+      const response = await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${ENV.googleApiKey}`,
         {
           method: 'POST',
@@ -115,45 +116,39 @@ export const login = (email, password) => {
             returnSecureToken: true,
           }),
         }
-      )
-        .then((response) => response.json())
-        .then((resData) => {
-          if (!resData.ok) {
-            const errorId = resData.error.message;
-            if (errorId === 'EMAIL_EXISTS') {
-              alert('Den här emailen finns redan');
-              throw new Error(errorId);
-            }
-            if (errorId === 'EMAIL_NOT_FOUND') {
-              alert(
-                'Emailen kan inte hittas. Byt till att skapa konto om du aldrig loggat in innan, annars kolla stavningen.'
-              );
-              throw new Error(errorId);
-            }
-            if (errorId === 'INVALID_PASSWORD') {
-              alert('Lösenordet passar inte emailen, prova igen');
-              throw new Error(errorId);
-            }
-            if (errorId === 'MISSING_PASSWORD') {
-              alert('Du verkar inte ha skrivit in något lösenord');
-              throw new Error(errorId);
-            }
-            Alert.alert('Något gick snett!', errorId, [{ text: 'OK' }]);
-            throw new Error(errorId);
-          }
+      );
 
-          dispatch(
-            authenticate(
-              resData.localId,
-              resData.idToken,
-              parseInt(resData.expiresIn) * 1000
-            )
-          );
-          const expirationDate = new Date(
-            new Date().getTime() + parseInt(resData.expiresIn) * 1000
-          );
-          saveDataToStorage(resData.idToken, resData.localId, expirationDate);
-        });
+      if (!response.ok) {
+        const errorResData = await response.json();
+        const errorId = errorResData.error.message;
+        let message = errorId;
+        if (errorId === 'EMAIL_NOT_FOUND') {
+          message =
+            'Emailen kan inte hittas. Byt till att skapa konto om du aldrig loggat in innan, annars kolla stavningen.';
+        }
+        if (errorId === 'INVALID_PASSWORD') {
+          message = 'Lösenordet passar inte emailen, prova igen';
+        }
+        if (errorId === 'MISSING_PASSWORD') {
+          message = 'Du verkar inte ha skrivit in något lösenord.';
+        }
+        alert(message);
+        throw new Error(message);
+      }
+
+      const resData = await response.json();
+      console.log('logged in user data: ', resData);
+      dispatch(
+        authenticate(
+          resData.localId,
+          resData.idToken,
+          parseInt(resData.expiresIn) * 1000
+        )
+      );
+      const expirationDate = new Date(
+        new Date().getTime() + parseInt(resData.expiresIn) * 1000
+      );
+      saveDataToStorage(resData.idToken, resData.localId, expirationDate);
     } catch (error) {
       console.log('ERROR: ', error);
       // Rethrow so returned Promise is rejected
