@@ -6,6 +6,7 @@ import {
   defaultNavOptions,
   defaultMainPageOptions,
   mainPageOptionsNoUser,
+  mainPageOptionsWithUser,
 } from './NavHeaders';
 
 //Tab screens
@@ -22,9 +23,7 @@ import ProjectDetailScreen, {
 import ProposalDetailScreen, {
   screenOptions as proposalDetailScreenOptions,
 } from '../screens/details/ProposalDetailScreen';
-import ProfileDetailScreen, {
-  screenOptions as profileDetailScreenOptions,
-} from '../screens/details/ProfileDetailScreen';
+import UserProfile from '../screens/details/UserProfile';
 
 //Edit screens
 import EditProductScreen, {
@@ -56,9 +55,9 @@ export const SpotlightNavigator = () => {
         options={mainPageOptionsNoUser}
       />
       <SpotlightStackNavigator.Screen
-        name="Profil"
-        component={ProfileDetailScreen}
-        options={profileDetailScreenOptions}
+        name="Användare"
+        component={UserProfile}
+        options={mainPageOptionsWithUser}
       />
       <SpotlightStackNavigator.Screen
         name="EditProfile"

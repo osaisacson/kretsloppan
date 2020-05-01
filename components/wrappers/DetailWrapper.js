@@ -6,7 +6,7 @@ import SaferArea from '../UI/SaferArea';
 //Constants
 import Colors from '../../constants/Colors';
 
-export const DetailWrapper = props => {
+export const DetailWrapper = (props) => {
   return (
     <SaferArea>
       <ScrollViewToTop>
@@ -20,57 +20,57 @@ export const detailStyles = StyleSheet.create({
   mainDetailWrap: {
     flex: 1,
     marginBottom: 50,
-    marginHorizontal: 8
+    marginHorizontal: 8,
   },
   centeredContent: {
     flex: 1,
     marginBottom: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  rightContent: {
+    flex: 1,
+    marginVertical: 10,
+    alignItems: 'right',
   },
   image: {
     height: 300,
-    width: '100%'
+    width: '100%',
   },
   price: {
     fontSize: 20,
     fontFamily: 'roboto-bold',
     textAlign: 'center',
     marginTop: 15,
-    marginBottom: 30
+    marginBottom: 30,
   },
   centered: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centeredHeader: {
     textAlign: 'center',
-    fontFamily: 'roboto-bold'
+    fontFamily: 'roboto-bold',
   },
   largeCenteredHeader: {
-    textAlign: 'center',
+    textAlign: 'left',
     fontFamily: 'bebas-neue-bold',
     fontSize: 22,
-    paddingVertical: 20
   },
   sectionHeader: {
     marginLeft: 5,
     fontFamily: 'bebas-neue-bold',
     fontSize: 18,
-    paddingTop: 30
+    paddingTop: 30,
   },
   textCard: {
-    marginBottom: 15,
-    padding: 10,
-    borderWidth: 0.3,
-    borderRadius: 4,
-    borderColor: '#666'
+    marginVertical: 4,
   },
   boundaryText: {
     textAlign: 'left',
     fontSize: 18,
-    fontFamily: 'roboto-light'
+    fontFamily: 'roboto-light',
   },
   actions: {
     flex: 1,
@@ -78,26 +78,26 @@ export const detailStyles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 0,
     marginBottom: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   formControl: {
-    width: '100%'
+    width: '100%',
   },
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
     borderBottomColor: '#ccc',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   label: {
     fontFamily: 'roboto-bold',
-    marginVertical: 8
+    marginVertical: 8,
   },
   subLabel: {
-    fontFamily: 'roboto-light-italic'
+    fontFamily: 'roboto-light-italic',
   },
   emptyState: {
     padding: 20,
-    color: '#c0c0c0'
-  }
+    color: '#c0c0c0',
+  },
 });

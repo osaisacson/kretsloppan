@@ -51,7 +51,6 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProfiles from ShopNavigator ', err.message);
       setError(err.message);
     }
-    console.log('...profiles fetched!');
   }, [dispatch, setIsLoading, setError]);
 
   //Load products
@@ -64,7 +63,6 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProducts from ShopNavigator', err.message);
       setError(err.message);
     }
-    console.log('...products fetched!');
   }, [dispatch, setIsLoading, setError]);
 
   //Load projects
@@ -77,7 +75,6 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProjects from ShopNavigator', err.message);
       setError(err.message);
     }
-    console.log('...projects fetched!');
   }, [dispatch, setIsLoading, setError]);
 
   //Load proposals
@@ -90,7 +87,6 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProposals from ShopNavigator ', err.message);
       setError(err.message);
     }
-    console.log('...proposals fetched!');
   }, [dispatch, setIsLoading, setError]);
 
   //TODO: 1. Check if the below is necessary 2. If so, fix error undefined is not an object (evaluating 'navigation.addListener')

@@ -5,7 +5,6 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/UI/HeaderButton';
 import { Platform } from 'react-native';
 
-import AddButton from '../components/UI/AddButton';
 import UserAvatar from '../components/UI/UserAvatar';
 
 //Constants
@@ -51,27 +50,26 @@ export const defaultMainPageOptions = (navData) => {
   };
 };
 
-export const mainPageOptionsNoUser = (navData) => {
+export const mainPageOptionsWithUser = (navData) => {
   return {
     headerTitle: '',
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
+
+    headerRight: () => (
+      <UserAvatar
+        style={{ marginTop: 20, marginRight: 10 }}
+        showBadge={true}
+        actionOnPress={() => {
+          navData.navigation.navigate('Min Sida');
+        }}
+      />
     ),
+  };
+};
+
+export const mainPageOptionsNoUser = () => {
+  return {
+    headerTitle: '',
     headerRight: '',
-    //() => (
-    // <AddButton
-    //   style={{ position: 'fixed', top: 30, right: 0, zIndex: 99 }}
-    //   navigation={navData.navigation}
-    // />
-    //),
   };
 };
 

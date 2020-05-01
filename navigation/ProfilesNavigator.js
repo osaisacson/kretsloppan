@@ -2,7 +2,11 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 //Headers
-import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';
+import {
+  defaultNavOptions,
+  defaultMainPageOptions,
+  mainPageOptionsWithUser,
+} from './NavHeaders';
 
 //Details
 import ProductDetailScreen, {
@@ -14,9 +18,7 @@ import ProjectDetailScreen, {
 import ProposalDetailScreen, {
   screenOptions as proposalDetailScreenOptions,
 } from '../screens/details/ProposalDetailScreen';
-import ProfileDetailScreen, {
-  screenOptions as profileDetailScreenOptions,
-} from '../screens/details/ProfileDetailScreen';
+import UserProfile from '../screens/details/UserProfile';
 
 //Add screens
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
@@ -27,14 +29,14 @@ export const ProfilesNavigator = () => {
   return (
     <ProfilesStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProfilesStackNavigator.Screen
-        name="Användare"
+        name="Alla Användare"
         component={AllProfilesScreen}
         options={defaultMainPageOptions}
       />
       <ProfilesStackNavigator.Screen
-        name="Profil"
-        component={ProfileDetailScreen}
-        options={profileDetailScreenOptions}
+        name="Användare"
+        component={UserProfile}
+        options={mainPageOptionsWithUser}
       />
       <ProfilesStackNavigator.Screen
         name="ProjectDetail"

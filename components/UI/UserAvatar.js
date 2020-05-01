@@ -29,9 +29,13 @@ const UserAvatar = (props) => {
       ? reservedProducts.length
       : 0;
 
-  //Find the profile that matches the id of the currently logged in User
+  //If we are passing a userId, use this as the current user, else use the currently logged in user
   const currentUser = useSelector((state) =>
-    state.profiles.allProfiles.find((prof) => prof.profileId === loggedInUserId)
+    state.profiles.allProfiles.find((prof) =>
+      props.userId
+        ? prof.profileId === props.userId
+        : prof.profileId === loggedInUserId
+    )
   );
 
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity

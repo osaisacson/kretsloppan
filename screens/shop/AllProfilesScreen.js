@@ -57,10 +57,9 @@ const AllProfilesScreen = (props) => {
     setSearchQuery(text.length ? text : '');
   };
 
-  const selectItemHandler = (id, profileId, profileName) => {
-    props.navigation.navigate('Profil', {
-      detailId: id,
-      ownerId: profileId,
+  const selectItemHandler = (profileId, profileName) => {
+    props.navigation.navigate('Användare', {
+      detailId: profileId,
       detailTitle: profileName,
     });
   };
@@ -107,7 +106,6 @@ const AllProfilesScreen = (props) => {
                 itemData={itemData.item}
                 onSelect={() => {
                   selectItemHandler(
-                    itemData.item.id,
                     itemData.item.profileId,
                     itemData.item.profileName
                   );

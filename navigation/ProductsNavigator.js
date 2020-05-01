@@ -10,6 +10,7 @@ import {
   defaultNavOptions,
   defaultMainPageOptions,
   mainPageOptionsNoUser,
+  mainPageOptionsWithUser,
 } from './NavHeaders';
 
 //Details
@@ -19,9 +20,7 @@ import ProductDetailScreen, {
 import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions,
 } from '../screens/details/ProjectDetailScreen';
-import ProfileDetailScreen, {
-  screenOptions as profileDetailScreenOptions,
-} from '../screens/details/ProfileDetailScreen';
+import UserProfile from '../screens/details/UserProfile';
 
 //Edit screens
 import EditProductScreen, {
@@ -50,9 +49,9 @@ export const ProductsNavigator = () => {
         options={mainPageOptionsNoUser}
       />
       <ProductsStackNavigator.Screen
-        name="Profil"
-        component={ProfileDetailScreen}
-        options={profileDetailScreenOptions}
+        name="Användare"
+        component={UserProfile}
+        options={mainPageOptionsWithUser}
       />
       <ProductsStackNavigator.Screen
         name="EditProfile"

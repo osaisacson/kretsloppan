@@ -7,6 +7,7 @@ import {
   DetailWrapper,
   detailStyles,
 } from '../../components/wrappers/DetailWrapper';
+import ContactDetails from '../../components/UI/ContactDetails';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import RoundItem from '../../components/UI/RoundItem';
@@ -133,11 +134,14 @@ const ProductDetailScreen = (props) => {
 
   return (
     <DetailWrapper>
+      {/* Show info about picking up the product only the user is not the creator of the product and the product is not reserved*/}
+      {hasEditPermission || isReserved ? null : (
+        <ContactDetails profileId={ownerId} />
+      )}
       <Image
         style={detailStyles.image}
         source={{ uri: selectedProduct.image }}
       />
-
       {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
       {hasEditPermission && !isPickedUp ? (
         <View style={detailStyles.actions}>
@@ -172,7 +176,6 @@ const ProductDetailScreen = (props) => {
           />
         </View>
       ) : null}
-
       {/* Buttons to always show, but to have conditional type based on   */}
       <View style={detailStyles.toggles}>
         <ButtonNormal
@@ -238,7 +241,6 @@ const ProductDetailScreen = (props) => {
         ) : null}
       </View>
 
-      {/* Information about the product */}
       <Text style={detailStyles.price}>
         {selectedProduct.price ? `${selectedProduct.price} kr` : 'gratis'}
       </Text>
@@ -247,8 +249,7 @@ const ProductDetailScreen = (props) => {
           {selectedProduct.description}
         </Text>
       </View>
-      <Text style={detailStyles.sectionHeader}>Hämtas från</Text>
-      <View style={detailStyles.textCard}>
+      {/* <View style={detailStyles.textCard}>
         <Text style={detailStyles.boundaryText}>
           {selectedProduct.address
             ? selectedProduct.address
@@ -262,14 +263,16 @@ const ProductDetailScreen = (props) => {
             ? selectedProduct.phone
             : 'Inget kontaktnummer angivet'}
         </Text>
-      </View>
-      <Text style={detailStyles.sectionHeader}>Transport</Text>
+      </View> */}
+
+      {/* TODO: Get list of transport */}
+      {/* <Text style={detailStyles.sectionHeader}>Transport</Text>
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.boundaryText}>
           Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
         </Text>
         <Text style={detailStyles.boundaryText}>(lista)</Text>
-      </View>
+      </View> */}
     </DetailWrapper>
   );
 };
