@@ -4,7 +4,7 @@ import Styles from '../../constants/Styles';
 
 const Card = (props) => {
   return (
-    <View style={{ ...styles.card, ...props.style }}>{props.children} </View>
+    <View style={{ ...styles.card, ...props.style }}>{props.children}</View>
   );
 };
 
