@@ -49,7 +49,7 @@ const SpotlightProductsScreen = (props) => {
           'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
         }
         text={
-          'Välkommen! Se en översikt av nya projekt, återbruk och efterlysningar nedan. Lägg upp eget material genom att gå till din profil.'
+          'Välkommen! Se en översikt av nya projekt, återbruk och efterlysningar nedan. Lägg upp eget material genom att gå till din profil. Notera att denna version av appen är en betaversion som fortfarande håller på att testas.'
         }
       />
       <ScrollView nestedScrollEnabled={true}>

@@ -134,9 +134,13 @@ const ProductDetailScreen = (props) => {
 
   return (
     <DetailWrapper>
-      {/* Show info about picking up the product only the user is not the creator of the product and the product is not reserved*/}
-      {hasEditPermission || isReserved ? null : (
-        <ContactDetails profileId={ownerId} />
+      {/* Show info about picking up the product only the user is not the creator of the product */}
+      {hasEditPermission ? null : (
+        <ContactDetails
+          profileId={ownerId}
+          hideButton={isReserved || isPickedUp}
+          buttonText={'hämtningsdetaljer'}
+        />
       )}
       <Image
         style={detailStyles.image}
@@ -225,7 +229,7 @@ const ProductDetailScreen = (props) => {
         ) : null}
         {selectedProduct &&
         selectedProduct.projectId &&
-        selectedProduct.projectId.length > 4 &&
+        projectForProduct.length &&
         isReservedOrPickedUp ? (
           <View style={detailStyles.centered}>
             <Text style={detailStyles.centeredHeader}>
@@ -240,39 +244,14 @@ const ProductDetailScreen = (props) => {
           </View>
         ) : null}
       </View>
-
-      <Text style={detailStyles.price}>
-        {selectedProduct.price ? `${selectedProduct.price} kr` : 'gratis'}
-      </Text>
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.boundaryText}>
           {selectedProduct.description}
         </Text>
       </View>
-      {/* <View style={detailStyles.textCard}>
-        <Text style={detailStyles.boundaryText}>
-          {selectedProduct.address
-            ? selectedProduct.address
-            : 'Ingen address angiven'}
-        </Text>
-      </View>
-      <Text style={detailStyles.sectionHeader}>Kontakt</Text>
-      <View style={detailStyles.textCard}>
-        <Text style={detailStyles.boundaryText}>
-          {selectedProduct.phone
-            ? selectedProduct.phone
-            : 'Inget kontaktnummer angivet'}
-        </Text>
-      </View> */}
-
-      {/* TODO: Get list of transport */}
-      {/* <Text style={detailStyles.sectionHeader}>Transport</Text>
-      <View style={detailStyles.textCard}>
-        <Text style={detailStyles.boundaryText}>
-          Ta kontakt med dessa åkare om ni behöver hjälp med transporten:
-        </Text>
-        <Text style={detailStyles.boundaryText}>(lista)</Text>
-      </View> */}
+      <Text style={detailStyles.price}>
+        {selectedProduct.price ? `${selectedProduct.price} kr` : 'gratis'}
+      </Text>
     </DetailWrapper>
   );
 };

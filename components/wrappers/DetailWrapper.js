@@ -31,7 +31,7 @@ export const detailStyles = StyleSheet.create({
   rightContent: {
     flex: 1,
     marginVertical: 10,
-    alignItems: 'right',
+    alignItems: 'flex-end',
   },
   image: {
     height: 300,
@@ -40,7 +40,7 @@ export const detailStyles = StyleSheet.create({
   price: {
     fontSize: 20,
     fontFamily: 'roboto-bold',
-    textAlign: 'center',
+    textAlign: 'right',
     marginTop: 15,
     marginBottom: 30,
   },
@@ -66,6 +66,11 @@ export const detailStyles = StyleSheet.create({
   },
   textCard: {
     marginVertical: 4,
+  },
+  proposalText: {
+    textAlign: 'left',
+    fontSize: 20,
+    fontFamily: 'roboto-bold',
   },
   boundaryText: {
     textAlign: 'left',

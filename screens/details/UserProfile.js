@@ -129,7 +129,11 @@ const UserProfile = (props) => {
       </View>
 
       <View style={styles.centeredContent}>
-        <ContactDetails isProfile={true} profileId={currentProfile.profileId} />
+        <ContactDetails
+          isProfile={true}
+          profileId={currentProfile.profileId}
+          buttonText={'kontaktdetaljer'}
+        />
       </View>
 
       {/* Product, project and proposal sections */}

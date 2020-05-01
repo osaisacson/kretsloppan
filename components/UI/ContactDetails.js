@@ -57,14 +57,16 @@ const ContactDetails = (props) => {
               {selectedProfile.profileName}
             </Text>
           </View>
-          <ButtonToggle
-            large={true}
-            icon="phone"
-            title={
-              toggleDetails ? 'Dölj hämtningsdetaljer' : 'hämtningsdetaljer'
-            }
-            onSelect={toggleShowDetails}
-          />
+          {props.hideButton ? null : (
+            <ButtonToggle
+              large={true}
+              icon="phone"
+              title={
+                toggleDetails ? `Dölj ${props.buttonText}` : props.buttonText
+              }
+              onSelect={toggleShowDetails}
+            />
+          )}
         </View>
       )}
 

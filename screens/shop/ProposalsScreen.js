@@ -100,7 +100,7 @@ const ProposalsScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title={'Efterlysningar'}
-            subTitle={'Efterlysningar av självbyggare'}
+            subTitle={'Efterlysningar från självbyggare'}
             questionText={'Här ska det vara en förklaring'}
             icon={
               <Entypo

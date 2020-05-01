@@ -4,6 +4,7 @@ export const DELETE_PROPOSAL = 'DELETE_PROPOSAL';
 export const CREATE_PROPOSAL = 'CREATE_PROPOSAL';
 export const UPDATE_PROPOSAL = 'UPDATE_PROPOSAL';
 export const SET_PROPOSALS = 'SET_PROPOSALS';
+export const CHANGE_PROPOSAL_STATUS = 'CHANGE_PROPOSAL_STATUS';
 
 export function fetchProposals() {
   return async (dispatch, getState) => {
@@ -177,3 +178,37 @@ export function updateProposal(id, title, description, price) {
     }
   };
 }
+
+export const changeProposalStatus = (id, status) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    const response = await fetch(
+      `https://egnahemsfabriken.firebaseio.com/proposals/${id}.json?auth=${token}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+      let message = errorId;
+      throw new Error(message);
+    }
+
+    dispatch({
+      type: CHANGE_PROPOSAL_STATUS,
+      pid: id,
+      proposalData: {
+        status,
+      },
+    });
+  };
+};

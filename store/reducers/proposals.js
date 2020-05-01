@@ -6,6 +6,7 @@ import {
   CREATE_PROPOSAL,
   UPDATE_PROPOSAL,
   SET_PROPOSALS,
+  CHANGE_PROPOSAL_STATUS,
 } from '../actions/proposals';
 import Proposal from '../../models/proposal';
 
@@ -77,6 +78,48 @@ export default (state = initialState, action) => {
         ...state,
         availableProposals: updatedAvailableProposals,
         userProposals: updatedUserProposals,
+      };
+    case CHANGE_PROPOSAL_STATUS:
+      const availableProposalsIndexCPS = getIndex(
+        state.availableProposals,
+        action.pid
+      );
+
+      console.log(
+        'store/reducers/proposals/CHANGE_PROPOSAL_STATUS, original proposal: ',
+        state.availableProposals[availableProposalsIndexCPS]
+      );
+
+      const updatedProductCPS = new Proposal( //Whenever we do a new proposal we have to pass the full params to match model
+        action.pid,
+        state.availableProposals[availableProposalsIndexCPS].ownerId,
+        state.availableProposals[availableProposalsIndexCPS].title,
+        state.availableProposals[availableProposalsIndexCPS].description,
+        state.availableProposals[availableProposalsIndexCPS].price,
+        state.availableProposals[availableProposalsIndexCPS].date,
+        action.proposalData.status
+      );
+
+      console.log(
+        'store/reducers/proposals/CHANGE_PROPOSAL_STATUS, updated proposal: ',
+        updatedProductCPS
+      );
+      //Update state
+      updatedAvailableProposalsCPS = updateCollection(
+        state.availableProposals,
+        action.pid,
+        updatedProductCPS
+      );
+      updatedUserProposalsCPS = updateCollection(
+        state.userProposals,
+        action.pid,
+        updatedProductCPS
+      );
+
+      return {
+        ...state,
+        availableProposals: updatedAvailableProposalsCPS,
+        userProposals: updatedUserProposalsCPS,
       };
     case DELETE_PROPOSAL:
       return {
