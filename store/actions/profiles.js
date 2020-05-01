@@ -5,6 +5,8 @@ export const SET_PROFILES = 'SET_PROFILES';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 
+import { convertImage } from '../helpers';
+
 export const fetchProfiles = () => {
   return async (dispatch) => {
     try {
@@ -35,9 +37,6 @@ export const fetchProfiles = () => {
           )
         );
       }
-
-      // console.log('allProfiles in actions', loadedProfiles);
-
       dispatch({
         type: SET_PROFILES,
         allProfiles: loadedProfiles,
@@ -48,40 +47,6 @@ export const fetchProfiles = () => {
     }
   };
 };
-
-//TODO: Create file with helperfunctions, move createImage there
-export function createImage(image) {
-  return async (dispatch) => {
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
-    try {
-      console.log('START----------actions/profiles/createImage--------');
-      console.log('Attempting to convert image from base64 to firebase url');
-      console.log('image.length: ', image.length);
-
-      // Perform the API call - convert image from base64 to a firebase url
-      const response = await fetch(
-        'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-          }),
-        }
-      );
-
-      const firebaseImageUrl = await response.json();
-      console.log('returned image url from firebase', firebaseImageUrl);
-      console.log('----------actions/profiles/createImage--------END');
-      return firebaseImageUrl;
-    } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
-      ('----------actions/profiles/updateReservedProfile--------END');
-      // Rethrow so returned Promise is rejected
-      throw error;
-    }
-  };
-}
 
 export function createProfile(profileName, email, phone, address, image) {
   return async (dispatch, getState) => {
@@ -94,11 +59,11 @@ export function createProfile(profileName, email, phone, address, image) {
       console.log('START----------actions/profiles/createProfile--------');
 
       //First convert the base64 image to a firebase url...
-      return dispatch(createImage(image)).then(
+      return dispatch(convertImage(image)).then(
         async (parsedRes) => {
           //...then take the returned image and...
           console.log(
-            'returned result from the createImage function: ',
+            'returned result from the convertImage function: ',
             parsedRes
           );
 
@@ -174,11 +139,11 @@ export function updateProfile(
       //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
       if (image.length > 1000) {
         //First convert the base64 image to a firebase url...
-        return dispatch(createImage(image)).then(
+        return dispatch(convertImage(image)).then(
           async (parsedRes) => {
             //...then take the returned image and...
             console.log(
-              'returned result from the createImage function: ',
+              'returned result from the convertImage function: ',
               parsedRes
             );
 
@@ -273,72 +238,3 @@ export function updateProfile(
     }
   };
 }
-
-// export const updateProfile = (
-//   firebaseId,
-//   profileName,
-//   email,
-//   phone,
-//   address,
-//   image
-// ) => {
-//   return (dispatch, getState) => {
-//     const token = getState().auth.token;
-//     const userId = getState().auth.userId;
-
-//     fetch(
-//       'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
-//       {
-//         method: 'POST',
-//         body: JSON.stringify({
-//           image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-//         }),
-//       }
-//     )
-//       .catch((err) =>
-//         console.log('error when trying to post to cloudfunctions', err)
-//       )
-//       .then((res) => res.json())
-//       .then((parsedRes) => {
-//         const profileData = {
-//           profileName,
-//           email,
-//           phone,
-//           address,
-//           image: parsedRes.image, //This is how we link to the image we store above
-//         };
-
-//         return fetch(
-//           `https://egnahemsfabriken.firebaseio.com/profiles/${firebaseId}.json?auth=${token}`,
-//           {
-//             method: 'PATCH',
-//             headers: {
-//               'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(profileData),
-//           }
-//         )
-//           .catch((err) =>
-//             console.log(
-//               'Error when attempting to save profile to firebase realtime database: ',
-//               err
-//             )
-//           )
-//           .then((finalRes) => finalRes.json())
-//           .then((finalResParsed) => {
-//             dispatch({
-//               type: UPDATE_PROFILE,
-//               currUser: userId,
-//               fid: firebaseId,
-//               profileData: {
-//                 profileName,
-//                 email,
-//                 phone,
-//                 address,
-//                 image,
-//               },
-//             });
-//           });
-//       });
-//   };
-// };

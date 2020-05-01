@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
@@ -126,11 +126,11 @@ export const login = (email, password) => {
       if (errorId === 'MISSING_PASSWORD') {
         message = 'Du verkar inte ha skrivit in något lösenord.';
       }
+      Alert.alert('Något gick snett!', message, [{ text: 'OK' }]);
       throw new Error(message);
     }
 
     const resData = await response.json();
-    console.log('logged in user data: ', resData);
     dispatch(
       authenticate(
         resData.localId,

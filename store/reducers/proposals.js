@@ -1,4 +1,7 @@
+import { getIndex, updateCollection } from '../helpers';
+
 import {
+  LOADING,
   DELETE_PROPOSAL,
   CREATE_PROPOSAL,
   UPDATE_PROPOSAL,
@@ -13,6 +16,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case LOADING:
+      console.log('LOADING BEING SET TO: ', action.loading);
+      return {
+        ...state,
+        loading: action.loading,
+      };
     case SET_PROPOSALS:
       return {
         availableProposals: action.proposals,
@@ -37,13 +46,8 @@ export default (state = initialState, action) => {
         userProposals: state.userProposals.concat(newProposal),
       };
     case UPDATE_PROPOSAL:
-      const userProposalIndex = state.userProposals.findIndex(
-        (proj) => proj.id === action.pid
-      );
-      console.log(
-        'store/reducers/proposals/UPDATE_PROPOSAL, original proposal: ',
-        state.userProposals[userProposalIndex]
-      );
+      const userProposalIndex = getIndex(state.userProposals, action.pid);
+
       const updatedUserProposal = new Proposal( //Whenever we do a new proposal we have to pass the full params to match model
         action.pid,
         state.userProposals[userProposalIndex].ownerId,
@@ -56,13 +60,19 @@ export default (state = initialState, action) => {
         'store/reducers/proposals/UPDATE_PROPOSAL, updated proposal: ',
         updatedUserProposal
       );
-      const updatedUserProposals = [...state.userProposals]; //copy current state of user proposals
-      updatedUserProposals[userProposalIndex] = updatedUserProposal; //find the user proposal with the passed index (the one we should update)
-      const availableProposalIndex = state.availableProposals.findIndex(
-        (proj) => proj.id === action.pid
+
+      //Update state
+      updatedAvailableProposals = updateCollection(
+        state.availableProposals,
+        action.pid,
+        updatedUserProposal
       );
-      const updatedAvailableProposals = [...state.availableProposals];
-      updatedAvailableProposals[availableProposalIndex] = updatedUserProposal;
+      updatedUserProposals = updateCollection(
+        state.userProposals,
+        action.pid,
+        updatedUserProposal
+      );
+
       return {
         ...state,
         availableProposals: updatedAvailableProposals,

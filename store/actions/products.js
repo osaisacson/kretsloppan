@@ -7,6 +7,8 @@ export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
+import { convertImage } from '../helpers';
+
 export function updateReservedProduct(id, token) {
   return async (dispatch) => {
     // Set a loading flag to true in the reducer
@@ -177,10 +179,6 @@ export function fetchProducts() {
         type: SET_PRODUCTS,
         products: loadedProducts,
         userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
-        reservedProducts: loadedProducts.filter(
-          (prod) =>
-            prod.status === 'reserverad' && prod.reservedUserId === userId
-        ),
       });
       // Set a loading flag to false in the reducer
       dispatch({ type: 'LOADING', loading: false });
@@ -215,39 +213,6 @@ export const deleteProduct = (productId) => {
   };
 };
 
-export function createImage(image) {
-  return async (dispatch) => {
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
-    try {
-      console.log('START----------actions/products/createImage--------');
-      console.log('Attempting to convert image from base64 to firebase url');
-      console.log('image.length: ', image.length);
-
-      // Perform the API call - convert image from base64 to a firebase url
-      const response = await fetch(
-        'https://us-central1-egnahemsfabriken.cloudfunctions.net/storeImage',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
-          }),
-        }
-      );
-
-      const firebaseImageUrl = await response.json();
-      console.log('returned image url from firebase', firebaseImageUrl);
-      console.log('----------actions/products/createImage--------END');
-      return firebaseImageUrl;
-    } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
-      ('----------actions/products/updateReservedProduct--------END');
-      // Rethrow so returned Promise is rejected
-      throw error;
-    }
-  };
-}
-
 export function createProduct(
   categoryName,
   condition,
@@ -269,11 +234,11 @@ export function createProduct(
       console.log('START----------actions/products/createProduct--------');
 
       //First convert the base64 image to a firebase url...
-      return dispatch(createImage(image)).then(
+      return dispatch(convertImage(image)).then(
         async (parsedRes) => {
           //...then take the returned image and...
           console.log(
-            'returned result from the createImage function: ',
+            'returned result from the convertImage function: ',
             parsedRes
           );
 
@@ -285,7 +250,7 @@ export function createProduct(
             categoryName,
             condition,
             title,
-            image: parsedRes.image, //This is how we link to the image we create through the createImage function
+            image: parsedRes.image, //This is how we link to the image we create through the convertImage function
             address,
             phone,
             description,
@@ -379,11 +344,11 @@ export function updateProduct(
       //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
       if (image.length > 1000) {
         //First convert the base64 image to a firebase url...
-        return dispatch(createImage(image)).then(
+        return dispatch(convertImage(image)).then(
           async (parsedRes) => {
             //...then take the returned image and...
             console.log(
-              'returned result from the createImage function: ',
+              'returned result from the convertImage function: ',
               parsedRes
             );
 

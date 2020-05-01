@@ -34,11 +34,9 @@ const ProductsScreen = (props) => {
       console.log('ProductsScreen: fetching products...');
       dispatch(productsActions.fetchProducts());
     } catch (err) {
-      console.log('Error in loadProducts from ProductsScreen ', err.message);
       setError(err.message);
     }
     setIsRefreshing(false);
-    console.log('...products fetched!');
   }, [dispatch, setIsLoading, setError]);
 
   const searchHandler = (text) => {

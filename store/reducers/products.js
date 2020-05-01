@@ -1,4 +1,5 @@
-import { getIndex, updateCollection } from './helperFunctions';
+import { getIndex, updateCollection } from '../helpers';
+
 import {
   LOADING,
   DELETE_PRODUCT,
@@ -12,7 +13,6 @@ import Product from '../../models/product';
 const initialState = {
   availableProducts: [],
   userProducts: [],
-  reservedProducts: [],
   loading: false,
 };
 
@@ -29,7 +29,6 @@ export default (state = initialState, action) => {
       return {
         availableProducts: action.products,
         userProducts: action.userProducts,
-        reservedProducts: action.reservedProducts,
       };
     case CREATE_PRODUCT:
       const newProduct = new Product(
@@ -62,7 +61,6 @@ export default (state = initialState, action) => {
         ...state,
         availableProducts: state.availableProducts.concat(newProduct),
         userProducts: state.userProducts.concat(newProduct),
-        reservedProducts: state.reservedProducts.concat(newProduct),
       };
     case UPDATE_PRODUCT:
       const userProductIndex = getIndex(state.userProducts, action.pid);
@@ -104,17 +102,11 @@ export default (state = initialState, action) => {
         action.pid,
         updatedUserProduct
       );
-      updatedReservedProducts = updateCollection(
-        state.reservedProducts,
-        action.pid,
-        updatedUserProduct
-      );
 
       return {
         ...state,
         availableProducts: updatedAvailableProducts,
         userProducts: updatedUserProducts,
-        reservedProducts: updatedReservedProducts,
       };
     case CHANGE_PRODUCT_STATUS:
       const availableProductsIndexCPS = getIndex(
@@ -165,28 +157,19 @@ export default (state = initialState, action) => {
         action.pid,
         updatedProductCPS
       );
-      updatedReservedProductsCPS = updateCollection(
-        state.reservedProducts,
-        action.pid,
-        updatedProductCPS
-      );
 
       return {
         ...state,
         availableProducts: updatedAvailableProductsCPS,
         userProducts: updatedUserProductsCPS,
-        reservedProducts: updatedReservedProductsCPS,
       };
     case DELETE_PRODUCT:
       return {
         ...state,
-        userProducts: state.userProducts.filter(
-          (product) => product.id !== action.pid
-        ),
         availableProducts: state.availableProducts.filter(
           (product) => product.id !== action.pid
         ),
-        reservedProducts: state.reservedProducts.filter(
+        userProducts: state.userProducts.filter(
           (product) => product.id !== action.pid
         ),
       };

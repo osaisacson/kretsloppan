@@ -11,17 +11,23 @@ import {
 import { Avatar, Badge } from 'react-native-paper';
 
 const UserAvatar = (props) => {
-  //Get all reserved products, and logged in userId from state
-  const reservedProducts = useSelector(
-    (state) => state.products.reservedProducts
+  //Get logged in userId from state and all reserved products
+  const loggedInUserId = useSelector((state) => state.auth.userId);
+
+  const availableProducts = useSelector(
+    (state) => state.products.availableProducts
+  );
+
+  const reservedProducts = availableProducts.filter(
+    (product) =>
+      product.status === 'reserverad' &&
+      product.reservedUserId === loggedInUserId
   );
 
   const reservedProductsNr =
     reservedProducts && reservedProducts.length > 0
       ? reservedProducts.length
       : 0;
-
-  const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
   const currentUser = useSelector((state) =>

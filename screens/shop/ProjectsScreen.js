@@ -35,11 +35,9 @@ const ProjectsScreen = (props) => {
       console.log('ProjectsScreen: fetching projects...');
       dispatch(projectsActions.fetchProjects());
     } catch (err) {
-      console.log('Error in loadProjects from ProjectsScreen ', err.message);
       setError(err.message);
     }
     setIsRefreshing(false);
-    console.log('...projects fetched!');
   }, [dispatch, setIsLoading, setError]);
 
   const searchHandler = (text) => {

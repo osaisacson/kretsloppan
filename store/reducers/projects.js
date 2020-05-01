@@ -1,8 +1,11 @@
+import { getIndex, updateCollection } from '../helpers';
+
 import {
   DELETE_PROJECT,
   CREATE_PROJECT,
   UPDATE_PROJECT,
   SET_PROJECTS,
+  LOADING,
 } from '../actions/projects';
 import Project from '../../models/project';
 
@@ -13,6 +16,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case LOADING:
+      console.log('LOADING BEING SET TO: ', action.loading);
+      return {
+        ...state,
+        loading: action.loading,
+      };
     case SET_PROJECTS:
       return {
         availableProjects: action.projects,
@@ -38,13 +47,8 @@ export default (state = initialState, action) => {
         userProjects: state.userProjects.concat(newProject),
       };
     case UPDATE_PROJECT:
-      const userProjectIndex = state.userProjects.findIndex(
-        (proj) => proj.id === action.pid
-      );
-      console.log(
-        'store/reducers/projects/UPDATE_PROJECT, original project: ',
-        state.userProjects[userProjectIndex]
-      );
+      const userProjectIndex = getIndex(state.userProjects, action.pid);
+
       const updatedUserProject = new Project( //Whenever we do a new project we have to pass the full params to match model
         action.pid,
         state.userProjects[userProjectIndex].ownerId,
@@ -58,13 +62,19 @@ export default (state = initialState, action) => {
         'store/reducers/projects/UPDATE_PROJECT, updated project: ',
         updatedUserProject
       );
-      const updatedUserProjects = [...state.userProjects]; //copy current state of user projects
-      updatedUserProjects[userProjectIndex] = updatedUserProject; //find the user project with the passed index (the one we should update)
-      const availableProjectIndex = state.availableProjects.findIndex(
-        (proj) => proj.id === action.pid
+
+      //Update state
+      updatedAvailableProjects = updateCollection(
+        state.availableProjects,
+        action.pid,
+        updatedUserProject
       );
-      const updatedAvailableProjects = [...state.availableProjects];
-      updatedAvailableProjects[availableProjectIndex] = updatedUserProject;
+      updatedUserProjects = updateCollection(
+        state.userProjects,
+        action.pid,
+        updatedUserProject
+      );
+
       return {
         ...state,
         availableProjects: updatedAvailableProjects,

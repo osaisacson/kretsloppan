@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 import Card from './Card';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from './../../constants/Colors';
 import Styles from '../../constants/Styles';
 
-const ProductItem = props => {
+const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -38,7 +38,7 @@ const ProductItem = props => {
               color: '#fff',
               fontSize: 20,
               paddingLeft: 8,
-              paddingRight: 8
+              paddingRight: 8,
             }}
             name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
             size={23}
@@ -52,7 +52,7 @@ const ProductItem = props => {
               color: Colors.primary,
               fontSize: 35,
               marginLeft: 3,
-              marginTop: -10
+              marginTop: -10,
             }}
             name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
             size={23}
@@ -69,7 +69,7 @@ const ProductItem = props => {
               paddingRight: 10,
               paddingBottom: 0,
 
-              fontSize: 25
+              fontSize: 25,
             }}
             name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
             size={23}
@@ -93,7 +93,7 @@ const ProductItem = props => {
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.title}>
+      <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.title}>
         {props.itemData.title}
       </Text>
     </View>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   product: {
     height: 150,
@@ -112,18 +112,18 @@ const styles = StyleSheet.create({
     margin: '1.5%',
     borderWidth: 0.5,
     borderColor: '#ddd',
-    marginTop: 15
+    marginTop: 15,
   },
   horizontalProduct: {
     height: 150,
     width: 185,
     marginLeft: 10,
     borderWidth: 0.5,
-    borderColor: '#ddd'
+    borderColor: '#ddd',
   },
   touchable: {
     borderRadius: Styles.borderRadius,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   imageContainer: {
     position: 'relative',
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderTopLeftRadius: Styles.borderRadius,
     borderTopRightRadius: Styles.borderRadius,
-    overflow: 'hidden' //To make sure any child (in this case the image) cannot overlap what we set in the image container
+    overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
   },
   icon: {
     position: 'absolute',
@@ -141,22 +141,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
-    elevation: 2 //Because shadow only work on iOS, elevation is same thing but for android.
+    elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
   },
 
   image: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   details: {
-    color: '#000'
+    color: '#000',
   },
   title: {
     paddingLeft: 4,
     width: '90%',
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
-    marginLeft: 8
+    marginLeft: 8,
   },
   price: {
     position: 'absolute',
@@ -168,8 +168,8 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-bold',
     fontSize: 15,
     textAlign: 'right',
-    marginRight: 8
-  }
+    marginRight: 8,
+  },
 });
 
 export default ProductItem;

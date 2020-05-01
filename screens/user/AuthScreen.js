@@ -126,10 +126,6 @@ const AuthScreen = (props) => {
       return;
     }
     if (isSignup) {
-      console.log('passed data from AuthScreen');
-      console.log('formState.inputValues', formState.inputValues);
-      console.log('selectedImage.length', selectedImage.length);
-
       action = authActions.signup(
         formState.inputValues.email,
         formState.inputValues.password,

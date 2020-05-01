@@ -5,7 +5,7 @@ import * as Permissions from 'expo-permissions';
 import { Button } from 'react-native-paper';
 import Colors from '../../constants/Colors';
 
-const ImgPicker = props => {
+const ImgPicker = (props) => {
   const [pickedImage, setPickedImage] = useState(props.passedImage); //Set state to be a previously taken picture if we have one. Passed from wherever we use this component.
 
   const verifyPermissions = async () => {
@@ -36,7 +36,7 @@ const ImgPicker = props => {
       base64: true, //lets us get and use the base64 encoded image to pass to storage
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.6
+      quality: 0.6,
     });
 
     setPickedImage(image.uri ? image.uri : props.passedImage); //show image from local storage
@@ -62,7 +62,7 @@ const ImgPicker = props => {
 const styles = StyleSheet.create({
   imagePicker: {
     alignItems: 'center',
-    marginBottom: 15
+    marginBottom: 15,
   },
   imagePreview: {
     width: '100%',
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#ccc',
-    borderWidth: 1
+    borderWidth: 1,
   },
   image: {
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 });
 
 export default ImgPicker;

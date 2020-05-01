@@ -35,11 +35,9 @@ const ProposalsScreen = (props) => {
       console.log('ProposalsScreen: fetching proposals...');
       dispatch(proposalsActions.fetchProposals());
     } catch (err) {
-      console.log('Error in loadProposals from ProposalsScreen ', err.message);
       setError(err.message);
     }
     setIsRefreshing(false);
-    console.log('...proposals fetched!');
   }, [dispatch, setIsLoading, setError]);
 
   const searchHandler = (text) => {

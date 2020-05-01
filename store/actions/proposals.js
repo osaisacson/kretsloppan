@@ -5,25 +5,20 @@ export const CREATE_PROPOSAL = 'CREATE_PROPOSAL';
 export const UPDATE_PROPOSAL = 'UPDATE_PROPOSAL';
 export const SET_PROPOSALS = 'SET_PROPOSALS';
 
-export const fetchProposals = () => {
+export function fetchProposals() {
   return async (dispatch, getState) => {
-    // any async code you want!
     const userId = getState().auth.userId;
+    // Set a loading flag to true in the reducer
+    dispatch({ type: 'LOADING', loading: true });
+    ('START----------actions/proposals/fetchProposals--------');
+
+    // Perform the API call - fetching all proposals
     try {
       const response = await fetch(
         'https://egnahemsfabriken.firebaseio.com/proposals.json'
       );
-
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorId = errorResData.error.message;
-        let message = errorId;
-        throw new Error(message);
-      }
-
       const resData = await response.json();
       const loadedProposals = [];
-
       for (const key in resData) {
         loadedProposals.push(
           new Proposal(
@@ -36,19 +31,27 @@ export const fetchProposals = () => {
           )
         );
       }
+      console.log('Dispatch SET_PROPOSALS, passing it loadedProposals');
+      // Set our proposals in the reducer
       dispatch({
         type: SET_PROPOSALS,
         proposals: loadedProposals,
         userProposals: loadedProposals.filter(
-          (prod) => prod.ownerId === userId
+          (proposal) => proposal.ownerId === userId
         ),
       });
-    } catch (err) {
-      // send to custom analytics server
-      throw err;
+      // Set a loading flag to false in the reducer
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/proposals/fetchProposals--------END');
+    } catch (error) {
+      console.log('ERROR: ', error);
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/proposals/fetchProposals--------END');
+      // Rethrow so returned Promise is rejected
+      throw error;
     }
   };
-};
+}
 
 export const deleteProposal = (proposalId) => {
   return async (dispatch, getState) => {
@@ -70,79 +73,107 @@ export const deleteProposal = (proposalId) => {
   };
 };
 
-export const createProposal = (title, description, price) => {
-  return (dispatch, getState) => {
+export function createProposal(title, description, price) {
+  return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
-    const date = new Date();
+    const currentDate = new Date().toISOString();
 
-    const proposalData = {
-      ownerId: userId,
-      title,
-      description,
-      price,
-      date: date.toISOString(),
-    };
+    // Set a loading flag to true in the reducer
+    dispatch({ type: 'LOADING', loading: true });
+    try {
+      console.log('START----------actions/proposals/createProposal--------');
 
-    //Then upload the rest of the data to realtime database on firebase
-    fetch(
-      `https://egnahemsfabriken.firebaseio.com/proposals.json?auth=${token}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(proposalData),
-      }
-    )
-      .catch((err) =>
-        console.log(
-          'Error when attempting to save to firebase realtime database: ',
-          err
-        )
-      )
-      .then((finalRes) => finalRes.json())
-      .then((finalResParsed) => {
-        dispatch({
-          type: CREATE_PROPOSAL,
-          proposalData: {
-            id: finalResParsed.name,
-            ownerId: userId,
-            title,
-            description,
-            price,
-            date: date.toISOString(),
-          },
-        });
+      const proposalData = {
+        ownerId: userId,
+        title,
+        description,
+        price,
+        date: currentDate,
+      };
+
+      // Perform the API call - create the proposal, passing the proposalData object above
+      const response = await fetch(
+        `https://egnahemsfabriken.firebaseio.com/proposals.json?auth=${token}`,
+        {
+          method: 'POST',
+          body: JSON.stringify(proposalData),
+        }
+      );
+      const returnedProposalData = await response.json();
+
+      console.log('dispatching CREATE_PROPOSAL');
+
+      dispatch({
+        type: CREATE_PROPOSAL,
+        proposalData: {
+          id: returnedProposalData.name,
+          ownerId: userId,
+          title,
+          description,
+          price,
+          date: currentDate,
+        },
       });
-  };
-};
 
-export const updateProposal = (id, title, description, price) => {
-  return (dispatch, getState) => {
+      console.log('----------actions/proposals/createProposal--------END');
+      dispatch({ type: 'LOADING', loading: false });
+    } catch (error) {
+      console.log('ERROR: ', error);
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/proposals/createProposal--------END');
+      // Rethrow so returned Promise is rejected
+      throw error;
+    }
+  };
+}
+
+export function updateProposal(id, title, description, price) {
+  return async (dispatch, getState) => {
     const token = getState().auth.token;
 
-    fetch(
-      `https://egnahemsfabriken.firebaseio.com/proposals/${id}.json?auth=${token}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify(proposalData),
-      }
-    )
-      .catch((err) =>
-        console.log(
-          'Error when attempting to save to firebase realtime database: ',
-          err
-        )
-      )
-      .then((finalRes) => finalRes.json())
-      .then((finalResParsed) => {
-        dispatch({
-          type: UPDATE_PROPOSAL,
-          pid: id,
-          proposalData: {
-            title,
-            description,
-            price,
-          },
-        });
+    // Set a loading flag to true in the reducer
+    dispatch({ type: 'LOADING', loading: true });
+
+    try {
+      console.log('START----------actions/proposals/updateProposal--------');
+
+      const dataToUpdate = {
+        title,
+        description,
+        price,
+      };
+
+      // Perform the API call - create the proposal, passing the proposalData object above
+      const response = await fetch(
+        `https://egnahemsfabriken.firebaseio.com/proposals/${id}.json?auth=${token}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify(dataToUpdate),
+        }
+      );
+      const returnedProposalData = await response.json();
+
+      console.log(
+        'returnedProposalData from updating proposal, after patch',
+        returnedProposalData
+      );
+
+      console.log('dispatching UPDATE_PROPOSAL');
+
+      dispatch({
+        type: UPDATE_PROPOSAL,
+        pid: id,
+        proposalData: dataToUpdate,
       });
+
+      console.log('----------actions/proposals/updateProposal--------END');
+      dispatch({ type: 'LOADING', loading: false });
+    } catch (error) {
+      dispatch({ type: 'LOADING', loading: false });
+      ('----------actions/proposals/updateProposal--------END');
+      // Rethrow so returned Promise is rejected
+      throw error;
+    }
   };
-};
+}
