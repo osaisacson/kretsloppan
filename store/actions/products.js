@@ -82,8 +82,11 @@ export function updateReservedProduct(id, token) {
 export function fetchProducts() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
+    const token = getState().auth.token;
+
     // Set a loading flag to true in the reducer
     dispatch({ type: 'LOADING', loading: true });
+
     ('START----------actions/products/fetchProducts--------');
 
     // Perform the API call - fetching all products
@@ -92,7 +95,9 @@ export function fetchProducts() {
         'https://egnahemsfabriken.firebaseio.com/products.json'
       );
       const resData = await response.json();
+
       const loadedProducts = [];
+
       console.log(
         'Checking if any of the product reservation dates have expired: '
       );
@@ -105,48 +110,48 @@ export function fetchProducts() {
           reservationExpiryDate instanceof Date &&
           reservationExpiryDate <= new Date();
 
-        //If it is not picked up and the reservation has passed...
+        //If the product has expired, call a function which passes correct new fields and then push the updated product to the loadedProducts array
         if (shouldBeReset) {
-          const token = getState().auth.token;
-          //...call the function which updates the product data, and pass it the product and auth token
           console.log(
             'Found expired product, calling updateReservedProduct ------>'
           );
-          return updateReservedProduct(key, token).then((updatedResult) => {
-            console.log(
-              '---------> ...updated result received from updateReservedProduct, updating product with: '
-            );
-            console.log('id: ', key);
-            console.log('updatedResult: ', updatedResult);
-            console.log(
-              `${key} product was expired, pushing updated product to loadedProducts`
-            );
-            loadedProducts.push(
-              new Product(
-                key,
-                updatedResult.ownerId,
-                updatedResult.reservedUserId,
-                updatedResult.newOwnerId,
-                updatedResult.categoryName,
-                updatedResult.condition,
-                updatedResult.title,
-                updatedResult.image,
-                updatedResult.address,
-                updatedResult.phone,
-                updatedResult.description,
-                updatedResult.price,
-                updatedResult.date,
-                updatedResult.status,
-                updatedResult.pauseDate,
-                updatedResult.readyDate,
-                updatedResult.reservedDate,
-                updatedResult.reservedUntil,
-                updatedResult.collectedDate,
-                updatedResult.projectId
-              )
-            );
-          });
+          const updatedResult = await dispatch(
+            updateReservedProduct(key, token)
+          );
+          console.log(
+            '---------> ...updated result received from updateReservedProduct, updating product with: '
+          );
+          console.log('id: ', key);
+          console.log('updatedResult: ', updatedResult);
+          console.log(
+            `${key} product was expired, pushing updated product to loadedProducts`
+          );
+          loadedProducts.push(
+            new Product(
+              key,
+              updatedResult.ownerId,
+              updatedResult.reservedUserId,
+              updatedResult.newOwnerId,
+              updatedResult.categoryName,
+              updatedResult.condition,
+              updatedResult.title,
+              updatedResult.image,
+              updatedResult.address,
+              updatedResult.phone,
+              updatedResult.description,
+              updatedResult.price,
+              updatedResult.date,
+              updatedResult.status,
+              updatedResult.pauseDate,
+              updatedResult.readyDate,
+              updatedResult.reservedDate,
+              updatedResult.reservedUntil,
+              updatedResult.collectedDate,
+              updatedResult.projectId
+            )
+          );
         }
+        //If the product was not expired, push the original to the loadedProducts array
         console.log(`${key} clear!`);
         loadedProducts.push(
           new Product(
@@ -230,87 +235,81 @@ export function createProduct(
 
     // Set a loading flag to true in the reducer
     dispatch({ type: 'LOADING', loading: true });
+
     try {
       console.log('START----------actions/products/createProduct--------');
 
       //First convert the base64 image to a firebase url...
-      return dispatch(convertImage(image)).then(
-        async (parsedRes) => {
-          //...then take the returned image and...
-          console.log(
-            'returned result from the convertImage function: ',
-            parsedRes
-          );
+      const convertedImage = await dispatch(convertImage(image));
 
-          //...together with the rest of the data create the productData object.
-          const productData = {
-            ownerId: userId,
-            reservedUserId: '',
-            newOwnerId: '',
-            categoryName,
-            condition,
-            title,
-            image: parsedRes.image, //This is how we link to the image we create through the convertImage function
-            address,
-            phone,
-            description,
-            price,
-            date: currentDate,
-            status: 'redo',
-            pauseDate: '',
-            readyDate: currentDate,
-            reservedDate: '',
-            reservedUntil: '',
-            collectedDate: '',
-            projectId: '000',
-          };
+      console.log(
+        'returned result from the convertImage function: ',
+        convertedImage
+      );
 
-          // Perform the API call - create the product, passing the productData object above
-          const response = await fetch(
-            `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
-            {
-              method: 'POST',
-              body: JSON.stringify(productData),
-            }
-          );
-          const returnedProductData = await response.json();
+      //...then take the returned image and together with the rest of the data create the productData object.
+      const productData = {
+        ownerId: userId,
+        reservedUserId: '',
+        newOwnerId: '',
+        categoryName,
+        condition,
+        title,
+        image: convertedImage.image, //This is how we link to the image we create through the convertImage function
+        address,
+        phone,
+        description,
+        price,
+        date: currentDate,
+        status: 'redo',
+        pauseDate: '',
+        readyDate: currentDate,
+        reservedDate: '',
+        reservedUntil: '',
+        collectedDate: '',
+        projectId: '000',
+      };
 
-          console.log('dispatching CREATE_PRODUCT');
-
-          dispatch({
-            type: CREATE_PRODUCT,
-            productData: {
-              id: returnedProductData.name,
-              ownerId: userId,
-              reservedUserId: '',
-              newOwnerId: '',
-              categoryName,
-              condition,
-              title,
-              image: parsedRes.image,
-              address,
-              phone,
-              description,
-              price,
-              date: currentDate,
-              status: 'redo',
-              readyDate: currentDate,
-              pauseDate: '',
-              readyDate: currentDate,
-              reservedDate: '',
-              reservedUntil: '',
-              collectedDate: '',
-              projectId: '000',
-            },
-          });
-          console.log('----------actions/products/createProduct--------END');
-          dispatch({ type: 'LOADING', loading: false });
-        },
-        (error) => {
-          dispatch({ type: 'LOADING', loading: false });
-          throw error;
+      // Perform the API call - create the product, passing the productData object above
+      const response = await fetch(
+        `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
+        {
+          method: 'POST',
+          body: JSON.stringify(productData),
         }
       );
+      const returnedProductData = await response.json();
+
+      console.log('dispatching CREATE_PRODUCT');
+
+      dispatch({
+        type: CREATE_PRODUCT,
+        productData: {
+          id: returnedProductData.name,
+          ownerId: userId,
+          reservedUserId: '',
+          newOwnerId: '',
+          categoryName,
+          condition,
+          title,
+          image: convertedImage.image,
+          address,
+          phone,
+          description,
+          price,
+          date: currentDate,
+          status: 'redo',
+          readyDate: currentDate,
+          pauseDate: '',
+          readyDate: currentDate,
+          reservedDate: '',
+          reservedUntil: '',
+          collectedDate: '',
+          projectId: '000',
+        },
+      });
+      console.log('----------actions/products/createProduct--------END');
+      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
       console.log('ERROR: ', error);
       dispatch({ type: 'LOADING', loading: false });
@@ -338,75 +337,42 @@ export function updateProduct(
     // Set a loading flag to true in the reducer
     dispatch({ type: 'LOADING', loading: true });
 
+    //If we are NOT passing a base64 image, update with the old image and passed data
+    let dataToUpdate = {
+      categoryName,
+      condition,
+      title,
+      image,
+      address,
+      phone,
+      description,
+      price,
+    };
+
     try {
       console.log('START----------actions/products/updateProduct--------');
 
       //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
       if (image.length > 1000) {
         //First convert the base64 image to a firebase url...
-        return dispatch(convertImage(image)).then(
-          async (parsedRes) => {
-            //...then take the returned image and...
-            console.log(
-              'returned result from the convertImage function: ',
-              parsedRes
-            );
-
-            const dataToUpdate = {
-              categoryName,
-              condition,
-              title,
-              image: parsedRes.image,
-              address,
-              phone,
-              description,
-              price,
-            };
-
-            // Perform the API call - create the product, passing the productData object above
-            const response = await fetch(
-              `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
-              {
-                method: 'PATCH',
-                body: JSON.stringify(dataToUpdate),
-              }
-            );
-            const returnedProductData = await response.json();
-
-            console.log(
-              'returnedProductData from updating product, after patch',
-              returnedProductData
-            );
-
-            console.log('dispatching UPDATE_PRODUCT');
-
-            dispatch({
-              type: UPDATE_PRODUCT,
-              pid: id,
-              productData: dataToUpdate,
-            });
-
-            console.log('----------actions/products/updateProduct--------END');
-            dispatch({ type: 'LOADING', loading: false });
-          },
-          (error) => {
-            dispatch({ type: 'LOADING', loading: false });
-            throw error;
-          }
+        const convertedImage = await dispatch(convertImage(image));
+        //...then take the returned image and update our dataToUpdate object
+        console.log(
+          'returned result from the convertImage function: ',
+          convertedImage
         );
-      }
 
-      //If we are NOT passing a base64 image, update with the old image and passed data
-      const dataToUpdate = {
-        categoryName,
-        condition,
-        title,
-        image,
-        address,
-        phone,
-        description,
-        price,
-      };
+        dataToUpdate = {
+          categoryName,
+          condition,
+          title,
+          image: convertedImage.image,
+          address,
+          phone,
+          description,
+          price,
+        };
+      }
 
       // Perform the API call - create the product, passing the productData object above
       const response = await fetch(
@@ -475,48 +441,38 @@ export const changeProductStatus = (id, status, projectId) => {
     //If we are updating the status to ready, set the date when the product was made available again to today.
     let updatedReadyDate = isReady ? currentDate : '';
 
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          reservedUserId: updatedReservedUserId,
-          newOwnerId: updatedNewOwnerId,
-          status,
-          pauseDate: updatedPauseDate,
-          readyDate: updatedReadyDate,
-          reservedDate: updatedReservedDate,
-          reservedUntil: updatedReservedUntil,
-          collectedDate: updatedCollectedDate,
-          projectId: updatedProjectId,
-        }),
-      }
-    );
+    const productDataToUpdate = {
+      reservedUserId: updatedReservedUserId,
+      newOwnerId: updatedNewOwnerId,
+      status,
+      pauseDate: updatedPauseDate,
+      readyDate: updatedReadyDate,
+      reservedDate: updatedReservedDate,
+      reservedUntil: updatedReservedUntil,
+      collectedDate: updatedCollectedDate,
+      projectId: updatedProjectId,
+    };
 
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = errorId;
-      throw new Error(message);
+    try {
+      await fetch(
+        `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(productDataToUpdate),
+        }
+      );
+
+      dispatch({
+        type: CHANGE_PRODUCT_STATUS,
+        pid: id,
+        productData: productDataToUpdate,
+      });
+    } catch (error) {
+      // Rethrow so returned Promise is rejected
+      throw error;
     }
-
-    dispatch({
-      type: CHANGE_PRODUCT_STATUS,
-      pid: id,
-      productData: {
-        reservedUserId: updatedReservedUserId,
-        newOwnerId: updatedNewOwnerId,
-        status,
-        pauseDate: updatedPauseDate,
-        readyDate: updatedReadyDate,
-        reservedDate: updatedReservedDate,
-        reservedUntil: updatedReservedUntil,
-        collectedDate: updatedCollectedDate,
-        projectId: updatedProjectId,
-      },
-    });
   };
 };

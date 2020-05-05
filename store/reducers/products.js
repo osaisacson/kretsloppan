@@ -92,12 +92,12 @@ export default (state = initialState, action) => {
       );
 
       //Update state
-      updatedAvailableProducts = updateCollection(
+      const updatedAvailableProducts = updateCollection(
         state.availableProducts,
         action.pid,
         updatedUserProduct
       );
-      updatedUserProducts = updateCollection(
+      const updatedUserProducts = updateCollection(
         state.userProducts,
         action.pid,
         updatedUserProduct
@@ -114,10 +114,7 @@ export default (state = initialState, action) => {
         action.pid
       );
 
-      console.log(
-        'store/reducers/products/CHANGE_PRODUCT_STATUS, original product: ',
-        state.availableProducts[availableProductsIndexCPS]
-      );
+      console.log('availableProductsIndexCPS: ', availableProductsIndexCPS);
 
       const updatedProductCPS = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
@@ -147,12 +144,12 @@ export default (state = initialState, action) => {
         updatedProductCPS
       );
       //Update state
-      updatedAvailableProductsCPS = updateCollection(
+      const updatedAvailableProductsCPS = updateCollection(
         state.availableProducts,
         action.pid,
         updatedProductCPS
       );
-      updatedUserProductsCPS = updateCollection(
+      const updatedUserProductsCPS = updateCollection(
         state.userProducts,
         action.pid,
         updatedProductCPS

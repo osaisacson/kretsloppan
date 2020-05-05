@@ -63,12 +63,12 @@ export default (state = initialState, action) => {
       );
 
       //Update state
-      updatedAvailableProposals = updateCollection(
+      const updatedAvailableProposals = updateCollection(
         state.availableProposals,
         action.pid,
         updatedUserProposal
       );
-      updatedUserProposals = updateCollection(
+      const updatedUserProposals = updateCollection(
         state.userProposals,
         action.pid,
         updatedUserProposal
@@ -105,12 +105,12 @@ export default (state = initialState, action) => {
         updatedProductCPS
       );
       //Update state
-      updatedAvailableProposalsCPS = updateCollection(
+      const updatedAvailableProposalsCPS = updateCollection(
         state.availableProposals,
         action.pid,
         updatedProductCPS
       );
-      updatedUserProposalsCPS = updateCollection(
+      const updatedUserProposalsCPS = updateCollection(
         state.userProposals,
         action.pid,
         updatedProductCPS

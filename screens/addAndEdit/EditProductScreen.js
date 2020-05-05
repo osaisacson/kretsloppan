@@ -63,12 +63,8 @@ const EditProductScreen = (props) => {
   //Set states
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [selectedCategory, setSelectedCategory] = useState(
-    editedProduct ? editedProduct.categoryName : 'Ingen'
-  );
-  const [selectedCondition, setSelectedCondition] = useState(
-    editedProduct ? editedProduct.condition : 'Inget'
-  );
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCondition, setSelectedCondition] = useState();
   const [placeholderPic, setPlaceholderPic] = useState(
     editedProduct ? editedProduct.image : ''
   ); //Set placeholder to be a previously taken picture if we have one.

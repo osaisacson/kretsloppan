@@ -2,16 +2,9 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import {
-  ScrollView,
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Alert,
-  FlatList,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, Alert, FlatList } from 'react-native';
 import SaferArea from '../../components/UI/SaferArea';
+import ContactDetails from '../../components/UI/ContactDetails';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import UsedItem from '../../components/UI/UsedItem';
 import ButtonIcon from '../../components/UI/ButtonIcon';
@@ -73,6 +66,13 @@ const ProjectDetailScreen = (props) => {
 
   const projectHeader = (
     <View>
+      {hasEditPermission ? null : (
+        <ContactDetails
+          profileId={ownerId}
+          projectId={selectedProject.id}
+          buttonText={'kontaktdetaljer'}
+        />
+      )}
       <Image style={styles.image} source={{ uri: selectedProject.image }} />
 
       {/* Buttons to show if the user has edit permissions */}

@@ -87,7 +87,6 @@ const ProductsScreen = (props) => {
           <ProductItem
             itemData={itemData.item}
             onSelect={() => {
-              console.log('CLICKED itemData: ', itemData);
               selectItemHandler(
                 itemData.item.id,
                 itemData.item.ownerId,

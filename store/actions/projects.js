@@ -87,57 +87,43 @@ export function createProject(title, slogan, image, status) {
       console.log('START----------actions/projects/createProject--------');
 
       //First convert the base64 image to a firebase url...
-      return dispatch(convertImage(image)).then(
-        async (parsedRes) => {
-          //...then take the returned image and...
-          console.log(
-            'returned result from the convertImage function: ',
-            parsedRes
-          );
+      const convertedImage = await dispatch(convertImage(image));
+      const projectData = {
+        title,
+        slogan,
+        image: convertedImage.image, //This is how we link to the image we store above
+        ownerId: userId,
+        date: currentDate,
+        status,
+      };
 
-          //...together with the rest of the data create the projectData object.
-          const projectData = {
-            title,
-            slogan,
-            image: parsedRes.image, //This is how we link to the image we store above
-            ownerId: userId,
-            date: currentDate,
-            status,
-          };
-
-          // Perform the API call - create the project, passing the projectData object above
-          const response = await fetch(
-            `https://egnahemsfabriken.firebaseio.com/projects.json?auth=${token}`,
-            {
-              method: 'POST',
-              body: JSON.stringify(projectData),
-            }
-          );
-          const returnedProjectData = await response.json();
-
-          console.log('dispatching CREATE_PRODUCT');
-
-          dispatch({
-            type: CREATE_PROJECT,
-            projectData: {
-              id: returnedProjectData.name,
-              title,
-              slogan,
-              image: parsedRes.image,
-              ownerId: userId,
-              date: currentDate,
-              status,
-            },
-          });
-
-          console.log('----------actions/projects/createProject--------END');
-          dispatch({ type: 'LOADING', loading: false });
-        },
-        (error) => {
-          dispatch({ type: 'LOADING', loading: false });
-          throw error;
+      // Perform the API call - create the project, passing the projectData object above
+      const response = await fetch(
+        `https://egnahemsfabriken.firebaseio.com/projects.json?auth=${token}`,
+        {
+          method: 'POST',
+          body: JSON.stringify(projectData),
         }
       );
+      const returnedProjectData = await response.json();
+
+      console.log('dispatching CREATE_PRODUCT');
+
+      dispatch({
+        type: CREATE_PROJECT,
+        projectData: {
+          id: returnedProjectData.name,
+          title,
+          slogan,
+          image: convertedImage.image,
+          ownerId: userId,
+          date: currentDate,
+          status,
+        },
+      });
+
+      console.log('----------actions/projects/createProject--------END');
+      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
       console.log('ERROR: ', error);
       dispatch({ type: 'LOADING', loading: false });
@@ -158,62 +144,21 @@ export function updateProject(id, title, slogan, image) {
     try {
       console.log('START----------actions/projects/updateProject--------');
 
-      //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
-      if (image.length > 1000) {
-        //First convert the base64 image to a firebase url...
-        return dispatch(convertImage(image)).then(
-          async (parsedRes) => {
-            //...then take the returned image and...
-            console.log(
-              'returned result from the convertImage function: ',
-              parsedRes
-            );
-
-            const dataToUpdate = {
-              title,
-              slogan,
-              image: parsedRes.image, //This is how we link to the image we store above
-            };
-
-            // Perform the API call - create the project, passing the projectData object above
-            const response = await fetch(
-              `https://egnahemsfabriken.firebaseio.com/projects/${id}.json?auth=${token}`,
-              {
-                method: 'PATCH',
-                body: JSON.stringify(dataToUpdate),
-              }
-            );
-            const returnedProjectData = await response.json();
-
-            console.log(
-              'returnedProjectData from updating project, after patch',
-              returnedProjectData
-            );
-
-            console.log('dispatching UPDATE_PROJECT');
-
-            dispatch({
-              type: UPDATE_PROJECT,
-              pid: id,
-              projectData: dataToUpdate,
-            });
-
-            console.log('----------actions/projects/updateProject--------END');
-            dispatch({ type: 'LOADING', loading: false });
-          },
-          (error) => {
-            dispatch({ type: 'LOADING', loading: false });
-            throw error;
-          }
-        );
-      }
-
-      //If we are NOT passing a base64 image, update with the old image and passed data
-      const dataToUpdate = {
+      let dataToUpdate = {
         title,
         slogan,
         image,
       };
+
+      //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
+      if (image.length > 1000) {
+        const convertedImage = await dispatch(convertImage(image));
+        dataToUpdate = {
+          title,
+          slogan,
+          image: convertedImage.image, //This is how we link to the image we store above
+        };
+      }
 
       // Perform the API call - create the project, passing the projectData object above
       const response = await fetch(

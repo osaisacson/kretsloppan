@@ -37,61 +37,65 @@ export const signup = (email, password, profileName, phone, address, image) => {
         }
       );
 
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorId = errorResData.error.message;
+      const resData = await response.json();
+
+      if (resData.error) {
+        const errorId = resData.error.message;
         let message = errorId;
-        //TODO: Customised error messages
         if (errorId === 'EMAIL_EXISTS') {
           alert('Den här emailen finns redan');
           message = 'Den här emailen finns redan';
         }
+        if (errorId === 'INVALID_EMAIL') {
+          message =
+            'Det verkar som emailen inte är en riktig email, prova igen';
+        }
+        if (errorId === 'MISSING_PASSWORD') {
+          message = 'Du verkar inte ha skrivit in något lösenord.';
+        }
         alert(message);
-        throw new Error(message);
+        console.log(resData.error);
+        return (process.exitCode = 1);
       }
 
-      await response
-        .json()
-        .then((resData) => {
-          dispatch(
-            authenticate(
-              resData.localId,
-              resData.idToken,
-              parseInt(resData.expiresIn) * 1000
-            )
-          );
-          const expirationDate = new Date(
-            new Date().getTime() + parseInt(resData.expiresIn) * 1000
-          );
-          saveDataToStorage(resData.idToken, resData.localId, expirationDate);
-        })
-        .then(() => {
-          console.log(
-            'store/actions/auth: attempting to create a profile with this data:'
-          );
-          console.log('profileName: ', profileName);
-          console.log('email: ', email);
-          console.log('phone: ', phone);
-          console.log('address: ', address);
-          console.log('image.length: ', image.length);
+      await dispatch(
+        authenticate(
+          resData.localId,
+          resData.idToken,
+          parseInt(resData.expiresIn) * 1000
+        )
+      );
+      const expirationDate = new Date(
+        new Date().getTime() + parseInt(resData.expiresIn) * 1000
+      );
+      saveDataToStorage(resData.idToken, resData.localId, expirationDate);
 
-          try {
-            dispatch(
-              profilesActions.createProfile(
-                profileName,
-                email,
-                phone,
-                address,
-                image
-              )
-            );
-          } catch (err) {
-            console.log(
-              'store/actions/auth: Something went wrong when trying to create profile'
-            );
-          }
-          console.log('store/actions/auth: Success! Created profile');
-        });
+      console.log(
+        'store/actions/auth: attempting to create a profile with this data:'
+      );
+      console.log('profileName: ', profileName);
+      console.log('email: ', email);
+      console.log('phone: ', phone);
+      console.log('address: ', address);
+      console.log('image.length: ', image.length);
+
+      try {
+        dispatch(
+          profilesActions.createProfile(
+            profileName,
+            email,
+            phone,
+            address,
+            image
+          )
+        );
+      } catch (err) {
+        console.log(
+          'store/actions/auth: Something went wrong when trying to create profile: ',
+          err
+        );
+      }
+      console.log('store/actions/auth: Success! Created profile');
     } catch (error) {
       console.log('ERROR: ', error);
       // Rethrow so returned Promise is rejected
@@ -118,13 +122,18 @@ export const login = (email, password) => {
         }
       );
 
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorId = errorResData.error.message;
+      const resData = await response.json();
+
+      if (resData.error) {
+        const errorId = resData.error.message;
         let message = errorId;
         if (errorId === 'EMAIL_NOT_FOUND') {
           message =
             'Emailen kan inte hittas. Byt till att skapa konto om du aldrig loggat in innan, annars kolla stavningen.';
+        }
+        if (errorId === 'INVALID_EMAIL') {
+          message =
+            'Det verkar som emailen inte är en riktig email, prova igen';
         }
         if (errorId === 'INVALID_PASSWORD') {
           message = 'Lösenordet passar inte emailen, prova igen';
@@ -133,11 +142,14 @@ export const login = (email, password) => {
           message = 'Du verkar inte ha skrivit in något lösenord.';
         }
         alert(message);
-        throw new Error(message);
+        console.log(resData.error);
+        return (process.exitCode = 1);
       }
 
-      const resData = await response.json();
-      console.log('logged in user data: ', resData);
+      const expirationDate = new Date(
+        new Date().getTime() + parseInt(resData.expiresIn) * 1000
+      );
+
       dispatch(
         authenticate(
           resData.localId,
@@ -145,12 +157,11 @@ export const login = (email, password) => {
           parseInt(resData.expiresIn) * 1000
         )
       );
-      const expirationDate = new Date(
-        new Date().getTime() + parseInt(resData.expiresIn) * 1000
-      );
+
       saveDataToStorage(resData.idToken, resData.localId, expirationDate);
     } catch (error) {
-      console.log('ERROR: ', error);
+      console.log('Error when trying to login: ', error);
+
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -178,12 +189,18 @@ const setLogoutTimer = (expirationTime) => {
 };
 
 const saveDataToStorage = (token, userId, expirationDate) => {
-  AsyncStorage.setItem(
-    'userData',
-    JSON.stringify({
-      token: token,
-      userId: userId,
-      expiryDate: expirationDate.toISOString(),
-    })
-  );
+  try {
+    AsyncStorage.setItem(
+      'userData',
+      JSON.stringify({
+        token: token,
+        userId: userId,
+        expiryDate: expirationDate.toISOString(),
+      })
+    );
+  } catch (error) {
+    console.log('ERROR: ', error);
+    // Rethrow so returned Promise is rejected
+    throw error;
+  }
 };

@@ -75,6 +75,7 @@ const ProductDetailScreen = (props) => {
 
   const collectHandler = () => {
     const id = selectedProduct.id;
+    const projectId = selectedProduct.projectId;
     Alert.alert(
       'Är produkten hämtad?',
       'Genom att klicka här bekräftar du att produkten är hämtad. Den kommer då försvinna från det aktiva förrådet och hamna i ditt Gett Igen förråd.',
@@ -84,7 +85,9 @@ const ProductDetailScreen = (props) => {
           text: 'Ja, flytta den',
           style: 'destructive',
           onPress: () => {
-            dispatch(productsActions.changeProductStatus(id, 'hämtad'));
+            dispatch(
+              productsActions.changeProductStatus(id, 'hämtad', projectId)
+            );
           },
         },
       ]
@@ -138,6 +141,7 @@ const ProductDetailScreen = (props) => {
       {hasEditPermission ? null : (
         <ContactDetails
           profileId={ownerId}
+          productId={selectedProduct.id}
           hideButton={isReserved || isPickedUp}
           buttonText={'hämtningsdetaljer'}
         />

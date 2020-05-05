@@ -58,57 +58,42 @@ export function createProfile(profileName, email, phone, address, image) {
     try {
       console.log('START----------actions/profiles/createProfile--------');
 
-      //First convert the base64 image to a firebase url...
-      return dispatch(convertImage(image)).then(
-        async (parsedRes) => {
-          //...then take the returned image and...
-          console.log(
-            'returned result from the convertImage function: ',
-            parsedRes
-          );
+      const convertedImage = await dispatch(convertImage(image));
+      const profileData = {
+        profileId: userId, //Set profileId to be the userId of the logged in user: we get this from auth
+        profileName,
+        email,
+        phone,
+        address,
+        image: convertedImage.image, //This is how we link to the image we store above
+      };
 
-          //...together with the rest of the data create the profileData object.
-          const profileData = {
-            profileId: userId, //Set profileId to be the userId of the logged in user: we get this from auth
-            profileName,
-            email,
-            phone,
-            address,
-            image: parsedRes.image, //This is how we link to the image we store above
-          };
-
-          // Perform the API call - create the profile, passing the profileData object above
-          const response = await fetch(
-            `https://egnahemsfabriken.firebaseio.com/profiles.json?auth=${token}`,
-            {
-              method: 'POST',
-              body: JSON.stringify(profileData),
-            }
-          );
-          const returnedProfileData = await response.json();
-
-          console.log('dispatching CREATE_PROFILE');
-
-          dispatch({
-            type: CREATE_PROFILE,
-            profileData: {
-              firebaseId: returnedProfileData.name,
-              profileId: userId,
-              profileName,
-              email,
-              phone,
-              address,
-              image: parsedRes.image,
-            },
-          });
-          console.log('----------actions/profiles/createProfile--------END');
-          dispatch({ type: 'LOADING', loading: false });
-        },
-        (error) => {
-          dispatch({ type: 'LOADING', loading: false });
-          throw error;
+      // Perform the API call - create the profile, passing the profileData object above
+      const response = await fetch(
+        `https://egnahemsfabriken.firebaseio.com/profiles.json?auth=${token}`,
+        {
+          method: 'POST',
+          body: JSON.stringify(profileData),
         }
       );
+      const returnedProfileData = await response.json();
+
+      console.log('dispatching CREATE_PROFILE');
+
+      dispatch({
+        type: CREATE_PROFILE,
+        profileData: {
+          firebaseId: returnedProfileData.name,
+          profileId: userId,
+          profileName,
+          email,
+          phone,
+          address,
+          image: convertedImage.image,
+        },
+      });
+      console.log('----------actions/profiles/createProfile--------END');
+      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
       dispatch({ type: 'LOADING', loading: false });
       ('----------actions/profiles/createProfile--------END');
@@ -136,70 +121,28 @@ export function updateProfile(
     try {
       console.log('START----------actions/profiles/updateProfile--------');
 
-      //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
-      if (image.length > 1000) {
-        //First convert the base64 image to a firebase url...
-        return dispatch(convertImage(image)).then(
-          async (parsedRes) => {
-            //...then take the returned image and...
-            console.log(
-              'returned result from the convertImage function: ',
-              parsedRes
-            );
-
-            const dataToUpdate = {
-              profileName,
-              email,
-              phone,
-              address,
-              image: parsedRes.image,
-            };
-
-            // Perform the API call - create the profile, passing the profileData object above
-            const response = await fetch(
-              `https://egnahemsfabriken.firebaseio.com/profiles/${firebaseId}.json?auth=${token}`,
-              {
-                method: 'PATCH',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToUpdate),
-              }
-            );
-            const returnedProfileData = await response.json();
-
-            console.log(
-              'returnedProfileData from updating profile, after patch',
-              returnedProfileData
-            );
-
-            console.log('dispatching UPDATE_PROFILE');
-
-            dispatch({
-              type: UPDATE_PROFILE,
-              currUser: userId,
-              fid: firebaseId,
-              profileData: dataToUpdate,
-            });
-
-            console.log('----------actions/profiles/updateProfile--------END');
-            dispatch({ type: 'LOADING', loading: false });
-          },
-          (error) => {
-            dispatch({ type: 'LOADING', loading: false });
-            throw error;
-          }
-        );
-      }
-
-      //If we are NOT passing a base64 image, update with the old image and passed data
-      const dataToUpdate = {
+      let dataToUpdate = {
         profileName,
         email,
         phone,
         address,
         image,
       };
+
+      if (image.length > 1000) {
+        const convertedImage = await dispatch(convertImage(image));
+
+        dataToUpdate = {
+          profileName,
+          email,
+          phone,
+          address,
+          image: convertedImage.image,
+        };
+
+        console.log('----------actions/profiles/updateProfile--------END');
+        dispatch({ type: 'LOADING', loading: false });
+      }
 
       // Perform the API call - create the profile, passing the profileData object above
       const response = await fetch(

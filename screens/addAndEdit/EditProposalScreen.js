@@ -170,10 +170,10 @@ const EditProposalScreen = (props) => {
       <FormFieldWrapper
         subLabel="Om du lägger upp som företag, ange pris inklusive moms"
         showPromptIf={!formState.inputValues.price}
-        prompt="Skriv in en ersättning, 0 för voluntärer/donationer"
+        prompt="Skriv in en ersättning, 0 för volontärer/donationer"
       >
         <TextInput
-          placeholder="Ersättning (skriv 0 för om du söker voluntärer/donationer)"
+          placeholder="Ersättning (skriv 0 för om du söker volontärer/donationer)"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}

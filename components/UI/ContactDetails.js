@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 //Components
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import UserAvatar from './UserAvatar';
 import ButtonToggle from './ButtonToggle';
 import { detailStyles } from '../wrappers/DetailWrapper';
@@ -19,6 +19,19 @@ const ContactDetails = (props) => {
   ).filter((profile) => profile.profileId === props.profileId);
 
   const selectedProfile = profilesArray[0];
+
+  const contactEmail = selectedProfile.email;
+
+  let objectForDetails = selectedProfile;
+
+  //If we are looking at the details for a product, proposal or project, instead show the specific details for this
+  if (props.productId) {
+    const productArray = useSelector(
+      (state) => state.products.availableProducts
+    ).filter((prod) => prod.id === props.productId);
+
+    objectForDetails = productArray[0];
+  }
 
   const toggleShowDetails = () => {
     setToggleDetails((prevState) => !prevState);
@@ -82,23 +95,21 @@ const ContactDetails = (props) => {
           <>
             <View style={detailStyles.textCard}>
               <Text style={detailStyles.boundaryText}>
-                {selectedProfile.email
-                  ? selectedProfile.email
-                  : 'Inget email angiven'}
+                {contactEmail ? contactEmail : 'Inget email angiven'}
               </Text>
             </View>
             <View style={detailStyles.textCard}>
               <Text style={detailStyles.boundaryText}>
-                {selectedProfile.phone
-                  ? selectedProfile.phone
+                {objectForDetails.phone
+                  ? objectForDetails.phone
                   : 'Inget telefon angiven'}
               </Text>
             </View>
-            {selectedProfile.address ? (
+            {objectForDetails.address ? (
               <View style={detailStyles.textCard}>
                 <Text style={detailStyles.boundaryText}>
-                  {selectedProfile.address
-                    ? selectedProfile.address
+                  {objectForDetails.address
+                    ? objectForDetails.address
                     : 'Inget address angiven'}
                 </Text>
               </View>

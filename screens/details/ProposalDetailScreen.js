@@ -21,7 +21,6 @@ const ProposalDetailScreen = (props) => {
 
   //Get proposal and owner id from navigation params (from parent screen) and current user id from state
   const proposalId = props.route.params.detailId;
-  const ownerId = props.route.params.ownerId;
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Find us the proposal that matches the current proposalId
@@ -30,6 +29,8 @@ const ProposalDetailScreen = (props) => {
       (proposal) => proposal.id === proposalId
     )
   );
+
+  const ownerId = selectedProposal.ownerId;
 
   //Check if the currently logged in user is the one who created the proposal, and thereby should have editing privileges
   const hasEditPermission = ownerId === loggedInUserId;
@@ -84,6 +85,7 @@ const ProposalDetailScreen = (props) => {
       {hasEditPermission ? null : (
         <ContactDetails
           profileId={ownerId}
+          proposalId={selectedProposal.id}
           hideButton={isResolved}
           buttonText={'kontaktdetaljer'}
         />
@@ -99,7 +101,7 @@ const ProposalDetailScreen = (props) => {
       <Text style={detailStyles.price}>
         {selectedProposal.price
           ? `${selectedProposal.price} kr`
-          : 'Voluntärbasis/Donation'}
+          : 'Volontärbasis/Donation'}
       </Text>
       {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
       {hasEditPermission && !isResolved ? (

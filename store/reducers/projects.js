@@ -64,12 +64,12 @@ export default (state = initialState, action) => {
       );
 
       //Update state
-      updatedAvailableProjects = updateCollection(
+      const updatedAvailableProjects = updateCollection(
         state.availableProjects,
         action.pid,
         updatedUserProject
       );
-      updatedUserProjects = updateCollection(
+      const updatedUserProjects = updateCollection(
         state.userProjects,
         action.pid,
         updatedUserProject
