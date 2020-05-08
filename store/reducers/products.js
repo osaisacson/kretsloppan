@@ -114,8 +114,6 @@ export default (state = initialState, action) => {
         action.pid
       );
 
-      console.log('availableProductsIndexCPS: ', availableProductsIndexCPS);
-
       const updatedProductCPS = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
         state.availableProducts[availableProductsIndexCPS].ownerId,

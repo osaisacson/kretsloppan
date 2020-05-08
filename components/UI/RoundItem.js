@@ -2,15 +2,13 @@ import React from 'react';
 //Components
 import {
   View,
-  Image,
   Text,
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-//Constants
-import Styles from '../../constants/Styles';
+import CachedImage from '../../components/UI/CachedImage';
 
 const RoundItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -27,10 +25,7 @@ const RoundItem = (props) => {
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={{ uri: props.itemData.image }}
-            />
+            <CachedImage style={styles.image} uri={props.itemData.image} />
           </View>
         </TouchableCmp>
       </View>

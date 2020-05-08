@@ -2,17 +2,16 @@ import React from 'react';
 //Components
 import {
   View,
-  Image,
   Text,
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 //Constants
 import Colors from '../../constants/Colors';
 
-const TextItem = props => {
+const TextItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -46,8 +45,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
     color: '#fff',
-    backgroundColor: Colors.primary
-  }
+    backgroundColor: Colors.primary,
+  },
 });
 
 export default TextItem;

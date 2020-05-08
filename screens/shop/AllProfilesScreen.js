@@ -84,6 +84,7 @@ const AllProfilesScreen = (props) => {
         placeholder="Leta bland användare"
       />
       <FlatList
+        initialNumToRender={8}
         horizontal={false}
         numColumns={1}
         onRefresh={loadProfiles}

@@ -147,7 +147,6 @@ const EditProposalScreen = (props) => {
           onChangeText={textChangeHandler.bind(this, 'title')}
           keyboardType="default"
           autoCapitalize="sentences"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -163,7 +162,6 @@ const EditProposalScreen = (props) => {
           multiline
           numberOfLines={4}
           onChangeText={textChangeHandler.bind(this, 'description')}
-          autoCorrect={false}
           returnKeyType="done"
         />
       </FormFieldWrapper>
@@ -178,7 +176,6 @@ const EditProposalScreen = (props) => {
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
           keyboardType="number-pad"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>

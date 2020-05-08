@@ -2,17 +2,17 @@ import React from 'react';
 //Components
 import {
   View,
-  Image,
   Text,
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
+import CachedImage from '../../components/UI/CachedImage';
 //Constants
 import Styles from '../../constants/Styles';
 
-const LargeItem = props => {
+const LargeItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -29,9 +29,9 @@ const LargeItem = props => {
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
           <View>
             <View style={styles.largeImageContainer}>
-              <Image
+              <CachedImage
                 style={styles.largeImage}
-                source={{ uri: props.itemData.image }}
+                uri={props.itemData.image}
               />
             </View>
           </View>
@@ -53,31 +53,31 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   largeTouchable: {
     height: 250,
     width: 370,
     borderRadius: Styles.borderRadius,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   largeImageContainer: {
     position: 'relative',
     width: '100%',
     height: '100%',
     borderRadius: Styles.borderRadius,
-    overflow: 'hidden' //To make sure any child (in this case the image) cannot overlap what we set in the image container
+    overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
   },
   largeImage: {
     borderRadius: Styles.borderRadius,
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   slogan: {
     fontFamily: 'roboto-light-italic',
     fontSize: 13,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default LargeItem;

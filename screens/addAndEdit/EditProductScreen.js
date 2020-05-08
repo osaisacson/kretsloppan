@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
+import ImagePicker from '../../components/UI/ImgPicker';
 
 //Components
-import { Button } from 'react-native-paper';
-import { Alert, TextInput, Text, View, Image, StyleSheet } from 'react-native';
+import { Alert, TextInput, StyleSheet } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
@@ -65,12 +63,6 @@ const EditProductScreen = (props) => {
   const [error, setError] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedCondition, setSelectedCondition] = useState();
-  const [placeholderPic, setPlaceholderPic] = useState(
-    editedProduct ? editedProduct.image : ''
-  ); //Set placeholder to be a previously taken picture if we have one.
-  const [selectedImage, setSelectedImage] = useState(
-    editedProduct ? editedProduct.image : ''
-  ); //Set state to be a previously taken picture if we have one.
 
   const dispatch = useDispatch();
 
@@ -84,6 +76,7 @@ const EditProductScreen = (props) => {
       price: editedProduct ? editedProduct.price : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
+      image: editedProduct ? editedProduct.image : '',
     },
     inputValidities: {
       title: editedProduct ? true : false,
@@ -91,45 +84,10 @@ const EditProductScreen = (props) => {
       price: editedProduct ? true : false,
       address: true,
       phone: true,
+      image: editedProduct ? true : false,
     },
     formIsValid: editedProduct ? true : false,
   });
-
-  //Permissions for camera
-  const verifyPermissions = async () => {
-    const result = await Permissions.askAsync(
-      //Will open up a prompt (on iOS particularly) and wait until the user clicks ok
-      Permissions.CAMERA_ROLL, //permissions for gallery
-      Permissions.CAMERA //permissions for taking photo
-    );
-    if (result.status !== 'granted') {
-      Alert.alert(
-        'Å Nej!',
-        'Du måste tillåta att öppna kameran för att kunna ta ett kort.',
-        [{ text: 'Ok' }]
-      );
-      return false;
-    }
-    return true;
-  };
-
-  //Opens up the camera
-  const takeImageHandler = async () => {
-    const hasPermission = await verifyPermissions(); //Checks the permissions we define in verifyPermissions
-    if (!hasPermission) {
-      return;
-    }
-    const image = await ImagePicker.launchImageLibraryAsync({
-      //We could also open the camera here instead of the gallery
-      base64: true, //lets us get and use the base64 encoded image to pass to storage
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.6,
-    });
-
-    setPlaceholderPic(image.uri); //show image from local storage
-    setSelectedImage(image.base64); //Forwards the taken picture as base64
-  };
 
   useEffect(() => {
     if (error) {
@@ -150,24 +108,13 @@ const EditProductScreen = (props) => {
     setIsLoading(true);
     try {
       if (editedProduct) {
-        console.log('--------EDIT PRODUCT: dispatch--------');
-        console.log('prodId:', prodId);
-        console.log('selectedCategory:', selectedCategory);
-        console.log('selectedCondition:', selectedCondition);
-        console.log('title:', formState.inputValues.title);
-        console.log('description:', formState.inputValues.description);
-        console.log('price:', +formState.inputValues.price);
-        console.log('image:', selectedImage);
-        console.log('address:', formState.inputValues.address);
-        console.log('phone:', +formState.inputValues.phone);
-        console.log('---------------------------------------');
         dispatch(
           productsActions.updateProduct(
             prodId,
             selectedCategory,
             selectedCondition,
             formState.inputValues.title,
-            selectedImage,
+            formState.inputValues.image,
             formState.inputValues.address,
             +formState.inputValues.phone,
             formState.inputValues.description,
@@ -175,22 +122,12 @@ const EditProductScreen = (props) => {
           )
         );
       } else {
-        console.log('--------CREATE PRODUCT: dispatch--------');
-        console.log('selectedCategory:', selectedCategory);
-        console.log('selectedCondition:', selectedCondition);
-        console.log('title:', formState.inputValues.title);
-        console.log('description:', formState.inputValues.description);
-        console.log('price:', +formState.inputValues.price);
-        console.log('image:', selectedImage);
-        console.log('address:', formState.inputValues.address);
-        console.log('phone:', +formState.inputValues.phone);
-        console.log('---------------------------------------');
         dispatch(
           productsActions.createProduct(
             selectedCategory,
             selectedCondition,
             formState.inputValues.title,
-            selectedImage,
+            formState.inputValues.image,
             formState.inputValues.address,
             +formState.inputValues.phone,
             formState.inputValues.description,
@@ -208,14 +145,10 @@ const EditProductScreen = (props) => {
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
     //inputIdentifier and text will act as key:value in the form reducer
-    // console.log('-------TEXTCHANGEHANDLER, received values-------');
-    // console.log('inputIdentifier:', inputIdentifier);
-    // console.log('text:', text);
-    // console.log('------------------------------------------------');
 
     let isValid = true;
 
-    // //If we haven't entered any value (its empty) set form validity to false
+    //If we haven't entered any value (its empty) set form validity to false
     if (text.trim().length === 0) {
       isValid = false;
     }
@@ -242,18 +175,10 @@ const EditProductScreen = (props) => {
         showPromptIf={!formState.inputValues.image}
         prompt="Välj en bild av återbruket"
       >
-        <View style={styles.imagePicker}>
-          <View style={styles.imagePreview}>
-            {!placeholderPic ? (
-              <Text>Lägg upp en bild</Text>
-            ) : (
-              <Image style={styles.image} source={{ uri: placeholderPic }} /> //Originally uses the locally stored image as a placeholder
-            )}
-          </View>
-          <Button icon="camera" mode="contained" onPress={takeImageHandler}>
-            Välj en bild
-          </Button>
-        </View>
+        <ImagePicker
+          onImageTaken={textChangeHandler.bind(this, 'image')}
+          passedImage={formState.inputValues.image}
+        />
       </FormFieldWrapper>
       <FormFieldWrapper
         showPromptIf={!formState.inputValues.title}
@@ -266,7 +191,6 @@ const EditProductScreen = (props) => {
           onChangeText={textChangeHandler.bind(this, 'title')}
           keyboardType="default"
           autoCapitalize="sentences"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -280,7 +204,6 @@ const EditProductScreen = (props) => {
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
           keyboardType="number-pad"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -295,7 +218,6 @@ const EditProductScreen = (props) => {
           multiline
           numberOfLines={4}
           onChangeText={textChangeHandler.bind(this, 'description')}
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -354,7 +276,6 @@ const EditProductScreen = (props) => {
           value={formState.inputValues.address}
           onChangeText={textChangeHandler.bind(this, 'address')}
           keyboardType="default"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -368,7 +289,6 @@ const EditProductScreen = (props) => {
           value={formState.inputValues.phone.toString()}
           onChangeText={textChangeHandler.bind(this, 'phone')}
           keyboardType="number-pad"
-          autoCorrect={false}
           returnKeyType="done"
         />
       </FormFieldWrapper>

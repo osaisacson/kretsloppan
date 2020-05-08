@@ -105,6 +105,7 @@ const UserProductsScreen = (props) => {
         indicator={productsSorted.length ? productsSorted.length : 0}
       />
       <FlatList
+        initialNumToRender={8}
         horizontal={false}
         numColumns={3}
         onRefresh={loadProducts}

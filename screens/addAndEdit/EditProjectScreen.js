@@ -153,7 +153,6 @@ const EditProjectScreen = (props) => {
           onChangeText={textChangeHandler.bind(this, 'title')}
           keyboardType="default"
           autoCapitalize="sentences"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -167,7 +166,6 @@ const EditProjectScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.slogan}
           onChangeText={textChangeHandler.bind(this, 'slogan')}
-          autoCorrect={false}
           returnKeyType="done"
         />
       </FormFieldWrapper>

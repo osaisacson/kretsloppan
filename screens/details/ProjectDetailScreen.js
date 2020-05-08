@@ -2,7 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Text, Image, StyleSheet, Alert, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
+import CachedImage from '../../components/UI/CachedImage';
 import SaferArea from '../../components/UI/SaferArea';
 import ContactDetails from '../../components/UI/ContactDetails';
 import HeaderTwo from '../../components/UI/HeaderTwo';
@@ -73,7 +74,10 @@ const ProjectDetailScreen = (props) => {
           buttonText={'kontaktdetaljer'}
         />
       )}
-      <Image style={styles.image} source={{ uri: selectedProject.image }} />
+      <CachedImage
+        style={styles.image}
+        source={{ uri: selectedProject.image ? selectedProject.image : '' }}
+      />
 
       {/* Buttons to show if the user has edit permissions */}
       {hasEditPermission ? (
@@ -108,6 +112,7 @@ const ProjectDetailScreen = (props) => {
   return (
     <SaferArea>
       <FlatList
+        initialNumToRender={8}
         horizontal={false}
         numColumns={3}
         data={associatedProducts}

@@ -80,7 +80,7 @@ const ProjectsScreen = (props) => {
       <FlatList
         horizontal={false}
         numColumns={1}
-        initialNumToRender={6}
+        initialNumToRender={4}
         onRefresh={loadProjects}
         refreshing={isRefreshing}
         data={renderedProjects}

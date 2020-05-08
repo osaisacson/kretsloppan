@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Image, Text } from 'react-native';
+import CachedImage from '../../components/UI/CachedImage';
+import { Text } from 'react-native';
 import { Banner } from 'react-native-paper';
 
 const Introduction = (props) => {
@@ -15,15 +16,13 @@ const Introduction = (props) => {
         },
       ]}
     >
-      <Image
+      <CachedImage
         style={{
           width: 380,
           height: 150,
           borderRadius: 6,
         }}
-        source={{
-          uri: props.pic,
-        }}
+        uri={props.pic}
       />
       <Text
         style={{

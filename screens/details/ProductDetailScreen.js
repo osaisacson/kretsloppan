@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Text, Image, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import {
   DetailWrapper,
   detailStyles,
 } from '../../components/wrappers/DetailWrapper';
+import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
@@ -146,9 +147,9 @@ const ProductDetailScreen = (props) => {
           buttonText={'hämtningsdetaljer'}
         />
       )}
-      <Image
+      <CachedImage
         style={detailStyles.image}
-        source={{ uri: selectedProduct.image }}
+        uri={selectedProduct.image ? selectedProduct.image : ''}
       />
       {/* Buttons to show if the user has edit permissions and the item is not yet picked up */}
       {hasEditPermission && !isPickedUp ? (

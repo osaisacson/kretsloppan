@@ -171,7 +171,6 @@ const EditProfileScreen = (props) => {
           onChangeText={textChangeHandler.bind(this, 'profileName')}
           keyboardType="default"
           autoCapitalize="none"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -185,7 +184,6 @@ const EditProfileScreen = (props) => {
           value={formState.inputValues.phone.toString()}
           onChangeText={textChangeHandler.bind(this, 'phone')}
           keyboardType="number-pad"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -202,7 +200,6 @@ const EditProfileScreen = (props) => {
           required
           email
           autoCapitalize="none"
-          autoCorrect={false}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -217,7 +214,6 @@ const EditProfileScreen = (props) => {
           onChangeText={textChangeHandler.bind(this, 'address')}
           keyboardType="default"
           autoCapitalize="none"
-          autoCorrect={false}
           returnKeyType="done"
         />
       </FormFieldWrapper>

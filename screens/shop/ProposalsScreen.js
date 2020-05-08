@@ -80,7 +80,7 @@ const ProposalsScreen = (props) => {
       <FlatList
         horizontal={false}
         numColumns={1}
-        initialNumToRender={20}
+        initialNumToRender={10}
         onRefresh={loadProposals}
         refreshing={isRefreshing}
         data={renderedProposals}

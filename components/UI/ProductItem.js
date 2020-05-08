@@ -3,7 +3,6 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -11,6 +10,8 @@ import {
 } from 'react-native';
 import Card from './Card';
 import { Ionicons } from '@expo/vector-icons';
+import CachedImage from '../../components/UI/CachedImage';
+
 //Constants
 import Colors from './../../constants/Colors';
 import Styles from '../../constants/Styles';
@@ -81,10 +82,7 @@ const ProductItem = (props) => {
             {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
             <View>
               <View style={styles.imageContainer}>
-                <Image
-                  style={styles.image}
-                  source={{ uri: props.itemData.image }}
-                />
+                <CachedImage style={styles.image} uri={props.itemData.image} />
               </View>
               <Text style={styles.price}>
                 {props.itemData.price ? props.itemData.price : 0} kr
