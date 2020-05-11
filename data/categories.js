@@ -3,14 +3,22 @@ import Condition from '../models/condition';
 
 export const PART = [
   new Category('p0', 'Ingen', '#fff'),
-  new Category('p1', 'Stomme', '#d1d1e0'),
-  new Category('p2', 'Tak', '#d1d1e0'),
-  new Category('p3', 'Grund', '#d1d1e0'),
-  new Category('p4', 'Fönster', '#d1d1e0'),
-  new Category('p5', 'Dörrar', '#d1d1e0'),
-  new Category('p6', 'Maskiner', '#d1d1e0'),
-  new Category('p7', 'Diverse', '#d1d1e0'),
-  new Category('p8', 'Annat', '#d1d1e0'),
+  new Category('p1', 'Grund', '#d1d1e0'),
+  new Category('p2', 'Stomme', '#d1d1e0'),
+  new Category('p3', 'Väggar', '#d1d1e0'),
+  new Category('p4', 'Tak', '#d1d1e0'),
+  new Category('p5', 'Bjälklag', '#d1d1e0'),
+  new Category('p6', 'Golv', '#d1d1e0'),
+  new Category('p7', 'Fönster', '#d1d1e0'),
+  new Category('p8', 'Dörrar', '#d1d1e0'),
+  new Category('p9', 'Kök', '#d1d1e0'),
+  new Category('p10', 'Badrum', '#d1d1e0'),
+  new Category('p11', 'Inredning', '#d1d1e0'),
+  new Category('p12', 'Avlopp', '#d1d1e0'),
+  new Category('p13', 'El', '#d1d1e0'),
+  new Category('p14', 'Ventilation', '#d1d1e0'),
+  new Category('p15', 'Uppvärmning', '#d1d1e0'),
+  new Category('p16', 'Annat', '#d1d1e0'),
 ];
 
 export const CONDITION = [
