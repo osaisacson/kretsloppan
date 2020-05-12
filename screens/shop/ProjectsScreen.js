@@ -101,7 +101,9 @@ const ProjectsScreen = (props) => {
           <HeaderTwo
             title={'Projekt'}
             subTitle={'Projekt byggda med återbruk'}
-            questionText={'Här ska det vara en förklaring'}
+            questionText={
+              'Pågående och avslutade projekt som använder sig av återbruk'
+            }
             icon={
               <Entypo
                 name={'tools'}

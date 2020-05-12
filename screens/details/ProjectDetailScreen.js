@@ -76,7 +76,7 @@ const ProjectDetailScreen = (props) => {
       )}
       <CachedImage
         style={styles.image}
-        source={{ uri: selectedProject.image ? selectedProject.image : '' }}
+        uri={selectedProject.image ? selectedProject.image : ''}
       />
 
       {/* Buttons to show if the user has edit permissions */}
@@ -104,7 +104,9 @@ const ProjectDetailScreen = (props) => {
         title={'Återbruk'}
         subTitle={'Återbruk som används i projektet'}
         indicator={associatedProducts.length ? associatedProducts.length : 0}
-        questionText={'Här ska det vara en förklaring'}
+        questionText={
+          'Här hamnar allt återbruk som är associerat med projektet'
+        }
       />
     </View>
   );

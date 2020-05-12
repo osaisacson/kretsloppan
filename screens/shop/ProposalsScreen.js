@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { FlatList } from 'react-native';
@@ -101,7 +101,7 @@ const ProposalsScreen = (props) => {
           <HeaderTwo
             title={'Efterlysningar'}
             subTitle={'Efterlysningar från självbyggare'}
-            questionText={'Här ska det vara en förklaring'}
+            questionText={'Lägg upp något du söker'}
             icon={
               <Entypo
                 name={'tools'}

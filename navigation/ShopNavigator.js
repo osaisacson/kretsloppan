@@ -51,7 +51,7 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProfiles from ShopNavigator ', err.message);
       setError(err.message);
     }
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch]);
 
   //Load products
   const loadProducts = useCallback(async () => {
@@ -63,7 +63,7 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProducts from ShopNavigator', err.message);
       setError(err.message);
     }
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch]);
 
   //Load projects
   const loadProjects = useCallback(async () => {
@@ -75,7 +75,7 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProjects from ShopNavigator', err.message);
       setError(err.message);
     }
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch]);
 
   //Load proposals
   const loadProposals = useCallback(async () => {
@@ -87,7 +87,7 @@ export const ShopNavigator = (props) => {
       console.log('Error in loadProposals from ShopNavigator ', err.message);
       setError(err.message);
     }
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch]);
 
   //TODO: 1. Check if the below is necessary 2. If so, fix error undefined is not an object (evaluating 'navigation.addListener')
   // useEffect(() => {
@@ -134,10 +134,13 @@ export const ShopNavigator = (props) => {
         })
         .then(() => {
           setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
         });
     }
     return () => (isMountedRef.current = false);
-  }, [loadProfiles, loadProducts, loadProjects, loadProposals]);
+  }, [dispatch]);
 
   //Error handling
   if (error) {

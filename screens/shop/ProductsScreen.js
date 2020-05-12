@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { FlatList, View } from 'react-native';
@@ -101,7 +101,9 @@ const ProductsScreen = (props) => {
             subTitle={
               'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
             }
-            questionText={'Här ska det vara en förklaring'}
+            questionText={
+              'Allt återbruk i plattformens lager, klicka på varje återbruk för att se mer detaljer'
+            }
             icon={
               <MaterialCommunityIcons
                 name="hammer"

@@ -157,7 +157,7 @@ const EditProposalScreen = (props) => {
       >
         <TextInput
           placeholder="Beskrivning"
-          style={formStyles.input}
+          style={formStyles.multilineInput}
           value={formState.inputValues.description}
           multiline
           numberOfLines={4}

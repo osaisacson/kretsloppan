@@ -45,12 +45,12 @@ const UserProductsScreen = (props) => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', loadProducts);
-    return () => {
-      unsubscribe();
-    };
-  }, [loadProducts]);
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener('focus', loadProducts);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProducts]);
 
   const searchHandler = (text) => {
     const newData = renderedProducts.filter((item) => {
@@ -94,7 +94,7 @@ const UserProductsScreen = (props) => {
         subTitle={
           'Allt som är redo att hämtas, håller på att bearbetas, eller har blivit hämtat.'
         }
-        questionText={'Här ska det vara en förklaring'}
+        questionText={'Ditt eget förråd'}
         icon={
           <MaterialIcons
             name="file-upload"

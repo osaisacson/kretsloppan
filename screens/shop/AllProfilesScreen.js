@@ -123,7 +123,7 @@ const AllProfilesScreen = (props) => {
           <HeaderTwo
             title={'Användare'}
             subTitle={'Allt som har skapat sig en profil'}
-            questionText={'Här ska det vara en förklaring'}
+            questionText={'Här hittar du alla användare på plattformen'}
             icon={
               <FontAwesome
                 name="users"

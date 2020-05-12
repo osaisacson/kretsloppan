@@ -3,7 +3,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import HeaderTwo from './../../components/UI/HeaderTwo';
 
-const Filters = props => {
+const Filters = (props) => {
   //Change scrollHeight according to which component we are rendering
   let scrollHeight = props.scrollHeight ? props.scrollHeight : 160;
 
@@ -14,7 +14,7 @@ const Filters = props => {
           title={props.title}
           subTitle={props.subTitle}
           extraSubTitle={props.extraSubTitle}
-          questionText={'Här ska det vara en förklaring'}
+          questionText={'Filter för återbruk'}
           icon={props.icon}
           showNotificationBadge={props.showNotificationBadge}
         />
@@ -22,7 +22,7 @@ const Filters = props => {
       <View
         style={{
           height: scrollHeight,
-          marginTop: 20
+          marginTop: 20,
         }}
       >
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>

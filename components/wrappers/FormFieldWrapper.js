@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 //Components
 import FormErrorText from './../UI/FormErrorText';
 
-export const FormFieldWrapper = props => {
+export const FormFieldWrapper = (props) => {
   return (
     <View style={formStyles.formControl}>
       <Text style={formStyles.label}>{props.label}</Text>
@@ -20,28 +20,31 @@ export const formStyles = StyleSheet.create({
   centered: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   formControl: {
-    width: '100%'
+    width: '100%',
   },
   input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  multilineInput: {
+    minHeight: 100, //... For dynamic height
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
   },
   label: {
     fontFamily: 'roboto-bold',
-    marginVertical: 8
+    marginVertical: 8,
   },
   subLabel: {
-    fontFamily: 'roboto-light-italic'
+    fontFamily: 'roboto-light-italic',
   },
-  input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
-  }
 });

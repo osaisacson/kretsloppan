@@ -11,7 +11,7 @@ const { Storage } = require('@google-cloud/storage');
 // Creates a client
 const storage = new Storage({
   projectId: 'egnahemsfabriken',
-  keyFilename: 'egnahemsfabriken-firebase.json'
+  keyFilename: 'egnahemsfabriken-firebase.json',
 });
 
 exports.storeImage = functions.https.onRequest((request, response) => {
@@ -26,7 +26,7 @@ exports.storeImage = functions.https.onRequest((request, response) => {
       'JSON.parse(request.body) from cloud function storeImage in index.js',
       body
     );
-    fs.writeFileSync('/tmp/uploaded-image.jpg', body.image, 'base64', err => {
+    fs.writeFileSync('/tmp/uploaded-image.jpg', body.image, 'base64', (err) => {
       console.log(err);
       return response.status(500).json({ error: err });
     });
@@ -41,9 +41,9 @@ exports.storeImage = functions.https.onRequest((request, response) => {
         metadata: {
           metadata: {
             contentType: 'image/jpeg',
-            firebaseStorageDownloadTokens: uuid
-          }
-        }
+            firebaseStorageDownloadTokens: uuid,
+          },
+        },
       },
       (err, file) => {
         if (!err) {
@@ -54,7 +54,7 @@ exports.storeImage = functions.https.onRequest((request, response) => {
               '/o/' +
               encodeURIComponent(file.name) +
               '?alt=media&token=' +
-              uuid
+              uuid,
           });
         } else {
           console.log(
