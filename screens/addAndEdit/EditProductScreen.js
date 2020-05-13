@@ -61,11 +61,6 @@ const EditProductScreen = (props) => {
   //Set states
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [selectedCategory, setSelectedCategory] = useState();
-  const [selectedCondition, setSelectedCondition] = useState();
-  const [selectedStyle, setSelectedStyle] = useState();
-  const [selectedMaterial, setSelectedMaterial] = useState();
-  const [selectedColor, setSelectedColor] = useState();
 
   const dispatch = useDispatch();
 
@@ -80,6 +75,11 @@ const EditProductScreen = (props) => {
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
       image: editedProduct ? editedProduct.image : '',
+      category: editedProduct ? editedProduct.category : 'Ingen',
+      condition: editedProduct ? editedProduct.condition : 'Inget',
+      style: editedProduct ? editedProduct.style : 'Ingen',
+      material: editedProduct ? editedProduct.material : 'Inget',
+      color: editedProduct ? editedProduct.color : 'Ingen',
     },
     inputValidities: {
       title: editedProduct ? true : false,
@@ -88,6 +88,11 @@ const EditProductScreen = (props) => {
       address: true,
       phone: true,
       image: editedProduct ? true : false,
+      category: editedProduct ? true : false,
+      condition: editedProduct ? true : false,
+      style: editedProduct ? true : false,
+      material: editedProduct ? true : false,
+      color: editedProduct ? true : false,
     },
     formIsValid: editedProduct ? true : false,
   });
@@ -114,11 +119,11 @@ const EditProductScreen = (props) => {
         dispatch(
           productsActions.updateProduct(
             prodId,
-            selectedCategory,
-            selectedCondition,
-            selectedStyle,
-            selectedMaterial,
-            selectedColor,
+            formState.inputValues.category,
+            formState.inputValues.condition,
+            formState.inputValues.style,
+            formState.inputValues.material,
+            formState.inputValues.color,
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
@@ -130,11 +135,11 @@ const EditProductScreen = (props) => {
       } else {
         dispatch(
           productsActions.createProduct(
-            selectedCategory,
-            selectedCondition,
-            selectedStyle,
-            selectedMaterial,
-            selectedColor,
+            formState.inputValues.category,
+            formState.inputValues.condition,
+            formState.inputValues.style,
+            formState.inputValues.material,
+            formState.inputValues.color,
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
@@ -249,10 +254,8 @@ const EditProductScreen = (props) => {
               itemData={item}
               key={item.id}
               isHorizontal={true}
-              isSelected={selectedCategory === item.title}
-              onSelect={() => {
-                setSelectedCategory(item.title);
-              }}
+              isSelected={formState.inputValues.category === item.title}
+              onSelect={textChangeHandler.bind(this, 'category', item.title)}
             />
           ))}
         </HorizontalScrollContainer>
@@ -268,10 +271,8 @@ const EditProductScreen = (props) => {
               itemData={item}
               key={item.id}
               isHorizontal={true}
-              isSelected={selectedCondition === item.title}
-              onSelect={() => {
-                setSelectedCondition(item.title);
-              }}
+              isSelected={formState.inputValues.condition === item.title}
+              onSelect={textChangeHandler.bind(this, 'condition', item.title)}
             />
           ))}
         </HorizontalScrollContainer>
@@ -284,10 +285,8 @@ const EditProductScreen = (props) => {
               itemData={item}
               key={item.id}
               isHorizontal={true}
-              isSelected={selectedStyle === item.title}
-              onSelect={() => {
-                setSelectedStyle(item.title);
-              }}
+              isSelected={formState.inputValues.style === item.title}
+              onSelect={textChangeHandler.bind(this, 'style', item.title)}
             />
           ))}
         </HorizontalScrollContainer>
@@ -300,10 +299,8 @@ const EditProductScreen = (props) => {
               itemData={item}
               key={item.id}
               isHorizontal={true}
-              isSelected={selectedMaterial === item.title}
-              onSelect={() => {
-                setSelectedMaterial(item.title);
-              }}
+              isSelected={formState.inputValues.material === item.title}
+              onSelect={textChangeHandler.bind(this, 'material', item.title)}
             />
           ))}
         </HorizontalScrollContainer>
@@ -316,10 +313,8 @@ const EditProductScreen = (props) => {
               itemData={item}
               key={item.id}
               isHorizontal={true}
-              isSelected={selectedColor === item.id} //Special case, since we don't have a title on colors
-              onSelect={() => {
-                setSelectedColor(item.id);
-              }}
+              isSelected={formState.inputValues.color === item.id}
+              onSelect={textChangeHandler.bind(this, 'color', item.id)} //Special case, since we don't have a title on colors
             />
           ))}
         </HorizontalScrollContainer>

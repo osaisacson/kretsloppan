@@ -230,11 +230,6 @@ export function createProduct(
       //First convert the base64 image to a firebase url...
       const convertedImage = await dispatch(convertImage(image));
 
-      console.log(
-        'returned result from the convertImage function: ',
-        convertedImage
-      );
-
       //...then take the returned image and together with the rest of the data create the productData object.
       const productData = {
         ownerId: userId,
@@ -351,10 +346,6 @@ export function updateProduct(
         //First convert the base64 image to a firebase url...
         const convertedImage = await dispatch(convertImage(image));
         //...then take the returned image and update our dataToUpdate object
-        console.log(
-          'returned result from the convertImage function: ',
-          convertedImage
-        );
 
         dataToUpdate = {
           category,
