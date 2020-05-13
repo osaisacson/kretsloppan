@@ -9,7 +9,7 @@ import {
   FormFieldWrapper,
   formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
-import IconItem from '../../components/UI/IconItem';
+import PickerItem from '../../components/UI/PickerItem';
 import Loader from '../../components/UI/Loader';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 
@@ -229,7 +229,7 @@ const EditProductScreen = (props) => {
       >
         <HorizontalScrollContainer scrollHeight={90}>
           {PART.map((item) => (
-            <IconItem
+            <PickerItem
               itemData={item}
               key={item.id}
               isHorizontal={true}
@@ -252,7 +252,7 @@ const EditProductScreen = (props) => {
       >
         <HorizontalScrollContainer scrollHeight={90}>
           {CONDITION.map((item) => (
-            <IconItem
+            <PickerItem
               itemData={item}
               key={item.id}
               isHorizontal={true}

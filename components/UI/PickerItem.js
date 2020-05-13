@@ -6,13 +6,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 
 //Constants
 import Colors from '../../constants/Colors';
 
-const IconItem = props => {
+const PickerItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -23,22 +23,26 @@ const IconItem = props => {
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
-    <View style={styles.project}>
+    <View style={styles.item}>
       <View style={styles.touchable}>
         <TouchableCmp
           onPress={props.onSelect}
           style={{
             backgroundColor: props.isSelected
-              ? Colors.primary
-              : props.itemData.color
+              ? Colors.darkPrimary
+              : props.itemData.color,
+            height: props.isSelected ? 45 : 35,
           }}
           useForeground
         >
           <View style={styles.textContainer}>
             <Text
               style={{
-                fontSize: 15,
-                fontFamily: 'bebas-neue'
+                fontSize: 18,
+                fontFamily: props.isSelected
+                  ? 'bebas-neue'
+                  : 'bebas-neue-light',
+                color: props.isSelected ? '#fff' : '#000',
               }}
             >
               {props.itemData.title}
@@ -56,35 +60,29 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-bold-italic',
     fontSize: 13,
     textAlign: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
-  project: {
-    height: 60,
-    width: 60,
-    marginLeft: 10,
-    borderRadius: 100 / 2
+  item: {
+    minWidth: 100,
+    marginLeft: 14,
   },
   touchable: {
-    height: 60,
-    width: 60,
-    borderRadius: 100 / 2,
+    borderRadius: 3,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#000'
   },
   textContainer: {
     position: 'relative',
     width: '100%',
     height: '100%',
     textAlign: 'center',
+    paddingTop: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 100 / 2,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   details: {
-    color: '#000'
-  }
+    color: '#000',
+  },
 });
 
-export default IconItem;
+export default PickerItem;
