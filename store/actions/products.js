@@ -9,8 +9,10 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 import { convertImage } from '../helpers';
 
-export function unReserveProduct(id, token) {
-  return async (dispatch) => {
+export function unReserveProduct(id) {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
     // Set a loading flag to true in the reducer
     dispatch({ type: 'LOADING', loading: true });
     try {
@@ -78,7 +80,6 @@ export function unReserveProduct(id, token) {
 export function fetchProducts() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
-    const token = getState().auth.token;
 
     // Set a loading flag to true in the reducer
     dispatch({ type: 'LOADING', loading: true });
@@ -111,7 +112,7 @@ export function fetchProducts() {
           console.log(
             'Found expired product, calling unReserveProduct ------>'
           );
-          const updatedResult = await dispatch(unReserveProduct(key, token));
+          const updatedResult = await dispatch(unReserveProduct(key));
           console.log(
             '---------> ...updated result received from unReserveProduct, updating product with: '
           );

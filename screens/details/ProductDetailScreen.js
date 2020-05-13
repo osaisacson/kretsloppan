@@ -11,6 +11,7 @@ import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
+import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
@@ -29,6 +30,7 @@ const ProductDetailScreen = (props) => {
   const ownerId = props.route.params.ownerId;
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
   const [showUserProjects, setShowUserProjects] = useState(false);
 
@@ -107,6 +109,26 @@ const ProductDetailScreen = (props) => {
     setShowUserProjects((prevState) => !prevState);
   };
 
+  const unReserveHandler = () => {
+    Alert.alert(
+      'Avbryt reservation?',
+      'Om du avbryter reservationen kommer återbruket igen bli tillgängligt för andra.',
+      [
+        { text: 'Avbryt', style: 'default' },
+        {
+          text: 'Ja, ta bort min reservation',
+          style: 'destructive',
+          onPress: () => {
+            setIsLoading(true);
+            dispatch(productsActions.unReserveProduct(selectedProduct.id)).then(
+              setIsLoading(false)
+            );
+          },
+        },
+      ]
+    );
+  };
+
   const reserveHandler = (clickedProjectId) => {
     const id = selectedProduct.id;
     const projectId = clickedProjectId ? clickedProjectId : '000';
@@ -115,7 +137,7 @@ const ProductDetailScreen = (props) => {
       'Kom ihåg',
       'Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
       [
-        { text: 'Cancel', style: 'default' },
+        { text: 'Avbryt', style: 'default' },
         {
           text: 'Jag förstår',
           style: 'destructive',
@@ -135,6 +157,10 @@ const ProductDetailScreen = (props) => {
     : 'never';
 
   const isReservedOrPickedUp = isReserved || isPickedUp;
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <DetailWrapper>
@@ -185,20 +211,31 @@ const ProductDetailScreen = (props) => {
           />
         </View>
       ) : null}
-      {/* Buttons to always show, but to have conditional type based on   */}
       <View style={detailStyles.toggles}>
-        <ButtonNormal
-          color={Colors.primary}
-          disabled={isReservedOrPickedUp} //disable/enable base on true/false of these params
-          actionOnPress={toggleReserveButton}
-          text={
-            isPickedUp
-              ? 'hämtad'
-              : isReserved
-              ? `reserverad till ${shorterDate}`
-              : 'reservera'
-          }
-        />
+        {/* Show the option to unreserve a product if the product has not 
+        been picked up yet and the user is the one who reserved it. */}
+        {!isPickedUp && selectedProduct.reservedUserId === loggedInUserId ? (
+          <ButtonNormal
+            color={Colors.primary}
+            //Disable the reserved button only if the product has been picked up
+            disabled={isPickedUp}
+            actionOnPress={unReserveHandler}
+            text={'avreservera'}
+          />
+        ) : (
+          <ButtonNormal
+            color={Colors.primary}
+            disabled={isReservedOrPickedUp}
+            actionOnPress={toggleReserveButton}
+            text={
+              isPickedUp
+                ? 'hämtad'
+                : isReserved
+                ? `reserverad till ${shorterDate}`
+                : 'reservera'
+            }
+          />
+        )}
 
         {/* Show the horizontal scroll of the user's projects if the product is
           not picked up or reserved yet */}
