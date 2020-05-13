@@ -77,12 +77,8 @@ const UserSpotlightScreen = (props) => {
     return new Date(b.pauseDate) - new Date(a.pauseDate);
   });
 
-  //READY: Gets all ready products where the ownerId matches the id of our currently logged in user
-  const readyUserProductsRaw = userProducts.filter(
-    (product) => product.status === 'redo'
-  );
-
-  const readyUserProducts = readyUserProductsRaw.sort(function (a, b) {
+  //READY: Gets all products where the ownerId matches the id of our currently logged in user
+  const uploadedByUser = userProducts.sort(function (a, b) {
     return new Date(b.readyDate) - new Date(a.readyDate);
   });
 
@@ -192,7 +188,7 @@ const UserSpotlightScreen = (props) => {
       <HorizontalScroll
         title={'Upplagt av mig'}
         subTitle={'Återbruk upplagt av mig'}
-        scrollData={readyUserProducts}
+        scrollData={uploadedByUser}
         navigation={props.navigation}
       />
       {pausedUserProducts.length ? (
