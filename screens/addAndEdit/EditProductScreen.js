@@ -171,19 +171,13 @@ const EditProductScreen = (props) => {
       handlerForButtonSubmit={submitHandler}
       isLoading={isLoading}
     >
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.image}
-        prompt="Välj en bild av återbruket"
-      >
+      <FormFieldWrapper prompt="Välj en bild av återbruket">
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
           passedImage={formState.inputValues.image}
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.title}
-        prompt="Skriv in en titel"
-      >
+      <FormFieldWrapper prompt="Skriv in en titel">
         <TextInput
           placeholder="Titel"
           style={formStyles.input}
@@ -194,10 +188,7 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.price}
-        prompt="Lägg in ett pris (det kan vara 0)"
-      >
+      <FormFieldWrapper prompt="Lägg in ett pris (det kan vara 0)">
         <TextInput
           placeholder="Pris - Om du lägger upp som företag, ange pris inklusive moms"
           style={formStyles.input}
@@ -207,10 +198,7 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.description}
-        prompt="Skriv in en kort beskrivning"
-      >
+      <FormFieldWrapper prompt="Skriv in en kort beskrivning">
         <TextInput
           placeholder="Beskrivning"
           style={formStyles.multilineInput}
@@ -221,53 +209,8 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      {/* Part of the building */}
       <FormFieldWrapper
-        label="Kategori"
-        showPromptIf={!selectedCategory}
-        prompt="Välj en kategori"
-      >
-        <HorizontalScrollContainer scrollHeight={90}>
-          {PART.map((item) => (
-            <PickerItem
-              itemData={item}
-              key={item.id}
-              isHorizontal={true}
-              isSelected={selectedCategory === item.title}
-              onSelect={() => {
-                setSelectedCategory(item.title);
-                console.log('selectedCategory', selectedCategory);
-                console.log('clicked category: ', item.title);
-              }}
-            />
-          ))}
-        </HorizontalScrollContainer>
-      </FormFieldWrapper>
-
-      {/* Condition of the item */}
-      <FormFieldWrapper
-        label="Skick"
-        showPromptIf={!selectedCondition}
-        prompt="Välj skick på ditt upplagda återbruk"
-      >
-        <HorizontalScrollContainer scrollHeight={90}>
-          {CONDITION.map((item) => (
-            <PickerItem
-              itemData={item}
-              key={item.id}
-              isHorizontal={true}
-              isSelected={selectedCondition === item.title}
-              onSelect={() => {
-                setSelectedCondition(item.title);
-                console.log('selectedCondition', selectedCondition);
-                console.log('clicked condition: ', item.title);
-              }}
-            />
-          ))}
-        </HorizontalScrollContainer>
-      </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.address}
+        label="Upphämtningsdetaljer"
         prompt="Den address återbruket kan hämtas på"
       >
         <TextInput
@@ -279,10 +222,7 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.phone}
-        prompt="Det telefonnummer man bäst kan kontakta dig på "
-      >
+      <FormFieldWrapper prompt="Det telefonnummer man bäst kan kontakta dig på ">
         <TextInput
           placeholder="Telefon"
           style={formStyles.input}
@@ -292,29 +232,45 @@ const EditProductScreen = (props) => {
           returnKeyType="done"
         />
       </FormFieldWrapper>
+      {/* Part of the building */}
+      <FormFieldWrapper label="Kategori" prompt="Välj en kategori">
+        <HorizontalScrollContainer scrollHeight={90}>
+          {PART.map((item) => (
+            <PickerItem
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              isSelected={selectedCategory === item.title}
+              onSelect={() => {
+                setSelectedCategory(item.title);
+              }}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </FormFieldWrapper>
+
+      {/* Condition of the item */}
+      <FormFieldWrapper
+        label="Skick"
+        prompt="Välj skick på ditt upplagda återbruk"
+      >
+        <HorizontalScrollContainer scrollHeight={90}>
+          {CONDITION.map((item) => (
+            <PickerItem
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              isSelected={selectedCondition === item.title}
+              onSelect={() => {
+                setSelectedCondition(item.title);
+              }}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </FormFieldWrapper>
     </FormWrapper>
   );
 };
-
-const styles = StyleSheet.create({
-  imagePicker: {
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  imagePreview: {
-    width: '100%',
-    height: 300,
-    marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#ccc',
-    borderWidth: 1,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
