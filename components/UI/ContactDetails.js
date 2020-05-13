@@ -94,23 +94,23 @@ const ContactDetails = (props) => {
         {toggleDetails ? (
           <>
             <View style={detailStyles.textCard}>
-              <Text style={detailStyles.boundaryText}>
-                {contactEmail ? contactEmail : 'Inget email angiven'}
+              <Text style={detailStyles.oneLiner}>
+                {contactEmail ? contactEmail : 'Ingen email angiven'}
               </Text>
             </View>
             <View style={detailStyles.textCard}>
-              <Text style={detailStyles.boundaryText}>
+              <Text style={detailStyles.oneLiner}>
                 {objectForDetails.phone
                   ? objectForDetails.phone
-                  : 'Inget telefon angiven'}
+                  : 'Ingen telefon angiven'}
               </Text>
             </View>
             {objectForDetails.address ? (
               <View style={detailStyles.textCard}>
-                <Text style={detailStyles.boundaryText}>
+                <Text style={detailStyles.oneLiner}>
                   {objectForDetails.address
                     ? objectForDetails.address
-                    : 'Inget address angiven'}
+                    : 'Ingen address angiven'}
                 </Text>
               </View>
             ) : null}

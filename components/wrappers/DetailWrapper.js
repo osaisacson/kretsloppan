@@ -50,8 +50,10 @@ export const detailStyles = StyleSheet.create({
     alignItems: 'center',
   },
   centeredHeader: {
-    textAlign: 'center',
-    fontFamily: 'roboto-bold',
+    marginTop: 10,
+    fontFamily: 'roboto-light-italic',
+    color: Colors.darkPrimary,
+    alignSelf: 'center',
   },
   largeCenteredHeader: {
     textAlign: 'left',
@@ -73,17 +75,25 @@ export const detailStyles = StyleSheet.create({
     fontFamily: 'roboto-bold',
   },
   boundaryText: {
+    paddingVertical: 15,
     textAlign: 'left',
     fontSize: 18,
     fontFamily: 'roboto-light',
   },
-  actions: {
+  spaceBetweenRow: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 0,
     marginBottom: 10,
     alignItems: 'center',
+  },
+  editOptions: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: -25,
+    zIndex: 100,
   },
   formControl: {
     width: '100%',

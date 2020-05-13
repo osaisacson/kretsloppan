@@ -108,7 +108,7 @@ const ProposalDetailScreen = (props) => {
       </Text>
       {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
       {hasEditPermission && !isResolved ? (
-        <View style={detailStyles.actions}>
+        <View style={detailStyles.spaceBetweenRow}>
           {/* Delete button */}
           <ButtonIcon
             icon="delete"

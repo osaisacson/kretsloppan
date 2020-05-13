@@ -6,7 +6,9 @@ import Colors from '../../constants/Colors';
 export const FormFieldWrapper = (props) => {
   return (
     <View style={formStyles.formControl}>
-      {props.label && <Text style={formStyles.label}>{props.label}</Text>}
+      {props.label && (
+        <Text style={formStyles.sectionLabel}>{props.label}</Text>
+      )}
       {props.subLabel && (
         <Text style={formStyles.subLabel}>{props.subLabel}</Text>
       )}
@@ -24,7 +26,7 @@ export const formStyles = StyleSheet.create({
   formControl: {
     width: '100%',
   },
-  label: {
+  sectionLabel: {
     fontFamily: 'roboto-light-italic',
     color: Colors.darkPrimary,
     alignSelf: 'center',
@@ -46,7 +48,6 @@ export const formStyles = StyleSheet.create({
     paddingVertical: 8,
     marginVertical: 15,
   },
-
   subLabel: {
     fontFamily: 'roboto-light-italic',
   },

@@ -251,9 +251,9 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {PART.map((item) => (
             <PickerItem
-              itemData={item}
+              title={item.title}
+              color={item.color}
               key={item.id}
-              isHorizontal={true}
               isSelected={formState.inputValues.category === item.title}
               onSelect={textChangeHandler.bind(this, 'category', item.title)}
             />
@@ -268,9 +268,9 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {CONDITION.map((item) => (
             <PickerItem
-              itemData={item}
+              title={item.title}
+              color={item.color}
               key={item.id}
-              isHorizontal={true}
               isSelected={formState.inputValues.condition === item.title}
               onSelect={textChangeHandler.bind(this, 'condition', item.title)}
             />
@@ -282,9 +282,9 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {STYLE.map((item) => (
             <PickerItem
-              itemData={item}
+              title={item.title}
+              color={item.color}
               key={item.id}
-              isHorizontal={true}
               isSelected={formState.inputValues.style === item.title}
               onSelect={textChangeHandler.bind(this, 'style', item.title)}
             />
@@ -310,9 +310,9 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {COLOR.map((item) => (
             <PickerItem
-              itemData={item}
+              title={item.title}
+              color={item.color}
               key={item.id}
-              isHorizontal={true}
               isSelected={formState.inputValues.color === item.id}
               onSelect={textChangeHandler.bind(this, 'color', item.id)} //Special case, since we don't have a title on colors
             />

@@ -28,7 +28,7 @@ const PickerItem = (props) => {
         <TouchableCmp
           onPress={props.onSelect}
           style={{
-            backgroundColor: props.itemData.color,
+            backgroundColor: props.color,
             height: props.isSelected ? 45 : 35,
           }}
           useForeground
@@ -43,7 +43,7 @@ const PickerItem = (props) => {
                 color: '#000',
               }}
             >
-              {props.itemData.title}
+              {props.title}
             </Text>
           </View>
         </TouchableCmp>
