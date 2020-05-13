@@ -5,7 +5,16 @@ import Colors from '../../constants/Colors';
 
 const ResolvedBadge = (props) => {
   return (
-    <Badge style={{ backgroundColor: Colors.success, width: 40 }}>Löst!</Badge>
+    <Badge
+      style={{
+        transform: [{ rotate: '-2deg' }],
+        alignSelf: 'flex-start',
+        backgroundColor: Colors.success,
+        width: 40,
+      }}
+    >
+      Löst!
+    </Badge>
   );
 };
 

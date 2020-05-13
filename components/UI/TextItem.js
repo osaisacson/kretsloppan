@@ -30,6 +30,11 @@ const TextItem = (props) => {
       <View style={styles.container}>
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
+            {props.itemData.status === 'löst' ? (
+              <ResolvedBadge />
+            ) : (
+              <View style={styles.spacer}></View>
+            )}
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.title}>
               {props.itemData.title}
             </Text>
@@ -40,7 +45,6 @@ const TextItem = (props) => {
             >
               {props.itemData.description}
             </Text>
-            {props.itemData.status === 'löst' && <ResolvedBadge />}
           </TouchableCmp>
         </View>
       </View>
@@ -57,20 +61,25 @@ const styles = StyleSheet.create({
   touchable: {
     overflow: 'hidden',
     marginRight: 25,
+    paddingBottom: 25,
+  },
+  spacer: {
+    height: 20,
   },
   title: {
     color: Colors.primary,
-    paddingTop: 25,
-    width: 280,
+    width: 300,
     fontFamily: 'roboto-bold',
     fontSize: 18,
+    marginLeft: 4,
   },
   subTitle: {
     color: Colors.primary,
     paddingBottom: 25,
-    width: 280,
+    width: 300,
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
+    marginLeft: 4,
   },
 });
 

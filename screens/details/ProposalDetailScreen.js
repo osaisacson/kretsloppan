@@ -100,8 +100,8 @@ const ProposalDetailScreen = (props) => {
       <Divider style={{ marginTop: 40 }} />
       <Text style={detailStyles.price}>
         {selectedProposal.price
-          ? `${selectedProposal.price} kr`
-          : 'Volontärbasis/Donation'}
+          ? `Ersättning: ${selectedProposal.price} kr`
+          : ''}
       </Text>
       {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
       {hasEditPermission && !isResolved ? (
