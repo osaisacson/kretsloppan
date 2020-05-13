@@ -1,8 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-//Components
-import FormErrorText from './../UI/FormErrorText';
-import { Chip } from 'react-native-paper';
 //Constants
 import Colors from '../../constants/Colors';
 

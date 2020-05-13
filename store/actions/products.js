@@ -118,8 +118,11 @@ export function fetchProducts() {
               updatedResult.ownerId,
               updatedResult.reservedUserId,
               updatedResult.newOwnerId,
-              updatedResult.categoryName,
+              updatedResult.category,
               updatedResult.condition,
+              updatedResult.style,
+              updatedResult.material,
+              updatedResult.color,
               updatedResult.title,
               updatedResult.image,
               updatedResult.address,
@@ -145,8 +148,11 @@ export function fetchProducts() {
             resData[key].ownerId,
             resData[key].reservedUserId,
             resData[key].newOwnerId,
-            resData[key].categoryName,
+            resData[key].category,
             resData[key].condition,
+            resData[key].style,
+            resData[key].material,
+            resData[key].color,
             resData[key].title,
             resData[key].image,
             resData[key].address,
@@ -201,8 +207,11 @@ export const deleteProduct = (productId) => {
 };
 
 export function createProduct(
-  categoryName,
+  category,
   condition,
+  style,
+  material,
+  color,
   title,
   image,
   address,
@@ -231,8 +240,11 @@ export function createProduct(
         ownerId: userId,
         reservedUserId: '',
         newOwnerId: '',
-        categoryName,
+        category,
         condition,
+        style,
+        material,
+        color,
         title,
         image: convertedImage.image, //This is how we link to the image we create through the convertImage function
         address,
@@ -268,8 +280,11 @@ export function createProduct(
           ownerId: userId,
           reservedUserId: '',
           newOwnerId: '',
-          categoryName,
+          category,
           condition,
+          style,
+          material,
+          color,
           title,
           image: convertedImage.image,
           address,
@@ -298,8 +313,11 @@ export function createProduct(
 
 export function updateProduct(
   id,
-  categoryName,
+  category,
   condition,
+  style,
+  material,
+  color,
   title,
   image,
   address,
@@ -312,8 +330,11 @@ export function updateProduct(
 
     //If we are NOT passing a base64 image, update with the old image and passed data
     let dataToUpdate = {
-      categoryName,
+      category,
       condition,
+      style,
+      material,
+      color,
       title,
       image,
       address,
@@ -336,8 +357,11 @@ export function updateProduct(
         );
 
         dataToUpdate = {
-          categoryName,
+          category,
           condition,
+          style,
+          material,
+          color,
           title,
           image: convertedImage.image,
           address,

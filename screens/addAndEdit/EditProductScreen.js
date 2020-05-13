@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ImagePicker from '../../components/UI/ImgPicker';
 
 //Components
-import { Alert, TextInput, StyleSheet } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
@@ -17,7 +17,7 @@ import HorizontalScrollContainer from '../../components/UI/HorizontalScrollConta
 import * as productsActions from '../../store/actions/products';
 
 //Data
-import { PART, CONDITION } from './../../data/categories';
+import { PART, CONDITION, STYLE, MATERIAL, COLOR } from './../../data/filters';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -63,6 +63,9 @@ const EditProductScreen = (props) => {
   const [error, setError] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedCondition, setSelectedCondition] = useState();
+  const [selectedStyle, setSelectedStyle] = useState();
+  const [selectedMaterial, setSelectedMaterial] = useState();
+  const [selectedColor, setSelectedColor] = useState();
 
   const dispatch = useDispatch();
 
@@ -113,6 +116,9 @@ const EditProductScreen = (props) => {
             prodId,
             selectedCategory,
             selectedCondition,
+            selectedStyle,
+            selectedMaterial,
+            selectedColor,
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
@@ -126,6 +132,9 @@ const EditProductScreen = (props) => {
           productsActions.createProduct(
             selectedCategory,
             selectedCondition,
+            selectedStyle,
+            selectedMaterial,
+            selectedColor,
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
@@ -232,9 +241,9 @@ const EditProductScreen = (props) => {
           returnKeyType="done"
         />
       </FormFieldWrapper>
-      {/* Part of the building */}
+      {/* Category */}
       <FormFieldWrapper label="Kategori" prompt="Välj en kategori">
-        <HorizontalScrollContainer scrollHeight={90}>
+        <HorizontalScrollContainer scrollHeight={75}>
           {PART.map((item) => (
             <PickerItem
               itemData={item}
@@ -248,13 +257,12 @@ const EditProductScreen = (props) => {
           ))}
         </HorizontalScrollContainer>
       </FormFieldWrapper>
-
-      {/* Condition of the item */}
+      {/* Condition */}
       <FormFieldWrapper
         label="Skick"
         prompt="Välj skick på ditt upplagda återbruk"
       >
-        <HorizontalScrollContainer scrollHeight={90}>
+        <HorizontalScrollContainer scrollHeight={75}>
           {CONDITION.map((item) => (
             <PickerItem
               itemData={item}
@@ -263,6 +271,54 @@ const EditProductScreen = (props) => {
               isSelected={selectedCondition === item.title}
               onSelect={() => {
                 setSelectedCondition(item.title);
+              }}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </FormFieldWrapper>
+      {/* Style */}
+      <FormFieldWrapper label="Stil" prompt="Välj en stil">
+        <HorizontalScrollContainer scrollHeight={75}>
+          {STYLE.map((item) => (
+            <PickerItem
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              isSelected={selectedStyle === item.title}
+              onSelect={() => {
+                setSelectedStyle(item.title);
+              }}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </FormFieldWrapper>
+      {/* Material */}
+      <FormFieldWrapper label="Material" prompt="Välj en stil">
+        <HorizontalScrollContainer scrollHeight={75}>
+          {MATERIAL.map((item) => (
+            <PickerItem
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              isSelected={selectedMaterial === item.title}
+              onSelect={() => {
+                setSelectedMaterial(item.title);
+              }}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </FormFieldWrapper>
+      {/* Color */}
+      <FormFieldWrapper label="Färg" prompt="Välj en stil">
+        <HorizontalScrollContainer scrollHeight={75}>
+          {COLOR.map((item) => (
+            <PickerItem
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              isSelected={selectedColor === item.id} //Special case, since we don't have a title on colors
+              onSelect={() => {
+                setSelectedColor(item.id);
               }}
             />
           ))}

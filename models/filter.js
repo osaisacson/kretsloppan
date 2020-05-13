@@ -1,4 +1,4 @@
-class Category {
+class Filter {
   constructor(id, title, color) {
     this.id = id;
     this.title = title;
@@ -6,4 +6,4 @@ class Category {
   }
 }
 
-export default Category;
+export default Filter;

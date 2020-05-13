@@ -28,9 +28,7 @@ const PickerItem = (props) => {
         <TouchableCmp
           onPress={props.onSelect}
           style={{
-            backgroundColor: props.isSelected
-              ? Colors.darkPrimary
-              : props.itemData.color,
+            backgroundColor: props.itemData.color,
             height: props.isSelected ? 45 : 35,
           }}
           useForeground
@@ -42,7 +40,7 @@ const PickerItem = (props) => {
                 fontFamily: props.isSelected
                   ? 'bebas-neue'
                   : 'bebas-neue-light',
-                color: props.isSelected ? '#fff' : '#000',
+                color: '#000',
               }}
             >
               {props.itemData.title}
@@ -69,6 +67,7 @@ const styles = StyleSheet.create({
   touchable: {
     borderRadius: 3,
     overflow: 'hidden',
+    marginBottom: 20,
   },
   textContainer: {
     position: 'relative',

@@ -6,8 +6,11 @@ class Product {
     ownerId,
     reservedUserId,
     newOwnerId,
-    categoryName,
+    category,
     condition,
+    style,
+    material,
+    color,
     title,
     image,
     address,
@@ -27,8 +30,11 @@ class Product {
     this.ownerId = ownerId;
     this.reservedUserId = reservedUserId;
     this.newOwnerId = newOwnerId;
-    this.categoryName = categoryName;
+    this.category = category;
     this.condition = condition;
+    this.style = style;
+    this.material = material;
+    this.color = color;
     this.title = title;
     this.image = image;
     this.address = address;
