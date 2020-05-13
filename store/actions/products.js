@@ -9,14 +9,12 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 import { convertImage } from '../helpers';
 
-export function updateReservedProduct(id, token) {
+export function unReserveProduct(id, token) {
   return async (dispatch) => {
     // Set a loading flag to true in the reducer
     dispatch({ type: 'LOADING', loading: true });
     try {
-      console.log(
-        'START----------actions/products/updateReservedProduct--------'
-      );
+      console.log('START----------actions/products/unReserveProduct--------');
       console.log('id: ', id);
       console.log('token: ', token);
 
@@ -48,7 +46,7 @@ export function updateReservedProduct(id, token) {
       );
       const updatedData = await response.json();
       console.log(
-        'actions/products/updateReservedProduct returned updated data after API call',
+        'actions/products/unReserveProduct returned updated data after API call',
         updatedData
       );
       dispatch({
@@ -66,13 +64,11 @@ export function updateReservedProduct(id, token) {
           projectId: updatedData.projectId,
         },
       });
-      console.log(
-        '----------actions/products/updateReservedProduct--------END'
-      );
+      console.log('----------actions/products/unReserveProduct--------END');
       return updatedData;
     } catch (error) {
       dispatch({ type: 'LOADING', loading: false });
-      ('----------actions/products/updateReservedProduct--------END');
+      ('----------actions/products/unReserveProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -113,13 +109,11 @@ export function fetchProducts() {
         //If the product has expired, call a function which passes correct new fields and then push the updated product to the loadedProducts array
         if (shouldBeReset) {
           console.log(
-            'Found expired product, calling updateReservedProduct ------>'
+            'Found expired product, calling unReserveProduct ------>'
           );
-          const updatedResult = await dispatch(
-            updateReservedProduct(key, token)
-          );
+          const updatedResult = await dispatch(unReserveProduct(key, token));
           console.log(
-            '---------> ...updated result received from updateReservedProduct, updating product with: '
+            '---------> ...updated result received from unReserveProduct, updating product with: '
           );
           console.log('id: ', key);
           console.log('updatedResult: ', updatedResult);
