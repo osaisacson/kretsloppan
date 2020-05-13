@@ -1,6 +1,5 @@
 import Project from '../../models/project';
 
-export const LOADING = 'LOADING';
 export const DELETE_PROJECT = 'DELETE_PROJECT';
 export const CREATE_PROJECT = 'CREATE_PROJECT';
 export const UPDATE_PROJECT = 'UPDATE_PROJECT';
@@ -11,8 +10,7 @@ import { convertImage } from '../helpers';
 export function fetchProjects() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
+
     ('START----------actions/projects/fetchProjects--------');
 
     // Perform the API call - fetching all projects
@@ -42,12 +40,9 @@ export function fetchProjects() {
         projects: loadedProjects,
         userProjects: loadedProjects.filter((proj) => proj.ownerId === userId),
       });
-      // Set a loading flag to false in the reducer
-      dispatch({ type: 'LOADING', loading: false });
       ('----------actions/projects/fetchProjects--------END');
     } catch (error) {
-      console.log('ERROR: ', error);
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
       ('----------actions/projects/fetchProjects--------END');
       // Rethrow so returned Promise is rejected
       throw error;
@@ -81,8 +76,6 @@ export function createProject(title, slogan, image, status) {
     const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
 
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
     try {
       console.log('START----------actions/projects/createProject--------');
 
@@ -123,10 +116,9 @@ export function createProject(title, slogan, image, status) {
       });
 
       console.log('----------actions/projects/createProject--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      console.log('ERROR: ', error);
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
+
       ('----------actions/projects/createProject--------END');
       // Rethrow so returned Promise is rejected
       throw error;
@@ -137,9 +129,6 @@ export function createProject(title, slogan, image, status) {
 export function updateProject(id, title, slogan, image) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
 
     try {
       console.log('START----------actions/projects/updateProject--------');
@@ -184,9 +173,8 @@ export function updateProject(id, title, slogan, image) {
       });
 
       console.log('----------actions/projects/updateProject--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
       ('----------actions/projects/updateProject--------END');
       // Rethrow so returned Promise is rejected
       throw error;

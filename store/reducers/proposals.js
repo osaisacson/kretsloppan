@@ -1,7 +1,6 @@
 import { getIndex, updateCollection } from '../helpers';
 
 import {
-  LOADING,
   DELETE_PROPOSAL,
   CREATE_PROPOSAL,
   UPDATE_PROPOSAL,
@@ -17,12 +16,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case LOADING:
-      console.log('LOADING BEING SET TO: ', action.loading);
-      return {
-        ...state,
-        loading: action.loading,
-      };
     case SET_PROPOSALS:
       return {
         availableProposals: action.proposals,

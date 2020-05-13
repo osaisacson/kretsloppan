@@ -1,7 +1,6 @@
 import { getIndex, updateCollection } from '../helpers';
 
 import {
-  LOADING,
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
@@ -19,12 +18,6 @@ const initialState = {
 export default (state = initialState, action) => {
   //Switch cases
   switch (action.type) {
-    case LOADING:
-      console.log('LOADING BEING SET TO: ', action.loading);
-      return {
-        ...state,
-        loading: action.loading,
-      };
     case SET_PRODUCTS:
       return {
         availableProducts: action.products,

@@ -1,7 +1,6 @@
 import Profile from '../../models/profile';
 
 import {
-  LOADING,
   SET_PROFILES,
   CREATE_PROFILE,
   UPDATE_PROFILE,
@@ -13,12 +12,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case LOADING:
-      console.log('LOADING BEING SET TO: ', action.loading);
-      return {
-        ...state,
-        loading: action.loading,
-      };
     case SET_PROFILES:
       return {
         allProfiles: action.allProfiles,

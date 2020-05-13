@@ -1,6 +1,5 @@
 import Product from '../../models/product';
 
-export const LOADING = 'LOADING';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
@@ -13,13 +12,7 @@ export function unReserveProduct(id) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
     try {
-      console.log('START----------actions/products/unReserveProduct--------');
-      console.log('id: ', id);
-      console.log('token: ', token);
-
       //Since the products reservation date has passed, reset these values as:
       const updatedProduct = {
         reservedUserId: '',
@@ -69,8 +62,9 @@ export function unReserveProduct(id) {
       console.log('----------actions/products/unReserveProduct--------END');
       return updatedData;
     } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
-      ('----------actions/products/unReserveProduct--------END');
+      console.log(error)(
+        '----------actions/products/unReserveProduct--------END'
+      );
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -80,9 +74,6 @@ export function unReserveProduct(id) {
 export function fetchProducts() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
-
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
 
     ('START----------actions/products/fetchProducts--------');
 
@@ -180,13 +171,9 @@ export function fetchProducts() {
         products: loadedProducts,
         userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
       });
-      // Set a loading flag to false in the reducer
-      dispatch({ type: 'LOADING', loading: false });
       ('----------actions/products/fetchProducts--------END');
     } catch (error) {
-      console.log('ERROR: ', error);
-      dispatch({ type: 'LOADING', loading: false });
-      ('----------actions/products/fetchProducts--------END');
+      console.log(error)('----------actions/products/fetchProducts--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -227,9 +214,6 @@ export function createProduct(
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
-
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
 
     try {
       console.log('START----------actions/products/createProduct--------');
@@ -304,11 +288,8 @@ export function createProduct(
         },
       });
       console.log('----------actions/products/createProduct--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      console.log('ERROR: ', error);
-      dispatch({ type: 'LOADING', loading: false });
-      ('----------actions/products/createProduct--------END');
+      console.log(error)('----------actions/products/createProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -328,9 +309,6 @@ export function updateProduct(
 ) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
 
     //If we are NOT passing a base64 image, update with the old image and passed data
     let dataToUpdate = {
@@ -393,10 +371,8 @@ export function updateProduct(
       });
 
       console.log('----------actions/products/updateProduct--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
-      ('----------actions/products/updateProduct--------END');
+      console.log(error)('----------actions/products/updateProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }

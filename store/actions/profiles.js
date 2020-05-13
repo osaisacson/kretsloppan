@@ -1,6 +1,5 @@
 import Profile from '../../models/profile';
 
-export const LOADING = 'LOADING';
 export const SET_PROFILES = 'SET_PROFILES';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
@@ -41,9 +40,10 @@ export const fetchProfiles = () => {
         type: SET_PROFILES,
         allProfiles: loadedProfiles,
       });
-    } catch (err) {
+    } catch (error) {
+      console.log(error);
       // send to custom analytics server
-      throw err;
+      throw error;
     }
   };
 };
@@ -53,8 +53,6 @@ export function createProfile(profileName, email, phone, address, image) {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
 
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
     try {
       console.log('START----------actions/profiles/createProfile--------');
 
@@ -93,9 +91,8 @@ export function createProfile(profileName, email, phone, address, image) {
         },
       });
       console.log('----------actions/profiles/createProfile--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
       ('----------actions/profiles/createProfile--------END');
       // Rethrow so returned Promise is rejected
       throw error;
@@ -114,9 +111,6 @@ export function updateProfile(
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
-
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
 
     try {
       console.log('START----------actions/profiles/updateProfile--------');
@@ -141,7 +135,6 @@ export function updateProfile(
         };
 
         console.log('----------actions/profiles/updateProfile--------END');
-        dispatch({ type: 'LOADING', loading: false });
       }
 
       // Perform the API call - create the profile, passing the profileData object above
@@ -172,9 +165,9 @@ export function updateProfile(
       });
 
       console.log('----------actions/profiles/updateProfile--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
+
       ('----------actions/profiles/updateProfile--------END');
       // Rethrow so returned Promise is rejected
       throw error;

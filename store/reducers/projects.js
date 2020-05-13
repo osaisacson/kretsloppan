@@ -5,7 +5,6 @@ import {
   CREATE_PROJECT,
   UPDATE_PROJECT,
   SET_PROJECTS,
-  LOADING,
 } from '../actions/projects';
 import Project from '../../models/project';
 
@@ -16,12 +15,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case LOADING:
-      console.log('LOADING BEING SET TO: ', action.loading);
-      return {
-        ...state,
-        loading: action.loading,
-      };
     case SET_PROJECTS:
       return {
         availableProjects: action.projects,

@@ -9,8 +9,6 @@ export const CHANGE_PROPOSAL_STATUS = 'CHANGE_PROPOSAL_STATUS';
 export function fetchProposals() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
     ('START----------actions/proposals/fetchProposals--------');
 
     // Perform the API call - fetching all proposals
@@ -41,12 +39,10 @@ export function fetchProposals() {
           (proposal) => proposal.ownerId === userId
         ),
       });
-      // Set a loading flag to false in the reducer
-      dispatch({ type: 'LOADING', loading: false });
+
       ('----------actions/proposals/fetchProposals--------END');
     } catch (error) {
-      console.log('ERROR: ', error);
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
       ('----------actions/proposals/fetchProposals--------END');
       // Rethrow so returned Promise is rejected
       throw error;
@@ -80,8 +76,6 @@ export function createProposal(title, description, price) {
     const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
 
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
     try {
       console.log('START----------actions/proposals/createProposal--------');
 
@@ -118,10 +112,9 @@ export function createProposal(title, description, price) {
       });
 
       console.log('----------actions/proposals/createProposal--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      console.log('ERROR: ', error);
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
+
       ('----------actions/proposals/createProposal--------END');
       // Rethrow so returned Promise is rejected
       throw error;
@@ -132,9 +125,6 @@ export function createProposal(title, description, price) {
 export function updateProposal(id, title, description, price) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-
-    // Set a loading flag to true in the reducer
-    dispatch({ type: 'LOADING', loading: true });
 
     try {
       console.log('START----------actions/proposals/updateProposal--------');
@@ -169,9 +159,8 @@ export function updateProposal(id, title, description, price) {
       });
 
       console.log('----------actions/proposals/updateProposal--------END');
-      dispatch({ type: 'LOADING', loading: false });
     } catch (error) {
-      dispatch({ type: 'LOADING', loading: false });
+      console.log(error);
       ('----------actions/proposals/updateProposal--------END');
       // Rethrow so returned Promise is rejected
       throw error;
