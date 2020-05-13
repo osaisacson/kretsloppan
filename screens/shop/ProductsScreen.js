@@ -98,12 +98,10 @@ const ProductsScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title={'Allt återbruk'}
-            subTitle={
-              'Ikonerna indikerar om de är under bearbetning, reserverade eller hämtade.'
-            }
-            questionText={
-              'Allt återbruk i plattformens lager, klicka på varje återbruk för att se mer detaljer'
-            }
+            buttonIcon="plus"
+            buttonText={'Återbruk'}
+            buttonOnPress={() => props.navigation.navigate('EditProduct')}
+            subTitle={'Upplagda av alla'}
             icon={
               <MaterialCommunityIcons
                 name="hammer"

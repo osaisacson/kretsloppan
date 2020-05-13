@@ -9,7 +9,7 @@ import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
 import TextItem from '../../components/UI/TextItem';
 import SearchBar from '../../components/UI/SearchBar';
-import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
 
@@ -100,14 +100,16 @@ const ProposalsScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title={'Efterlysningar'}
-            subTitle={'Efterlysningar från självbyggare'}
+            subTitle={'Från självbyggare'}
+            buttonIcon="plus"
+            buttonText={'Efterlysning'}
+            buttonOnPress={() => props.navigation.navigate('EditProposal')}
             icon={
-              <Entypo
-                name={'tools'}
-                size={20}
+              <MaterialCommunityIcons
+                name={'alert-decagram-outline'}
+                size={24}
                 style={{
-                  transform: [{ rotate: '90deg' }],
-                  marginRight: 5,
+                  marginRight: 3,
                 }}
               />
             }

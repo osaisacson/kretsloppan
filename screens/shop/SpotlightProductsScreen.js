@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native';
 import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/UI/SaferArea';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 const SpotlightProductsScreen = (props) => {
   //Get products, projects and proposals from state
@@ -61,6 +62,15 @@ const SpotlightProductsScreen = (props) => {
           subTitle={'Projekt som håller på att byggas med återbruk'}
           scrollData={allProjects}
           navigation={props.navigation}
+          icon={
+            <Entypo
+              name={'tools'}
+              size={21}
+              style={{
+                marginRight: 5,
+              }}
+            />
+          }
         />
         <HorizontalScroll
           title={'nya tillskott'}
@@ -91,6 +101,15 @@ const SpotlightProductsScreen = (props) => {
           }
           scrollData={allProposals}
           navigation={props.navigation}
+          icon={
+            <MaterialCommunityIcons
+              name={'alert-decagram-outline'}
+              size={24}
+              style={{
+                marginRight: 3,
+              }}
+            />
+          }
         />
       </ScrollView>
     </SaferArea>

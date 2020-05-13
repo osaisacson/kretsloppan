@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, Platform } from 'react-native';
 import { Divider } from 'react-native-paper';
 import {
   DetailWrapper,
@@ -11,6 +11,7 @@ import {
 import ContactDetails from '../../components/UI/ContactDetails';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonNormal from '../../components/UI/ButtonNormal';
+import StatusBadge from '../../components/UI/StatusBadge';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -89,6 +90,8 @@ const ProposalDetailScreen = (props) => {
         hideButton={isResolved}
         buttonText={'kontaktdetaljer'}
       />
+      <Divider style={{ marginVertical: 10 }} />
+
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.proposalText}>{selectedProposal.title}</Text>
       </View>
@@ -122,7 +125,7 @@ const ProposalDetailScreen = (props) => {
           />
         </View>
       ) : null}
-      {!isResolved && hasEditPermission ? (
+      {!isResolved && hasEditPermission && (
         <View style={detailStyles.toggles}>
           <ButtonNormal
             color={Colors.primary}
@@ -131,7 +134,15 @@ const ProposalDetailScreen = (props) => {
             text={'Avaktivera och markera som löst'}
           />
         </View>
-      ) : null}
+      )}
+      {isResolved && (
+        <StatusBadge
+          text={'Löst!'}
+          width={70}
+          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+          backgroundColor={Colors.completed}
+        />
+      )}
     </DetailWrapper>
   );
 };

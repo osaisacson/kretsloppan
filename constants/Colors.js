@@ -9,5 +9,4 @@ export default {
   //Buttons
   warning: '#cc0000',
   neutral: '#8c8c8c',
-  success: '#00b345',
 };

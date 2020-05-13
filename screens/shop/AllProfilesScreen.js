@@ -122,7 +122,7 @@ const AllProfilesScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title={'Användare'}
-            subTitle={'Allt som har skapat sig en profil'}
+            subTitle={'Alla som har skapat sig en profil'}
             questionText={'Här hittar du alla användare på plattformen'}
             icon={
               <FontAwesome

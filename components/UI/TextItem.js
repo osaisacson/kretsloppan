@@ -20,7 +20,6 @@ const TextItem = (props) => {
     TouchableCmp = TouchableNativeFeedback;
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
-  console.log(props.itemData);
 
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
@@ -31,7 +30,7 @@ const TextItem = (props) => {
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
             {props.itemData.status === 'löst' ? (
-              <ResolvedBadge />
+              <ResolvedBadge badgeText={'Löst!'} />
             ) : (
               <View style={styles.spacer}></View>
             )}
@@ -61,10 +60,10 @@ const styles = StyleSheet.create({
   touchable: {
     overflow: 'hidden',
     marginRight: 25,
-    paddingBottom: 25,
+    paddingBottom: 15,
   },
   spacer: {
-    height: 20,
+    height: 30,
   },
   title: {
     color: Colors.primary,

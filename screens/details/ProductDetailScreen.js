@@ -16,6 +16,8 @@ import RoundItem from '../../components/UI/RoundItem';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonToggle from '../../components/UI/ButtonToggle';
 import ButtonNormal from '../../components/UI/ButtonNormal';
+import StatusBadge from '../../components/UI/StatusBadge';
+
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -157,6 +159,8 @@ const ProductDetailScreen = (props) => {
     : 'never';
 
   const isReservedOrPickedUp = isReserved || isPickedUp;
+  const isReservedUser = selectedProduct.reservedUserId === loggedInUserId;
+  const isPaused = selectedProduct.status === 'bearbetas';
 
   if (isLoading) {
     return <Loader />;
@@ -192,11 +196,11 @@ const ProductDetailScreen = (props) => {
               onSelect={collectHandler.bind(this)}
             />
           ) : (
-            //else show 'redo/bearbetas' button
+            //else show pause button
             <ButtonToggle
               isToggled={isToggled}
-              icon={isReady ? 'hammer' : ''}
-              title={`byt till ${isReady ? 'bearbetas' : 'redo'}`}
+              icon={isReady && 'pause'}
+              title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
               onSelect={toggleIsReadyHandle.bind(this)}
             />
           )}
@@ -209,10 +213,35 @@ const ProductDetailScreen = (props) => {
           />
         </View>
       ) : null}
+      {isPaused && (
+        <StatusBadge
+          text={'Pausad för bearbetning'}
+          width={200}
+          icon={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
+          backgroundColor={Colors.neutral}
+        />
+      )}
       <View style={detailStyles.toggles}>
+        {!isPickedUp && !isReserved && !isPaused && (
+          <ButtonNormal
+            color={Colors.primary}
+            disabled={isReserved}
+            actionOnPress={toggleReserveButton}
+            text={'reservera'}
+          />
+        )}
+        {!isPickedUp && isReserved && (
+          <StatusBadge
+            text={`Reserverad till ${shorterDate}`}
+            width={220}
+            icon={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+            backgroundColor={Colors.primary}
+          />
+        )}
+
         {/* Show the option to unreserve a product if the product has not 
         been picked up yet and the user is the one who reserved it. */}
-        {!isPickedUp && selectedProduct.reservedUserId === loggedInUserId ? (
+        {!isPickedUp && isReserved && isReservedUser && (
           <ButtonNormal
             color={Colors.primary}
             //Disable the reserved button only if the product has been picked up
@@ -220,21 +249,15 @@ const ProductDetailScreen = (props) => {
             actionOnPress={unReserveHandler}
             text={'avreservera'}
           />
-        ) : (
-          <ButtonNormal
-            color={Colors.primary}
-            disabled={isReservedOrPickedUp}
-            actionOnPress={toggleReserveButton}
-            text={
-              isPickedUp
-                ? 'hämtad'
-                : isReserved
-                ? `reserverad till ${shorterDate}`
-                : 'reservera'
-            }
+        )}
+        {isPickedUp && (
+          <StatusBadge
+            text={'Hämtad!'}
+            width={100}
+            icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+            backgroundColor={Colors.completed}
           />
         )}
-
         {/* Show the horizontal scroll of the user's projects if the product is
           not picked up or reserved yet */}
         {!isReservedOrPickedUp && showUserProjects ? (

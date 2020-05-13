@@ -28,6 +28,19 @@ const UserProfile = (props) => {
     (product) => product.ownerId === visitedUserId
   );
 
+  //Gets all proposals for the user we are currently visiting
+  const availableProposals = useSelector(
+    (state) => state.proposals.availableProposals
+  );
+
+  const userProposalsRaw = availableProposals.filter(
+    (proposal) => proposal.ownerId === visitedUserId
+  );
+
+  const userProposals = userProposalsRaw.sort(function (a, b) {
+    return new Date(b.date) - new Date(a.date);
+  });
+
   //COLLECTED: Gets all collected products from all products
   const collectedItemsRawAll = availableProducts.filter(
     (product) => product.status === 'hämtad'
@@ -78,9 +91,6 @@ const UserProfile = (props) => {
   const userProjects = useSelector(
     (state) => state.projects.availableProjects
   ).filter((proj) => proj.ownerId === visitedUserId);
-
-  //Get user proposals
-  const userProposals = useSelector((state) => state.proposals.userProposals);
 
   //Sets indicator numbers
   const added = userProducts.length;

@@ -7,14 +7,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 import Card from './Card';
 import { Ionicons } from '@expo/vector-icons';
 //Constants
 import Colors from '../../constants/Colors';
 
-const UsedItem = props => {
+const UsedItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -26,33 +26,48 @@ const UsedItem = props => {
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <Card style={styles.product}>
-      {props.status === 'bearbetas' ? (
+      {props.status === 'bearbetas' && (
         <Ionicons
           style={{
             ...styles.icon,
             backgroundColor: Colors.primary,
             color: '#fff',
-            fontSize: 15
+            fontSize: 15,
           }}
           name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
           size={23}
           color={props.color}
         />
-      ) : null}
-      {props.status === 'reserverad' ? (
+      )}
+      {props.status === 'reserverad' && (
         <Ionicons
           style={{
             ...styles.icon,
             color: Colors.primary,
             fontSize: 35,
             marginLeft: 3,
-            marginTop: -10
+            marginTop: -10,
           }}
           name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
           size={23}
           color={props.color}
         />
-      ) : null}
+      )}
+      {props.status === 'hämtad' && (
+        <Ionicons
+          style={{
+            ...styles.icon,
+            backgroundColor: Colors.completed,
+            color: '#fff',
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 0,
+            fontSize: 25,
+          }}
+          name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+          size={23}
+        />
+      )}
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
@@ -83,16 +98,16 @@ const styles = StyleSheet.create({
     marginHorizontal: '1.5%',
     marginBottom: 30,
     borderWidth: 0.5,
-    borderColor: '#ddd'
+    borderColor: '#ddd',
   },
   touchable: {
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
     height: '100%',
-    overflow: 'hidden' //To make sure any child (in this case the image) cannot overlap what we set in the image container
+    overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
   },
   icon: {
     position: 'absolute',
@@ -102,21 +117,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
-    elevation: 2 //Because shadow only work on iOS, elevation is same thing but for android.
+    elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
   },
   image: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   details: {
-    color: '#000'
+    color: '#000',
   },
   title: {
     width: '90%',
     fontFamily: 'roboto-regular',
     fontSize: 16,
-    marginLeft: 8
-  }
+    marginLeft: 8,
+  },
 });
 
 export default UsedItem;

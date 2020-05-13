@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import Card from './Card';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import CachedImage from '../../components/UI/CachedImage';
 
 //Constants
@@ -35,18 +35,19 @@ const ProductItem = (props) => {
           <Ionicons
             style={{
               ...styles.icon,
-              backgroundColor: Colors.primary,
+              backgroundColor: Colors.neutral,
               color: '#fff',
-              fontSize: 20,
-              paddingLeft: 8,
-              paddingRight: 8,
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingBottom: 5,
+              fontSize: 15,
             }}
-            name={Platform.OS === 'android' ? 'md-hammer' : 'ios-hammer'}
+            name={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
             size={23}
             color={props.itemData.color}
           />
         ) : null}
-        {props.itemData.status === 'reserverad' ? (
+        {props.itemData.status === 'reserverad' && (
           <Ionicons
             style={{
               ...styles.icon,
@@ -59,8 +60,8 @@ const ProductItem = (props) => {
             size={23}
             color={props.itemData.color}
           />
-        ) : null}
-        {props.itemData.status === 'hämtad' ? (
+        )}
+        {props.itemData.status === 'hämtad' && (
           <Ionicons
             style={{
               ...styles.icon,
@@ -69,14 +70,13 @@ const ProductItem = (props) => {
               paddingLeft: 10,
               paddingRight: 10,
               paddingBottom: 0,
-
               fontSize: 25,
             }}
             name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
             size={23}
             color={props.itemData.color}
           />
-        ) : null}
+        )}
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
             {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}

@@ -101,9 +101,9 @@ const ProjectsScreen = (props) => {
           <HeaderTwo
             title={'Projekt'}
             subTitle={'Projekt byggda med återbruk'}
-            questionText={
-              'Pågående och avslutade projekt som använder sig av återbruk'
-            }
+            buttonIcon="plus"
+            buttonText={'Projekt'}
+            buttonOnPress={() => props.navigation.navigate('EditProject')}
             icon={
               <Entypo
                 name={'tools'}

@@ -3,7 +3,6 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import {
   Entypo,
   MaterialIcons,
-  AntDesign,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 
@@ -60,7 +59,11 @@ export const TabNavigator = () => {
         component={ProposalsNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <AntDesign name={'exclamationcircle'} color={color} size={23} />
+            <MaterialCommunityIcons
+              name={'alert-decagram-outline'}
+              color={color}
+              size={23}
+            />
           ),
         }}
       />

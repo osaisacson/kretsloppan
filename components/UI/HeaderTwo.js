@@ -37,12 +37,18 @@ const HeaderTwo = (props) => {
       </View>
       {props.buttonOnPress && (
         <Button
-          style={{ marginRight: 5 }}
-          labelStyle={{ paddingRight: 0, fontSize: 10 }}
+          style={{ marginRight: 5, paddingLeft: 0 }}
+          labelStyle={{
+            marginLeft: 5,
+            paddingLeft: 0,
+            paddingRight: 0,
+            fontSize: 10,
+          }}
+          icon={props.buttonIcon}
           mode="contained"
           onPress={props.buttonOnPress}
         >
-          Se allt
+          {props.buttonText}
         </Button>
       )}
       {props.questionText && (
