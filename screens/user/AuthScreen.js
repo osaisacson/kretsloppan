@@ -4,12 +4,15 @@ import { useDispatch } from 'react-redux';
 import {
   ScrollView,
   View,
-  KeyboardAvoidingView,
   StyleSheet,
+  TouchableWithoutFeedback,
   ImageBackground,
+  Keyboard,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Input from '../../components/UI/Input';
 import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
@@ -167,178 +170,186 @@ const AuthScreen = (props) => {
   );
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      keyboardVerticalOffset={50}
-      style={styles.screen}
-    >
-      <ImageBackground
-        source={{
-          uri:
-            'https://images.unsplash.com/photo-1496439653932-606caa506e0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2011&q=80',
-        }}
-        style={styles.centeredContent}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <KeyboardAwareScrollView
+        style={{ backgroundColor: '#000' }}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.screen}
+        scrollEnabled={false}
       >
-        <Card
-          style={isSignup ? styles.authContainerLarge : styles.authContainer}
+        <ImageBackground
+          source={{
+            uri:
+              'https://images.unsplash.com/photo-1496439653932-606caa506e0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2011&q=80',
+          }}
+          resizeMode="cover"
+          style={styles.backgroundImage}
         >
-          <ScrollView>
-            {isSignup ? (
-              <>
-                <View style={styles.imagePicker}>
-                  <View style={styles.imagePreview}>
-                    {!placeholderPic ? (
-                      <Button
-                        mode="contained"
-                        onPress={takeImageHandler}
-                        style={{
-                          backgroundColor: 'transparent',
-                          borderRadius: 100 / 2,
-                        }}
-                        contentStyle={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: 80,
-                          height: 80,
-                          width: 80,
-                          borderRadius: 100 / 2,
-                          borderColor: '#a9a9a9',
-                          borderWidth: 0.5,
-                        }}
-                      >
-                        <Icon name="camera" size={24} color="#666" />
-                      </Button>
-                    ) : (
-                      <Button
-                        mode="contained"
-                        onPress={takeImageHandler}
-                        style={{
-                          backgroundColor: 'transparent',
-                          borderRadius: 100 / 2,
-                        }}
-                      >
-                        <Avatar.Image
+          <Card
+            style={isSignup ? styles.authContainerLarge : styles.authContainer}
+          >
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ flexGrow: 1 }}
+              keyboardShouldPersistTaps="handled"
+            >
+              {isSignup ? (
+                <>
+                  <View style={styles.imagePicker}>
+                    <View style={styles.imagePreview}>
+                      {!placeholderPic ? (
+                        <Button
+                          mode="contained"
+                          onPress={takeImageHandler}
                           style={{
-                            padding: 0,
-                            margin: 0,
-                            color: '#fff',
-                            backgroundColor: '#fff',
+                            backgroundColor: 'transparent',
+                            borderRadius: 100 / 2,
                           }}
-                          source={
-                            placeholderPic
-                              ? { uri: placeholderPic }
-                              : require('./../../assets/avatar-placeholder-image.png')
-                          }
-                          size={80}
-                        />
-                      </Button>
-                    )}
+                          contentStyle={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 80,
+                            height: 80,
+                            width: 80,
+                            borderRadius: 100 / 2,
+                            borderColor: '#a9a9a9',
+                            borderWidth: 0.5,
+                          }}
+                        >
+                          <Icon name="camera" size={24} color="#666" />
+                        </Button>
+                      ) : (
+                        <Button
+                          mode="contained"
+                          onPress={takeImageHandler}
+                          style={{
+                            backgroundColor: 'transparent',
+                            borderRadius: 100 / 2,
+                          }}
+                        >
+                          <Avatar.Image
+                            style={{
+                              padding: 0,
+                              margin: 0,
+                              color: '#fff',
+                              backgroundColor: '#fff',
+                            }}
+                            source={
+                              placeholderPic
+                                ? { uri: placeholderPic }
+                                : require('./../../assets/avatar-placeholder-image.png')
+                            }
+                            size={80}
+                          />
+                        </Button>
+                      )}
+                    </View>
                   </View>
-                </View>
-                <Input
-                  id="profileName"
-                  placeholder="Användarnamn"
-                  keyboardType="default"
-                  required
-                  autoCapitalize="none"
-                  errorText="Skriv in ett användarnamn"
-                  onInputChange={inputChangeHandler}
-                  initialValue=""
-                />
-                <Input
-                  id="phone"
-                  placeholder="Telefonnummer"
-                  keyboardType="number-pad"
-                  required
-                  autoCapitalize="none"
-                  errorText="Lägg in ett kontaktnummer"
-                  onInputChange={inputChangeHandler}
-                  initialValue=""
-                />
+                  <Input
+                    id="profileName"
+                    placeholder="Användarnamn"
+                    keyboardType="default"
+                    required
+                    autoCapitalize="none"
+                    errorText="Skriv in ett användarnamn"
+                    onInputChange={inputChangeHandler}
+                    initialValue=""
+                  />
+                  <Input
+                    id="phone"
+                    placeholder="Telefonnummer"
+                    keyboardType="number-pad"
+                    required
+                    autoCapitalize="none"
+                    errorText="Lägg in ett kontaktnummer"
+                    onInputChange={inputChangeHandler}
+                    initialValue=""
+                  />
 
-                <Input
-                  id="address"
-                  placeholder="Address"
-                  keyboardType="default"
-                  required
-                  autoCapitalize="none"
-                  errorText="Skriv in addressen återbruket vanligtvis kan hämtas på"
-                  onInputChange={inputChangeHandler}
-                  initialValue=""
-                />
-              </>
-            ) : null}
-            <Input
-              id="email"
-              placeholder="E-Mail"
-              keyboardType="email-address"
-              required
-              email
-              autoCapitalize="none"
-              errorText="Skriv in en giltig e-post, den kommer också vara ditt inloggningsnamn"
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <Input
-              id="password"
-              placeholder="Password"
-              keyboardType="default"
-              secureTextEntry
-              required
-              minLength={5}
-              autoCapitalize="none"
-              errorText="Skriv in ett giltigt lösenord"
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size="small" color={Colors.primary} />
-              ) : (
+                  <Input
+                    id="address"
+                    placeholder="Address"
+                    keyboardType="default"
+                    required
+                    autoCapitalize="none"
+                    errorText="Skriv in addressen återbruket vanligtvis kan hämtas på"
+                    onInputChange={inputChangeHandler}
+                    initialValue=""
+                  />
+                </>
+              ) : null}
+              <Input
+                id="email"
+                placeholder="E-Mail"
+                keyboardType="email-address"
+                required
+                email
+                autoCapitalize="none"
+                errorText="Skriv in en giltig e-post, den kommer också vara ditt inloggningsnamn"
+                onInputChange={inputChangeHandler}
+                initialValue=""
+              />
+              <Input
+                id="password"
+                placeholder="Password"
+                keyboardType="default"
+                secureTextEntry
+                required
+                minLength={5}
+                autoCapitalize="none"
+                errorText="Skriv in ett giltigt lösenord"
+                onInputChange={inputChangeHandler}
+                initialValue=""
+              />
+              <View style={styles.buttonContainer}>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color={Colors.primary} />
+                ) : (
+                  <Button
+                    color={'#000'}
+                    mode="outlined"
+                    contentStyle={{
+                      justifyContent: 'center',
+                      borderWidth: 0.25,
+                    }}
+                    labelStyle={{
+                      paddingTop: 13,
+                      paddingBottom: 9,
+                      fontFamily: 'bebas-neue-bold',
+                      fontSize: 28,
+                    }}
+                    onPress={authHandler}
+                  >
+                    {isSignup ? 'Gå med' : 'Logga in'}
+                  </Button>
+                )}
+              </View>
+              <View style={styles.buttonContainer}>
                 <Button
-                  color={'#000'}
-                  mode="outlined"
-                  contentStyle={{
-                    justifyContent: 'center',
-                    borderWidth: 0.25,
+                  color={isSignup ? Colors.darkPrimary : Colors.primary}
+                  mode="contained"
+                  style={{
+                    width: '60%',
+                    alignSelf: 'center',
                   }}
                   labelStyle={{
-                    paddingTop: 13,
-                    paddingBottom: 9,
+                    paddingTop: 2,
                     fontFamily: 'bebas-neue-bold',
-                    fontSize: 28,
+                    fontSize: 12,
                   }}
-                  onPress={authHandler}
+                  compact={true}
+                  onPress={() => {
+                    setIsSignup((prevState) => !prevState);
+                  }}
                 >
-                  {isSignup ? 'Gå med' : 'Logga in'}
+                  {`Byt till ${isSignup ? 'logga in' : 'skapa konto'}`}
                 </Button>
-              )}
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                color={isSignup ? Colors.darkPrimary : Colors.primary}
-                mode="contained"
-                style={{
-                  width: '60%',
-                  alignSelf: 'center',
-                }}
-                labelStyle={{
-                  paddingTop: 2,
-                  fontFamily: 'bebas-neue-bold',
-                  fontSize: 12,
-                }}
-                compact={true}
-                onPress={() => {
-                  setIsSignup((prevState) => !prevState);
-                }}
-              >
-                {`Byt till ${isSignup ? 'logga in' : 'skapa konto'}`}
-              </Button>
-            </View>
-          </ScrollView>
-        </Card>
-      </ImageBackground>
-    </KeyboardAvoidingView>
+              </View>
+            </ScrollView>
+          </Card>
+        </ImageBackground>
+      </KeyboardAwareScrollView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -346,21 +357,20 @@ export const screenOptions = {
   headerTitle: '',
 };
 
+const d = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  gradient: {
+  backgroundImage: {
+    position: 'absolute',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  centeredContent: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    width: d.width,
+    height: d.height,
   },
   authContainer: {
     width: '80%',
