@@ -14,7 +14,6 @@ export const FormFieldWrapper = (props) => {
         <Text style={formStyles.subLabel}>{props.subLabel}</Text>
       )}
       {props.children}
-      {props.showPromptIf ? <FormErrorText errorText={props.prompt} /> : null}
     </View>
   );
 };

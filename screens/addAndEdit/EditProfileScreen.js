@@ -76,11 +76,9 @@ const EditProfileScreen = (props) => {
   //Handlers
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert(
-        'Något är felskrivet!',
-        'Kolla om det står någon text under något av fälten.',
-        [{ text: 'Ok' }]
-      );
+      Alert.alert('Något är felskrivet!', 'Kolla så du fyllt i alla fält.', [
+        { text: 'Ok' },
+      ]);
       return;
     }
     setError(null);
@@ -151,19 +149,13 @@ const EditProfileScreen = (props) => {
       handlerForButtonSubmit={submitHandler}
       isLoading={isLoading}
     >
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.image}
-        prompt="Välj en profilbild"
-      >
+      <FormFieldWrapper prompt="Välj en profilbild">
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
           passedImage={formState.inputValues.image}
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.profileName}
-        prompt="Skriv in ett användarnamn"
-      >
+      <FormFieldWrapper prompt="Skriv in ett användarnamn">
         <TextInput
           placeholder="Användarnamn"
           style={formStyles.input}
@@ -174,10 +166,7 @@ const EditProfileScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.phone}
-        prompt="Lägg in ett kontaktnummer"
-      >
+      <FormFieldWrapper prompt="Lägg in ett kontaktnummer">
         <TextInput
           placeholder="Telefon"
           style={formStyles.input}
@@ -187,10 +176,7 @@ const EditProfileScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.email}
-        prompt="Skriv in den email folk kan kontakta dig på"
-      >
+      <FormFieldWrapper prompt="Skriv in den email folk kan kontakta dig på">
         <TextInput
           placeholder="Email"
           style={formStyles.input}
@@ -203,10 +189,7 @@ const EditProfileScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.profileName}
-        prompt="Skriv in addressen återbruket vanligtvis kan hämtas på"
-      >
+      <FormFieldWrapper prompt="Skriv in addressen återbruket vanligtvis kan hämtas på">
         <TextInput
           placeholder="Address"
           style={formStyles.input}

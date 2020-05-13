@@ -74,7 +74,7 @@ const EditProposalScreen = (props) => {
     if (!formState.formIsValid) {
       Alert.alert(
         'Ojoj',
-        'Det verkar som något saknas i formuläret, kolla om det står någonting under fälten.',
+        'Det verkar som något saknas i formuläret, Kolla så du fyllt i alla fält.',
         [{ text: 'OK' }]
       );
       return;
@@ -136,10 +136,7 @@ const EditProposalScreen = (props) => {
       handlerForButtonSubmit={submitHandler}
       isLoading={isLoading}
     >
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.title}
-        prompt="Skriv in titeln på din efterlysning"
-      >
+      <FormFieldWrapper prompt="Skriv in titeln på din efterlysning">
         <TextInput
           placeholder="Jag efterlyser..."
           style={formStyles.input}
@@ -151,10 +148,7 @@ const EditProposalScreen = (props) => {
         />
       </FormFieldWrapper>
 
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.description}
-        prompt="Skriv in en kort beskrivning av vad du efterlyser"
-      >
+      <FormFieldWrapper prompt="Skriv in en kort beskrivning av vad du efterlyser">
         <TextInput
           placeholder="Beskrivning"
           style={formStyles.multilineInput}
@@ -167,7 +161,6 @@ const EditProposalScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         subLabel="Om du lägger upp som företag, ange pris inklusive moms"
-        showPromptIf={!formState.inputValues.price}
         prompt="Skriv in en ersättning, 0 för volontärer/donationer"
       >
         <TextInput

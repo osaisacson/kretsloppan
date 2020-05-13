@@ -70,8 +70,8 @@ const EditProjectScreen = (props) => {
 
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert('Wrong input!', 'Please check the errors in the form.', [
-        { text: 'Okay' },
+      Alert.alert('Fel input!', 'Kolla så alla fält är ifyllda.', [
+        { text: 'Ok' },
       ]);
       return;
     }
@@ -132,20 +132,14 @@ const EditProjectScreen = (props) => {
       handlerForButtonSubmit={submitHandler}
       isLoading={isLoading}
     >
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.image}
-        prompt="Välj en bild som representerar projektet"
-      >
+      <FormFieldWrapper prompt="Välj en bild som representerar projektet">
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
           passedImage={formState.inputValues.image}
         />
       </FormFieldWrapper>
 
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.title}
-        prompt="Skriv in en titel"
-      >
+      <FormFieldWrapper prompt="Skriv in en titel">
         <TextInput
           placeholder="Titel"
           style={formStyles.input}
@@ -157,10 +151,7 @@ const EditProjectScreen = (props) => {
         />
       </FormFieldWrapper>
 
-      <FormFieldWrapper
-        showPromptIf={!formState.inputValues.slogan}
-        prompt="Skriv in en kort slogan för ditt projekt"
-      >
+      <FormFieldWrapper prompt="Skriv in en kort slogan för ditt projekt">
         <TextInput
           placeholder="Slogan"
           style={formStyles.input}
