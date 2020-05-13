@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Text, Alert } from 'react-native';
+import { Divider } from 'react-native-paper';
 import {
   DetailWrapper,
   detailStyles,
@@ -67,7 +68,7 @@ const ProposalDetailScreen = (props) => {
       'Är efterlysningen löst?',
       'Genom att klicka här bekräftar du att efterlysningen är avklarad.',
       [
-        { text: 'Nej', style: 'default' },
+        { text: 'Avbryt', style: 'default' },
         {
           text: 'Ja, flytta den',
           style: 'destructive',
@@ -82,14 +83,12 @@ const ProposalDetailScreen = (props) => {
   return (
     <DetailWrapper>
       {/* Show contact info only if the user is not the creator */}
-      {!hasEditPermission && (
-        <ContactDetails
-          profileId={ownerId}
-          proposalId={selectedProposal.id}
-          hideButton={isResolved}
-          buttonText={'kontaktdetaljer'}
-        />
-      )}
+      <ContactDetails
+        profileId={ownerId}
+        proposalId={selectedProposal.id}
+        hideButton={isResolved}
+        buttonText={'kontaktdetaljer'}
+      />
       <View style={detailStyles.textCard}>
         <Text style={detailStyles.proposalText}>{selectedProposal.title}</Text>
       </View>
@@ -98,6 +97,7 @@ const ProposalDetailScreen = (props) => {
           {selectedProposal.description}
         </Text>
       </View>
+      <Divider style={{ marginTop: 40 }} />
       <Text style={detailStyles.price}>
         {selectedProposal.price
           ? `${selectedProposal.price} kr`
@@ -122,13 +122,13 @@ const ProposalDetailScreen = (props) => {
           />
         </View>
       ) : null}
-      {hasEditPermission ? (
+      {!isResolved && hasEditPermission ? (
         <View style={detailStyles.toggles}>
           <ButtonNormal
             color={Colors.primary}
             disabled={isResolved} //disable/enable base on true/false of these params
             actionOnPress={collectHandler}
-            text={isResolved ? 'löst' : 'Avaktivera och markera som löst'}
+            text={'Avaktivera och markera som löst'}
           />
         </View>
       ) : null}

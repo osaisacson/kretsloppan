@@ -165,14 +165,12 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       {/* Show info about picking up the product only the user is not the creator of the product */}
-      {!hasEditPermission && (
-        <ContactDetails
-          profileId={ownerId}
-          productId={selectedProduct.id}
-          hideButton={isReserved || isPickedUp}
-          buttonText={'hämtningsdetaljer'}
-        />
-      )}
+      <ContactDetails
+        profileId={ownerId}
+        productId={selectedProduct.id}
+        hideButton={isReserved || isPickedUp}
+        buttonText={'hämtningsdetaljer'}
+      />
       <CachedImage
         style={detailStyles.image}
         uri={selectedProduct.image ? selectedProduct.image : ''}

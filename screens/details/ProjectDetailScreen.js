@@ -67,13 +67,12 @@ const ProjectDetailScreen = (props) => {
 
   const projectHeader = (
     <View>
-      {hasEditPermission ? null : (
-        <ContactDetails
-          profileId={ownerId}
-          projectId={selectedProject.id}
-          buttonText={'kontaktdetaljer'}
-        />
-      )}
+      <ContactDetails
+        hideButton={hasEditPermission}
+        profileId={ownerId}
+        projectId={selectedProject.id}
+        buttonText={'kontaktdetaljer'}
+      />
       <CachedImage
         style={styles.image}
         uri={selectedProject.image ? selectedProject.image : ''}

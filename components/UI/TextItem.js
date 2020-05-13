@@ -8,6 +8,8 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+import { Divider } from 'react-native-paper';
+import ResolvedBadge from '../../components/UI/ResolvedBadge';
 //Constants
 import Colors from '../../constants/Colors';
 
@@ -18,34 +20,57 @@ const TextItem = (props) => {
     TouchableCmp = TouchableNativeFeedback;
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
+  console.log(props.itemData);
 
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
-    <View style={styles.project}>
-      <View style={styles.touchable}>
-        <TouchableCmp onPress={props.onSelect} useForeground>
-          {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
-          <View>
-            <Text style={styles.title}>{props.itemData.title} </Text>
-          </View>
-        </TouchableCmp>
+    <>
+      <Divider />
+      <View style={styles.container}>
+        <View style={styles.touchable}>
+          <TouchableCmp onPress={props.onSelect} useForeground>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.title}>
+              {props.itemData.title}
+            </Text>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode={'tail'}
+              style={styles.subTitle}
+            >
+              {props.itemData.description}
+            </Text>
+            {props.itemData.status === 'löst' && <ResolvedBadge />}
+          </TouchableCmp>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    marginLeft: 15,
+  },
+  touchable: {
+    overflow: 'hidden',
+    marginRight: 25,
+  },
   title: {
-    marginLeft: 10,
-    marginTop: 5,
-    padding: 20,
-    fontFamily: 'roboto-bold-italic',
-    fontSize: 13,
-    textAlign: 'center',
-    alignSelf: 'center',
-    color: '#fff',
-    backgroundColor: Colors.primary,
+    color: Colors.primary,
+    paddingTop: 25,
+    width: 280,
+    fontFamily: 'roboto-bold',
+    fontSize: 18,
+  },
+  subTitle: {
+    color: Colors.primary,
+    paddingBottom: 25,
+    width: 280,
+    fontFamily: 'roboto-light-italic',
+    fontSize: 16,
   },
 });
 

@@ -8,11 +8,11 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import CachedImage from '../../components/UI/CachedImage';
+import CachedImage from './CachedImage';
 //Constants
 import Styles from '../../constants/Styles';
 
-const LargeItem = (props) => {
+const LargeImageItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LargeItem;
+export default LargeImageItem;

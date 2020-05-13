@@ -7,7 +7,7 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import Loader from '../../components/UI/Loader';
-import ProposalItem from '../../components/UI/ProposalItem';
+import TextItem from '../../components/UI/TextItem';
 import SearchBar from '../../components/UI/SearchBar';
 import { Entypo } from '@expo/vector-icons';
 //Actions
@@ -86,7 +86,7 @@ const ProposalsScreen = (props) => {
         data={renderedProposals}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
-          <ProposalItem
+          <TextItem
             itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(
@@ -95,13 +95,12 @@ const ProposalsScreen = (props) => {
                 itemData.item.title
               );
             }}
-          ></ProposalItem>
+          />
         )}
         ListHeaderComponent={
           <HeaderTwo
             title={'Efterlysningar'}
             subTitle={'Efterlysningar från självbyggare'}
-            questionText={'Lägg upp något du söker'}
             icon={
               <Entypo
                 name={'tools'}

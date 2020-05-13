@@ -26,7 +26,8 @@ export function fetchProposals() {
             resData[key].title,
             resData[key].description,
             resData[key].price,
-            resData[key].date
+            resData[key].date,
+            resData[key].status
           )
         );
       }

@@ -156,13 +156,13 @@ const UserProfile = (props) => {
       <HorizontalScroll
         textItem={true}
         detailPath="ProposalDetail"
-        title={'Efterlysta produkter'}
-        subTitle={'Efterlysningar av användare'}
+        title={'Efterlysningar'}
+        subTitle={'Återbruk, tjänster, tips...'}
         scrollData={userProposals}
         navigation={props.navigation}
       />
       <HorizontalScroll
-        largeItem={true}
+        largeImageItem={true}
         detailPath={'ProjectDetail'}
         title={'Projekt'}
         subTitle={'Projekt användaren bygger med återbruk'}

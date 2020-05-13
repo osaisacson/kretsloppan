@@ -207,13 +207,13 @@ const UserSpotlightScreen = (props) => {
       <HorizontalScroll
         textItem={true}
         detailPath="ProposalDetail"
-        title={'Efterlysta produkter'}
-        subTitle={'Mina efterlysningar'}
+        title={'Efterlysningar'}
+        subTitle={'Mina upplagda efterlysningar'}
         scrollData={userProposals}
         navigation={props.navigation}
       />
       <HorizontalScroll
-        largeItem={true}
+        largeImageItem={true}
         detailPath={'ProjectDetail'}
         title={'Mina projekt'}
         subTitle={'Projekt jag bygger med återbruk'}

@@ -4,32 +4,32 @@ import { Divider } from 'react-native-paper';
 import { ScrollView, View } from 'react-native';
 import ProductItem from '../../components/UI/ProductItem';
 import RoundItem from '../../components/UI/RoundItem';
-import LargeItem from '../../components/UI/LargeItem';
+import LargeImageItem from '../../components/UI/LargeImageItem';
 import TextItem from '../../components/UI/TextItem';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from './HeaderTwo';
 
 const HorizontalScroll = (props) => {
-  //By default sets the rendered item to be product
+  //By default sets the rendered item to be ProductItem
   let RenderedItem = ProductItem;
   let scrollHeight = 250;
   let detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
-  //Check if we instead should render the roundItem
+  //Check if we instead should render the RoundItem
   if (props.roundItem) {
     RenderedItem = RoundItem;
     scrollHeight = 180;
   }
 
-  //Check if we instead should render the textitem
+  //Check if we instead should render the TextItem
   if (props.textItem) {
     RenderedItem = TextItem;
     scrollHeight = 210;
   }
 
-  //Check if we instead should render the largeItem
-  if (props.largeItem) {
-    RenderedItem = LargeItem;
+  //Check if we instead should render the LargeImageItem
+  if (props.largeImageItem) {
+    RenderedItem = LargeImageItem;
     scrollHeight = 350;
   }
 
