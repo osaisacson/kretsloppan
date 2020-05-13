@@ -28,7 +28,8 @@ export default (state = initialState, action) => {
         action.proposalData.title,
         action.proposalData.description,
         action.proposalData.price,
-        action.proposalData.date
+        action.proposalData.date,
+        action.proposalData.status
       );
       console.log(
         'store/reducers/proposals/CREATE_PROPOSAL, new proposal: ',
@@ -48,7 +49,8 @@ export default (state = initialState, action) => {
         action.proposalData.title,
         action.proposalData.description,
         action.proposalData.price,
-        state.userProposals[userProposalIndex].date
+        state.userProposals[userProposalIndex].date,
+        state.userProposals.status
       );
       console.log(
         'store/reducers/proposals/UPDATE_PROPOSAL, updated proposal: ',
