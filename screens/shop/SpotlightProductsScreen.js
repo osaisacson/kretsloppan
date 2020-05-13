@@ -86,7 +86,9 @@ const SpotlightProductsScreen = (props) => {
           textItem={true}
           detailPath="ProposalDetail"
           title={'efterlysningar'}
-          subTitle={'Material som önskas. Kontakta efterlysaren.'}
+          subTitle={
+            'Kreti och pleti. Kontakta efterlysaren om du sitter på svaret.'
+          }
           scrollData={allProposals}
           navigation={props.navigation}
         />

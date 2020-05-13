@@ -82,7 +82,7 @@ const ProposalDetailScreen = (props) => {
   return (
     <DetailWrapper>
       {/* Show contact info only if the user is not the creator */}
-      {hasEditPermission ? null : (
+      {!hasEditPermission && (
         <ContactDetails
           profileId={ownerId}
           proposalId={selectedProposal.id}
@@ -139,7 +139,7 @@ const ProposalDetailScreen = (props) => {
 //Sets/overrides the default navigation options in the ShopNavigator
 export const screenOptions = (navData) => {
   return {
-    headerTitle: navData.route.params.detailTitle,
+    headerTitle: '',
   };
 };
 

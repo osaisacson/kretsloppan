@@ -165,7 +165,7 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       {/* Show info about picking up the product only the user is not the creator of the product */}
-      {hasEditPermission ? null : (
+      {!hasEditPermission && (
         <ContactDetails
           profileId={ownerId}
           productId={selectedProduct.id}
