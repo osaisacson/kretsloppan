@@ -94,7 +94,6 @@ const UserProductsScreen = (props) => {
         subTitle={
           'Allt som är redo att hämtas, håller på att bearbetas, eller har blivit hämtat.'
         }
-        questionText={'Ditt eget förråd'}
         icon={
           <MaterialIcons
             name="file-upload"

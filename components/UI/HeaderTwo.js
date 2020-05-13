@@ -6,7 +6,7 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import { Badge } from 'react-native-paper';
+import { Badge, Button } from 'react-native-paper';
 import { Tooltip, Text } from 'react-native-elements';
 import Colors from './../../constants/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -35,7 +35,17 @@ const HeaderTwo = (props) => {
           <Text style={styles.extraSubTitle}>{props.extraSubTitle}</Text>
         ) : null}
       </View>
-      {props.questionText ? (
+      {props.buttonOnPress && (
+        <Button
+          style={{ marginRight: 5 }}
+          labelStyle={{ paddingRight: 0, fontSize: 10 }}
+          mode="contained"
+          onPress={props.buttonOnPress}
+        >
+          Se allt
+        </Button>
+      )}
+      {props.questionText && (
         <TouchableCmp style={styles.questionMarkSection} useForeground>
           <Tooltip
             width={250}
@@ -50,7 +60,7 @@ const HeaderTwo = (props) => {
             ></FontAwesome>
           </Tooltip>
         </TouchableCmp>
-      ) : null}
+      )}
     </View>
   );
 };

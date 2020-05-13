@@ -12,6 +12,7 @@ import {
 //Tab screens
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
+import UserProductsScreen from '../screens/user/UserProductsScreen';
 
 //Details
 import ProductDetailScreen, {
@@ -52,6 +53,11 @@ export const SpotlightNavigator = () => {
       <SpotlightStackNavigator.Screen
         name="Min Sida"
         component={UserSpotlightScreen}
+        options={mainPageOptionsNoUser}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Mitt upplagda återbruk"
+        component={UserProductsScreen}
         options={mainPageOptionsNoUser}
       />
       <SpotlightStackNavigator.Screen
