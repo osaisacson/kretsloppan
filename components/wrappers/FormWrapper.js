@@ -9,7 +9,7 @@ const FormWrapper = (props) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={100}
+      keyboardVerticalOffset={150}
     >
       <ScrollViewToTop>
         <View style={styles.formWrapper}>{props.children}</View>
