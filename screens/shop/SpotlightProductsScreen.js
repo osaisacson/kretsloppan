@@ -54,7 +54,6 @@ const SpotlightProductsScreen = (props) => {
         }
       />
       <ScrollView nestedScrollEnabled={true}>
-        {/* <HorizontalPicker pickerData={introductionData} /> */}
         <HorizontalScroll
           roundItem={true}
           detailPath="ProjectDetail"

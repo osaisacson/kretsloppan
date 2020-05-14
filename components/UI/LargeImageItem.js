@@ -9,8 +9,6 @@ import {
   Platform,
 } from 'react-native';
 import CachedImage from './CachedImage';
-//Constants
-import Styles from '../../constants/Styles';
 
 const LargeImageItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -49,7 +47,7 @@ const styles = StyleSheet.create({
     width: 370,
     marginLeft: 10,
     borderWidth: 0.5,
-    borderRadius: Styles.borderRadius,
+    borderRadius: 5,
     borderColor: '#ddd',
     flex: 1,
     flexDirection: 'column',
@@ -58,18 +56,18 @@ const styles = StyleSheet.create({
   largeTouchable: {
     height: 250,
     width: 370,
-    borderRadius: Styles.borderRadius,
+    borderRadius: 5,
     overflow: 'hidden',
   },
   largeImageContainer: {
     position: 'relative',
     width: '100%',
     height: '100%',
-    borderRadius: Styles.borderRadius,
+    borderRadius: 5,
     overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
   },
   largeImage: {
-    borderRadius: Styles.borderRadius,
+    borderRadius: 5,
     width: '100%',
     height: '100%',
   },

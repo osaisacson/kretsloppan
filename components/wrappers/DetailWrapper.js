@@ -77,11 +77,10 @@ export const detailStyles = StyleSheet.create({
     alignItems: 'center',
   },
   editOptions: {
+    marginTop: -20,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: -25,
-    zIndex: 100,
   },
   formControl: {
     width: '100%',

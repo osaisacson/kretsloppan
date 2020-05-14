@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Text, Alert } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Divider, Card, Title, Paragraph } from 'react-native-paper';
 
 import {
   DetailWrapper,
@@ -19,6 +19,8 @@ import FilterLine from '../../components/UI/FilterLine';
 import RoundItem from '../../components/UI/RoundItem';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonAction from '../../components/UI/ButtonAction';
+import SectionCard from '../../components/UI/SectionCard';
+
 import StatusBadge from '../../components/UI/StatusBadge';
 
 //Constants
@@ -72,12 +74,12 @@ const ProductDetailScreen = (props) => {
           text: 'Ja, radera',
           style: 'destructive',
           onPress: () => {
+            navigation.goBack();
             dispatch(productsActions.deleteProduct(id));
           },
         },
       ]
     );
-    navigation.goBack();
   };
 
   const collectHandler = () => {
@@ -118,9 +120,9 @@ const ProductDetailScreen = (props) => {
       'Avbryt reservation?',
       'Om du avbryter reservationen kommer återbruket igen bli tillgängligt för andra.',
       [
-        { text: 'Avbryt', style: 'default' },
+        { text: 'Nej', style: 'default' },
         {
-          text: 'Ja, ta bort min reservation',
+          text: 'Ja, ta bort',
           style: 'destructive',
           onPress: () => {
             setIsLoading(true);
@@ -180,219 +182,216 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'left',
-            alignItems: 'center',
-            marginBottom: 10,
-          }}
-        >
-          {/* Show pause button if the user is the owner and if the product is not reserved */}
-          {hasEditPermission && !isReserved && !isPickedUp ? (
-            <ButtonAction
-              isToggled={isToggled}
-              icon={isReady && 'pause'}
-              title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
-              onSelect={toggleIsReadyHandle.bind(this)}
-            />
-          ) : null}
+        <SectionCard>
+          {/* Info about who created the product post */}
+          <ContactDetails
+            profileId={ownerId}
+            productId={selectedProduct.id}
+            hideButton={isReserved || isPickedUp}
+            buttonText={'hämtningsdetaljer'}
+          />
 
-          {/* Show the option to reserve a product if the product is
-        neither picked up, reserved or paused. */}
-          {!isPickedUp && !isReserved && !isPaused ? (
-            <ButtonAction
-              disabled={isReserved}
-              onSelect={toggleReserveButton}
-              title={'reservera'}
-            />
-          ) : null}
+          {/* Product image */}
+          <CachedImage
+            style={detailStyles.image}
+            uri={selectedProduct.image ? selectedProduct.image : ''}
+          />
 
-          {/* Show the option to unreserve a product if the product 
-        is reserved and the user is the one who reserved it. */}
-          {isReserved && isReservedUser ? (
-            <ButtonAction
-              disabled={isPickedUp}
-              onSelect={unReserveHandler}
-              title={'avreservera'}
-            />
-          ) : null}
-
-          {/* Show button to change status to collected if the user is the owner and if the product is reserved */}
-          {hasEditPermission && isReserved ? (
-            <ButtonAction
-              disabled={isPickedUp}
-              title="byt till hämtad"
-              onSelect={collectHandler.bind(this)}
-            />
-          ) : null}
-        </View>
-
-        <Divider style={{ marginBottom: 15 }} />
-
-        {/* Info about who created the product post */}
-        <ContactDetails
-          profileId={ownerId}
-          productId={selectedProduct.id}
-          hideButton={isReserved || isPickedUp}
-          buttonText={'hämtningsdetaljer'}
-        />
-
-        {/* Show delete and edit buttons if the user has editing 
+          {/* Show delete and edit buttons if the user has editing 
         permissions and the product is not yet picked up */}
-        {hasEditPermission && !isPickedUp ? (
-          <View style={detailStyles.editOptions}>
-            <ButtonIcon
-              icon="delete"
-              color={Colors.warning}
-              onSelect={deleteHandler.bind(this)}
-            />
-
-            <ButtonIcon
-              icon="pen"
-              color={Colors.neutral}
-              onSelect={() => {
-                editProductHandler(selectedProduct.id);
-              }}
-            />
-          </View>
-        ) : null}
-
-        {/* Product image */}
-        <CachedImage
-          style={detailStyles.image}
-          uri={selectedProduct.image ? selectedProduct.image : ''}
-        />
-
-        {/* When trying to reserve, open this up for selection of associated project */}
-        {!isReservedOrPickedUp && showUserProjects ? (
-          <>
-            <HeaderThree
-              text={'Vilket projekt ska återbruket användas i?'}
-              style={detailStyles.centeredHeader}
-            />
-
-            <HorizontalScrollContainer>
-              <RoundItem
-                itemData={{
-                  image: './../../assets/avatar-placeholder-image.png',
-                  title: 'Inget projekt',
-                }}
-                key={'000'}
-                isHorizontal={true}
-                onSelect={() => {
-                  reserveHandler('000');
-                }}
-              />
-              {userProjects.map((item) => (
-                <RoundItem
-                  itemData={item}
-                  key={item.id}
-                  isHorizontal={true}
+          {hasEditPermission && !isPickedUp ? (
+            <>
+              <View style={detailStyles.editOptions}>
+                <ButtonIcon
+                  icon="pen"
+                  color={Colors.neutral}
                   onSelect={() => {
-                    reserveHandler(item.id);
+                    editProductHandler(selectedProduct.id);
                   }}
                 />
-              ))}
-            </HorizontalScrollContainer>
-          </>
-        ) : null}
+                <ButtonIcon
+                  icon="delete"
+                  color={Colors.warning}
+                  onSelect={deleteHandler.bind(this)}
+                />
+              </View>
+            </>
+          ) : null}
 
-        {/* Show date of reservation if product is reserved */}
-        {isReserved ? (
-          <StatusBadge
-            text={`Reserverad ${
-              isReservedUser ? 'av dig ' : ''
-            }till ${shorterDate}`}
-            width={isReservedUser ? 260 : 220}
-            icon={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
-            backgroundColor={Colors.primary}
-          />
-        ) : null}
+          <Title>{selectedProduct.title}</Title>
+          <Paragraph>{selectedProduct.description}</Paragraph>
+          <Divider style={{ marginTop: 10 }} />
+          {/* Only show filter badges if we have any filters */}
+          {category || condition || style || material || color ? (
+            <>
+              <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+                <FilterLine filter={category} />
+                {condition && <FilterLine filter={`${condition} skick`} />}
+                <FilterLine filter={style} />
+                <FilterLine filter={material} />
+                <FilterLine filter={color} />
+              </View>
+              <Divider style={{ marginBottom: 10 }} />
+            </>
+          ) : null}
+          <Paragraph style={{ textAlign: 'right', padding: 20 }}>
+            {selectedProduct.price ? `${selectedProduct.price} kr` : 'Gratis'}
+          </Paragraph>
 
-        {/* Show product is paused if product is paused */}
-        {isPaused ? (
-          <StatusBadge
-            text={'Pausad för bearbetning'}
-            width={200}
-            icon={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
-            backgroundColor={Colors.neutral}
-          />
-        ) : null}
-
-        {/* Show collected badge if product is collected */}
-        {isPickedUp ? (
-          <StatusBadge
-            text={'Hämtad!'}
-            width={100}
-            icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-            backgroundColor={Colors.completed}
-          />
-        ) : null}
-        <Divider style={{ marginBottom: 5 }} />
-
-        {/* If the product is reserved, show contact info to the one who reserved the product */}
-        {isReserved && !isReservedUser ? (
-          <>
-            <ContactDetails
-              profileId={reservedUserId}
-              hideButton={isPickedUp}
-              buttonText={'kontaktdetaljer'}
-            />
-            <Divider style={{ marginBottom: 5 }} />
-          </>
-        ) : null}
-        {/* Show the project the product is used in/reserved for */}
-        {isReservedOrPickedUp &&
-        selectedProduct.projectId &&
-        projectForProduct.length ? (
-          <>
-            <Divider />
-
-            <View style={detailStyles.centered}>
+          {/* When trying to reserve, open this up for selection of associated project */}
+          {!isReservedOrPickedUp && showUserProjects ? (
+            <>
               <HeaderThree
-                text={isPickedUp ? 'Används i ' : 'För att användas i '}
+                text={'Vilket projekt ska återbruket användas i?'}
                 style={detailStyles.centeredHeader}
               />
 
-              <HorizontalScroll
-                roundItem={true}
-                detailPath={'ProjectDetail'}
-                scrollData={projectForProduct}
-                navigation={props.navigation}
+              <HorizontalScrollContainer>
+                <RoundItem
+                  itemData={{
+                    image: './../../assets/avatar-placeholder-image.png',
+                    title: 'Inget projekt',
+                  }}
+                  key={'000'}
+                  isHorizontal={true}
+                  onSelect={() => {
+                    reserveHandler('000');
+                  }}
+                />
+                {userProjects.map((item) => (
+                  <RoundItem
+                    itemData={item}
+                    key={item.id}
+                    isHorizontal={true}
+                    onSelect={() => {
+                      reserveHandler(item.id);
+                    }}
+                  />
+                ))}
+              </HorizontalScrollContainer>
+            </>
+          ) : null}
+        </SectionCard>
+
+        <SectionCard>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              marginVertical: 10,
+            }}
+          >
+            {/* Show pause button if the user is the owner and if the product is not reserved */}
+            {hasEditPermission && !isReserved && !isPickedUp ? (
+              <ButtonAction
+                style={{ marginRight: 10 }}
+                isToggled={isToggled}
+                icon={isReady ? 'pause' : null}
+                title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
+                onSelect={toggleIsReadyHandle.bind(this)}
               />
-            </View>
-          </>
+            ) : null}
+
+            {/* Show the option to reserve a product if the product is
+        neither picked up, reserved or paused. */}
+            {!isPickedUp && !isReserved && !isPaused ? (
+              <ButtonAction
+                disabled={isReserved}
+                onSelect={toggleReserveButton}
+                title={'reservera'}
+              />
+            ) : null}
+
+            {/* Show the option to unreserve a product if the product 
+        is reserved and the user is the one who reserved it. */}
+            {isReserved && isReservedUser ? (
+              <ButtonAction
+                disabled={isPickedUp}
+                onSelect={unReserveHandler}
+                title={'avreservera'}
+              />
+            ) : null}
+
+            {/* Show button to change status to collected if the user is the owner and if the product is reserved */}
+            {hasEditPermission && isReserved ? (
+              <ButtonAction
+                disabled={isPickedUp}
+                title="byt till hämtad"
+                onSelect={collectHandler.bind(this)}
+              />
+            ) : null}
+          </View>
+        </SectionCard>
+
+        {/* Show pause badge if product is paused */}
+        {isPaused ? (
+          <SectionCard>
+            <StatusBadge
+              text={'Pausad för bearbetning'}
+              width={200}
+              icon={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
+              backgroundColor={Colors.neutral}
+            />
+          </SectionCard>
         ) : null}
 
-        <View style={detailStyles.textCard}>
-          <Text style={detailStyles.boundaryText}>
-            {selectedProduct.description}
-          </Text>
-        </View>
+        {/* Information about the reservation */}
+        {isReservedOrPickedUp ? (
+          <SectionCard>
+            {/* Show collected badge if product is collected */}
+            {isPickedUp ? (
+              <StatusBadge
+                text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
+                width={isReservedUser ? 140 : 100}
+                icon={
+                  Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
+                }
+                backgroundColor={Colors.completed}
+              />
+            ) : null}
+            {isReserved ? (
+              <StatusBadge
+                text={`Reserverad ${
+                  isReservedUser ? 'av dig ' : ''
+                }till ${shorterDate}`}
+                width={isReservedUser ? 260 : 220}
+                icon={
+                  Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'
+                }
+                backgroundColor={Colors.primary}
+              />
+            ) : null}
 
-        <Divider style={{ marginTop: 15, marginBottom: 5 }} />
+            {!isReservedUser ? (
+              <ContactDetails
+                profileId={selectedProduct.reservedUserId}
+                hideButton={isPickedUp}
+                buttonText={'kontaktdetaljer'}
+              />
+            ) : null}
+            {selectedProduct.projectId && projectForProduct.length ? (
+              <>
+                <Divider />
 
-        <View>
-          <Text style={detailStyles.price}>
-            {selectedProduct.price ? `${selectedProduct.price} kr` : 'gratis'}
-          </Text>
-        </View>
+                <View style={detailStyles.centered}>
+                  <HeaderThree
+                    text={isPickedUp ? 'Används i ' : 'För att användas i '}
+                    style={detailStyles.centeredHeader}
+                  />
 
-        {/* Only show filter badges if we have any filters */}
-        {category || condition || style || material || color ? (
-          <>
-            <Divider style={{ marginTop: 15, marginBottom: 5 }} />
-
-            <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
-              <FilterLine filter={category} />
-              {condition && <FilterLine filter={`${condition} skick`} />}
-              <FilterLine filter={style} />
-              <FilterLine filter={material} />
-              <FilterLine filter={color} />
-            </View>
-          </>
+                  <HorizontalScroll
+                    scrollHeight={155}
+                    roundItem={true}
+                    detailPath={'ProjectDetail'}
+                    scrollData={projectForProduct}
+                    navigation={props.navigation}
+                  />
+                </View>
+              </>
+            ) : null}
+          </SectionCard>
         ) : null}
       </View>
     </DetailWrapper>
@@ -402,7 +401,7 @@ const ProductDetailScreen = (props) => {
 //Sets/overrides the default navigation options in the ShopNavigator
 export const screenOptions = (navData) => {
   return {
-    headerTitle: navData.route.params.detailTitle,
+    headerTitle: '',
   };
 };
 

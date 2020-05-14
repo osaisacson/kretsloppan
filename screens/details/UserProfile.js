@@ -8,9 +8,6 @@ import ContactDetails from '../../components/UI/ContactDetails';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ScrollViewToTop from '../../components/wrappers/ScrollViewToTop';
 
-//Constants
-import Styles from '../../constants/Styles';
-
 const UserProfile = (props) => {
   //Get profiles, return only the one which matches the id we pass in route params
   const visitedUserId = props.route.params.detailId;
@@ -220,7 +217,7 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: Styles.leftRight,
+    marginRight: 15,
   },
   paragraph: {
     fontWeight: 'bold',

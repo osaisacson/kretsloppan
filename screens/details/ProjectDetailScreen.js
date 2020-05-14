@@ -96,17 +96,16 @@ const ProjectDetailScreen = (props) => {
           />
         </View>
       ) : null}
-
-      {/* Information about the project */}
       <Text style={styles.description}>{selectedProject.slogan}</Text>
-      <HeaderTwo
-        title={'Återbruk'}
-        subTitle={'Återbruk som används i projektet'}
-        indicator={associatedProducts.length ? associatedProducts.length : 0}
-        questionText={
-          'Här hamnar allt återbruk som är associerat med projektet'
-        }
-      />
+
+      <View style={{ marginVertical: 10 }}>
+        {/* Information about the project */}
+        <HeaderTwo
+          title={'Återbruk'}
+          subTitle={'Återbruk som används i projektet'}
+          indicator={associatedProducts.length ? associatedProducts.length : 0}
+        />
+      </View>
     </View>
   );
 

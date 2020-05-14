@@ -9,12 +9,11 @@ import {
   Platform,
 } from 'react-native';
 import Card from './Card';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import CachedImage from '../../components/UI/CachedImage';
 
 //Constants
 import Colors from './../../constants/Colors';
-import Styles from '../../constants/Styles';
 
 const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -120,15 +119,15 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
   },
   touchable: {
-    borderRadius: Styles.borderRadius,
+    borderRadius: 5,
     overflow: 'hidden',
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
     height: '100%',
-    borderTopLeftRadius: Styles.borderRadius,
-    borderTopRightRadius: Styles.borderRadius,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
     overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
   },
   icon: {

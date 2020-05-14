@@ -12,13 +12,13 @@ import HeaderTwo from './HeaderTwo';
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
   let RenderedItem = ProductItem;
-  let scrollHeight = 250;
+  let scrollHeight = props.scrollHeight ? props.scrollHeight : 250;
   let detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
   //Check if we instead should render the RoundItem
   if (props.roundItem) {
     RenderedItem = RoundItem;
-    scrollHeight = 180;
+    scrollHeight = props.scrollHeight ? props.scrollHeight : 180;
   }
 
   //Check if we instead should render the TextItem

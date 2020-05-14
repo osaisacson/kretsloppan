@@ -11,7 +11,6 @@ import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
 
 //Constants
 import Colors from '../../constants/Colors';
-import Styles from '../../constants/Styles';
 
 const UserSpotlightScreen = (props) => {
   //Get profiles, return only the one which matches the logged in id
@@ -291,7 +290,7 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: Styles.leftRight,
+    marginRight: 15,
   },
   paragraph: {
     fontWeight: 'bold',

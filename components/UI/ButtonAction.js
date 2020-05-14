@@ -1,6 +1,10 @@
 import React from 'react';
 //Components
-import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import {
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  StyleSheet,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 
 const ButtonAction = (props) => {
@@ -10,30 +14,13 @@ const ButtonAction = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
   return (
-    <TouchableCmp
-      style={{
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-      }}
-    >
+    <TouchableCmp style={{ ...styles.container, ...props.style }}>
       <Button
         disabled={props.disabled ? props.disabled : false}
         mode="contained"
         compact={props.isLarge ? false : true}
-        style={{
-          minWidth: 100,
-          alignSelf: 'center',
-        }}
-        labelStyle={{
-          fontFamily: 'roboto-regular',
-          fontSize: 9,
-        }}
+        style={styles.button}
+        labelStyle={styles.label}
         onPress={props.onSelect}
         icon={props.icon}
       >
@@ -42,5 +29,26 @@ const ButtonAction = (props) => {
     </TouchableCmp>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  button: {
+    minWidth: 100,
+    alignSelf: 'center',
+  },
+  label: {
+    fontFamily: 'roboto-regular',
+    fontSize: 9,
+  },
+});
 
 export default ButtonAction;
