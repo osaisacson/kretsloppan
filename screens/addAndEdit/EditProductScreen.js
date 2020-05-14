@@ -292,13 +292,13 @@ const EditProductScreen = (props) => {
         </HorizontalScrollContainer>
       </FormFieldWrapper>
       {/* Material */}
-      <FormFieldWrapper label="Material" prompt="Välj en stil">
+      <FormFieldWrapper label="Material" prompt="Välj ett material">
         <HorizontalScrollContainer scrollHeight={75}>
           {MATERIAL.map((item) => (
             <PickerItem
-              itemData={item}
+              title={item.title}
+              color={item.color}
               key={item.id}
-              isHorizontal={true}
               isSelected={formState.inputValues.material === item.title}
               onSelect={textChangeHandler.bind(this, 'material', item.title)}
             />
