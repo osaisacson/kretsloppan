@@ -237,36 +237,44 @@ const ProductDetailScreen = (props) => {
           />
         ) : null}
 
-        <Divider style={{ marginVertical: 15 }} />
-
         {/* Show button to change status to collected if the user is the owner and if the product is reserved */}
         {hasEditPermission && isReserved ? (
-          <ButtonToggle
-            icon="star"
-            title="byt till hämtad"
-            onSelect={collectHandler.bind(this)}
-          />
+          <>
+            <Divider style={{ marginVertical: 15 }} />
+
+            <ButtonToggle
+              icon="star"
+              title="byt till hämtad"
+              onSelect={collectHandler.bind(this)}
+            />
+          </>
         ) : null}
 
         {/* Show pause button if the user is the owner and if the product is not reserved */}
         {hasEditPermission && !isReserved && !isPickedUp ? (
-          <ButtonToggle
-            isToggled={isToggled}
-            icon={isReady && 'pause'}
-            title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
-            onSelect={toggleIsReadyHandle.bind(this)}
-          />
+          <>
+            <Divider />
+            <ButtonToggle
+              isToggled={isToggled}
+              icon={isReady && 'pause'}
+              title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
+              onSelect={toggleIsReadyHandle.bind(this)}
+            />
+          </>
         ) : null}
 
         {/* Show the option to reserve a product if the product is
         neither picked up, reserved or paused. */}
         {!isPickedUp && !isReserved && !isPaused ? (
-          <ButtonNormal
-            color={Colors.primary}
-            disabled={isReserved}
-            actionOnPress={toggleReserveButton}
-            text={'reservera'}
-          />
+          <>
+            <Divider />
+            <ButtonNormal
+              color={Colors.primary}
+              disabled={isReserved}
+              actionOnPress={toggleReserveButton}
+              text={'reservera'}
+            />
+          </>
         ) : null}
 
         {/* When trying to reserve, open this up for selection of associated project */}
@@ -305,13 +313,13 @@ const ProductDetailScreen = (props) => {
         is reserved and the user is the one who reserved it. */}
         {isReserved && isReservedUser ? (
           <>
+            <Divider />
             <ButtonNormal
               color={Colors.primary}
               disabled={isPickedUp}
               actionOnPress={unReserveHandler}
               text={'avreservera'}
             />
-            <Divider />
           </>
         ) : null}
 
@@ -319,17 +327,21 @@ const ProductDetailScreen = (props) => {
         {isReservedOrPickedUp &&
         selectedProduct.projectId &&
         projectForProduct.length ? (
-          <View style={detailStyles.centered}>
-            <Text style={detailStyles.centeredHeader}>
-              {isPickedUp ? 'Används i ' : 'Reserverad för '}
-            </Text>
-            <HorizontalScroll
-              roundItem={true}
-              detailPath={'ProjectDetail'}
-              scrollData={projectForProduct}
-              navigation={props.navigation}
-            />
-          </View>
+          <>
+            <Divider />
+
+            <View style={detailStyles.centered}>
+              <Text style={detailStyles.centeredHeader}>
+                {isPickedUp ? 'Används i ' : 'Reserverad för '}
+              </Text>
+              <HorizontalScroll
+                roundItem={true}
+                detailPath={'ProjectDetail'}
+                scrollData={projectForProduct}
+                navigation={props.navigation}
+              />
+            </View>
+          </>
         ) : null}
 
         {/* Only show filter badges if we have any filters */}

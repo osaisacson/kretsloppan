@@ -3,9 +3,6 @@ import React from 'react';
 //Components
 import { Chip } from 'react-native-paper';
 
-//Constants
-import Colors from '../../constants/Colors';
-
 const FilterLine = (props) => {
   const { filter } = props;
 
