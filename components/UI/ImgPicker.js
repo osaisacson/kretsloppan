@@ -83,7 +83,12 @@ const ImgPicker = (props) => {
         )}
       </View>
       <View style={styles.centered}>
-        <ButtonAction icon="camera" title="Kamera" onSelect={takePhoto} />
+        <ButtonAction
+          icon="camera"
+          title="Kamera"
+          onSelect={takePhoto}
+          style={{ marginRight: 8 }}
+        />
         <ButtonAction icon="image" title="Galleri" onSelect={pickImage} />
       </View>
     </View>
