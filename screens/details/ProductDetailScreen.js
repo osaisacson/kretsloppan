@@ -245,8 +245,8 @@ const ProductDetailScreen = (props) => {
         />
       )}
 
-      {/* Show pause button if product is not reserved */}
-      {!isReserved && !isPickedUp && (
+      {/* Show pause button if the user is the owner and if the product is not reserved */}
+      {hasEditPermission && !isReserved && !isPickedUp && (
         <ButtonToggle
           isToggled={isToggled}
           icon={isReady && 'pause'}
@@ -258,18 +258,18 @@ const ProductDetailScreen = (props) => {
       <View>
         {/* Show the option to reserve a product if the product is
         neither picked up, reserved or paused. */}
-        {!isPickedUp && !isReserved && !isPaused && (
+        {/* {!isPickedUp && !isReserved && !isPaused && (
           <ButtonNormal
             color={Colors.primary}
             disabled={isReserved}
             actionOnPress={toggleReserveButton}
             text={'reservera'}
           />
-        )}
+        )} */}
 
         {/* Show the option to unreserve a product if the product 
         is reserved and the user is the one who reserved it. */}
-        {isReserved && isReservedUser && (
+        {/* {isReserved && isReservedUser && (
           <>
             <ButtonNormal
               color={Colors.primary}
@@ -280,11 +280,11 @@ const ProductDetailScreen = (props) => {
             />
             <Divider />
           </>
-        )}
+        )} */}
 
         {/* Show the horizontal scroll of the user's projects if the product is
           not picked up or reserved yet */}
-        {!isReservedOrPickedUp && showUserProjects && (
+        {/* {!isReservedOrPickedUp && showUserProjects && (
           <>
             <Text style={detailStyles.centeredHeader}>
               Vilket projekt ska återbruket användas i?
@@ -313,10 +313,10 @@ const ProductDetailScreen = (props) => {
               ))}
             </HorizontalScrollContainer>
           </>
-        )}
+        )} */}
 
         {/* Show the project the product is used in/reserved for */}
-        {selectedProduct &&
+        {/* {selectedProduct &&
           selectedProduct.projectId &&
           projectForProduct.length &&
           isReservedOrPickedUp && (
@@ -331,7 +331,7 @@ const ProductDetailScreen = (props) => {
                 navigation={props.navigation}
               />
             </View>
-          )}
+          )} */}
       </View>
 
       <Divider style={{ marginTop: 15, marginBottom: 5 }} />
