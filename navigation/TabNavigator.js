@@ -24,7 +24,7 @@ export const TabNavigator = () => {
       labeled={true}
       shifting={true}
       activeColor={Colors.lightPrimary}
-      inactiveColor={Colors.mediumPrimary}
+      inactiveColor={Colors.lightPrimary}
       barStyle={{ backgroundColor: Colors.darkPrimary }}
     >
       <TabStackNavigator.Screen

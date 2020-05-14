@@ -14,7 +14,6 @@ const StatusBadge = (props) => {
         color: '#fff',
         width: props.width,
         textAlign: 'center',
-        transform: [{ rotate: '-.5deg' }],
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',

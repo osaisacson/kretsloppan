@@ -2,6 +2,7 @@ import React from 'react';
 //Components
 import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { Button } from 'react-native-paper';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const ButtonToggle = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -26,6 +27,7 @@ const ButtonToggle = (props) => {
         mode="contained"
         compact={props.isLarge ? false : true}
         style={{
+          backgroundColor: '#9c0065',
           alignSelf: 'center',
         }}
         labelStyle={{

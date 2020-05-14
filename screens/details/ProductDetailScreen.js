@@ -173,40 +173,6 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        {/* Show info about picking up the product only if the user is not the creator of the product */}
-        <ContactDetails
-          profileId={ownerId}
-          productId={selectedProduct.id}
-          hideButton={isReserved || isPickedUp}
-          buttonText={'hämtningsdetaljer'}
-        />
-
-        {/* Show delete and edit buttons if the user has editing 
-        permissions and the product is not yet picked up */}
-        {hasEditPermission && !isPickedUp ? (
-          <View style={detailStyles.editOptions}>
-            <ButtonIcon
-              icon="delete"
-              color={Colors.warning}
-              onSelect={deleteHandler.bind(this)}
-            />
-
-            <ButtonIcon
-              icon="pen"
-              color={Colors.neutral}
-              onSelect={() => {
-                editProductHandler(selectedProduct.id);
-              }}
-            />
-          </View>
-        ) : null}
-
-        {/* Product image */}
-        <CachedImage
-          style={detailStyles.image}
-          uri={selectedProduct.image ? selectedProduct.image : ''}
-        />
-
         {/* Show date of reservation if product is reserved */}
         {isReserved ? (
           <StatusBadge
@@ -236,32 +202,67 @@ const ProductDetailScreen = (props) => {
             backgroundColor={Colors.completed}
           />
         ) : null}
+        <Divider style={{ marginBottom: 5 }} />
 
-        {/* Show button to change status to collected if the user is the owner and if the product is reserved */}
-        {hasEditPermission && isReserved ? (
-          <>
-            <Divider style={{ marginVertical: 15 }} />
+        {/* Show info about picking up the product only if the user is not the creator of the product */}
+        <ContactDetails
+          profileId={ownerId}
+          productId={selectedProduct.id}
+          hideButton={isReserved || isPickedUp}
+          buttonText={'hämtningsdetaljer'}
+        />
+        <Divider style={{ marginBottom: 5 }} />
 
-            <ButtonToggle
-              icon="star"
-              title="byt till hämtad"
-              onSelect={collectHandler.bind(this)}
+        {/* Show delete and edit buttons if the user has editing 
+        permissions and the product is not yet picked up */}
+        {hasEditPermission && !isPickedUp ? (
+          <View style={detailStyles.editOptions}>
+            <ButtonIcon
+              icon="delete"
+              color={Colors.warning}
+              onSelect={deleteHandler.bind(this)}
             />
-          </>
+
+            {/* Show pause button if the user is the owner and if the product is not reserved */}
+            {hasEditPermission && !isReserved && !isPickedUp ? (
+              <>
+                <ButtonToggle
+                  isToggled={isToggled}
+                  icon={isReady && 'pause'}
+                  title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
+                  onSelect={toggleIsReadyHandle.bind(this)}
+                />
+              </>
+            ) : null}
+
+            {/* Show button to change status to collected if the user is the owner and if the product is reserved */}
+            {hasEditPermission && isReserved ? (
+              <>
+                <Divider style={{ marginVertical: 15 }} />
+
+                <ButtonToggle
+                  icon="star"
+                  title="byt till hämtad"
+                  onSelect={collectHandler.bind(this)}
+                />
+              </>
+            ) : null}
+
+            <ButtonIcon
+              icon="pen"
+              color={Colors.neutral}
+              onSelect={() => {
+                editProductHandler(selectedProduct.id);
+              }}
+            />
+          </View>
         ) : null}
 
-        {/* Show pause button if the user is the owner and if the product is not reserved */}
-        {hasEditPermission && !isReserved && !isPickedUp ? (
-          <>
-            <Divider />
-            <ButtonToggle
-              isToggled={isToggled}
-              icon={isReady && 'pause'}
-              title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
-              onSelect={toggleIsReadyHandle.bind(this)}
-            />
-          </>
-        ) : null}
+        {/* Product image */}
+        <CachedImage
+          style={detailStyles.image}
+          uri={selectedProduct.image ? selectedProduct.image : ''}
+        />
 
         {/* Show the option to reserve a product if the product is
         neither picked up, reserved or paused. */}

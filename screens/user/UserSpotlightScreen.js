@@ -68,6 +68,14 @@ const UserSpotlightScreen = (props) => {
     return new Date(b.reservedDate) - new Date(a.reservedDate);
   });
 
+  const reservedByOthersRaw = userProducts.filter(
+    (product) => product.status === 'reserverad'
+  );
+
+  const reservedByOthers = reservedByOthersRaw.sort(function (a, b) {
+    return new Date(b.reservedDate) - new Date(a.reservedDate);
+  });
+
   //PAUSED: Gets all products which the user has put on hold
   const pausedUserProductsRaw = userProducts.filter(
     (product) => product.status === 'bearbetas'
@@ -176,15 +184,34 @@ const UserSpotlightScreen = (props) => {
       </View>
 
       {/* Product, project and propsal sections */}
-      <HorizontalScroll
-        title={'Reserverat av mig'}
-        subTitle={'Väntas på att hämtas upp av dig - se kort för detaljer'}
-        extraSubTitle={'Notera att reservationen upphör gälla efter en vecka'}
-        bgColor={Colors.lightPrimary}
-        scrollData={reservedByUser}
-        showNotificationBadge={true}
-        navigation={props.navigation}
-      />
+      {reservedByUser.length ? (
+        <HorizontalScroll
+          title={'Reserverat av mig'}
+          subTitle={
+            'Väntas på att hämtas upp/levereras till dig - öppna kortet för detaljer. Notera att reservationen upphör gälla efter en vecka.'
+          }
+          extraSubTitle={
+            'Kontakta den som lagt upp återbruket för att bestämma logistik runt upphämtning'
+          }
+          bgColor={Colors.lightPrimary}
+          scrollData={reservedByUser}
+          showNotificationBadge={true}
+          navigation={props.navigation}
+        />
+      ) : null}
+      {reservedByOthers.length ? (
+        <HorizontalScroll
+          title={'Reserverat av andra'}
+          subTitle={
+            'Återbruk du lagt upp som blivit reserverat av andra - väntar på att avlämnas. Notera att reservationen upphör gälla efter en vecka.'
+          }
+          extraSubTitle={'Följ upp med den som reserverat för avlämning'}
+          bgColor={Colors.mediumPrimary}
+          scrollData={reservedByOthers}
+          showNotificationBadge={true}
+          navigation={props.navigation}
+        />
+      ) : null}
       <HorizontalScroll
         title={'Upplagt av mig'}
         subTitle={'Återbruk upplagt av mig'}

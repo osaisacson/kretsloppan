@@ -53,6 +53,7 @@ const ContactDetails = (props) => {
             flexDirection: 'row',
             justifyContent: 'left',
             marginBottom: 5,
+            marginRight: 5,
           }}
         >
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
@@ -87,7 +88,12 @@ const ContactDetails = (props) => {
         style={
           props.isProfile
             ? detailStyles.centeredContent
-            : detailStyles.rightContent
+            : {
+                flex: 1,
+                marginRight: 5,
+                marginVertical: 10,
+                alignItems: 'flex-end',
+              }
         }
       >
         {/* Only show contact details if toggleDetails is true. TBD: tie this to user options */}

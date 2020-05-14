@@ -28,11 +28,6 @@ export const detailStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  rightContent: {
-    flex: 1,
-    marginVertical: 10,
-    alignItems: 'flex-end',
-  },
   image: {
     height: 300,
     width: '100%',
