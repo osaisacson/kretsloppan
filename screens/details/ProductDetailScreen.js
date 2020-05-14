@@ -344,6 +344,22 @@ const ProductDetailScreen = (props) => {
           </>
         ) : null}
 
+        <Divider style={{ marginTop: 15, marginBottom: 5 }} />
+
+        <View style={detailStyles.textCard}>
+          <Text style={detailStyles.boundaryText}>
+            {selectedProduct.description}
+          </Text>
+        </View>
+
+        <Divider style={{ marginTop: 15, marginBottom: 5 }} />
+
+        <View>
+          <Text style={detailStyles.price}>
+            {selectedProduct.price ? `${selectedProduct.price} kr` : 'gratis'}
+          </Text>
+        </View>
+
         {/* Only show filter badges if we have any filters */}
         {category || condition || style || material || color ? (
           <>
