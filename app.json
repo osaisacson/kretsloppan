@@ -3,6 +3,7 @@
     "name": "Egnahemsfabriken Ger Igen",
     "slug": "egnahemsfabriken",
     "privacy": "public",
+    "Description": "Återbruksappen 'Ge Igen' är ett verktyg för att synliggöra och öka användandet av återbruk. Den riktar sig mot alla intressenter - från organisationer till individer. Förutom att se tillgängligt återbruk kan man via appen också lägga upp sitt projekt och följa återbrukets resa från ett hem till ett annat.",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
