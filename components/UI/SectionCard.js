@@ -5,7 +5,9 @@ const SectionCard = (props) => {
   return (
     <Card
       style={{
-        padding: 5,
+        paddingHorizontal: 6,
+        paddingVertical: 10,
+
         marginVertical: 5,
       }}
     >

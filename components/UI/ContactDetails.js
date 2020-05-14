@@ -20,7 +20,10 @@ const ContactDetails = (props) => {
 
   const selectedProfile = profilesArray[0];
 
-  const contactEmail = selectedProfile.email;
+  const contactEmail =
+    selectedProfile && selectedProfile.email
+      ? selectedProfile.email
+      : 'Ingen email';
 
   let objectForDetails = selectedProfile;
 

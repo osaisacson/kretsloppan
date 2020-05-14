@@ -97,6 +97,7 @@ const ProductDetailScreen = (props) => {
             dispatch(
               productsActions.changeProductStatus(id, 'hämtad', projectId)
             );
+            props.navigation.goBack();
           },
         },
       ]
@@ -366,7 +367,9 @@ const ProductDetailScreen = (props) => {
 
             {!isReservedUser ? (
               <ContactDetails
-                profileId={selectedProduct.reservedUserId}
+                profileId={
+                  reservedUserId ? reservedUserId : selectedProduct.newOwnerId
+                }
                 hideButton={isPickedUp}
                 buttonText={'kontaktdetaljer'}
               />
