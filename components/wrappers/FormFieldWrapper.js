@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import HeaderThree from '../../components/UI/HeaderThree';
 //Constants
 import Colors from '../../constants/Colors';
 
@@ -7,11 +8,9 @@ export const FormFieldWrapper = (props) => {
   return (
     <View style={formStyles.formControl}>
       {props.label && (
-        <Text style={formStyles.sectionLabel}>{props.label}</Text>
+        <HeaderThree text={props.label} style={formStyles.sectionLabel} />
       )}
-      {props.subLabel && (
-        <Text style={formStyles.subLabel}>{props.subLabel}</Text>
-      )}
+      {props.subLabel && <HeaderThree text={props.subLabel} />}
       {props.children}
     </View>
   );
@@ -27,8 +26,6 @@ export const formStyles = StyleSheet.create({
     width: '100%',
   },
   sectionLabel: {
-    fontFamily: 'roboto-light-italic',
-    color: Colors.darkPrimary,
     alignSelf: 'center',
   },
   input: {
@@ -47,8 +44,5 @@ export const formStyles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 8,
     marginVertical: 15,
-  },
-  subLabel: {
-    fontFamily: 'roboto-light-italic',
   },
 });

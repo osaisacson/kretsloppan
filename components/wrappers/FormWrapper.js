@@ -1,7 +1,7 @@
 import React from 'react';
 //Components
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
-import ButtonNormal from '../UI/ButtonNormal';
+import { Button } from 'react-native-paper';
 import ScrollViewToTop from './ScrollViewToTop';
 
 const FormWrapper = (props) => {
@@ -13,11 +13,23 @@ const FormWrapper = (props) => {
     >
       <ScrollViewToTop>
         <View style={styles.formWrapper}>{props.children}</View>
-        <ButtonNormal
+
+        <Button
+          mode="contained"
           disabled={props.isLoading}
-          text={props.submitButtonText}
-          actionOnPress={props.handlerForButtonSubmit}
-        />
+          style={{
+            width: '90%',
+            alignSelf: 'center',
+            marginBottom: 140,
+          }}
+          labelStyle={{
+            fontFamily: 'roboto-light',
+            fontSize: 18,
+          }}
+          onPress={props.handlerForButtonSubmit}
+        >
+          {props.submitButtonText}
+        </Button>
       </ScrollViewToTop>
     </KeyboardAvoidingView>
   );

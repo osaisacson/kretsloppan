@@ -18,16 +18,25 @@ const UserAvatar = (props) => {
     (state) => state.products.availableProducts
   );
 
+  const userProducts = useSelector((state) => state.products.userProducts);
+
   const reservedProducts = availableProducts.filter(
     (product) =>
       product.status === 'reserverad' &&
       product.reservedUserId === loggedInUserId
   );
 
-  const reservedProductsNr =
+  const userReservedProductsNr =
     reservedProducts && reservedProducts.length > 0
       ? reservedProducts.length
       : 0;
+
+  const otherProducts = userProducts.filter(
+    (product) => product.status === 'reserverad'
+  );
+
+  const othersReservedProductsNr =
+    otherProducts && otherProducts.length > 0 ? otherProducts.length : 0;
 
   //If we are passing a userId, use this as the current user, else use the currently logged in user
   const currentUser = useSelector((state) =>
@@ -81,7 +90,7 @@ const UserAvatar = (props) => {
               bottom: 20,
             }}
           >
-            {reservedProductsNr}
+            {userReservedProductsNr + othersReservedProductsNr}
           </Badge>
         ) : null}
       </View>

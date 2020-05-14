@@ -10,7 +10,7 @@ import {
 } from '../../components/wrappers/DetailWrapper';
 import ContactDetails from '../../components/UI/ContactDetails';
 import ButtonIcon from '../../components/UI/ButtonIcon';
-import ButtonNormal from '../../components/UI/ButtonNormal';
+import ButtonAction from '../../components/UI/ButtonAction';
 import StatusBadge from '../../components/UI/StatusBadge';
 //Constants
 import Colors from '../../constants/Colors';
@@ -127,11 +127,10 @@ const ProposalDetailScreen = (props) => {
       ) : null}
       {!isResolved && hasEditPermission && (
         <View style={detailStyles.toggles}>
-          <ButtonNormal
-            color={Colors.primary}
+          <ButtonAction
             disabled={isResolved} //disable/enable base on true/false of these params
-            actionOnPress={collectHandler}
-            text={'Avaktivera och markera som löst'}
+            onSelect={collectHandler}
+            title={'Avaktivera och markera som löst'}
           />
         </View>
       )}

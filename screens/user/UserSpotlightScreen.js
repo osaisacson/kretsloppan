@@ -188,7 +188,7 @@ const UserSpotlightScreen = (props) => {
         <HorizontalScroll
           title={'Reserverat av mig'}
           subTitle={
-            'Väntas på att hämtas upp/levereras till dig - öppna kortet för detaljer. Notera att reservationen upphör gälla efter en vecka.'
+            'Återbruk som väntar på att du ska hämta upp det. Notera: din reservation upphör gälla efter en vecka.'
           }
           extraSubTitle={
             'Kontakta den som lagt upp återbruket för att bestämma logistik runt upphämtning'
@@ -201,11 +201,13 @@ const UserSpotlightScreen = (props) => {
       ) : null}
       {reservedByOthers.length ? (
         <HorizontalScroll
-          title={'Reserverat av andra'}
+          title={'Reserverat från mig'}
           subTitle={
-            'Återbruk du lagt upp som blivit reserverat av andra - väntar på att avlämnas. Notera att reservationen upphör gälla efter en vecka.'
+            'Återbruk du lagt upp som blivit reserverat av andra och väntar på att avlämnas. Notera: deras reservation upphör gälla efter en vecka.'
           }
-          extraSubTitle={'Följ upp med den som reserverat för avlämning'}
+          extraSubTitle={
+            'Följ upp med den som reserverat för att komma överens om logistik runt avlämning'
+          }
           bgColor={Colors.mediumPrimary}
           scrollData={reservedByOthers}
           showNotificationBadge={true}

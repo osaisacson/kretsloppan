@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Avatar, Button } from 'react-native-paper';
-import Icon from '@expo/vector-icons/FontAwesome';
+import ButtonAction from '../../components/UI/ButtonAction';
 
 const ImgPicker = (props) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -84,22 +83,8 @@ const ImgPicker = (props) => {
         )}
       </View>
       <View style={styles.centered}>
-        <Button
-          style={styles.button}
-          icon="camera"
-          mode="contained"
-          onPress={takePhoto}
-        >
-          Kamera
-        </Button>
-        <Button
-          style={styles.button}
-          icon="image"
-          mode="contained"
-          onPress={pickImage}
-        >
-          Galleri
-        </Button>
+        <ButtonAction icon="camera" title="Kamera" onSelect={takePhoto} />
+        <ButtonAction icon="image" title="Galleri" onSelect={pickImage} />
       </View>
     </View>
   );
@@ -123,12 +108,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  button: {
-    marginHorizontal: 5,
-  },
   centered: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 });

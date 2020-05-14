@@ -2,9 +2,8 @@ import React from 'react';
 //Components
 import { TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { Button } from 'react-native-paper';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-const ButtonToggle = (props) => {
+const ButtonAction = (props) => {
   let TouchableCmp = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -24,17 +23,16 @@ const ButtonToggle = (props) => {
       }}
     >
       <Button
+        disabled={props.disabled ? props.disabled : false}
         mode="contained"
         compact={props.isLarge ? false : true}
         style={{
-          backgroundColor: '#9c0065',
+          minWidth: 100,
           alignSelf: 'center',
         }}
         labelStyle={{
-          paddingTop: 4,
-          paddingBottom: 2,
-          fontFamily: 'bebas-neue-bold',
-          fontSize: 12,
+          fontFamily: 'roboto-regular',
+          fontSize: 9,
         }}
         onPress={props.onSelect}
         icon={props.icon}
@@ -45,4 +43,4 @@ const ButtonToggle = (props) => {
   );
 };
 
-export default ButtonToggle;
+export default ButtonAction;

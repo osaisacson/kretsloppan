@@ -46,14 +46,7 @@ export const detailStyles = StyleSheet.create({
   },
   centeredHeader: {
     marginTop: 10,
-    fontFamily: 'roboto-light-italic',
-    color: Colors.darkPrimary,
     alignSelf: 'center',
-  },
-  largeCenteredHeader: {
-    textAlign: 'left',
-    fontFamily: 'bebas-neue-bold',
-    fontSize: 22,
   },
   sectionHeader: {
     marginLeft: 5,

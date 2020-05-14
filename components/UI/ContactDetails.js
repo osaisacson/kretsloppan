@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Text } from 'react-native';
 import UserAvatar from './UserAvatar';
-import ButtonToggle from './ButtonToggle';
+import ButtonAction from './ButtonAction';
 import { detailStyles } from '../wrappers/DetailWrapper';
 
 const ContactDetails = (props) => {
@@ -40,7 +40,7 @@ const ContactDetails = (props) => {
   return (
     <>
       {props.isProfile ? (
-        <ButtonToggle
+        <ButtonAction
           large={true}
           icon="phone"
           title={toggleDetails ? 'Dölj kontaktdetaljer' : 'kontaktdetaljer'}
@@ -52,7 +52,7 @@ const ContactDetails = (props) => {
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'left',
-            marginBottom: 5,
+            alignItems: 'center',
             marginRight: 5,
           }}
         >
@@ -67,12 +67,18 @@ const ContactDetails = (props) => {
                 });
               }}
             />
-            <Text style={detailStyles.largeCenteredHeader}>
+            <Text
+              style={{
+                textAlign: 'left',
+                fontFamily: 'roboto-regular',
+                fontSize: 14,
+              }}
+            >
               {selectedProfile.profileName}
             </Text>
           </View>
           {props.hideButton ? null : (
-            <ButtonToggle
+            <ButtonAction
               large={true}
               icon="phone"
               title={
@@ -91,7 +97,7 @@ const ContactDetails = (props) => {
             : {
                 flex: 1,
                 marginRight: 5,
-                marginVertical: 10,
+                marginVertical: 5,
                 alignItems: 'flex-end',
               }
         }
