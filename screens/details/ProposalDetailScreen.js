@@ -87,7 +87,6 @@ const ProposalDetailScreen = (props) => {
       <ContactDetails
         profileId={ownerId}
         proposalId={selectedProposal.id}
-        hideButton={isResolved}
         buttonText={'kontaktdetaljer'}
       />
       <Divider style={{ marginVertical: 10 }} />

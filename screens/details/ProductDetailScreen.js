@@ -188,7 +188,7 @@ const ProductDetailScreen = (props) => {
           <ContactDetails
             profileId={ownerId}
             productId={selectedProduct.id}
-            hideButton={isReserved || isPickedUp}
+            hideButton={isPickedUp}
             buttonText={'hämtningsdetaljer'}
           />
 
