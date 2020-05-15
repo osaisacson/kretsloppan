@@ -38,6 +38,15 @@ const UserProfile = (props) => {
     return new Date(b.date) - new Date(a.date);
   });
 
+  //Reserved: Gets all collected products from user products
+  const reservedUserProductsRaw = userProducts.filter(
+    (product) => product.status === 'reserverad'
+  );
+
+  const reservedUserProducts = reservedUserProductsRaw.sort(function (a, b) {
+    return new Date(b.reservedDate) - new Date(a.reservedDate);
+  });
+
   //COLLECTED: Gets all collected products from all products
   const collectedItemsRawAll = availableProducts.filter(
     (product) => product.status === 'hämtad'
@@ -67,20 +76,11 @@ const UserProfile = (props) => {
   );
 
   //PAUSED: Gets all products which the user has put on hold
-  const pausedUserProductsRaw = userProducts.filter(
-    (product) => product.status === 'bearbetas'
+  const availableUserProductsRaw = userProducts.filter(
+    (product) => product.status === 'redo' || product.status === 'bearbetas'
   );
 
-  const pausedUserProducts = pausedUserProductsRaw.sort(function (a, b) {
-    return new Date(b.pauseDate) - new Date(a.pauseDate);
-  });
-
-  //READY: Gets all ready products where the ownerId matches the id of our currently logged in user
-  const readyUserProductsRaw = userProducts.filter(
-    (product) => product.status === 'redo'
-  );
-
-  const readyUserProducts = readyUserProductsRaw.sort(function (a, b) {
+  const availableUserProducts = availableUserProductsRaw.sort(function (a, b) {
     return new Date(b.readyDate) - new Date(a.readyDate);
   });
 
@@ -145,18 +145,16 @@ const UserProfile = (props) => {
 
       {/* Product, project and proposal sections */}
       <HorizontalScroll
-        title={'Upplagt'}
-        subTitle={'Återbruk upplagt av användaren'}
-        scrollData={readyUserProducts}
+        title={'Tillgängligt förråd'}
+        subTitle={'Återbruk upplagt av användaren som kan reserveras'}
+        scrollData={availableUserProducts}
         navigation={props.navigation}
       />
-      {pausedUserProducts.length ? (
+      {reservedUserProducts.length ? (
         <HorizontalScroll
-          title={'Pausat'}
-          subTitle={
-            'Återbruk som är tillfälligt pausat för bearbetning - kan fortfarande reserveras'
-          }
-          scrollData={pausedUserProducts}
+          title={'Reserverat'}
+          subTitle={'Återbruk upplagt av användaren, reserverat'}
+          scrollData={reservedUserProducts}
           navigation={props.navigation}
         />
       ) : null}
