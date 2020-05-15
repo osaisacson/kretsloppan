@@ -226,11 +226,13 @@ const ProductDetailScreen = (props) => {
           {category || condition || style || material || color ? (
             <>
               <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
-                <FilterLine filter={category} />
-                {condition && <FilterLine filter={`${condition} skick`} />}
-                <FilterLine filter={style} />
-                <FilterLine filter={material} />
-                <FilterLine filter={color} />
+                {category === 'Ingen' ? null : <FilterLine filter={category} />}
+                {condition === 'Inget' ? null : (
+                  <FilterLine filter={`${condition} skick`} />
+                )}
+                {style === 'Ingen' ? null : <FilterLine filter={style} />}
+                {material === 'Inget' ? null : <FilterLine filter={material} />}
+                {color === 'Ingen' ? null : <FilterLine filter={color} />}
               </View>
               <Divider style={{ marginBottom: 10 }} />
             </>

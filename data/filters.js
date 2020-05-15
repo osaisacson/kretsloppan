@@ -8,18 +8,20 @@ export const PART = [
   new Filter('p4', 'Tak', '#d1d1e0'),
   new Filter('p5', 'Bjälklag', '#d1d1e0'),
   new Filter('p6', 'Golv', '#d1d1e0'),
-  new Filter('p7', 'Fönster', '#d1d1e0'),
-  new Filter('p8', 'Innerdörrar', '#d1d1e0'),
-  new Filter('p9', 'Ytterdörrar', '#d1d1e0'),
-  new Filter('p10', 'Kök', '#d1d1e0'),
-  new Filter('p11', 'Badrum', '#d1d1e0'),
-  new Filter('p12', 'Inredning', '#d1d1e0'),
-  new Filter('p13', 'Avlopp', '#d1d1e0'),
-  new Filter('p14', 'El', '#d1d1e0'),
-  new Filter('p15', 'Ventilation', '#d1d1e0'),
-  new Filter('p16', 'Värme', '#d1d1e0'),
-  new Filter('p17', 'Dekoration', '#d1d1e0'),
-  new Filter('p18', 'Annat', '#d1d1e0'),
+  new Filter('p7', 'Mark', '#d1d1e0'),
+  new Filter('p8', 'Fönster', '#d1d1e0'),
+  new Filter('p9', 'Innerdörrar', '#d1d1e0'),
+  new Filter('p10', 'Ytterdörrar', '#d1d1e0'),
+  new Filter('p11', 'Kök', '#d1d1e0'),
+  new Filter('p12', 'Badrum', '#d1d1e0'),
+  new Filter('p13', 'Inredning', '#d1d1e0'),
+  new Filter('p14', 'Avlopp', '#d1d1e0'),
+  new Filter('p15', 'El', '#d1d1e0'),
+  new Filter('p16', 'Ventilation', '#d1d1e0'),
+  new Filter('p17', 'Värme', '#d1d1e0'),
+  new Filter('p18', 'Dekoration', '#d1d1e0'),
+  new Filter('p19', 'Redskap', '#d1d1e0'),
+  new Filter('p20', 'Annat', '#d1d1e0'),
 ];
 
 export const CONDITION = [
@@ -42,6 +44,7 @@ export const MATERIAL = [
   new Filter('m2', 'Trä', '#f0e6ff'),
   new Filter('m3', 'Plast', '#f0e6ff'),
   new Filter('m4', 'Metall', '#f0e6ff'),
+  new Filter('m5', 'Sten', '#f0e6ff'),
 ];
 
 export const COLOR = [

@@ -204,7 +204,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Lägg in ett pris (det kan vara 0)">
         <TextInput
-          placeholder="Pris - Om du lägger upp som företag, ange pris inklusive moms"
+          placeholder="Styckpris - För företag: ange pris inklusive moms"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
