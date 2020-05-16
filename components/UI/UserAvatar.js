@@ -90,6 +90,7 @@ const UserAvatar = (props) => {
               bottom: 20,
             }}
           >
+            {/* NOTE: This is the number that should also be in the push notifications */}
             {userReservedProductsNr + othersReservedProductsNr}
           </Badge>
         ) : null}
