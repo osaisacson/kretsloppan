@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Image } from 'react-native';
-import shorthash from 'shorthash';
-import * as FileSystem from 'expo-file-system';
+import { Image, CacheManager } from "react-native-expo-image-cache";
+import * as ImageManipulator from "expo-image-manipulator";
 
 const CachedImage = (props) => {
   const [source, setSource] = useState(null);
@@ -9,46 +8,26 @@ const CachedImage = (props) => {
 
   const { uri } = props;
 
-  let image;
-  let newImage;
-
-  const checkImage = useCallback(async () => {
-    try {
-      image = await FileSystem.getInfoAsync(path);
-
-      if (image.exists) {
-        console.log('read image from cache');
-        return {
-          uri: image.uri,
-        };
-      } else {
-        console.log('downloading image to cache');
-        try {
-          newImage = await FileSystem.downloadAsync(uri, path);
-          return {
-            uri: newImage.uri,
-          };
-        } catch (err) {
-          console.log('Error in loadImage from CachedImage', err.message);
-        }
-      }
-    } catch (err) {
-      console.log('Error in checkImage from CachedImage', err.message);
-    }
-  }, []);
-
   useEffect(() => {
     let isSubscribed = true;
-    const name = shorthash.unique(uri);
-    path = `${FileSystem.cacheDirectory}${name}.jpg`;
-    checkImage()
-      .then((source) => (isSubscribed ? setSource(source) : null))
+    base64Image()
+      .then((source) => (isSubscribed ? setSource(`data:image/jpeg;base64,${source.base64 || ""}`) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='))
       .catch((error) => (isSubscribed ? setError(error.toString()) : null));
 
     return () => (isSubscribed = false);
   }, []);
 
-  return <Image style={props.style} source={source} />;
+
+  const base64Image = useCallback(async () => {
+    await CacheManager.get(uri).getPath();
+    await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 5, height: 5 } }],
+      { base64: true, format: "jpeg" }
+    );
+  }, []);
+
+  return <Image style={props.style} {...{ preview: source, uri }} />
 };
 
 export default CachedImage;
