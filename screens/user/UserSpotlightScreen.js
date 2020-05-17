@@ -191,12 +191,12 @@ const UserSpotlightScreen = (props) => {
       {/* Product, project and propsal sections */}
       {reservedByUser.length ? (
         <HorizontalScroll
-          title={'Reserverat av mig'}
+          title={'Att hämtas'}
           subTitle={
-            'Återbruk som väntar på att du ska hämta upp det. Notera: din reservation upphör gälla efter en vecka.'
+            'De du reserverat från andra användare. Notera: din reservation upphör gälla efter en vecka.'
           }
           extraSubTitle={
-            'Kontakta den som lagt upp återbruket för att bestämma logistik runt upphämtning'
+            'Nästa steg: kontakta uppläggaren för att ordna logistik runt upphämtning'
           }
           bgColor={Colors.lightPrimary}
           scrollData={reservedByUser}
@@ -206,12 +206,12 @@ const UserSpotlightScreen = (props) => {
       ) : null}
       {reservedByOthers.length ? (
         <HorizontalScroll
-          title={'Reserverat från mig'}
+          title={'Att lämnas'}
           subTitle={
-            'Återbruk du lagt upp som blivit reserverat av andra och väntar på att avlämnas. Notera: deras reservation upphör gälla efter en vecka.'
+            'Återbruk du lagt upp som blivit reserverat av andra användare. Notera: deras reservation upphör gälla efter en vecka.'
           }
           extraSubTitle={
-            'Följ upp med den som reserverat för att komma överens om logistik runt avlämning'
+            'Nästa steg: kontakta intressenten för att ordna logistik runt avlämning'
           }
           bgColor={Colors.mediumPrimary}
           scrollData={reservedByOthers}

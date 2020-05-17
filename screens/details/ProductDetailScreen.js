@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Text, Alert } from 'react-native';
-import { Divider, Card, Title, Paragraph } from 'react-native-paper';
+import { View, Alert } from 'react-native';
+import { Divider, Title, Paragraph } from 'react-native-paper';
 
 import {
   DetailWrapper,
@@ -142,7 +142,7 @@ const ProductDetailScreen = (props) => {
 
     Alert.alert(
       'Kom ihåg',
-      'Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
+      'Denna reservation gäller i EN VECKA. Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
       [
         { text: 'Avbryt', style: 'default' },
         {

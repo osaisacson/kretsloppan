@@ -51,11 +51,15 @@ const EditProjectScreen = (props) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: editedProject ? editedProject.title : '',
+      location: editedProject ? editedProject.location : '',
+      description: editedProject ? editedProject.description : '',
       image: editedProject ? editedProject.image : '',
       slogan: editedProject ? editedProject.slogan : '',
     },
     inputValidities: {
       title: editedProject ? true : false,
+      location: editedProject ? true : false,
+      description: true,
       image: editedProject ? true : false,
       slogan: editedProject ? true : false,
     },
@@ -83,6 +87,8 @@ const EditProjectScreen = (props) => {
           projectsActions.updateProject(
             projId,
             formState.inputValues.title,
+            formState.inputValues.location,
+            formState.inputValues.description,
             formState.inputValues.slogan,
             formState.inputValues.image
           )
@@ -91,6 +97,8 @@ const EditProjectScreen = (props) => {
         await dispatch(
           projectsActions.createProject(
             formState.inputValues.title,
+            formState.inputValues.location,
+            formState.inputValues.description,
             formState.inputValues.slogan,
             formState.inputValues.image
           )
@@ -157,6 +165,24 @@ const EditProjectScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.slogan}
           onChangeText={textChangeHandler.bind(this, 'slogan')}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Beskrivning av projektet (valfritt)">
+        <TextInput
+          placeholder="Beskrivning"
+          style={formStyles.input}
+          value={formState.inputValues.description}
+          onChangeText={textChangeHandler.bind(this, 'description')}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Vart ligger projektet?">
+        <TextInput
+          placeholder="Plats"
+          style={formStyles.input}
+          value={formState.inputValues.location}
+          onChangeText={textChangeHandler.bind(this, 'location')}
           returnKeyType="done"
         />
       </FormFieldWrapper>

@@ -3,12 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
+import { Paragraph } from 'react-native-paper';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
+import SectionCard from '../../components/UI/SectionCard';
 import SaferArea from '../../components/UI/SaferArea';
 import UsedItem from '../../components/UI/UsedItem';
 //Constants
@@ -39,8 +41,8 @@ const ProjectDetailScreen = (props) => {
 
   const hasEditPermission = ownerId === loggedInUserId;
 
-  const editProjectHandler = (id) => {
-    navigation.navigate('EditProject', { detailId: id });
+  const editProjectHandler = (projectId) => {
+    navigation.navigate('EditProject', { detailId: projectId });
   };
 
   const selectItemHandler = (id, ownerId, title) => {
@@ -75,38 +77,51 @@ const ProjectDetailScreen = (props) => {
 
   const projectHeader = selectedProject ? (
     <View>
-      <ContactDetails
-        hideButton={hasEditPermission}
-        profileId={ownerId}
-        projectId={selectedProject.id}
-        buttonText={'kontaktdetaljer'}
-      />
-      <CachedImage
-        style={styles.image}
-        uri={selectedProject.image ? selectedProject.image : ''}
-      />
+      <SectionCard>
+        <Text style={styles.title}>{selectedProject.title}</Text>
+        {selectedProject.location ? (
+          <Text style={styles.subTitle}>{selectedProject.location}</Text>
+        ) : null}
+        <CachedImage
+          style={styles.image}
+          uri={selectedProject.image ? selectedProject.image : ''}
+        />
 
-      {/* Buttons to show if the user has edit permissions */}
-      {hasEditPermission ? (
-        <View style={styles.actions}>
-          {/* Delete button */}
-          <ButtonIcon
-            icon="delete"
-            color={Colors.warning}
-            onSelect={() => {
-              deleteHandler(selectedProject.id);
-            }}
-          />
-          <ButtonIcon
-            icon="pen"
-            color={Colors.neutral}
-            onSelect={() => {
-              editProjectHandler(selectedProject.id);
-            }}
-          />
-        </View>
+        {/* Buttons to show if the user has edit permissions */}
+        {hasEditPermission ? (
+          <View style={styles.actions}>
+            {/* Delete button */}
+            <ButtonIcon
+              icon="delete"
+              color={Colors.warning}
+              onSelect={() => {
+                deleteHandler(selectedProject.id);
+              }}
+            />
+            <ButtonIcon
+              icon="pen"
+              color={Colors.neutral}
+              onSelect={() => {
+                editProjectHandler(selectedProject.id);
+              }}
+            />
+          </View>
+        ) : null}
+        <Text style={styles.slogan}>{selectedProject.slogan}</Text>
+      </SectionCard>
+      {selectedProject.description ? (
+        <SectionCard>
+          <Paragraph>{selectedProject.description}</Paragraph>
+        </SectionCard>
       ) : null}
-      <Text style={styles.description}>{selectedProject.slogan}</Text>
+      <SectionCard>
+        <ContactDetails
+          hideButton={hasEditPermission}
+          profileId={ownerId}
+          projectId={selectedProject.id}
+          buttonText={'kontaktdetaljer'}
+        />
+      </SectionCard>
       {associatedProducts.length ? (
         <View style={{ marginVertical: 10 }}>
           {/* Information about the project */}
@@ -159,7 +174,7 @@ const ProjectDetailScreen = (props) => {
 //Sets/overrides the default navigation options in the ShopNavigator
 export const screenOptions = (navData) => {
   return {
-    headerTitle: navData.route.params.detailTitle,
+    headerTitle: '',
   };
 };
 
@@ -176,22 +191,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
   },
-  toggles: {
-    flex: 1,
-    marginBottom: 10,
-    alignItems: 'center',
+  title: {
+    fontFamily: 'bebas-neue-book',
+    fontSize: 26,
+    textAlign: 'center',
+    paddingVertical: 8,
   },
-  price: {
-    fontFamily: 'roboto-regular',
-    fontSize: 20,
-    textAlign: 'right',
-    marginHorizontal: 20,
-  },
-  description: {
+  subTitle: {
     fontFamily: 'roboto-light-italic',
     fontSize: 14,
     textAlign: 'center',
-    marginHorizontal: 20,
+    paddingBottom: 10,
+  },
+  slogan: {
+    fontFamily: 'roboto-light-italic',
+    fontSize: 14,
+    textAlign: 'center',
+    paddingVertical: 10,
   },
 });
 

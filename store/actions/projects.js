@@ -26,6 +26,8 @@ export function fetchProjects() {
             key,
             resData[key].ownerId,
             resData[key].title,
+            resData[key].location,
+            resData[key].description,
             resData[key].image,
             resData[key].slogan,
             resData[key].date,
@@ -70,7 +72,14 @@ export const deleteProject = (projectId) => {
   };
 };
 
-export function createProject(title, slogan, image, status) {
+export function createProject(
+  title,
+  location,
+  description,
+  slogan,
+  image,
+  status
+) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -83,6 +92,8 @@ export function createProject(title, slogan, image, status) {
       const convertedImage = await dispatch(convertImage(image));
       const projectData = {
         title,
+        location,
+        description,
         slogan,
         image: convertedImage.image, //This is how we link to the image we store above
         ownerId: userId,
@@ -107,6 +118,8 @@ export function createProject(title, slogan, image, status) {
         projectData: {
           id: returnedProjectData.name,
           title,
+          location,
+          description,
           slogan,
           image: convertedImage.image,
           ownerId: userId,
@@ -126,7 +139,7 @@ export function createProject(title, slogan, image, status) {
   };
 }
 
-export function updateProject(id, title, slogan, image) {
+export function updateProject(id, title, location, description, slogan, image) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
@@ -135,6 +148,8 @@ export function updateProject(id, title, slogan, image) {
 
       let dataToUpdate = {
         title,
+        location,
+        description,
         slogan,
         image,
       };
@@ -144,6 +159,8 @@ export function updateProject(id, title, slogan, image) {
         const convertedImage = await dispatch(convertImage(image));
         dataToUpdate = {
           title,
+          location,
+          description,
           slogan,
           image: convertedImage.image, //This is how we link to the image we store above
         };
