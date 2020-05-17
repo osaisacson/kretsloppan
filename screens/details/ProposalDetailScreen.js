@@ -12,6 +12,8 @@ import ContactDetails from '../../components/UI/ContactDetails';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonAction from '../../components/UI/ButtonAction';
 import StatusBadge from '../../components/UI/StatusBadge';
+import SectionCard from '../../components/UI/SectionCard';
+
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -32,16 +34,17 @@ const ProposalDetailScreen = (props) => {
     )
   );
 
-  const ownerId = selectedProposal.ownerId;
+  const ownerId = selectedProposal ? selectedProposal.ownerId : null;
   const hasEditPermission = ownerId === loggedInUserId;
-  const isResolved = selectedProposal.status === 'löst';
+  const isResolved = selectedProposal
+    ? selectedProposal.status === 'löst'
+    : null;
 
-  const editProposalHandler = (id) => {
-    navigation.navigate('EditProposal', { detailId: id });
+  const editProposalHandler = (proposalId) => {
+    navigation.navigate('EditProposal', { detailId: proposalId });
   };
 
-  const deleteHandler = () => {
-    const id = selectedProposal.id;
+  const deleteHandler = (proposalId) => {
     Alert.alert(
       'Är du säker?',
       'Vill du verkligen radera den här eftelrysningen? Det går inte att gå ändra sig när det väl är gjort.',
@@ -51,16 +54,15 @@ const ProposalDetailScreen = (props) => {
           text: 'Ja, radera',
           style: 'destructive',
           onPress: () => {
-            dispatch(proposalsActions.deleteProposal(id));
+            dispatch(proposalsActions.deleteProposal(proposalId));
+            navigation.goBack();
           },
         },
       ]
     );
-    navigation.goBack();
   };
 
-  const collectHandler = () => {
-    const id = selectedProposal.id;
+  const collectHandler = (proposalId) => {
     Alert.alert(
       'Är efterlysningen löst?',
       'Genom att klicka här bekräftar du att efterlysningen är avklarad.',
@@ -70,75 +72,90 @@ const ProposalDetailScreen = (props) => {
           text: 'Ja, flytta den',
           style: 'destructive',
           onPress: () => {
-            dispatch(proposalsActions.changeProposalStatus(id, 'löst'));
+            dispatch(proposalsActions.changeProposalStatus(proposalId, 'löst'));
           },
         },
       ]
     );
   };
 
-  return (
+  return selectedProposal ? (
     <DetailWrapper>
-      {/* Show contact info only if the user is not the creator */}
-      <ContactDetails
-        profileId={ownerId}
-        proposalId={selectedProposal.id}
-        buttonText={'kontaktdetaljer'}
-      />
-      <Divider style={{ marginVertical: 10 }} />
-
-      <View style={detailStyles.textCard}>
-        <Text style={detailStyles.proposalText}>{selectedProposal.title}</Text>
-      </View>
-      <View style={detailStyles.textCard}>
-        <Text style={detailStyles.boundaryText}>
-          {selectedProposal.description}
-        </Text>
-      </View>
-      <Divider style={{ marginTop: 40 }} />
-      <Text style={detailStyles.price}>
-        {selectedProposal.price
-          ? `Ersättning: ${selectedProposal.price} kr`
-          : ''}
-      </Text>
-      {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
-      {hasEditPermission && !isResolved ? (
-        <View style={detailStyles.spaceBetweenRow}>
-          {/* Delete button */}
-          <ButtonIcon
-            icon="delete"
-            color={Colors.warning}
-            onSelect={deleteHandler.bind(this)}
-          />
-
-          <ButtonIcon
-            icon="pen"
-            color={Colors.neutral}
-            onSelect={() => {
-              editProposalHandler(selectedProposal.id);
-            }}
-          />
-        </View>
-      ) : null}
-      {!isResolved && hasEditPermission && (
-        <View style={detailStyles.toggles}>
-          <ButtonAction
-            disabled={isResolved} //disable/enable base on true/false of these params
-            onSelect={collectHandler}
-            title={'Avaktivera och markera som löst'}
-          />
-        </View>
-      )}
-      {isResolved && (
-        <StatusBadge
-          text={'Löst!'}
-          width={70}
-          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-          backgroundColor={Colors.completed}
+      <SectionCard>
+        {/* Show contact info only if the user is not the creator */}
+        <ContactDetails
+          profileId={ownerId}
+          proposalId={selectedProposal.id}
+          buttonText={'kontaktdetaljer'}
         />
-      )}
+        <Divider style={{ marginVertical: 10 }} />
+
+        <View style={detailStyles.textCard}>
+          <Text style={detailStyles.proposalText}>
+            {selectedProposal.title}
+          </Text>
+        </View>
+        <View style={detailStyles.textCard}>
+          <Text style={detailStyles.boundaryText}>
+            {selectedProposal.description}
+          </Text>
+        </View>
+        {selectedProposal.price ? (
+          <>
+            <Divider style={{ marginTop: 40 }} />
+            <Text style={detailStyles.price}>
+              {`Ersättning: ${selectedProposal.price} kr`}
+            </Text>
+          </>
+        ) : null}
+        {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
+        {hasEditPermission ? (
+          <>
+            <Divider style={{ marginTop: 40 }} />
+            <View style={detailStyles.spaceBetweenRow}>
+              {/* Delete button */}
+              <ButtonIcon
+                icon="delete"
+                color={Colors.warning}
+                onSelect={() => {
+                  deleteHandler(selectedProposal.id);
+                }}
+              />
+
+              <ButtonIcon
+                icon="pen"
+                color={Colors.neutral}
+                onSelect={() => {
+                  editProposalHandler(selectedProposal.id);
+                }}
+              />
+            </View>
+          </>
+        ) : null}
+      </SectionCard>
+      <SectionCard>
+        {!isResolved && hasEditPermission && (
+          <View style={detailStyles.toggles}>
+            <ButtonAction
+              disabled={isResolved} //disable/enable base on true/false of these params
+              onSelect={() => {
+                collectHandler(selectedProposal.id);
+              }}
+              title={'Avaktivera och markera som löst'}
+            />
+          </View>
+        )}
+        {isResolved && (
+          <StatusBadge
+            text={'Löst!'}
+            width={70}
+            icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+            backgroundColor={Colors.completed}
+          />
+        )}
+      </SectionCard>
     </DetailWrapper>
-  );
+  ) : null;
 };
 
 //Sets/overrides the default navigation options in the ShopNavigator

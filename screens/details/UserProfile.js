@@ -146,7 +146,7 @@ const UserProfile = (props) => {
       {/* Product, project and proposal sections */}
       <HorizontalScroll
         title={'Tillgängligt förråd'}
-        subTitle={'Återbruk upplagt av användaren som kan reserveras'}
+        subTitle={'Återbruk upplagt av användaren'}
         scrollData={availableUserProducts}
         navigation={props.navigation}
       />
