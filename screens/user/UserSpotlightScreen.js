@@ -95,7 +95,13 @@ const UserSpotlightScreen = (props) => {
   ).filter((proj) => proj.ownerId === loggedInUserId);
 
   //Get user proposals
-  const userProposals = useSelector((state) => state.proposals.userProposals);
+  const userProposalsRaw = useSelector(
+    (state) => state.proposals.userProposals
+  );
+
+  const userProposals = userProposalsRaw.sort(function (a, b) {
+    return new Date(b.date) - new Date(a.date);
+  });
 
   //Sets indicator numbers
   const added = userProducts.length;
