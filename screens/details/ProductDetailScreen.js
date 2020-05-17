@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Alert } from 'react-native';
+import { View, Alert, StyleSheet } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 
 import {
@@ -221,6 +221,24 @@ const ProductDetailScreen = (props) => {
 
           <Title>{selectedProduct.title}</Title>
           <Paragraph>{selectedProduct.description}</Paragraph>
+          {selectedProduct.length ? (
+            <View style={detailStyles.spaceBetweenRow}>
+              <Paragraph>LÄNGD:</Paragraph>
+              <Paragraph>{selectedProduct.length}</Paragraph>
+            </View>
+          ) : null}
+          {selectedProduct.height ? (
+            <View style={detailStyles.spaceBetweenRow}>
+              <Paragraph>HÖJD:</Paragraph>
+              <Paragraph>{selectedProduct.height}</Paragraph>
+            </View>
+          ) : null}
+          {selectedProduct.width ? (
+            <View style={detailStyles.spaceBetweenRow}>
+              <Paragraph>BREDD:</Paragraph>
+              <Paragraph>{selectedProduct.width}</Paragraph>
+            </View>
+          ) : null}
           <Divider style={{ marginTop: 10 }} />
           {/* Only show filter badges if we have any filters */}
           {category || condition || style || material || color ? (

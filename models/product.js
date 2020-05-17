@@ -16,6 +16,9 @@ class Product {
     address,
     phone,
     description,
+    length,
+    height,
+    width,
     price,
     date,
     status,
@@ -40,6 +43,9 @@ class Product {
     this.address = address;
     this.phone = phone;
     this.description = description;
+    this.length = length;
+    this.height = height;
+    this.width = width;
     this.price = price;
     this.date = date;
     this.status = status;

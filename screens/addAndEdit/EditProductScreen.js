@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ImagePicker from '../../components/UI/ImgPicker';
 
 //Components
-import { Alert, TextInput } from 'react-native';
+import { Alert, TextInput, View } from 'react-native';
 import FormWrapper from '../../components/wrappers/FormWrapper';
 import {
   FormFieldWrapper,
@@ -71,6 +71,9 @@ const EditProductScreen = (props) => {
     inputValues: {
       title: editedProduct ? editedProduct.title : '',
       description: editedProduct ? editedProduct.description : '',
+      length: editedProduct ? editedProduct.length : '',
+      height: editedProduct ? editedProduct.height : '',
+      width: editedProduct ? editedProduct.width : '',
       price: editedProduct ? editedProduct.price : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
@@ -84,6 +87,9 @@ const EditProductScreen = (props) => {
     inputValidities: {
       title: editedProduct ? true : false,
       description: editedProduct ? true : false,
+      length: true,
+      height: true,
+      width: true,
       price: editedProduct ? true : false,
       address: true,
       phone: true,
@@ -129,6 +135,9 @@ const EditProductScreen = (props) => {
             formState.inputValues.address,
             +formState.inputValues.phone,
             formState.inputValues.description,
+            formState.inputValues.length,
+            formState.inputValues.height,
+            formState.inputValues.width,
             +formState.inputValues.price
           )
         );
@@ -145,6 +154,9 @@ const EditProductScreen = (props) => {
             formState.inputValues.address,
             +formState.inputValues.phone,
             formState.inputValues.description,
+            formState.inputValues.length,
+            formState.inputValues.height,
+            formState.inputValues.width,
             +formState.inputValues.price
           )
         );
@@ -222,6 +234,37 @@ const EditProductScreen = (props) => {
           onChangeText={textChangeHandler.bind(this, 'description')}
           returnKeyType="next"
         />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in en kort beskrivning">
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <TextInput
+            placeholder="Längd"
+            style={formStyles.input}
+            value={formState.inputValues.length}
+            onChangeText={textChangeHandler.bind(this, 'length')}
+            returnKeyType="next"
+          />
+          <TextInput
+            placeholder="Höjd"
+            style={formStyles.input}
+            value={formState.inputValues.height}
+            onChangeText={textChangeHandler.bind(this, 'height')}
+            returnKeyType="next"
+          />
+          <TextInput
+            placeholder="Bredd"
+            style={formStyles.input}
+            value={formState.inputValues.width}
+            onChangeText={textChangeHandler.bind(this, 'width')}
+            returnKeyType="next"
+          />
+        </View>
       </FormFieldWrapper>
       <FormFieldWrapper
         label="Upphämtningsdetaljer"

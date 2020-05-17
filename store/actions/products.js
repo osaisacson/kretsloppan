@@ -128,6 +128,9 @@ export function fetchProducts() {
               updatedResult.address,
               updatedResult.phone,
               updatedResult.description,
+              updatedResult.length,
+              updatedResult.height,
+              updatedResult.width,
               updatedResult.price,
               updatedResult.date,
               updatedResult.status,
@@ -158,6 +161,9 @@ export function fetchProducts() {
             resData[key].address,
             resData[key].phone,
             resData[key].description,
+            resData[key].length,
+            resData[key].height,
+            resData[key].width,
             resData[key].price,
             resData[key].date,
             resData[key].status,
@@ -217,6 +223,9 @@ export function createProduct(
   address,
   phone,
   description,
+  length,
+  height,
+  width,
   price
 ) {
   return async (dispatch, getState) => {
@@ -245,6 +254,9 @@ export function createProduct(
         address,
         phone,
         description,
+        length,
+        height,
+        width,
         price,
         date: currentDate,
         status: 'redo',
@@ -285,6 +297,9 @@ export function createProduct(
           address,
           phone,
           description,
+          length,
+          height,
+          width,
           price,
           date: currentDate,
           status: 'redo',
@@ -318,6 +333,9 @@ export function updateProduct(
   address,
   phone,
   description,
+  length,
+  height,
+  width,
   price
 ) {
   return async (dispatch, getState) => {
@@ -335,6 +353,9 @@ export function updateProduct(
       address,
       phone,
       description,
+      length,
+      height,
+      width,
       price,
     };
 
@@ -358,6 +379,9 @@ export function updateProduct(
           address,
           phone,
           description,
+          length,
+          height,
+          width,
           price,
         };
       }
