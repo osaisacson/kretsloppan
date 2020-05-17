@@ -11,7 +11,7 @@ const Introduction = (props) => {
       visible={visibleBanner}
       actions={[
         {
-          label: 'Stäng introduktionen',
+          label: 'Stäng',
           onPress: () => setVisibleBanner(false),
         },
       ]}

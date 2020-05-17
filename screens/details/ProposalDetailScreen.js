@@ -33,11 +33,7 @@ const ProposalDetailScreen = (props) => {
   );
 
   const ownerId = selectedProposal.ownerId;
-
-  //Check if the currently logged in user is the one who created the proposal, and thereby should have editing privileges
   const hasEditPermission = ownerId === loggedInUserId;
-
-  //Check if the proposal is resolved yet
   const isResolved = selectedProposal.status === 'löst';
 
   const editProposalHandler = (id) => {

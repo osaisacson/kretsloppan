@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
-import CachedImage from '../../components/UI/CachedImage';
-import SaferArea from '../../components/UI/SaferArea';
-import ContactDetails from '../../components/UI/ContactDetails';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import UsedItem from '../../components/UI/UsedItem';
 import ButtonIcon from '../../components/UI/ButtonIcon';
+import CachedImage from '../../components/UI/CachedImage';
+import ContactDetails from '../../components/UI/ContactDetails';
+import EmptyState from '../../components/UI/EmptyState';
+import HeaderTwo from '../../components/UI/HeaderTwo';
+import Loader from '../../components/UI/Loader';
+import SaferArea from '../../components/UI/SaferArea';
+import UsedItem from '../../components/UI/UsedItem';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectDetailScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const projectId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
@@ -47,8 +51,7 @@ const ProjectDetailScreen = (props) => {
     });
   };
 
-  const deleteHandler = () => {
-    const id = selectedProject.id;
+  const deleteHandler = (projectId) => {
     Alert.alert(
       'Är du säker?',
       'Vill du verkligen radera den här projektet? Det går inte att gå ändra sig sen.',
@@ -58,14 +61,19 @@ const ProjectDetailScreen = (props) => {
           text: 'Ja, radera',
           style: 'destructive',
           onPress: () => {
-            dispatch(projectsActions.deleteProject(id));
+            dispatch(projectsActions.deleteProject(projectId));
+            navigation.goBack();
           },
         },
       ]
     );
   };
 
-  const projectHeader = (
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const projectHeader = selectedProject ? (
     <View>
       <ContactDetails
         hideButton={hasEditPermission}
@@ -85,7 +93,9 @@ const ProjectDetailScreen = (props) => {
           <ButtonIcon
             icon="delete"
             color={Colors.warning}
-            onSelect={deleteHandler.bind(this)}
+            onSelect={() => {
+              deleteHandler(selectedProject.id);
+            }}
           />
           <ButtonIcon
             icon="pen"
@@ -97,17 +107,24 @@ const ProjectDetailScreen = (props) => {
         </View>
       ) : null}
       <Text style={styles.description}>{selectedProject.slogan}</Text>
-
-      <View style={{ marginVertical: 10 }}>
-        {/* Information about the project */}
-        <HeaderTwo
-          title={'Återbruk'}
-          subTitle={'Återbruk som används i projektet'}
-          indicator={associatedProducts.length ? associatedProducts.length : 0}
-        />
-      </View>
+      {associatedProducts.length ? (
+        <View style={{ marginVertical: 10 }}>
+          {/* Information about the project */}
+          <HeaderTwo
+            title={'Återbruk'}
+            subTitle={'Återbruk som används i projektet'}
+            indicator={
+              associatedProducts.length ? associatedProducts.length : 0
+            }
+          />
+        </View>
+      ) : (
+        <EmptyState style={{ marginVertical: 30 }}>
+          Inget återbruk i projektet ännu
+        </EmptyState>
+      )}
     </View>
-  );
+  ) : null;
 
   return (
     <SaferArea>
@@ -124,7 +141,7 @@ const ProjectDetailScreen = (props) => {
             isHorizontal={true}
             image={itemData.item.image}
             title={itemData.item.title}
-            status={itemData.item.status ? itemData.item.status : 'redo'}
+            status={itemData.item.status}
             onSelect={() => {
               selectItemHandler(
                 itemData.item.id,
