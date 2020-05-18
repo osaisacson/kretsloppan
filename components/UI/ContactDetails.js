@@ -129,7 +129,7 @@ const ContactDetails = (props) => {
                 </Text>
               </View>
             ) : null}
-            {/* TBD: In-app messaging. Button for passing an object 
+            {/* TBD: In-app messaging - Button for passing an object 
             reference to the in-app messaging screen */}
             <ButtonAction
               large={true}
