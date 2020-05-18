@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Alert, Text } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
-import Moment from 'moment';
+import Moment from 'moment/min/moment-with-locales';
 
 import {
   DetailWrapper,
@@ -184,8 +184,9 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        <Text style={{ color: '#666' }}>
-          Upplagt {Moment(selectedProduct.date).format('DD-MM-YYYY')}
+        <Text style={{ textAlign: 'right', color: '#666' }}>
+          Upplagt{' '}
+          {Moment(selectedProduct.date).locale('sv').startOf('hour').fromNow()}
         </Text>
         <SectionCard>
           {/* Info about who created the product post */}
