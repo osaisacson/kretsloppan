@@ -4,7 +4,7 @@ import React from 'react';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/UI/HeaderButton';
 import { Platform } from 'react-native';
-
+import ButtonIcon from '../components/UI/ButtonIcon';
 import UserAvatar from '../components/UI/UserAvatar';
 
 //Constants
@@ -70,6 +70,16 @@ export const mainPageOptionsNoUser = () => {
   return {
     headerTitle: '',
     headerRight: '',
+    // headerRight: () => (
+    //   <ButtonIcon
+    //     badge={2} //TBD: In-app messaging - should show nr of unanswered messages
+    //     style={{ marginRight: 30, marginTop: 5 }}
+    //     icon="email"
+    //     color={Colors.primary}
+    //     borderColor={Colors.primary}
+    //     size={24}
+    //   />
+    // ),
   };
 };
 
