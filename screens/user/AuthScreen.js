@@ -24,6 +24,7 @@ import * as Permissions from 'expo-permissions';
 
 //Actions
 import * as authActions from '../../store/actions/auth';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -219,30 +220,23 @@ const AuthScreen = (props) => {
                           <Icon name="camera" size={24} color="#666" />
                         </Button>
                       ) : (
-                        <Button
-                          mode="contained"
-                          onPress={takeImageHandler}
-                          style={{
-                            backgroundColor: 'transparent',
-                            borderRadius: 100 / 2,
-                          }}
-                        >
-                          <Avatar.Image
-                            style={{
-                              padding: 0,
-                              margin: 0,
-                              color: '#fff',
-                              backgroundColor: '#fff',
-                            }}
-                            source={
-                              placeholderPic
-                                ? { uri: placeholderPic }
-                                : require('./../../assets/avatar-placeholder-image.png')
-                            }
-                            size={80}
-                          />
-                        </Button>
-                      )}
+                          <TouchableOpacity onPress={takeImageHandler}>
+                            <Avatar.Image
+                              style={{
+                                padding: 0,
+                                margin: 0,
+                                color: '#fff',
+                                backgroundColor: '#fff',
+                              }}
+                              source={
+                                placeholderPic
+                                  ? { uri: placeholderPic }
+                                  : require('./../../assets/avatar-placeholder-image.png')
+                              }
+                              size={80}
+                            />
+                          </TouchableOpacity>
+                        )}
                     </View>
                   </View>
                   <Input
@@ -305,24 +299,24 @@ const AuthScreen = (props) => {
                 {isLoading ? (
                   <ActivityIndicator size="small" color={Colors.primary} />
                 ) : (
-                  <Button
-                    color={'#000'}
-                    mode="outlined"
-                    contentStyle={{
-                      justifyContent: 'center',
-                      borderWidth: 0.25,
-                    }}
-                    labelStyle={{
-                      paddingTop: 13,
-                      paddingBottom: 9,
-                      fontFamily: 'bebas-neue-bold',
-                      fontSize: 28,
-                    }}
-                    onPress={authHandler}
-                  >
-                    {isSignup ? 'Gå med' : 'Logga in'}
-                  </Button>
-                )}
+                    <Button
+                      color={'#000'}
+                      mode="outlined"
+                      contentStyle={{
+                        justifyContent: 'center',
+                        borderWidth: 0.25,
+                      }}
+                      labelStyle={{
+                        paddingTop: 13,
+                        paddingBottom: 9,
+                        fontFamily: 'bebas-neue-bold',
+                        fontSize: 28,
+                      }}
+                      onPress={authHandler}
+                    >
+                      {isSignup ? 'Gå med' : 'Logga in'}
+                    </Button>
+                  )}
               </View>
               <View style={styles.buttonContainer}>
                 <Button
