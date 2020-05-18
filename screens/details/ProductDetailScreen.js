@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Alert } from 'react-native';
+import { View, Alert, Text } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
+import Moment from 'moment';
 
 import {
   DetailWrapper,
@@ -183,6 +184,9 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
+        <Text style={{ color: '#666' }}>
+          Upplagt {Moment(selectedProduct.date).format('DD-MM-YYYY')}
+        </Text>
         <SectionCard>
           {/* Info about who created the product post */}
           <ContactDetails
