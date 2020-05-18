@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Alert, StyleSheet } from 'react-native';
+import { View, Alert } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 
 import {
@@ -294,57 +294,78 @@ const ProductDetailScreen = (props) => {
           ) : null}
         </SectionCard>
 
-        <SectionCard>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              marginVertical: 10,
-            }}
-          >
-            {/* Show pause button if the user is the owner and if the product is not reserved */}
-            {hasEditPermission && !isReserved && !isPickedUp ? (
-              <ButtonAction
-                style={{ marginRight: 10 }}
-                isToggled={isToggled}
-                icon={isReady ? 'pause' : null}
-                title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
-                onSelect={toggleIsReadyHandle.bind(this)}
-              />
-            ) : null}
-
-            {/* Show the option to reserve a product if the product is
+        {!isPickedUp && !isReserved ? (
+          <SectionCard>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                marginVertical: 10,
+              }}
+            >
+              {/* Show the option to reserve a product if the product is
         neither picked up, reserved or paused. */}
-            {!isPickedUp && !isReserved && !isPaused ? (
-              <ButtonAction
-                disabled={isReserved}
-                onSelect={toggleReserveButton}
-                title={'reservera'}
-              />
-            ) : null}
+              {!isPaused ? (
+                <ButtonAction
+                  disabled={isReserved}
+                  onSelect={toggleReserveButton}
+                  title={'reservera'}
+                />
+              ) : null}
 
-            {/* Show the option to unreserve a product if the product 
+              {/* Show these buttons for the user who created the item */}
+              {hasEditPermission ? (
+                <>
+                  {/* Pause */}
+                  {!isReserved ? (
+                    <ButtonAction
+                      style={{ marginRight: 10 }}
+                      isToggled={isToggled}
+                      icon={isReady ? 'pause' : null}
+                      title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
+                      onSelect={toggleIsReadyHandle.bind(this)}
+                    />
+                  ) : null}
+                </>
+              ) : null}
+            </View>
+          </SectionCard>
+        ) : null}
+
+        {isReserved && (isReservedUser || hasEditPermission) ? (
+          <SectionCard>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                marginVertical: 10,
+              }}
+            >
+              {/* Change status to collected */}
+              {hasEditPermission ? (
+                <ButtonAction
+                  disabled={isPickedUp}
+                  title="byt till hämtad"
+                  onSelect={collectHandler.bind(this)}
+                />
+              ) : null}
+
+              {/* Show the option to unreserve a product if the product 
         is reserved and the user is the one who reserved it. */}
-            {isReserved && isReservedUser ? (
-              <ButtonAction
-                disabled={isPickedUp}
-                onSelect={unReserveHandler}
-                title={'avreservera'}
-              />
-            ) : null}
-
-            {/* Show button to change status to collected if the user is the owner and if the product is reserved */}
-            {hasEditPermission && isReserved ? (
-              <ButtonAction
-                disabled={isPickedUp}
-                title="byt till hämtad"
-                onSelect={collectHandler.bind(this)}
-              />
-            ) : null}
-          </View>
-        </SectionCard>
+              {isReservedUser ? (
+                <ButtonAction
+                  disabled={isPickedUp}
+                  onSelect={unReserveHandler}
+                  title={'avreservera'}
+                />
+              ) : null}
+            </View>
+          </SectionCard>
+        ) : null}
 
         {/* Show pause badge if product is paused */}
         {isPaused ? (
