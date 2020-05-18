@@ -200,7 +200,7 @@ const AuthScreen = (props) => {
                     <View style={styles.imagePreview}>
                       {!placeholderPic ? (
                         <Button
-                          mode="contained"
+                          mode="outlined"
                           onPress={takeImageHandler}
                           style={{
                             backgroundColor: 'transparent',
