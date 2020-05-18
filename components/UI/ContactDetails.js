@@ -131,12 +131,12 @@ const ContactDetails = (props) => {
             ) : null}
             {/* TBD: In-app messaging - Button for passing an object 
             reference to the in-app messaging screen */}
-            <ButtonAction
+            {/* <ButtonAction
               large={true}
               icon="email"
               title={'Skicka meddelande'} //Send message
               onSelect={() => {}} //Should open the in-app messaging view, forwarding a title to what the message is about: {`Angående: ${objectForDetails.title}`}. Title should in the message link to the post it refers to.
-            />
+            /> */}
           </>
         ) : null}
       </View>

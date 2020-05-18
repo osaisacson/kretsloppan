@@ -69,16 +69,17 @@ export const mainPageOptionsWithUser = (navData) => {
 export const mainPageOptionsNoUser = () => {
   return {
     headerTitle: '',
-    headerRight: () => (
-      <ButtonIcon
-        badge={2} //TBD: In-app messaging - should show nr of unanswered messages
-        style={{ marginRight: 30, marginTop: 5 }}
-        icon="email"
-        color={Colors.primary}
-        borderColor={Colors.primary}
-        size={24}
-      />
-    ),
+    headerRight: '',
+    // headerRight: () => (
+    //   <ButtonIcon
+    //     badge={2} //TBD: In-app messaging - should show nr of unanswered messages
+    //     style={{ marginRight: 30, marginTop: 5 }}
+    //     icon="email"
+    //     color={Colors.primary}
+    //     borderColor={Colors.primary}
+    //     size={24}
+    //   />
+    // ),
   };
 };
 
