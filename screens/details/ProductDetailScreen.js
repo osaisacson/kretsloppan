@@ -219,6 +219,7 @@ const ProductDetailScreen = (props) => {
             </>
           ) : null}
 
+          {/* General description */}
           <Title>{selectedProduct.title}</Title>
           <Paragraph>{selectedProduct.description}</Paragraph>
           {selectedProduct.length ? (
@@ -240,6 +241,7 @@ const ProductDetailScreen = (props) => {
             </View>
           ) : null}
           <Divider style={{ marginTop: 10 }} />
+
           {/* Only show filter badges if we have any filters */}
           {category || condition || style || material || color ? (
             <>
@@ -255,6 +257,8 @@ const ProductDetailScreen = (props) => {
               <Divider style={{ marginBottom: 10 }} />
             </>
           ) : null}
+
+          {/* Price */}
           <Paragraph style={{ textAlign: 'right', padding: 20 }}>
             {selectedProduct.price ? `${selectedProduct.price} kr` : 'Gratis'}
           </Paragraph>
@@ -294,6 +298,7 @@ const ProductDetailScreen = (props) => {
           ) : null}
         </SectionCard>
 
+        {/* Buttons to show for products ready to be reserved */}
         {!isPickedUp && !isReserved ? (
           <SectionCard>
             <View
@@ -305,8 +310,7 @@ const ProductDetailScreen = (props) => {
                 marginVertical: 10,
               }}
             >
-              {/* Show the option to reserve a product if the product is
-        neither picked up, reserved or paused. */}
+              {/* Reserve */}
               {!isPaused ? (
                 <ButtonAction
                   disabled={isReserved}
@@ -315,25 +319,21 @@ const ProductDetailScreen = (props) => {
                 />
               ) : null}
 
-              {/* Show these buttons for the user who created the item */}
+              {/* Pause - to show if user is the creator */}
               {hasEditPermission ? (
-                <>
-                  {/* Pause */}
-                  {!isReserved ? (
-                    <ButtonAction
-                      style={{ marginRight: 10 }}
-                      isToggled={isToggled}
-                      icon={isReady ? 'pause' : null}
-                      title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
-                      onSelect={toggleIsReadyHandle.bind(this)}
-                    />
-                  ) : null}
-                </>
+                <ButtonAction
+                  style={{ marginRight: 10 }}
+                  isToggled={isToggled}
+                  icon={isReady ? 'pause' : null}
+                  title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
+                  onSelect={toggleIsReadyHandle.bind(this)}
+                />
               ) : null}
             </View>
           </SectionCard>
         ) : null}
 
+        {/* Buttons to show for products that have been reserved */}
         {isReserved && (isReservedUser || hasEditPermission) ? (
           <SectionCard>
             <View
@@ -345,7 +345,7 @@ const ProductDetailScreen = (props) => {
                 marginVertical: 10,
               }}
             >
-              {/* Change status to collected */}
+              {/* Change to 'collected' - to show if user is the creator */}
               {hasEditPermission ? (
                 <ButtonAction
                   disabled={isPickedUp}
@@ -354,8 +354,7 @@ const ProductDetailScreen = (props) => {
                 />
               ) : null}
 
-              {/* Show the option to unreserve a product if the product 
-        is reserved and the user is the one who reserved it. */}
+              {/* Un-reserve. */}
               {isReservedUser ? (
                 <ButtonAction
                   disabled={isPickedUp}
