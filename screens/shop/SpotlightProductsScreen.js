@@ -89,7 +89,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle={
             'Kreti och pleti. Kontakta efterlysaren om du sitter på svaret.'
           }
-          buttonText={' Se allt'}
+          buttonText={' Se alla'}
           buttonOnPress={() => props.navigation.navigate('Efterlysningar')}
           scrollData={allProposals}
           navigation={props.navigation}
