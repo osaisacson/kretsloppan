@@ -133,8 +133,9 @@ const ProposalDetailScreen = (props) => {
           </>
         ) : null}
       </SectionCard>
-      <SectionCard>
-        {!isResolved && hasEditPermission && (
+
+      {!isResolved && hasEditPermission ? (
+        <SectionCard>
           <View style={detailStyles.toggles}>
             <ButtonAction
               disabled={isResolved} //disable/enable base on true/false of these params
@@ -144,16 +145,21 @@ const ProposalDetailScreen = (props) => {
               title={'Avaktivera och markera som löst'}
             />
           </View>
-        )}
-        {isResolved && (
+          )}
+        </SectionCard>
+      ) : null}
+
+      {isResolved ? (
+        <SectionCard>
           <StatusBadge
             text={'Löst!'}
             width={70}
             icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
             backgroundColor={Colors.completed}
           />
-        )}
-      </SectionCard>
+          )}
+        </SectionCard>
+      ) : null}
     </DetailWrapper>
   ) : null;
 };
