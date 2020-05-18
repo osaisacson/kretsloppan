@@ -145,7 +145,6 @@ const ProposalDetailScreen = (props) => {
               title={'Avaktivera och markera som löst'}
             />
           </View>
-          )}
         </SectionCard>
       ) : null}
 
@@ -157,7 +156,6 @@ const ProposalDetailScreen = (props) => {
             icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
             backgroundColor={Colors.completed}
           />
-          )}
         </SectionCard>
       ) : null}
     </DetailWrapper>
