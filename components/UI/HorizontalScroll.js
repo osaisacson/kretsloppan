@@ -61,6 +61,7 @@ const HorizontalScroll = (props) => {
             title={props.title}
             subTitle={props.subTitle}
             extraSubTitle={props.extraSubTitle}
+            isNavigationButton={props.isNavigationButton}
             buttonIcon={props.buttonIcon}
             buttonOnPress={props.buttonOnPress}
             buttonText={props.buttonText}

@@ -39,6 +39,7 @@ const HeaderTwo = (props) => {
       <View style={styles.indicatorSection}>
         {props.buttonText ? (
           <Button
+            color={props.isNavigationButton ? Colors.darkPrimary : null}
             style={{ marginRight: 5, paddingHorizontal: 0 }}
             labelStyle={{
               marginLeft: 4,

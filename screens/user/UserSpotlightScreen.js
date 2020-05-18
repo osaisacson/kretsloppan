@@ -222,6 +222,7 @@ const UserSpotlightScreen = (props) => {
       <HorizontalScroll
         title={'Upplagt av mig'}
         subTitle={'Återbruk upplagt av mig'}
+        isNavigationButton={true}
         buttonText={' Se allt'}
         buttonOnPress={() =>
           props.navigation.navigate('Mitt upplagda återbruk')
