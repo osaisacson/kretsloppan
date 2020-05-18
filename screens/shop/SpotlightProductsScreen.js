@@ -25,15 +25,6 @@ const SpotlightProductsScreen = (props) => {
     return new Date(b.readyDate) - new Date(a.readyDate);
   });
 
-  //Filters all currently being worked on products
-  const pausedProductsRaw = allProducts.filter(
-    (product) => product.status === 'bearbetas'
-  );
-
-  const pausedProducts = pausedProductsRaw.sort(function (a, b) {
-    return new Date(b.pauseDate) - new Date(a.pauseDate);
-  });
-
   //Filters all booked products
   const bookedProductsRaw = allProducts.filter(
     (product) => product.status === 'reserverad'
@@ -75,12 +66,6 @@ const SpotlightProductsScreen = (props) => {
           title={'nya tillskott'}
           subTitle={'Det fräschaste, det nyaste'}
           scrollData={recentProducts}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title={'under bearbetning'}
-          subTitle={'Kommer snart, håller på att utvärderas eller repareras'}
-          scrollData={pausedProducts}
           navigation={props.navigation}
         />
         <HorizontalScroll
