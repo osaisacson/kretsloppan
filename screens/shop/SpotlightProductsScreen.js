@@ -50,6 +50,8 @@ const SpotlightProductsScreen = (props) => {
           detailPath="ProjectDetail"
           title={'Projekt'}
           subTitle={'Projekt som håller på att byggas med återbruk'}
+          buttonText={' Se alla'}
+          buttonOnPress={() => props.navigation.navigate('Projekt')}
           scrollData={allProjects}
           navigation={props.navigation}
           icon={
@@ -65,6 +67,8 @@ const SpotlightProductsScreen = (props) => {
         <HorizontalScroll
           title={'nya tillskott'}
           subTitle={'Det fräschaste, det nyaste'}
+          buttonText={' Se allt'}
+          buttonOnPress={() => props.navigation.navigate('Återbruk')}
           scrollData={recentProducts}
           navigation={props.navigation}
         />
@@ -73,6 +77,8 @@ const SpotlightProductsScreen = (props) => {
           subTitle={
             'Reserverade produkter, blir tillgängliga igen om de inte hämtas inom en vecka.'
           }
+          buttonText={' Se allt'}
+          buttonOnPress={() => props.navigation.navigate('Återbruk')}
           scrollData={bookedProducts}
           navigation={props.navigation}
         />
@@ -83,6 +89,8 @@ const SpotlightProductsScreen = (props) => {
           subTitle={
             'Kreti och pleti. Kontakta efterlysaren om du sitter på svaret.'
           }
+          buttonText={' Se alla'}
+          buttonOnPress={() => props.navigation.navigate('Efterlysningar')}
           scrollData={allProposals}
           navigation={props.navigation}
           icon={

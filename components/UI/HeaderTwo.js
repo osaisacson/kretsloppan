@@ -2,12 +2,13 @@ import React from 'react';
 import {
   View,
   StyleSheet,
+  Text,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
 import { Badge, Button } from 'react-native-paper';
-import { Tooltip, Text } from 'react-native-elements';
+import { Tooltip } from 'react-native-elements';
 import Colors from './../../constants/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -20,7 +21,7 @@ const HeaderTwo = (props) => {
   }
   return (
     <View style={styles.headerContainer}>
-      <View>
+      <View style={styles.textSection}>
         <View style={styles.textAndBadge}>
           {props.icon ? props.icon : null}
           <Text style={styles.contentHeader}>{props.title}</Text>
@@ -35,38 +36,41 @@ const HeaderTwo = (props) => {
           <Text style={styles.extraSubTitle}>{props.extraSubTitle}</Text>
         ) : null}
       </View>
-      {props.buttonOnPress && (
-        <Button
-          style={{ marginRight: 5, paddingLeft: 0 }}
-          labelStyle={{
-            marginLeft: 5,
-            paddingLeft: 0,
-            paddingRight: 0,
-            fontSize: 10,
-          }}
-          icon={props.buttonIcon}
-          mode="contained"
-          onPress={props.buttonOnPress}
-        >
-          {props.buttonText}
-        </Button>
-      )}
-      {props.questionText && (
-        <TouchableCmp style={styles.questionMarkSection} useForeground>
-          <Tooltip
-            width={250}
-            containerStyle={{ flexWrap: 'wrap' }}
-            backgroundColor={'#c0c0c0'}
-            popover={<Text>{props.questionText}</Text>}
+      <View style={styles.indicatorSection}>
+        {props.buttonText ? (
+          <Button
+            style={{ marginRight: 5, paddingHorizontal: 0 }}
+            labelStyle={{
+              marginLeft: 4,
+              marginRight: props.buttonIcon ? 11 : 4,
+              paddingLeft: 0,
+              paddingRight: 0,
+              fontSize: 10,
+            }}
+            icon={props.buttonIcon}
+            mode="contained"
+            onPress={props.buttonOnPress}
           >
-            <FontAwesome
-              name={'question'}
-              size={15}
-              color={'#fff'}
-            ></FontAwesome>
-          </Tooltip>
-        </TouchableCmp>
-      )}
+            {props.buttonText}
+          </Button>
+        ) : null}
+        {props.questionText ? (
+          <TouchableCmp style={styles.questionMarkSection} useForeground>
+            <Tooltip
+              width={250}
+              containerStyle={{ flexWrap: 'wrap' }}
+              backgroundColor={'#c0c0c0'}
+              popover={<Text>{props.questionText}</Text>}
+            >
+              <FontAwesome
+                name={'question'}
+                size={15}
+                color={'#fff'}
+              ></FontAwesome>
+            </Tooltip>
+          </TouchableCmp>
+        ) : null}
+      </View>
     </View>
   );
 };
@@ -76,11 +80,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: '100%',
+  },
+  textSection: {
+    paddingTop: 20,
+    paddingLeft: 15,
+    paddingRight: 10,
+    paddingBottom: 2,
+    maxWidth: '80%',
+    flexGrow: 3,
+  },
+  indicatorSection: {
+    flexGrow: 1,
+    marginRight: 5,
   },
   textAndBadge: {
     flexDirection: 'row',
-    paddingLeft: 15,
-    paddingTop: 20,
     alignItems: 'baseline',
   },
   contentHeader: {
@@ -96,14 +111,10 @@ const styles = StyleSheet.create({
   subTitle: {
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
-    paddingLeft: 15,
-    paddingBottom: 2,
   },
   extraSubTitle: {
     fontFamily: 'roboto-bold-italic',
     fontSize: 16,
-    paddingLeft: 15,
-    paddingBottom: 2,
   },
   questionMarkSection: {
     alignItems: 'center',
