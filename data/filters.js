@@ -39,6 +39,7 @@ export const STYLE = [
   new Filter('s2', 'Modern', '#f0e6ff'),
   new Filter('s3', 'Funkis', '#f0e6ff'),
   new Filter('s4', 'Traditionell', '#f0e6ff'),
+  new Filter('s5', 'Kreativ', '#f0e6ff'),
 ];
 
 export const MATERIAL = [
@@ -50,9 +51,10 @@ export const MATERIAL = [
   new Filter('m6', 'Tegel', '#f0e6ff'),
   new Filter('m7', 'Glas', '#f0e6ff'),
   new Filter('m8', 'Textil', '#f0e6ff'),
-  new Filter('m9', 'Betong', '#f0e6ff'),
-  new Filter('m10', 'Blandat', '#f0e6ff'),
-  new Filter('m11', 'Annat', '#f0e6ff'),
+  new Filter('m9', 'Keramik', '#f0e6ff'),
+  new Filter('m10', 'Betong', '#f0e6ff'),
+  new Filter('m11', 'Blandat', '#f0e6ff'),
+  new Filter('m12', 'Annat', '#f0e6ff'),
 ];
 
 export const COLOR = [

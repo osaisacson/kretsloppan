@@ -214,7 +214,10 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper prompt="Lägg in ett pris (det kan vara 0)">
+      <FormFieldWrapper
+        prompt="Lägg in ett pris (det kan vara 0)"
+        subLabel={'Notera att betalning hanteras utanför appen'}
+      >
         <TextInput
           placeholder="Styckpris - För företag: ange pris inklusive moms"
           style={formStyles.input}

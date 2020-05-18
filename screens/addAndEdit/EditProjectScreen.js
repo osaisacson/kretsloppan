@@ -61,7 +61,7 @@ const EditProjectScreen = (props) => {
       location: editedProject ? true : false,
       description: true,
       image: editedProject ? true : false,
-      slogan: editedProject ? true : false,
+      slogan: true,
     },
     formIsValid: editedProject ? true : false,
   });

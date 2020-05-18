@@ -7,10 +7,10 @@ import Colors from '../../constants/Colors';
 export const FormFieldWrapper = (props) => {
   return (
     <View style={formStyles.formControl}>
-      {props.label && (
+      {props.label ? (
         <HeaderThree text={props.label} style={formStyles.sectionLabel} />
-      )}
-      {props.subLabel && <HeaderThree text={props.subLabel} />}
+      ) : null}
+      {props.subLabel ? <HeaderThree text={props.subLabel} /> : null}
       {props.children}
     </View>
   );
