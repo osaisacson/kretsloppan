@@ -35,11 +35,12 @@ const HeaderTwo = (props) => {
           <Text style={styles.extraSubTitle}>{props.extraSubTitle}</Text>
         ) : null}
       </View>
-      {props.buttonOnPress && (
+      {props.buttonText ? (
         <Button
-          style={{ marginRight: 5, paddingLeft: 0 }}
+          style={{ marginRight: 5, paddingHorizontal: 0 }}
           labelStyle={{
-            marginLeft: 5,
+            marginLeft: 4,
+            marginRight: props.buttonIcon ? 11 : 4,
             paddingLeft: 0,
             paddingRight: 0,
             fontSize: 10,
@@ -50,8 +51,8 @@ const HeaderTwo = (props) => {
         >
           {props.buttonText}
         </Button>
-      )}
-      {props.questionText && (
+      ) : null}
+      {props.questionText ? (
         <TouchableCmp style={styles.questionMarkSection} useForeground>
           <Tooltip
             width={250}
@@ -66,7 +67,7 @@ const HeaderTwo = (props) => {
             ></FontAwesome>
           </Tooltip>
         </TouchableCmp>
-      )}
+      ) : null}
     </View>
   );
 };
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   subTitle: {
+    width: 150,
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
     paddingLeft: 15,
