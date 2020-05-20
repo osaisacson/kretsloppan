@@ -83,9 +83,9 @@ exports.sendPushNotificationsOnReserve = functions.database.ref('/products/{prod
   const afterReservedDate = afterVal.reservedDate;
 
   if (!beforeReservedDate && afterReservedDate) {
-    const reservedUserId = afterVal.reservedUserId;
+    const ownerId = afterVal.ownerId;
     const productName = afterVal.title;
-    return admin.database().ref('profiles').orderByChild('profileId').equalTo(reservedUserId).on('value', snapshot => {
+    return admin.database().ref('profiles').orderByChild('profileId').equalTo(ownerId).on('value', snapshot => {
 
       const normalizedData = snapshot.val();
       const id = Object.keys(normalizedData);
