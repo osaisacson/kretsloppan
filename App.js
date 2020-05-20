@@ -7,6 +7,10 @@ import ReduxThunk from 'redux-thunk';
 import I18n from 'ex-react-native-i18n';
 // Before rendering any navigation stack
 import { enableScreens } from 'react-native-screens';
+// import { composeWithDevTools } from 'redux-devtools-extension';
+import * as firebase from 'firebase';
+import env from './env'
+import 'firebase/database';
 
 //Reducers
 import productsReducer from './store/reducers/products';
@@ -29,8 +33,12 @@ const rootReducer = combineReducers({
 
 I18n.default_locale = 'sv-SE';
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(env.firebaseConfig);
+}
+
 //NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
-// const store = createStore(rootReducer, composeWithDevTools());
+// const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)));
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); //Redux, manages our state.
 
