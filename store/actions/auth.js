@@ -3,8 +3,10 @@ export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
 import * as profilesActions from './profiles';
+import * as firebase from 'firebase';
 
 import ENV from '../../env';
+import { updateExpoTokens } from '../helpers';
 
 let timer;
 
@@ -57,7 +59,7 @@ export const signup = (email, password, profileName, phone, address, image) => {
         console.log(resData.error);
         return (process.exitCode = 1);
       }
-
+      updateExpoTokens(resData.localId);
       await dispatch(
         authenticate(
           resData.localId,
@@ -150,6 +152,8 @@ export const login = (email, password) => {
         new Date().getTime() + parseInt(resData.expiresIn) * 1000
       );
 
+      updateExpoTokens(resData.localId);
+
       dispatch(
         authenticate(
           resData.localId,
@@ -168,8 +172,10 @@ export const login = (email, password) => {
   };
 };
 
-export const logout = () => {
+export const logout = async () => {
   clearLogoutTimer();
+  const userData = await AsyncStorage.getItem('userData').then(data => data ? JSON.parse(data) : {});
+  updateExpoTokens(userData.userId, true);
   AsyncStorage.removeItem('userData'); //Remove data from our local storage
   return { type: LOGOUT };
 };
