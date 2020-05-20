@@ -8,6 +8,13 @@ const fs = require('fs');
 const UUID = require('uuid-v4');
 // Imports the Google Cloud client library
 const { Storage } = require('@google-cloud/storage');
+
+const { Expo } = require('expo-server-sdk');
+
+// Create a new Expo SDK client
+let expo = new Expo();
+
+
 // Creates a client
 const storage = new Storage({
   projectId: 'egnahemsfabriken',
@@ -66,4 +73,42 @@ exports.storeImage = functions.https.onRequest((request, response) => {
       }
     );
   });
+});
+
+
+exports.sendPushNotificationsOnReserve = functions.database.ref('/products/{productId}').onUpdate(({ before, after }) => {
+  const beforeVal = before.val();
+  const afterVal = after.val();
+  const beforeReservedDate = beforeVal.reservedDate;
+  const afterReservedDate = afterVal.reservedDate;
+
+  if (!beforeReservedDate && afterReservedDate) {
+    const ownerId = afterVal.ownerId;
+    const productName = afterVal.title;
+    return admin.database().ref('profiles').orderByChild('profileId').equalTo(ownerId).on('value', snapshot => {
+
+      const normalizedData = snapshot.val();
+      const id = Object.keys(normalizedData);
+      const reservedUser = normalizedData[id[0]];
+
+      if (reservedUser) {
+        const message = {
+          to: reservedUser.expoTokens,
+          sound: 'default',
+          title: 'Produkt Reserverad',
+          body: `${reservedUser.profileName} reserverade precis ditt återbruk ${productName}`,
+          _displayInForeground: true,
+        };
+
+        expo.sendPushNotificationsAsync([message])
+          .then(() => console.info("Product notification sent!"))
+          .catch((e) => console.error("Product notification failed!", e.message));
+      }
+    });
+
+
+
+  }
+
+  return null;
 });

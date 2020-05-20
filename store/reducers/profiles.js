@@ -47,7 +47,8 @@ export default (state = initialState, action) => {
         action.profileData.email,
         action.profileData.phone,
         action.profileData.address,
-        action.profileData.image
+        action.profileData.image,
+        action.profileData.expoTokens
       );
       console.log(
         'store/reducers/profiles/UPDATE_PROFILE, updated profile: ',

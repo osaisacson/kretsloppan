@@ -32,7 +32,8 @@ export const fetchProfiles = () => {
             resData[key].email,
             resData[key].phone,
             resData[key].address,
-            resData[key].image
+            resData[key].image,
+            resData[key].expoTokens
           )
         );
       }
