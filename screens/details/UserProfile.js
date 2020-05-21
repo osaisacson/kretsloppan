@@ -96,7 +96,7 @@ const UserProfile = (props) => {
 
   return (
     <ScrollViewToTop>
-      <View style={styles.centeredContent}>
+      <View style={userProfileStyles.centeredContent}>
         <Avatar.Image
           style={{
             color: '#fff',
@@ -112,36 +112,44 @@ const UserProfile = (props) => {
           size={80}
         />
 
-        <Title style={styles.title}>{currentProfile.profileName}</Title>
+        <Title style={userProfileStyles.title}>
+          {currentProfile.profileName}
+        </Title>
         {currentProfile.profileDescription ? (
-          <Title style={styles.subtitle}>
-            {currentProfile.profileDescription}}
+          <Title style={userProfileStyles.subtitle}>
+            {currentProfile.profileDescription}
           </Title>
         ) : null}
 
-        <View style={styles.row}>
-          <View style={styles.section}>
-            <Paragraph style={[styles.paragraph, styles.caption]}>
+        <View style={userProfileStyles.row}>
+          <View style={userProfileStyles.section}>
+            <Paragraph
+              style={[userProfileStyles.paragraph, userProfileStyles.caption]}
+            >
               {added ? added : 0}
             </Paragraph>
-            <Caption style={styles.caption}>Upplagda</Caption>
+            <Caption style={userProfileStyles.caption}>Upplagda</Caption>
           </View>
-          <View style={styles.section}>
-            <Paragraph style={[styles.paragraph, styles.caption]}>
+          <View style={userProfileStyles.section}>
+            <Paragraph
+              style={[userProfileStyles.paragraph, userProfileStyles.caption]}
+            >
               {collected ? collected : 0}
             </Paragraph>
-            <Caption style={styles.caption}>Hämtade</Caption>
+            <Caption style={userProfileStyles.caption}>Hämtade</Caption>
           </View>
-          <View style={styles.section}>
-            <Paragraph style={[styles.paragraph, styles.caption]}>
+          <View style={userProfileStyles.section}>
+            <Paragraph
+              style={[userProfileStyles.paragraph, userProfileStyles.caption]}
+            >
               {nrOfProjects ? nrOfProjects : 0}
             </Paragraph>
-            <Caption style={styles.caption}>Projekt</Caption>
+            <Caption style={userProfileStyles.caption}>Projekt</Caption>
           </View>
         </View>
       </View>
 
-      <View style={styles.centeredContent}>
+      <View style={userProfileStyles.centeredContent}>
         <ContactDetails
           isProfile={true}
           profileId={currentProfile.profileId}
@@ -200,7 +208,12 @@ const UserProfile = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
+export const userProfileStyles = StyleSheet.create({
+  userInfoSection: {
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   centeredContent: {
     textAlign: 'center',
     alignItems: 'center',
@@ -212,7 +225,10 @@ const styles = StyleSheet.create({
     marginTop: -6,
   },
   subtitle: {
-    fontWeight: 'regular',
+    paddingHorizontal: 20,
+    lineHeight: 14,
+    paddingBottom: 14,
+    fontWeight: 'normal',
     textAlign: 'center',
     fontSize: 12,
   },

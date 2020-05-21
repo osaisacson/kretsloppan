@@ -2,12 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 //Components
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 // import AddButton from '../../components/UI/AddButton';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
+import { userProfileStyles } from '../details/UserProfile';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -115,7 +116,7 @@ const UserSpotlightScreen = (props) => {
 
   return (
     <ScrollViewToTop>
-      <View style={styles.userInfoSection}>
+      <View style={userProfileStyles.userInfoSection}>
         <Avatar.Image
           style={{
             color: '#fff',
@@ -137,33 +138,35 @@ const UserSpotlightScreen = (props) => {
         />
 
         {/* <AddButton navigation={props.navigation} /> */}
-        <Title style={styles.title}>{currentProfile.profileName}</Title>
+        <Title style={userProfileStyles.title}>
+          {currentProfile.profileName}
+        </Title>
         {currentProfile.profileDescription ? (
-          <Title style={styles.subtitle}>
-            {currentProfile.profileDescription}}
+          <Title style={userProfileStyles.subtitle}>
+            {currentProfile.profileDescription}
           </Title>
         ) : null}
-        <View style={styles.row}>
-          <View style={styles.section}>
-            <Paragraph style={[styles.paragraph, styles.caption]}>
+        <View style={userProfileStyles.row}>
+          <View style={userProfileStyles.section}>
+            <Paragraph style={userProfileStyles.paragraph}>
               {added ? added : 0}
             </Paragraph>
-            <Caption style={styles.caption}>Upplagda</Caption>
+            <Caption>Upplagda</Caption>
           </View>
-          <View style={styles.section}>
-            <Paragraph style={[styles.paragraph, styles.caption]}>
+          <View style={userProfileStyles.section}>
+            <Paragraph style={userProfileStyles.paragraph}>
               {collected ? collected : 0}
             </Paragraph>
-            <Caption style={styles.caption}>Hämtade</Caption>
+            <Caption>Hämtade</Caption>
           </View>
-          <View style={styles.section}>
-            <Paragraph style={[styles.paragraph, styles.caption]}>
+          <View style={userProfileStyles.section}>
+            <Paragraph style={userProfileStyles.paragraph}>
               {nrOfProjects ? nrOfProjects : 0}
             </Paragraph>
-            <Caption style={styles.caption}>Projekt</Caption>
+            <Caption>Projekt</Caption>
           </View>
         </View>
-        <View style={styles.row}>
+        <View style={userProfileStyles.row}>
           <Button
             style={{ marginRight: 5 }}
             labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
@@ -280,40 +283,5 @@ const UserSpotlightScreen = (props) => {
     </ScrollViewToTop>
   );
 };
-
-const styles = StyleSheet.create({
-  userInfoSection: {
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: -6,
-  },
-  subtitle: {
-    fontWeight: 'regular',
-    textAlign: 'center',
-    fontSize: 12,
-  },
-  row: {
-    marginTop: 0,
-    marginBottom: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  section: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  paragraph: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginRight: 3,
-  },
-});
 
 export default UserSpotlightScreen;
