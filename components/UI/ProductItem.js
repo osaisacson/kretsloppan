@@ -53,38 +53,24 @@ const ProductItem = (props) => {
           />
         ) : null}
         {props.itemData.status === 'reserverad' && (
-          <>
-            {/* <Ionicons
-              style={{
-                ...styles.icon,
-                color: Colors.primary,
-                fontSize: 35,
-                marginLeft: 3,
-                marginTop: -10,
-              }}
-              name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
-              size={23}
-              color={props.itemData.color}
-            /> */}
-            <StatusBadge
-              style={{
-                padding: 0,
-                margin: 0,
-                position: 'absolute',
-                zIndex: 100,
-              }}
-              textStyle={{
-                textTransform: 'uppercase',
-                fontSize: 10,
-                padding: 4,
-                color: '#fff',
-                backgroundColor: Colors.primary,
-              }}
-              text={`till ${shorterDate}`}
-              icon={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
-              backgroundColor={Colors.primary}
-            />
-          </>
+          <StatusBadge
+            style={{
+              padding: 0,
+              margin: 0,
+              position: 'absolute',
+              zIndex: 100,
+            }}
+            textStyle={{
+              textTransform: 'uppercase',
+              fontSize: 10,
+              padding: 4,
+              color: '#fff',
+              backgroundColor: Colors.primary,
+            }}
+            text={`till ${shorterDate}`}
+            icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
+            backgroundColor={Colors.primary}
+          />
         )}
 
         {props.itemData.status === 'hämtad' && (

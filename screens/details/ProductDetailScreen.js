@@ -406,9 +406,7 @@ const ProductDetailScreen = (props) => {
                 text={`Reserverad ${
                   isReservedUser ? 'av dig ' : ''
                 }till ${shorterDate}`}
-                icon={
-                  Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'
-                }
+                icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
                 backgroundColor={Colors.primary}
               />
             ) : null}

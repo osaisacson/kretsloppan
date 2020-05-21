@@ -48,7 +48,7 @@ const UsedItem = (props) => {
             marginLeft: 3,
             marginTop: -10,
           }}
-          name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+          name={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
           size={23}
           color={props.color}
         />
