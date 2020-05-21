@@ -1,8 +1,19 @@
 class Profile {
-  constructor(id, profileId, profileName, email, phone, address, image, expoTokens = []) {
+  constructor(
+    id,
+    profileId,
+    profileName,
+    profileDescription,
+    email,
+    phone,
+    address,
+    image,
+    expoTokens = []
+  ) {
     this.id = id;
     this.profileId = profileId;
     this.profileName = profileName;
+    this.profileDescription = profileDescription;
     this.email = email;
     this.phone = phone;
     this.address = address;

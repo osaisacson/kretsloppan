@@ -57,6 +57,7 @@ const AddProfileScreen = (props) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       profileName: '',
+      profileDescription: '',
       email: '',
       phone: '',
       address: '',
@@ -64,6 +65,7 @@ const AddProfileScreen = (props) => {
     },
     inputValidities: {
       profileName: false,
+      profileDescription: true,
       email: false,
       phone: false,
       address: false,
@@ -86,6 +88,7 @@ const AddProfileScreen = (props) => {
       dispatch(
         profilesActions.createProfile(
           formState.inputValues.profileName,
+          formState.inputValues.profileDescription,
           formState.inputValues.email,
           formState.inputValues.phone,
           formState.inputValues.address,
@@ -147,6 +150,17 @@ const AddProfileScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.profileName}
           onChangeText={textChangeHandler.bind(this, 'profileName')}
+          keyboardType="default"
+          autoCapitalize="none"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in en kort beskrivning">
+        <TextInput
+          placeholder="Beskrivning"
+          style={formStyles.input}
+          value={formState.inputValues.profileDescription}
+          onChangeText={textChangeHandler.bind(this, 'profileDescription')}
           keyboardType="default"
           autoCapitalize="none"
           returnKeyType="next"

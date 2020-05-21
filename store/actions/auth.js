@@ -21,7 +21,15 @@ export const authenticate = (userId, token, expiryTime) => {
   };
 };
 
-export const signup = (email, password, profileName, phone, address, image) => {
+export const signup = (
+  email,
+  password,
+  profileName,
+  profileDescription,
+  phone,
+  address,
+  image
+) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -76,6 +84,7 @@ export const signup = (email, password, profileName, phone, address, image) => {
         'store/actions/auth: attempting to create a profile with this data:'
       );
       console.log('profileName: ', profileName);
+      console.log('profileDescription: ', profileDescription);
       console.log('email: ', email);
       console.log('phone: ', phone);
       console.log('address: ', address);
@@ -85,6 +94,7 @@ export const signup = (email, password, profileName, phone, address, image) => {
         dispatch(
           profilesActions.createProfile(
             profileName,
+            profileDescription,
             email,
             phone,
             address,
@@ -174,7 +184,9 @@ export const login = (email, password) => {
 
 export const logout = async () => {
   clearLogoutTimer();
-  const userData = await AsyncStorage.getItem('userData').then(data => data ? JSON.parse(data) : {});
+  const userData = await AsyncStorage.getItem('userData').then((data) =>
+    data ? JSON.parse(data) : {}
+  );
   updateExpoTokens(userData.userId, true);
   AsyncStorage.removeItem('userData'); //Remove data from our local storage
   return { type: LOGOUT };

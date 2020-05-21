@@ -29,6 +29,7 @@ export const fetchProfiles = () => {
             key,
             resData[key].profileId,
             resData[key].profileName,
+            resData[key].profileDescription,
             resData[key].email,
             resData[key].phone,
             resData[key].address,
@@ -49,7 +50,14 @@ export const fetchProfiles = () => {
   };
 };
 
-export function createProfile(profileName, email, phone, address, image) {
+export function createProfile(
+  profileName,
+  profileDescription,
+  email,
+  phone,
+  address,
+  image
+) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -61,6 +69,7 @@ export function createProfile(profileName, email, phone, address, image) {
       const profileData = {
         profileId: userId, //Set profileId to be the userId of the logged in user: we get this from auth
         profileName,
+        profileDescription,
         email,
         phone,
         address,
@@ -85,6 +94,7 @@ export function createProfile(profileName, email, phone, address, image) {
           firebaseId: returnedProfileData.name,
           profileId: userId,
           profileName,
+          profileDescription,
           email,
           phone,
           address,
@@ -104,6 +114,7 @@ export function createProfile(profileName, email, phone, address, image) {
 export function updateProfile(
   firebaseId,
   profileName,
+  profileDescription,
   email,
   phone,
   address,
@@ -118,6 +129,7 @@ export function updateProfile(
 
       let dataToUpdate = {
         profileName,
+        profileDescription,
         email,
         phone,
         address,
@@ -129,6 +141,7 @@ export function updateProfile(
 
         dataToUpdate = {
           profileName,
+          profileDescription,
           email,
           phone,
           address,

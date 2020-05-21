@@ -21,6 +21,7 @@ export default (state = initialState, action) => {
         action.profileData.firebaseId,
         action.profileData.profileId,
         action.profileData.profileName,
+        action.profileData.profileDescription,
         action.profileData.email,
         action.profileData.phone,
         action.profileData.address,
@@ -44,6 +45,7 @@ export default (state = initialState, action) => {
         action.fid, //the id of the profile in firebase
         state.allProfiles[profileIndex].profileId, //prev state profileId (ie, don't update this)
         action.profileData.profileName,
+        action.profileData.profileDescription,
         action.profileData.email,
         action.profileData.phone,
         action.profileData.address,

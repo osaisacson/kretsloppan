@@ -58,6 +58,9 @@ const EditProfileScreen = (props) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       profileName: currentProfile ? currentProfile.profileName : '',
+      profileDescription: currentProfile
+        ? currentProfile.profileDescription
+        : '',
       email: currentProfile ? currentProfile.email : '',
       phone: currentProfile ? currentProfile.phone : '',
       address: currentProfile ? currentProfile.address : '',
@@ -65,6 +68,7 @@ const EditProfileScreen = (props) => {
     },
     inputValidities: {
       profileName: currentProfile ? true : false,
+      profileDescription: true,
       email: currentProfile ? true : false,
       phone: currentProfile ? true : false,
       address: currentProfile ? true : false,
@@ -89,6 +93,7 @@ const EditProfileScreen = (props) => {
           profilesActions.updateProfile(
             firebaseId,
             formState.inputValues.profileName,
+            formState.inputValues.profileDescription,
             formState.inputValues.email,
             formState.inputValues.phone,
             formState.inputValues.address,
@@ -99,6 +104,7 @@ const EditProfileScreen = (props) => {
         await dispatch(
           profilesActions.createProfile(
             formState.inputValues.profileName,
+            formState.inputValues.profileDescription,
             formState.inputValues.email,
             formState.inputValues.phone,
             formState.inputValues.address,
@@ -163,6 +169,17 @@ const EditProfileScreen = (props) => {
           onChangeText={textChangeHandler.bind(this, 'profileName')}
           keyboardType="default"
           autoCapitalize="none"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in en kort beskrivning">
+        <TextInput
+          placeholder="Beskrivning"
+          style={formStyles.multilineInput}
+          value={formState.inputValues.profileDescription}
+          multiline
+          numberOfLines={4}
+          onChangeText={textChangeHandler.bind(this, 'profileDescription')}
           returnKeyType="next"
         />
       </FormFieldWrapper>

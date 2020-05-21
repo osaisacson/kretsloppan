@@ -138,6 +138,11 @@ const UserSpotlightScreen = (props) => {
 
         {/* <AddButton navigation={props.navigation} /> */}
         <Title style={styles.title}>{currentProfile.profileName}</Title>
+        {currentProfile.profileDescription ? (
+          <Title style={styles.subtitle}>
+            {currentProfile.profileDescription}}
+          </Title>
+        ) : null}
         <View style={styles.row}>
           <View style={styles.section}>
             <Paragraph style={[styles.paragraph, styles.caption]}>
@@ -286,6 +291,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: -6,
+  },
+  subtitle: {
+    fontWeight: 'regular',
+    textAlign: 'center',
+    fontSize: 12,
   },
   row: {
     marginTop: 0,
