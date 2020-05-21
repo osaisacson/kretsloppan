@@ -76,36 +76,63 @@ exports.storeImage = functions.https.onRequest((request, response) => {
 });
 
 
-exports.sendPushNotificationsOnReserve = functions.database.ref('/products/{productId}').onUpdate(({ before, after }) => {
+
+function denormalize(data) {
+  const keys = Object.keys(data);
+
+  if (keys) {
+    return data[keys[0]];
+  }
+  return null;
+}
+
+function getUserProfileById(profileId) {
+  return new Promise((resolve, reject) => {
+    admin.database().ref('profiles').orderByChild('profileId').equalTo(profileId).on('value', snapshot => {
+
+      if (snapshot.exists) {
+        resolve(denormalize(snapshot.val()))
+      } else {
+        reject();
+      }
+    });
+  });
+}
+
+
+exports.sendPushNotificationsOnReserve = functions.database.ref('/products/{productId}').onUpdate(async ({ before, after }) => {
   const beforeVal = before.val();
   const afterVal = after.val();
   const beforeReservedDate = beforeVal.reservedDate;
   const afterReservedDate = afterVal.reservedDate;
 
   if (!beforeReservedDate && afterReservedDate) {
+    const reservedUserId = afterVal.reservedUserId;
     const ownerId = afterVal.ownerId;
     const productName = afterVal.title;
-    return admin.database().ref('profiles').orderByChild('profileId').equalTo(ownerId).on('value', snapshot => {
 
-      const normalizedData = snapshot.val();
-      const id = Object.keys(normalizedData);
-      const reservedUser = normalizedData[id[0]];
+    try {
+      const [reservedBy, productOwner] = await Promise.all([
+        getUserProfileById(reservedUserId),
+        getUserProfileById(ownerId)
+      ]);
 
-      if (reservedUser) {
+      if (reservedBy && productOwner.expoTokens) {
         const message = {
-          to: reservedUser.expoTokens,
+          to: productOwner.expoTokens,
           sound: 'default',
           title: 'Produkt Reserverad',
-          body: `${reservedUser.profileName} reserverade precis ditt återbruk ${productName}`,
+          body: `${reservedBy.profileName} reserverade precis ditt återbruk ${productName}`,
           _displayInForeground: true,
         };
 
-        expo.sendPushNotificationsAsync([message])
+        return expo.sendPushNotificationsAsync([message])
           .then(() => console.info("Product notification sent!"))
           .catch((e) => console.error("Product notification failed!", e.message));
       }
-    });
-
+    } catch (error) {
+      return console.error(error.message);
+    }
 
 
   }
