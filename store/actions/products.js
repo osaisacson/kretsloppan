@@ -430,15 +430,15 @@ export const changeProductStatus = (id, status, projectId) => {
     const isCollected = status === 'hämtad';
 
     //Getting a date one week from now, to use for updated reservedUntil if status is 'reserved'
-    var firstDay = new Date();
-    const oneWeekFromNow = new Date(
-      firstDay.getTime() + 7 * 24 * 60 * 60 * 1000
+    var today = new Date();
+    const oneDayFromNow = new Date(
+      today.getTime() + 24 * 60 * 60 * 1000
     ).toISOString();
 
     //If we are updating the status to reserved, change the reserved fields to match the current user and date.
     let updatedReservedUserId = isReserved ? currentUserId : '';
     let updatedReservedDate = isReserved ? currentDate : '';
-    let updatedReservedUntil = isReserved ? oneWeekFromNow : '';
+    let updatedReservedUntil = isReserved ? oneDayFromNow : '';
     let updatedProjectId = projectId ? projectId : '000';
 
     //If we are updating the status to collected, set the new owner if and the date it was collected.

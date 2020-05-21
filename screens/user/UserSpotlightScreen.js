@@ -193,7 +193,7 @@ const UserSpotlightScreen = (props) => {
         <HorizontalScroll
           title={'Att hämtas'}
           subTitle={
-            'De du reserverat från andra användare. Notera: din reservation upphör gälla efter en vecka.'
+            'De du reserverat från andra användare. Notera: din reservation upphör gälla efter 24 timmar.'
           }
           extraSubTitle={
             'Nästa steg: kontakta uppläggaren för att ordna logistik runt upphämtning'
@@ -208,7 +208,7 @@ const UserSpotlightScreen = (props) => {
         <HorizontalScroll
           title={'Att lämnas'}
           subTitle={
-            'Återbruk du lagt upp som blivit reserverat av andra användare. Notera: deras reservation upphör gälla efter en vecka.'
+            'Återbruk du lagt upp som blivit reserverat av andra användare. Notera: deras reservation upphör gälla efter 24 timmar.'
           }
           extraSubTitle={
             'Nästa steg: kontakta intressenten för att ordna logistik runt avlämning'

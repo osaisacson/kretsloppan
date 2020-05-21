@@ -77,7 +77,7 @@ const SpotlightProductsScreen = (props) => {
         <HorizontalScroll
           title={'nyligen reserverat'}
           subTitle={
-            'Reserverade produkter, blir tillgängliga igen om de inte hämtas inom en vecka.'
+            'Reserverade produkter, blir tillgängliga igen om de inte hämtas inom 24 timmar.'
           }
           isNavigationButton={true}
           buttonText={'Se alla'}

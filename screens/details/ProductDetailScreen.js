@@ -143,7 +143,7 @@ const ProductDetailScreen = (props) => {
 
     Alert.alert(
       'Kom ihåg',
-      'Denna reservation gäller i EN VECKA. Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
+      'Denna reservation gäller i ett dygn. Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
       [
         { text: 'Avbryt', style: 'default' },
         {
