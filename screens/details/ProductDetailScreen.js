@@ -21,7 +21,6 @@ import RoundItem from '../../components/UI/RoundItem';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonAction from '../../components/UI/ButtonAction';
 import SectionCard from '../../components/UI/SectionCard';
-
 import StatusBadge from '../../components/UI/StatusBadge';
 
 //Constants
@@ -169,9 +168,9 @@ const ProductDetailScreen = (props) => {
     color,
   } = selectedProduct;
 
-  const shorterDate = selectedProduct.reservedUntil
-    ? Moment(selectedProduct.reservedUntil).locale('sv').calendar()
-    : 'never';
+  const shorterDate = Moment(selectedProduct.reservedUntil)
+    .locale('sv')
+    .calendar();
 
   const isReservedOrPickedUp = isReserved || isPickedUp;
   const isReservedUser = reservedUserId === loggedInUserId;

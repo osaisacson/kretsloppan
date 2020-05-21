@@ -11,6 +11,8 @@ import {
 import Card from './Card';
 import { Ionicons } from '@expo/vector-icons';
 import CachedImage from '../../components/UI/CachedImage';
+import Moment from 'moment/min/moment-with-locales';
+import StatusBadge from '../../components/UI/StatusBadge';
 
 //Constants
 import Colors from './../../constants/Colors';
@@ -22,6 +24,10 @@ const ProductItem = (props) => {
     TouchableCmp = TouchableNativeFeedback;
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
+
+  const shorterDate = Moment(props.itemData.reservedUntil)
+    .locale('sv')
+    .calendar();
 
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
@@ -47,19 +53,40 @@ const ProductItem = (props) => {
           />
         ) : null}
         {props.itemData.status === 'reserverad' && (
-          <Ionicons
-            style={{
-              ...styles.icon,
-              color: Colors.primary,
-              fontSize: 35,
-              marginLeft: 3,
-              marginTop: -10,
-            }}
-            name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
-            size={23}
-            color={props.itemData.color}
-          />
+          <>
+            {/* <Ionicons
+              style={{
+                ...styles.icon,
+                color: Colors.primary,
+                fontSize: 35,
+                marginLeft: 3,
+                marginTop: -10,
+              }}
+              name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+              size={23}
+              color={props.itemData.color}
+            /> */}
+            <StatusBadge
+              style={{
+                padding: 0,
+                margin: 0,
+                position: 'absolute',
+                zIndex: 100,
+              }}
+              textStyle={{
+                textTransform: 'uppercase',
+                fontSize: 10,
+                padding: 4,
+                color: '#fff',
+                backgroundColor: Colors.primary,
+              }}
+              text={`till ${shorterDate}`}
+              icon={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+              backgroundColor={Colors.primary}
+            />
+          </>
         )}
+
         {props.itemData.status === 'hämtad' && (
           <Ionicons
             style={{

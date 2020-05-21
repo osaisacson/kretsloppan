@@ -8,11 +8,11 @@ const StatusBadge = (props) => {
   return (
     <View
       style={{
+        ...props.style,
         borderRadius: 30,
         flex: 1,
         flexDirection: 'row',
         color: '#fff',
-        width: props.width,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
@@ -31,12 +31,16 @@ const StatusBadge = (props) => {
         size={20}
       />
       <Text
-        style={{
-          textTransform: 'uppercase',
-          fontSize: 12,
-          padding: 4,
-          color: '#fff',
-        }}
+        style={
+          props.textStyle
+            ? { ...props.textStyle }
+            : {
+                textTransform: 'uppercase',
+                fontSize: 12,
+                padding: 4,
+                color: '#fff',
+              }
+        }
       >
         {props.text}
       </Text>
