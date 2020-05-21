@@ -53,7 +53,6 @@ export const defaultMainPageOptions = (navData) => {
 export const mainPageOptionsWithUser = (navData) => {
   return {
     headerTitle: '',
-
     headerRight: () => (
       <UserAvatar
         style={{ marginTop: 20, marginRight: 10 }}
