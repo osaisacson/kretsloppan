@@ -32,6 +32,8 @@ const StatusBadge = (props) => {
       />
       <Text
         style={{
+          textTransform: 'uppercase',
+          fontSize: 12,
           padding: 4,
           color: '#fff',
         }}

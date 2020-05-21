@@ -152,7 +152,6 @@ const ProposalDetailScreen = (props) => {
         <SectionCard>
           <StatusBadge
             text={'Löst!'}
-            width={70}
             icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
             backgroundColor={Colors.completed}
           />

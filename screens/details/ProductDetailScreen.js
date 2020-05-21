@@ -170,7 +170,7 @@ const ProductDetailScreen = (props) => {
   } = selectedProduct;
 
   const shorterDate = selectedProduct.reservedUntil
-    ? selectedProduct.reservedUntil.split('T')[0]
+    ? Moment(selectedProduct.reservedUntil).locale('sv').calendar()
     : 'never';
 
   const isReservedOrPickedUp = isReserved || isPickedUp;
@@ -376,7 +376,6 @@ const ProductDetailScreen = (props) => {
           <SectionCard>
             <StatusBadge
               text={'Pausad för bearbetning'}
-              width={200}
               icon={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
               backgroundColor={Colors.neutral}
             />
@@ -390,7 +389,6 @@ const ProductDetailScreen = (props) => {
             {isPickedUp ? (
               <StatusBadge
                 text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
-                width={isReservedUser ? 140 : 100}
                 icon={
                   Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
                 }
@@ -402,7 +400,6 @@ const ProductDetailScreen = (props) => {
                 text={`Reserverad ${
                   isReservedUser ? 'av dig ' : ''
                 }till ${shorterDate}`}
-                width={isReservedUser ? 260 : 220}
                 icon={
                   Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'
                 }
