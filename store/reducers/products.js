@@ -50,7 +50,8 @@ export default (state = initialState, action) => {
         action.productData.reservedDate,
         action.productData.reservedUntil,
         action.productData.collectedDate,
-        action.productData.projectId
+        action.productData.projectId,
+        action.productData.internalComments
       );
       console.log(
         'store/reducers/products/CREATE_PRODUCT, new product: ',
@@ -89,7 +90,8 @@ export default (state = initialState, action) => {
         state.userProducts[userProductIndex].reservedDate,
         state.userProducts[userProductIndex].reservedUntil,
         state.userProducts[userProductIndex].collectedDate,
-        state.userProducts[userProductIndex].projectId
+        state.userProducts[userProductIndex].projectId,
+        action.productData.internalComments
       );
       console.log(
         'store/reducers/products/UPDATE_PRODUCT, updated product: ',
@@ -145,7 +147,8 @@ export default (state = initialState, action) => {
         action.productData.reservedDate,
         action.productData.reservedUntil,
         action.productData.collectedDate,
-        action.productData.projectId
+        action.productData.projectId,
+        state.availableProducts[availableProductsIndexCPS].internalComments
       );
 
       console.log(

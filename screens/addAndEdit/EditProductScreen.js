@@ -71,6 +71,7 @@ const EditProductScreen = (props) => {
     inputValues: {
       title: editedProduct ? editedProduct.title : '',
       description: editedProduct ? editedProduct.description : '',
+      internalComments: editedProduct ? editedProduct.internalComments : '',
       length: editedProduct ? editedProduct.length : '',
       height: editedProduct ? editedProduct.height : '',
       width: editedProduct ? editedProduct.width : '',
@@ -87,6 +88,7 @@ const EditProductScreen = (props) => {
     inputValidities: {
       title: editedProduct ? true : false,
       description: editedProduct ? true : false,
+      internalComments: true,
       length: true,
       height: true,
       width: true,
@@ -138,7 +140,8 @@ const EditProductScreen = (props) => {
             formState.inputValues.length,
             formState.inputValues.height,
             formState.inputValues.width,
-            +formState.inputValues.price
+            +formState.inputValues.price,
+            formState.inputValues.internalComments
           )
         );
       } else {
@@ -157,7 +160,8 @@ const EditProductScreen = (props) => {
             formState.inputValues.length,
             formState.inputValues.height,
             formState.inputValues.width,
-            +formState.inputValues.price
+            +formState.inputValues.price,
+            formState.inputValues.internalComments
           )
         );
       }
@@ -238,7 +242,18 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper prompt="Skriv in en kort beskrivning">
+      <FormFieldWrapper prompt="Skriv in interna kommentarer, som ID -nummer ">
+        <TextInput
+          placeholder="Intern listning (om tillämpligt)"
+          style={formStyles.input}
+          value={formState.inputValues.internalComments}
+          onChangeText={textChangeHandler.bind(this, 'internalComments')}
+          keyboardType="default"
+          autoCapitalize="sentences"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in en längd, höjd och/eller bredd">
         <View
           style={{
             flex: 1,

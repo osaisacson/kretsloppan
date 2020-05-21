@@ -223,9 +223,16 @@ const ProductDetailScreen = (props) => {
               </View>
             </>
           ) : null}
-
+          {/* Internal listing information. Only show if user is owner */}
+          {hasEditPermission && selectedProduct.internalComments ? (
+            <View style={detailStyles.spaceBetweenRow}>
+              <Paragraph>Intern listning:</Paragraph>
+              <Paragraph>{selectedProduct.internalComments}</Paragraph>
+            </View>
+          ) : null}
           {/* General description */}
           <Title>{selectedProduct.title}</Title>
+
           <Paragraph>{selectedProduct.description}</Paragraph>
           {selectedProduct.length ? (
             <View style={detailStyles.spaceBetweenRow}>

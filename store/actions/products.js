@@ -139,7 +139,8 @@ export function fetchProducts() {
               updatedResult.reservedDate,
               updatedResult.reservedUntil,
               updatedResult.collectedDate,
-              updatedResult.projectId
+              updatedResult.projectId,
+              updatedResult.internalComments
             )
           );
         }
@@ -172,7 +173,8 @@ export function fetchProducts() {
             resData[key].reservedDate,
             resData[key].reservedUntil,
             resData[key].collectedDate,
-            resData[key].projectId
+            resData[key].projectId,
+            resData[key].internalComments
           )
         );
       }
@@ -226,7 +228,8 @@ export function createProduct(
   length,
   height,
   width,
-  price
+  price,
+  internalComments
 ) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -266,6 +269,7 @@ export function createProduct(
         reservedUntil: '',
         collectedDate: '',
         projectId: '000',
+        internalComments,
       };
 
       // Perform the API call - create the product, passing the productData object above
@@ -310,6 +314,7 @@ export function createProduct(
           reservedUntil: '',
           collectedDate: '',
           projectId: '000',
+          internalComments,
         },
       });
       console.log('----------actions/products/createProduct--------END');
@@ -336,7 +341,8 @@ export function updateProduct(
   length,
   height,
   width,
-  price
+  price,
+  internalComments
 ) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -357,6 +363,7 @@ export function updateProduct(
       height,
       width,
       price,
+      internalComments,
     };
 
     try {
@@ -383,6 +390,7 @@ export function updateProduct(
           height,
           width,
           price,
+          internalComments,
         };
       }
 

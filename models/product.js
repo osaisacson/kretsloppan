@@ -27,7 +27,8 @@ class Product {
     reservedDate,
     reservedUntil,
     collectedDate,
-    projectId
+    projectId,
+    internalComments
   ) {
     this.id = id;
     this.ownerId = ownerId;
@@ -55,6 +56,7 @@ class Product {
     this.reservedUntil = reservedUntil;
     this.collectedDate = collectedDate;
     this.projectId = projectId;
+    this.internalComments = internalComments;
   }
   get readableDate() {
     return moment(this.date).format('MMMM Do YYYY, hh:mm');
