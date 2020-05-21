@@ -30,7 +30,6 @@
         "foregroundImage": "./assets/splash.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./google-services.json",
       "permissions": [
         "CAMERA_ROLL",
         "CAMERA",

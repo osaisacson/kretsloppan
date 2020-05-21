@@ -4,6 +4,7 @@ import {
   Entypo,
   MaterialIcons,
   MaterialCommunityIcons,
+  FontAwesome5,
 } from '@expo/vector-icons';
 
 //Tab screens
@@ -41,7 +42,7 @@ export const TabNavigator = () => {
         component={ProductsNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name={'hammer'} color={color} size={23} />
+            <FontAwesome5 name={'recycle'} color={color} size={23} />
           ),
         }}
       />

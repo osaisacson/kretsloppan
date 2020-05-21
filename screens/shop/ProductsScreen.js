@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { FlatList, View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
@@ -103,8 +103,8 @@ const ProductsScreen = (props) => {
             buttonOnPress={() => props.navigation.navigate('EditProduct')}
             subTitle={'Upplagda av alla'}
             icon={
-              <MaterialCommunityIcons
-                name="hammer"
+              <FontAwesome5
+                name="recycle"
                 size={20}
                 style={{ marginRight: 5 }}
               />
