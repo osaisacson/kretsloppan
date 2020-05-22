@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
@@ -9,7 +9,6 @@ import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
 import SectionCard from '../../components/UI/SectionCard';
 import SaferArea from '../../components/UI/SaferArea';
 import ProductItem from '../../components/UI/ProductItem';
@@ -31,6 +30,12 @@ const ProjectDetailScreen = (props) => {
   const associatedProducts = useSelector((state) =>
     state.products.availableProducts.filter(
       (prod) => prod.projectId === projectId
+    )
+  );
+
+  const associatedProposals = useSelector((state) =>
+    state.proposals.availableProposals.filter(
+      (proposal) => proposal.projectId === projectId
     )
   );
 
@@ -137,6 +142,16 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
+      <HorizontalScroll
+        textItem={true}
+        detailPath="ProposalDetail"
+        title={'efterlysningar'}
+        subTitle={'Efterlysningar relaterade till projektet'}
+        buttonText={'+ Efterlysning'}
+        buttonOnPress={() => props.navigation.navigate('EditProposal')}
+        scrollData={associatedProposals}
+        navigation={props.navigation}
+      />
       <FlatList
         initialNumToRender={8}
         horizontal={false}
