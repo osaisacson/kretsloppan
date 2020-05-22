@@ -67,7 +67,7 @@ const ProductItem = (props) => {
               color: '#fff',
               backgroundColor: Colors.primary,
             }}
-            text={`till ${shorterDate}`}
+            text={shorterDate}
             icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
             backgroundColor={Colors.primary}
           />

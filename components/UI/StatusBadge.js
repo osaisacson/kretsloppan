@@ -9,16 +9,13 @@ const StatusBadge = (props) => {
     <View
       style={{
         ...props.style,
-        borderRadius: 30,
+        borderRadius: 5,
         flex: 1,
         flexDirection: 'row',
         color: '#fff',
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-        margin: 15,
-        paddingHorizontal: 10,
+        alignSelf: 'left',
+        marginBottom: 10,
+        paddingHorizontal: 5,
         backgroundColor: props.backgroundColor,
       }}
     >

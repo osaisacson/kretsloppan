@@ -19,10 +19,14 @@ const StartupScreen = (props) => {
 
   useAsyncEffect(async () => {
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {

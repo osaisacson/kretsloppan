@@ -187,6 +187,62 @@ const ProductDetailScreen = (props) => {
           Upplagt{' '}
           {Moment(selectedProduct.date).locale('sv').startOf('hour').fromNow()}
         </Text>
+
+        {/* Information about the reservation */}
+        {isReservedOrPickedUp ? (
+          <SectionCard>
+            {/* Show collected badge if product is collected */}
+            {isPickedUp ? (
+              <StatusBadge
+                text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
+                icon={
+                  Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
+                }
+                backgroundColor={Colors.completed}
+              />
+            ) : null}
+            {isReserved ? (
+              <StatusBadge
+                text={`Reserverad ${
+                  isReservedUser ? 'av dig ' : ''
+                }tills ${shorterDate}`}
+                icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
+                backgroundColor={Colors.primary}
+              />
+            ) : null}
+
+            {!isReservedUser ? (
+              <ContactDetails
+                profileId={
+                  reservedUserId ? reservedUserId : selectedProduct.newOwnerId
+                }
+                hideButton={isPickedUp}
+                buttonText={'kontaktdetaljer'}
+              />
+            ) : null}
+            {selectedProduct.projectId && projectForProduct.length ? (
+              <>
+                <Divider />
+
+                <View style={detailStyles.centered}>
+                  <HeaderThree
+                    text={isPickedUp ? 'Används i ' : 'För att användas i '}
+                    style={detailStyles.centeredHeader}
+                  />
+
+                  <HorizontalScroll
+                    scrollHeight={155}
+                    roundItem={true}
+                    detailPath={'ProjectDetail'}
+                    scrollData={projectForProduct}
+                    navigation={props.navigation}
+                  />
+                </View>
+              </>
+            ) : null}
+          </SectionCard>
+        ) : null}
+
         <SectionCard>
           {/* Info about who created the product post */}
           <ContactDetails
@@ -385,61 +441,6 @@ const ProductDetailScreen = (props) => {
               icon={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
               backgroundColor={Colors.neutral}
             />
-          </SectionCard>
-        ) : null}
-
-        {/* Information about the reservation */}
-        {isReservedOrPickedUp ? (
-          <SectionCard>
-            {/* Show collected badge if product is collected */}
-            {isPickedUp ? (
-              <StatusBadge
-                text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
-                icon={
-                  Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
-                }
-                backgroundColor={Colors.completed}
-              />
-            ) : null}
-            {isReserved ? (
-              <StatusBadge
-                text={`Reserverad ${
-                  isReservedUser ? 'av dig ' : ''
-                }till ${shorterDate}`}
-                icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-                backgroundColor={Colors.primary}
-              />
-            ) : null}
-
-            {!isReservedUser ? (
-              <ContactDetails
-                profileId={
-                  reservedUserId ? reservedUserId : selectedProduct.newOwnerId
-                }
-                hideButton={isPickedUp}
-                buttonText={'kontaktdetaljer'}
-              />
-            ) : null}
-            {selectedProduct.projectId && projectForProduct.length ? (
-              <>
-                <Divider />
-
-                <View style={detailStyles.centered}>
-                  <HeaderThree
-                    text={isPickedUp ? 'Används i ' : 'För att användas i '}
-                    style={detailStyles.centeredHeader}
-                  />
-
-                  <HorizontalScroll
-                    scrollHeight={155}
-                    roundItem={true}
-                    detailPath={'ProjectDetail'}
-                    scrollData={projectForProduct}
-                    navigation={props.navigation}
-                  />
-                </View>
-              </>
-            ) : null}
           </SectionCard>
         ) : null}
       </View>
