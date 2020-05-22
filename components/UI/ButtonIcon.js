@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  StyleSheet,
-} from 'react-native';
-
+import { Platform, TouchableOpacity, TouchableNativeFeedback, StyleSheet } from 'react-native';
 //Components
 import { IconButton, Badge } from 'react-native-paper';
 
@@ -17,19 +12,21 @@ const ButtonIcon = (props) => {
 
   return (
     <TouchableCmp style={{ ...styles.container, ...props.style }}>
-      {props.badge ? <Badge style={styles.badge}>{props.badge}</Badge> : null}
-      <IconButton
-        icon={props.icon}
-        size={props.size ? props.size : 20}
-        animated={true}
-        color={'#fff'}
-        style={{
-          borderColor: props.borderColor ? props.borderColor : '#fff',
-          borderWidth: 0.5,
-          backgroundColor: props.color,
-        }}
-        onPress={props.onSelect}
-      />
+      <>
+        {props.badge ? <Badge style={styles.badge}>{props.badge}</Badge> : null}
+        <IconButton
+          icon={props.icon}
+          size={props.size ? props.size : 20}
+          animated
+          color="#fff"
+          style={{
+            borderColor: props.borderColor ? props.borderColor : '#fff',
+            borderWidth: 0.5,
+            backgroundColor: props.color,
+          }}
+          onPress={props.onSelect}
+        />
+      </>
     </TouchableCmp>
   );
 };

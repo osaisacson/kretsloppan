@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 //Components
 import {
@@ -9,10 +10,10 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import Card from './Card';
-import { Ionicons } from '@expo/vector-icons';
-//Constants
+
 import Colors from '../../constants/Colors';
+import Card from './Card';
+//Constants
 
 const UsedItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -76,11 +77,7 @@ const UsedItem = (props) => {
               <Image style={styles.image} source={{ uri: props.image }} />
             </View>
             <View style={styles.details}>
-              <Text
-                numberOfLines={1}
-                ellipsizeMode={'tail'}
-                style={styles.title}
-              >
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
                 {props.title}
               </Text>
             </View>

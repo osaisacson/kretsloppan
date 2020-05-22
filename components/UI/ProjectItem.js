@@ -8,8 +8,9 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import Card from './Card';
+
 import CachedImage from '../../components/UI/CachedImage';
+import Card from './Card';
 
 const ProjectItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -32,7 +33,7 @@ const ProjectItem = (props) => {
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.title}>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
         {props.itemData.title}
       </Text>
     </View>

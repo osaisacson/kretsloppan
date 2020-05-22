@@ -1,5 +1,7 @@
-import React from 'react';
 //Components
+import { Ionicons } from '@expo/vector-icons';
+import Moment from 'moment/min/moment-with-locales';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,14 +10,12 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import Card from './Card';
-import { Ionicons } from '@expo/vector-icons';
-import CachedImage from '../../components/UI/CachedImage';
-import Moment from 'moment/min/moment-with-locales';
-import StatusBadge from '../../components/UI/StatusBadge';
 
+import CachedImage from '../../components/UI/CachedImage';
+import StatusBadge from '../../components/UI/StatusBadge';
 //Constants
 import Colors from './../../constants/Colors';
+import Card from './Card';
 
 const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -25,17 +25,13 @@ const ProductItem = (props) => {
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
 
-  const shorterDate = Moment(props.itemData.reservedUntil)
-    .locale('sv')
-    .calendar();
+  const shorterDate = Moment(props.itemData.reservedUntil).locale('sv').calendar();
 
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.container}>
-      <Card
-        style={props.isHorizontal ? styles.horizontalProduct : styles.product}
-      >
+      <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         {props.itemData.status === 'bearbetas' ? (
           <Ionicons
             style={{
@@ -96,14 +92,12 @@ const ProductItem = (props) => {
               <View style={styles.imageContainer}>
                 <CachedImage style={styles.image} uri={props.itemData.image} />
               </View>
-              <Text style={styles.price}>
-                {props.itemData.price ? props.itemData.price : 0} kr
-              </Text>
+              <Text style={styles.price}>{props.itemData.price ? props.itemData.price : 0} kr</Text>
             </View>
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.title}>
+      <Text numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
         {props.itemData.title}
       </Text>
     </View>

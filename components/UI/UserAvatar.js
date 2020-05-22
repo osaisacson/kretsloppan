@@ -1,39 +1,25 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
 //Components
-import {
-  Platform,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  View,
-} from 'react-native';
+import { Platform, TouchableOpacity, TouchableNativeFeedback, View } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
 const UserAvatar = (props) => {
   //Get logged in userId from state and all reserved products
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
-  const availableProducts = useSelector(
-    (state) => state.products.availableProducts
-  );
+  const availableProducts = useSelector((state) => state.products.availableProducts);
 
   const userProducts = useSelector((state) => state.products.userProducts);
 
   const reservedProducts = availableProducts.filter(
-    (product) =>
-      product.status === 'reserverad' &&
-      product.reservedUserId === loggedInUserId
+    (product) => product.status === 'reserverad' && product.reservedUserId === loggedInUserId
   );
 
   const userReservedProductsNr =
-    reservedProducts && reservedProducts.length > 0
-      ? reservedProducts.length
-      : 0;
+    reservedProducts && reservedProducts.length > 0 ? reservedProducts.length : 0;
 
-  const otherProducts = userProducts.filter(
-    (product) => product.status === 'reserverad'
-  );
+  const otherProducts = userProducts.filter((product) => product.status === 'reserverad');
 
   const othersReservedProductsNr =
     otherProducts && otherProducts.length > 0 ? otherProducts.length : 0;
@@ -41,9 +27,7 @@ const UserAvatar = (props) => {
   //If we are passing a userId, use this as the current user, else use the currently logged in user
   const currentUser = useSelector((state) =>
     state.profiles.allProfiles.find((prof) =>
-      props.userId
-        ? prof.profileId === props.userId
-        : prof.profileId === loggedInUserId
+      props.userId ? prof.profileId === props.userId : prof.profileId === loggedInUserId
     )
   );
 
@@ -65,8 +49,7 @@ const UserAvatar = (props) => {
               marginHorizontal: 10,
               marginTop: 40,
             }
-      }
-    >
+      }>
       <View>
         <Avatar.Image
           style={{
@@ -88,8 +71,7 @@ const UserAvatar = (props) => {
               fontWeight: 'bold',
               position: 'relative',
               bottom: 20,
-            }}
-          >
+            }}>
             {/* NOTE: This is the number that should also be in the push notifications */}
             {userReservedProductsNr + othersReservedProductsNr}
           </Badge>
