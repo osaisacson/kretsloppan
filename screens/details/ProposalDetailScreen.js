@@ -15,6 +15,7 @@ import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import StatusBadge from '../../components/UI/StatusBadge';
 import SectionCard from '../../components/UI/SectionCard';
+import Moment from 'moment/min/moment-with-locales';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -89,14 +90,16 @@ const ProposalDetailScreen = (props) => {
 
   return selectedProposal ? (
     <DetailWrapper>
+      <Text style={{ textAlign: 'right', color: '#666' }}>
+        Upplagt{' '}
+        {Moment(selectedProposal.date).locale('sv').startOf('hour').fromNow()}
+      </Text>
       {isResolved ? (
-        <SectionCard>
-          <StatusBadge
-            text={'Löst!'}
-            icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-            backgroundColor={Colors.completed}
-          />
-        </SectionCard>
+        <StatusBadge
+          text={'Löst!'}
+          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+          backgroundColor={Colors.completed}
+        />
       ) : null}
       <SectionCard>
         {/* Show contact info only if the user is not the creator */}
@@ -153,8 +156,6 @@ const ProposalDetailScreen = (props) => {
 
       {selectedProposal.projectId && projectForProposal.length ? (
         <SectionCard>
-          <Divider />
-
           <View style={detailStyles.centered}>
             <HeaderThree
               text={'Relaterar till projektet:'}

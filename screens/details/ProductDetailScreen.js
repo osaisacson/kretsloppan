@@ -240,6 +240,18 @@ const ProductDetailScreen = (props) => {
                 </View>
               </>
             ) : null}
+            {!isPaused ? (
+              <HeaderThree
+                text={`Kontakta varandra in${Moment(
+                  selectedProduct.reservedUntil
+                )
+                  .locale('sv')
+                  .endOf('hour')
+                  .subtract(1, 'hour')
+                  .fromNow()}`}
+                style={detailStyles.centeredHeader}
+              />
+            ) : null}
           </SectionCard>
         ) : null}
 

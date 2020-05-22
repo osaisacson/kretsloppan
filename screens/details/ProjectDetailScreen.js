@@ -9,6 +9,7 @@ import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
+import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import SectionCard from '../../components/UI/SectionCard';
 import SaferArea from '../../components/UI/SaferArea';
 import ProductItem from '../../components/UI/ProductItem';
@@ -146,9 +147,12 @@ const ProjectDetailScreen = (props) => {
         textItem={true}
         detailPath="ProposalDetail"
         title={'efterlysningar'}
-        subTitle={'Efterlysningar relaterade till projektet'}
-        buttonText={'+ Efterlysning'}
-        buttonOnPress={() => props.navigation.navigate('EditProposal')}
+        buttonText={hasEditPermission ? '+ Efterlysning' : null}
+        buttonOnPress={
+          hasEditPermission
+            ? () => props.navigation.navigate('EditProposal')
+            : null
+        }
         scrollData={associatedProposals}
         navigation={props.navigation}
       />
