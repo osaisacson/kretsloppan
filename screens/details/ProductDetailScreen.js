@@ -135,7 +135,7 @@ const ProductDetailScreen = (props) => {
           Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
         </Text>
 
-        {!isReady && profileContactId ? (
+        {profileContactId ? (
           <SectionCard style={{ marginLeft: 15 }}>
             <HeaderThree text={copyForProduct} style={{ marginBottom: 5 }} />
             <ContactDetails
