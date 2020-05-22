@@ -45,7 +45,7 @@ const ProductButtonLogic = (props) => {
   const hasEditPermission = props.hasEditPermission;
 
   //Check status of product and privileges of user
-  const isReady = status === 'redo';
+  const isReady = status === 'redo' || '';
   const isReserved = status === 'reserverad';
   const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
@@ -214,20 +214,6 @@ const ProductButtonLogic = (props) => {
             backgroundColor={Colors.primary}
           />
 
-          {!isReservedUser ? (
-            <>
-              <HeaderThree
-                style={{ marginLeft: 15, marginBottom: 5 }}
-                text={'Av:'}
-              />
-              <ContactDetails
-                profileId={reservedUserId}
-                hideButton={isPickedUp || !hasEditPermission}
-                buttonText={'kontaktdetaljer'}
-              />
-            </>
-          ) : null}
-
           {hasEditPermission || isReservedUser || isOrganisedUser ? (
             <>
               {!isOrganised ? (
@@ -281,17 +267,7 @@ const ProductButtonLogic = (props) => {
             icon={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
             backgroundColor={Colors.neutral}
           />
-          <>
-            <HeaderThree
-              style={{ marginLeft: 15, marginBottom: 5 }}
-              text={'Hämtas av:'}
-            />
-            <ContactDetails
-              profileId={collectingUserId}
-              hideButton={isPickedUp || !hasEditPermission}
-              buttonText={'kontaktdetaljer'}
-            />
-          </>
+
           {/* Organising logistics - allow both parties to change the status to organised. */}
           <View
             style={{
@@ -317,27 +293,12 @@ const ProductButtonLogic = (props) => {
 
       {/* If product is picked up */}
       {isPickedUp ? (
-        <>
-          <StatusBadge
-            style={{ alignSelf: 'center', marginTop: 10 }}
-            text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
-            icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-            backgroundColor={Colors.completed}
-          />
-
-          {!isReservedUser ? (
-            <>
-              <HeaderThree
-                style={{ marginLeft: 15, marginBottom: 5 }}
-                text={'Ny ägare:'}
-              />
-              <ContactDetails
-                profileId={newOwnerId}
-                buttonText={'kontaktdetaljer'}
-              />
-            </>
-          ) : null}
-        </>
+        <StatusBadge
+          style={{ alignSelf: 'center', marginTop: 10 }}
+          text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
+          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+          backgroundColor={Colors.completed}
+        />
       ) : null}
     </View>
   );

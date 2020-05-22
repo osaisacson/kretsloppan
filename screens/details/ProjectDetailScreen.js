@@ -143,19 +143,14 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
-      <HorizontalScroll
-        textItem={true}
-        detailPath="ProposalDetail"
-        title={'efterlysningar'}
-        buttonText={hasEditPermission ? '+ Efterlysning' : null}
-        buttonOnPress={
-          hasEditPermission
-            ? () => props.navigation.navigate('EditProposal')
-            : null
-        }
-        scrollData={associatedProposals}
-        navigation={props.navigation}
-      />
+      {associatedProposals.length ? (
+        <HorizontalScroll
+          textItem={true}
+          detailPath="ProposalDetail"
+          scrollData={associatedProposals}
+          navigation={props.navigation}
+        />
+      ) : null}
       <FlatList
         initialNumToRender={8}
         horizontal={false}

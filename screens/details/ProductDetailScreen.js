@@ -13,7 +13,7 @@ import {
 import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import HeaderThree from '../../components/UI/HeaderThree';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
+import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import Loader from '../../components/UI/Loader';
 import FilterLine from '../../components/UI/FilterLine';
 import ProductButtonLogic from './ProductButtonLogic';
@@ -42,22 +42,50 @@ const ProductDetailScreen = (props) => {
     state.products.availableProducts.find((prod) => prod.id === productId)
   );
 
+  const {
+    category,
+    color,
+    collectingUserId,
+    condition,
+    date,
+    description,
+    height,
+    id,
+    image,
+    internalComments,
+    length,
+    material,
+    newOwnerId,
+    price,
+    projectId,
+    status,
+    style,
+    title,
+    reservedUserId,
+    width,
+  } = selectedProduct;
+
   //Get all projects from state, and then return the ones that matches the id of the current product
   const userProjects = useSelector((state) => state.projects.userProjects);
-  const projectForProduct = userProjects.filter(
-    (proj) => proj.id === selectedProduct.projectId
+  const projectForProductSelection = userProjects.filter(
+    (proj) => proj.id === projectId
   );
+
+  const projectForProduct = projectForProductSelection[0];
+  console.log('projectForProduct: ', projectForProduct);
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
-  const isPickedUp = selectedProduct.status === 'hämtad';
+  const isReady = status === 'redo';
+  const isReserved = status === 'reserverad';
+  const isOrganised = status === 'ordnad';
+  const isPickedUp = status === 'hämtad';
 
   const editProductHandler = (id) => {
     navigation.navigate('EditProduct', { detailId: id });
   };
 
   const deleteHandler = () => {
-    const id = selectedProduct.id;
     Alert.alert(
       'Är du säker?',
       'Vill du verkligen radera den här produkten? Det går inte att gå ändra sig när det väl är gjort.',
@@ -75,8 +103,27 @@ const ProductDetailScreen = (props) => {
     );
   };
 
-  const { category, condition, style, material, color } = selectedProduct;
+  console.log('reservedUserId: ', reservedUserId);
+  console.log('collectingUserId: ', collectingUserId);
+  console.log('newOwnerId: ', newOwnerId);
 
+  const profileContactId = isReserved
+    ? reservedUserId
+    : isOrganised
+    ? collectingUserId
+    : isPickedUp
+    ? newOwnerId
+    : null;
+
+  const copyForProduct = isReserved
+    ? 'Reserverad av:'
+    : isOrganised
+    ? 'Hämtas av:'
+    : isPickedUp
+    ? 'Ny ägare:'
+    : null;
+
+  console.log('profileContactId: ', profileContactId);
   if (isLoading) {
     return <Loader />;
   }
@@ -85,9 +132,34 @@ const ProductDetailScreen = (props) => {
     <DetailWrapper>
       <View>
         <Text style={{ textAlign: 'right', color: '#666' }}>
-          Upplagt{' '}
-          {Moment(selectedProduct.date).locale('sv').startOf('hour').fromNow()}
+          Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
         </Text>
+
+        {!isReady && profileContactId ? (
+          <SectionCard style={{ marginLeft: 15 }}>
+            <HeaderThree text={copyForProduct} style={{ marginBottom: 5 }} />
+            <ContactDetails
+              profileId={profileContactId}
+              hideButton={isPickedUp || !hasEditPermission}
+              buttonText={'kontaktdetaljer'}
+            />
+
+            {projectForProduct ? (
+              <>
+                <Divider style={{ marginBottom: 10 }} />
+                <HeaderThree
+                  text={'Till projekt:'}
+                  style={{ marginBottom: 5 }}
+                />
+                <SmallRoundItem
+                  detailPath={'ProjectDetail'}
+                  item={projectForProduct}
+                  navigation={props.navigation}
+                />
+              </>
+            ) : null}
+          </SectionCard>
+        ) : null}
 
         {/* Buttons for handling reservation, coordination and collection */}
         <ProductButtonLogic
@@ -96,39 +168,17 @@ const ProductDetailScreen = (props) => {
           navigation={props.navigation}
         />
 
-        {isPickedUp ? (
-          <>
-            <Divider />
-            <View style={detailStyles.centered}>
-              <HeaderThree
-                text={'Används i '}
-                style={detailStyles.centeredHeader}
-              />
-
-              <HorizontalScroll
-                scrollHeight={155}
-                roundItem={true}
-                detailPath={'ProjectDetail'}
-                scrollData={projectForProduct}
-                navigation={props.navigation}
-              />
-            </View>
-          </>
-        ) : null}
         <SectionCard>
           {/* Info about who created the product post */}
           <ContactDetails
             profileId={ownerId}
-            productId={selectedProduct.id}
+            productId={id}
             hideButton={isPickedUp}
             buttonText={'kontaktdetaljer'}
           />
 
           {/* Product image */}
-          <CachedImage
-            style={detailStyles.image}
-            uri={selectedProduct.image ? selectedProduct.image : ''}
-          />
+          <CachedImage style={detailStyles.image} uri={image ? image : ''} />
 
           {/* Show delete and edit buttons if the user has editing 
         permissions and the product is not yet picked up */}
@@ -139,7 +189,7 @@ const ProductDetailScreen = (props) => {
                   icon="pen"
                   color={Colors.neutral}
                   onSelect={() => {
-                    editProductHandler(selectedProduct.id);
+                    editProductHandler(id);
                   }}
                 />
                 <ButtonIcon
@@ -151,32 +201,35 @@ const ProductDetailScreen = (props) => {
             </>
           ) : null}
           {/* Internal listing information. Only show if user is owner */}
-          {hasEditPermission && selectedProduct.internalComments ? (
+          {hasEditPermission && internalComments ? (
             <View style={detailStyles.spaceBetweenRow}>
               <Paragraph>Intern listning:</Paragraph>
-              <Paragraph>{selectedProduct.internalComments}</Paragraph>
+              <Paragraph>{internalComments}</Paragraph>
             </View>
           ) : null}
           {/* General description */}
-          <Title>{selectedProduct.title}</Title>
+          <Title>{title}</Title>
+          <Paragraph>{description}</Paragraph>
 
-          <Paragraph>{selectedProduct.description}</Paragraph>
-          {selectedProduct.length ? (
+          {length || height || width ? (
+            <Divider style={{ marginVertical: 10 }} />
+          ) : null}
+          {length ? (
             <View style={detailStyles.spaceBetweenRow}>
-              <Paragraph>LÄNGD:</Paragraph>
-              <Paragraph>{selectedProduct.length}</Paragraph>
+              <Paragraph>Längd:</Paragraph>
+              <Paragraph>{length}</Paragraph>
             </View>
           ) : null}
-          {selectedProduct.height ? (
+          {height ? (
             <View style={detailStyles.spaceBetweenRow}>
-              <Paragraph>HÖJD:</Paragraph>
-              <Paragraph>{selectedProduct.height}</Paragraph>
+              <Paragraph>Höjd:</Paragraph>
+              <Paragraph>{height}</Paragraph>
             </View>
           ) : null}
-          {selectedProduct.width ? (
+          {width ? (
             <View style={detailStyles.spaceBetweenRow}>
-              <Paragraph>BREDD:</Paragraph>
-              <Paragraph>{selectedProduct.width}</Paragraph>
+              <Paragraph>Bredd:</Paragraph>
+              <Paragraph>{width}</Paragraph>
             </View>
           ) : null}
           <Divider style={{ marginTop: 10 }} />
@@ -199,7 +252,7 @@ const ProductDetailScreen = (props) => {
 
           {/* Price */}
           <Paragraph style={{ textAlign: 'right', padding: 20 }}>
-            {selectedProduct.price ? `${selectedProduct.price} kr` : 'Gratis'}
+            {price ? `${price} kr` : 'Gratis'}
           </Paragraph>
         </SectionCard>
       </View>
