@@ -237,7 +237,10 @@ const ProductDetailScreen = (props) => {
 
             {!isReservedUser ? (
               <>
-                <HeaderThree text={'Av:'} />
+                <HeaderThree
+                  style={{ marginLeft: 15, marginBottom: 5 }}
+                  text={'Av:'}
+                />
                 <ContactDetails
                   profileId={
                     reservedUserId ? reservedUserId : selectedProduct.newOwnerId

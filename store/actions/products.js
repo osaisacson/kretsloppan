@@ -64,9 +64,8 @@ export function unReserveProduct(id) {
       console.log('----------actions/products/unReserveProduct--------END');
       return updatedData;
     } catch (error) {
-      console.log(error)(
-        '----------actions/products/unReserveProduct--------END'
-      );
+      console.log(error);
+      ('----------actions/products/unReserveProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -95,8 +94,7 @@ export function fetchProducts() {
         //Is the product reservation expired?
         const reservationExpiryDate = new Date(resData[key].reservedUntil);
         const isPickedUp = resData[key].status === 'hämtad';
-        const collectionIsNotAgreed = resData[key].collectingDate === '';
-
+        const collectionIsNotAgreed = !resData[key].collectingDate;
         const shouldBeReset =
           !isPickedUp &&
           collectionIsNotAgreed &&
@@ -105,6 +103,7 @@ export function fetchProducts() {
 
         //If the product has expired, call a function which passes correct new fields and then push the updated product to the loadedProducts array
         if (shouldBeReset) {
+          console.log('EXPIRED PRODUCT: ', resData[key]);
           console.log(
             'Found expired product, calling unReserveProduct ------>'
           );
@@ -194,7 +193,8 @@ export function fetchProducts() {
       });
       ('----------actions/products/fetchProducts--------END');
     } catch (error) {
-      console.log(error)('----------actions/products/fetchProducts--------END');
+      console.log(error);
+      ('----------actions/products/fetchProducts--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -327,7 +327,8 @@ export function createProduct(
       });
       console.log('----------actions/products/createProduct--------END');
     } catch (error) {
-      console.log(error)('----------actions/products/createProduct--------END');
+      console.log(error);
+      ('----------actions/products/createProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -427,7 +428,8 @@ export function updateProduct(
 
       console.log('----------actions/products/updateProduct--------END');
     } catch (error) {
-      console.log(error)('----------actions/products/updateProduct--------END');
+      console.log(error);
+      ('----------actions/products/updateProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
