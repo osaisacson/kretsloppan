@@ -12,15 +12,13 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import SectionCard from '../../components/UI/SectionCard';
 import SaferArea from '../../components/UI/SaferArea';
-import UsedItem from '../../components/UI/UsedItem';
+import ProductItem from '../../components/UI/ProductItem';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectDetailScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const projectId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
@@ -70,10 +68,6 @@ const ProjectDetailScreen = (props) => {
       ]
     );
   };
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   const projectHeader = selectedProject ? (
     <View>
@@ -151,12 +145,8 @@ const ProjectDetailScreen = (props) => {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={projectHeader}
         renderItem={(itemData) => (
-          <UsedItem
-            key={itemData.item.id}
-            isHorizontal={true}
-            image={itemData.item.image}
-            title={itemData.item.title}
-            status={itemData.item.status}
+          <ProductItem
+            itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(
                 itemData.item.id,
