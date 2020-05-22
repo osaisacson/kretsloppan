@@ -43,18 +43,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   project: {
-    height: 90,
-    width: 90,
+    height: 100,
+    width: 100,
     marginLeft: 10,
     marginRight: 10,
     borderRadius: 100 / 2,
   },
   touchable: {
-    height: 90,
-    width: 90,
+    height: 100,
+    width: 100,
     borderRadius: 100 / 2,
     overflow: 'hidden',
-    borderWidth: 1,
+    borderWidth: 0.1,
     borderColor: '#000',
   },
   imageContainer: {
