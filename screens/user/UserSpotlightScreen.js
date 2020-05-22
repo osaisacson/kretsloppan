@@ -58,21 +58,21 @@ const UserSpotlightScreen = (props) => {
   );
 
   //RESERVED: Gets all products reserved by the user
-  const reservedByUserRaw = availableProducts.filter(
+  const reservedAllProductsRaw = availableProducts.filter(
     (product) =>
       product.status === 'reserverad' &&
       product.reservedUserId === loggedInUserId
   );
 
-  const reservedByUser = reservedByUserRaw.sort(function (a, b) {
-    return new Date(b.reservedDate) - new Date(a.reservedDate);
-  });
-
   const reservedByOthersRaw = userProducts.filter(
     (product) => product.status === 'reserverad'
   );
 
-  const reservedByOthers = reservedByOthersRaw.sort(function (a, b) {
+  const reservedProductsRaw = reservedAllProductsRaw.concat(
+    reservedByOthersRaw
+  );
+
+  const reservedProducts = reservedProductsRaw.sort(function (a, b) {
     return new Date(b.reservedDate) - new Date(a.reservedDate);
   });
 
@@ -197,22 +197,22 @@ const UserSpotlightScreen = (props) => {
       </View>
 
       {/* Product, project and propsal sections */}
-      {reservedByUser.length ? (
+      {reservedProducts.length ? (
         <HorizontalScroll
-          title={'Att hämtas'}
+          title={'Reservationer'}
           subTitle={
-            'De du reserverat från andra användare. Notera: din reservation upphör gälla efter 24 timmar.'
+            'Väntar på att ni kontaktar varandra för organisering av upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar.'
           }
           extraSubTitle={
-            'Nästa steg: kontakta uppläggaren för att ordna logistik runt upphämtning'
+            'Nästa steg: kontakta intressenten/uppläggaren för att ordna logistik runt återbrukets upphämtning eller avlämning'
           }
           bgColor={Colors.lightPrimary}
-          scrollData={reservedByUser}
+          scrollData={reservedProducts}
           showNotificationBadge={true}
           navigation={props.navigation}
         />
       ) : null}
-      {reservedByOthers.length ? (
+      {/* {reservedByOthers.length ? (
         <HorizontalScroll
           title={'Att lämnas'}
           subTitle={
@@ -226,7 +226,7 @@ const UserSpotlightScreen = (props) => {
           showNotificationBadge={true}
           navigation={props.navigation}
         />
-      ) : null}
+      ) : null} */}
       <HorizontalScroll
         title={'Upplagt av mig'}
         subTitle={'Återbruk upplagt av mig'}

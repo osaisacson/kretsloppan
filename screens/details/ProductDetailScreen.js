@@ -107,7 +107,7 @@ const ProductDetailScreen = (props) => {
   const toggleIsReadyHandle = () => {
     const id = selectedProduct.id;
     setIsToggled((prevState) => !prevState);
-    let status = selectedProduct.status === 'bearbetas' ? 'redo' : 'bearbetas';
+    let status = selectedProduct.status === 'ordnad' ? 'ordnas' : 'ordnad';
     dispatch(productsActions.changeProductStatus(id, status));
     props.navigation.goBack();
   };
@@ -240,21 +240,32 @@ const ProductDetailScreen = (props) => {
                 </View>
               </>
             ) : null}
-            {!isPaused ? (
-              <HeaderThree
-                text={`Kontakta varandra in${Moment(
-                  selectedProduct.reservedUntil
-                )
-                  .locale('sv')
-                  .endOf('hour')
-                  .subtract(1, 'hour')
-                  .fromNow()}`}
-                style={detailStyles.centeredHeader}
-              />
-            ) : null}
           </SectionCard>
         ) : null}
 
+        {!isPaused ? (
+          <HeaderThree
+            text={`Kontakta varandra in${Moment(selectedProduct.reservedUntil)
+              .locale('sv')
+              .endOf('hour')
+              .subtract(1, 'hour')
+              .fromNow()}`}
+            style={detailStyles.centeredHeader}
+          />
+        ) : null}
+        {/* Logistics sorted - allow both parties to set. */}
+        {hasEditPermission || isReservedUser ? (
+          <ButtonAction
+            style={{ marginRight: 10 }}
+            isToggled={isToggled}
+            title={
+              isPaused
+                ? 'Logistik ordnad'
+                : "Logistik ordnad, sätt som 'väntar på upphämtning'"
+            }
+            onSelect={toggleIsReadyHandle.bind(this)}
+          />
+        ) : null}
         <SectionCard>
           {/* Info about who created the product post */}
           <ContactDetails
@@ -397,17 +408,6 @@ const ProductDetailScreen = (props) => {
                   title={'reservera'}
                 />
               ) : null}
-
-              {/* Pause - to show if user is the creator */}
-              {hasEditPermission ? (
-                <ButtonAction
-                  style={{ marginRight: 10 }}
-                  isToggled={isToggled}
-                  icon={isReady ? 'pause' : null}
-                  title={isReady ? 'pausa' : 'avpausa, sätt som redo'}
-                  onSelect={toggleIsReadyHandle.bind(this)}
-                />
-              ) : null}
             </View>
           </SectionCard>
         ) : null}
@@ -449,7 +449,7 @@ const ProductDetailScreen = (props) => {
         {isPaused ? (
           <SectionCard>
             <StatusBadge
-              text={'Pausad för bearbetning'}
+              text={'Logistik ordnad! Väntar på leverans'}
               icon={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
               backgroundColor={Colors.neutral}
             />
