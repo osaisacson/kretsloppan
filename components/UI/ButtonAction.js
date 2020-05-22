@@ -1,10 +1,6 @@
 import React from 'react';
 //Components
-import {
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  StyleSheet,
-} from 'react-native';
+import { Platform, TouchableOpacity, TouchableNativeFeedback, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
 const ButtonAction = (props) => {
@@ -18,12 +14,11 @@ const ButtonAction = (props) => {
       <Button
         disabled={props.disabled ? props.disabled : false}
         mode="contained"
-        compact={props.isLarge ? false : true}
+        compact={!props.isLarge}
         style={styles.button}
         labelStyle={styles.label}
         onPress={props.onSelect}
-        icon={props.icon}
-      >
+        icon={props.icon}>
         {props.title}
       </Button>
     </TouchableCmp>
