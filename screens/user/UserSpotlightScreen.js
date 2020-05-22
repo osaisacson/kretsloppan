@@ -57,7 +57,7 @@ const UserSpotlightScreen = (props) => {
     (product) => product.newOwnerId !== loggedInUserId
   );
 
-  //RESERVED: Gets all products reserved by the user
+  //RESERVED: Gets all products reserved by the user or from the user
   const reservedAllProductsRaw = availableProducts.filter(
     (product) =>
       product.status === 'reserverad' &&
@@ -76,13 +76,23 @@ const UserSpotlightScreen = (props) => {
     return new Date(b.reservedDate) - new Date(a.reservedDate);
   });
 
-  //PAUSED: Gets all products which the user has put on hold
-  const pausedUserProductsRaw = userProducts.filter(
-    (product) => product.status === 'bearbetas'
+  //TO BE COLLECTED FROM: Gets all products from the user marked as ready to be collected
+  const toBeCollectedFromUserRaw = userProducts.filter(
+    (product) => product.status === 'ordnad'
   );
 
-  const pausedUserProducts = pausedUserProductsRaw.sort(function (a, b) {
-    return new Date(b.pauseDate) - new Date(a.pauseDate);
+  const toBeCollectedFromUser = toBeCollectedFromUserRaw.sort(function (a, b) {
+    return new Date(b.collectingDate) - new Date(a.collectingDate);
+  });
+
+  //TO BE COLLECTED BY: Gets all products marked as ready to be collected by the user
+  const toBeCollectedByUserRaw = availableProducts.filter(
+    (product) =>
+      product.status === 'ordnad' && product.collectingUserId === loggedInUserId
+  );
+
+  const toBeCollectedByUser = toBeCollectedByUserRaw.sort(function (a, b) {
+    return new Date(b.collectingDate) - new Date(a.collectingDate);
   });
 
   //READY: Gets all products where the ownerId matches the id of our currently logged in user
@@ -212,21 +222,30 @@ const UserSpotlightScreen = (props) => {
           navigation={props.navigation}
         />
       ) : null}
-      {/* {reservedByOthers.length ? (
+      {toBeCollectedByUser.length ? (
         <HorizontalScroll
-          title={'Att lämnas'}
+          title={'Att hämtas från dig'}
           subTitle={
-            'Återbruk du lagt upp som blivit reserverat av andra användare. Notera: deras reservation upphör gälla efter 24 timmar.'
-          }
-          extraSubTitle={
-            'Nästa steg: kontakta intressenten för att ordna logistik runt avlämning'
+            'Återbruk där ni kommit överens om logistik - väntar på att hämtas av dig.'
           }
           bgColor={Colors.mediumPrimary}
-          scrollData={reservedByOthers}
+          scrollData={toBeCollectedByUser}
           showNotificationBadge={true}
           navigation={props.navigation}
         />
-      ) : null} */}
+      ) : null}
+      {toBeCollectedFromUser.length ? (
+        <HorizontalScroll
+          title={'Att lämnas till dig'}
+          subTitle={
+            'Återbruk där ni kommit överens om logistik - väntar på att lämnas till dig.'
+          }
+          bgColor={Colors.mediumPrimary}
+          scrollData={toBeCollectedFromUser}
+          showNotificationBadge={true}
+          navigation={props.navigation}
+        />
+      ) : null}
       <HorizontalScroll
         title={'Upplagt av mig'}
         subTitle={'Återbruk upplagt av mig'}
@@ -238,16 +257,7 @@ const UserSpotlightScreen = (props) => {
         scrollData={uploadedByUser}
         navigation={props.navigation}
       />
-      {pausedUserProducts.length ? (
-        <HorizontalScroll
-          title={'Pausat'}
-          subTitle={
-            'Återbruk jag lagt upp och pausat för bearbetning - glöm inte att markera som "redo" när klart'
-          }
-          scrollData={pausedUserProducts}
-          navigation={props.navigation}
-        />
-      ) : null}
+
       <HorizontalScroll
         textItem={true}
         detailPath="ProposalDetail"

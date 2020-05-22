@@ -55,7 +55,7 @@ const ProductDetailScreen = (props) => {
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
-  const isReady = selectedProduct.status === 'redo';
+  const isOrganised = selectedProduct.status === 'ordnad';
   const isReserved = selectedProduct.status === 'reserverad';
   const isPickedUp = selectedProduct.status === 'hämtad';
 
@@ -104,12 +104,33 @@ const ProductDetailScreen = (props) => {
     );
   };
 
-  const toggleIsReadyHandle = () => {
-    const id = selectedProduct.id;
-    setIsToggled((prevState) => !prevState);
-    let status = selectedProduct.status === 'ordnad' ? 'ordnas' : 'ordnad';
-    dispatch(productsActions.changeProductStatus(id, status));
-    props.navigation.goBack();
+  const setAsOrganised = () => {
+    const { id, projectId, reservedUserId } = selectedProduct;
+    const checkedProjectId = projectId ? projectId : '000';
+
+    Alert.alert(
+      'Överenskommet',
+      'Genom att klicka här markerar du att ni kommit överens om när ni ska hämta/lämna återbruket.',
+      [
+        { text: 'Avbryt', style: 'default' },
+        {
+          text: 'Jag förstår',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(
+              productsActions.changeProductStatus(
+                id,
+                'ordnad',
+                checkedProjectId,
+                reservedUserId,
+                new Date()
+              )
+            );
+            setShowUserProjects(false);
+          },
+        },
+      ]
+    );
   };
 
   const toggleReserveButton = () => {
@@ -161,6 +182,7 @@ const ProductDetailScreen = (props) => {
 
   const {
     reservedUserId,
+    collectingUserId,
     category,
     condition,
     style,
@@ -174,7 +196,7 @@ const ProductDetailScreen = (props) => {
 
   const isReservedOrPickedUp = isReserved || isPickedUp;
   const isReservedUser = reservedUserId === loggedInUserId;
-  const isPaused = selectedProduct.status === 'bearbetas';
+  const isOrganisedUser = collectingUserId === loggedInUserId;
 
   if (isLoading) {
     return <Loader />;
@@ -190,10 +212,11 @@ const ProductDetailScreen = (props) => {
 
         {/* Information about the reservation */}
         {isReservedOrPickedUp ? (
-          <SectionCard>
+          <>
             {/* Show collected badge if product is collected */}
             {isPickedUp ? (
               <StatusBadge
+                style={{ alignSelf: 'center', marginTop: 10 }}
                 text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
                 icon={
                   Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
@@ -203,6 +226,7 @@ const ProductDetailScreen = (props) => {
             ) : null}
             {isReserved ? (
               <StatusBadge
+                style={{ alignSelf: 'center', marginTop: 10 }}
                 text={`Reserverad ${
                   isReservedUser ? 'av dig ' : ''
                 }tills ${shorterDate}`}
@@ -212,21 +236,25 @@ const ProductDetailScreen = (props) => {
             ) : null}
 
             {!isReservedUser ? (
-              <ContactDetails
-                profileId={
-                  reservedUserId ? reservedUserId : selectedProduct.newOwnerId
-                }
-                hideButton={isPickedUp}
-                buttonText={'kontaktdetaljer'}
-              />
+              <>
+                <HeaderThree text={'Av:'} />
+                <ContactDetails
+                  profileId={
+                    reservedUserId ? reservedUserId : selectedProduct.newOwnerId
+                  }
+                  hideButton={isPickedUp || !hasEditPermission}
+                  buttonText={'kontaktdetaljer'}
+                />
+              </>
             ) : null}
-            {selectedProduct.projectId && projectForProduct.length ? (
+            {selectedProduct.projectId &&
+            projectForProduct.length &&
+            isPickedUp ? (
               <>
                 <Divider />
-
                 <View style={detailStyles.centered}>
                   <HeaderThree
-                    text={isPickedUp ? 'Används i ' : 'För att användas i '}
+                    text={'Används i '}
                     style={detailStyles.centeredHeader}
                   />
 
@@ -240,32 +268,47 @@ const ProductDetailScreen = (props) => {
                 </View>
               </>
             ) : null}
-          </SectionCard>
+          </>
         ) : null}
 
-        {!isPaused ? (
-          <HeaderThree
-            text={`Kontakta varandra in${Moment(selectedProduct.reservedUntil)
+        {/* Show organised badge if product is organised */}
+        {isOrganised ? (
+          <StatusBadge
+            style={{ alignSelf: 'center', marginTop: 10 }}
+            text={`Upphämtning satt till ${Moment(
+              selectedProduct.collectingDate
+            )
               .locale('sv')
-              .endOf('hour')
-              .subtract(1, 'hour')
-              .fromNow()}`}
-            style={detailStyles.centeredHeader}
+              .calendar()}`}
+            icon={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
+            backgroundColor={Colors.neutral}
           />
         ) : null}
-        {/* Logistics sorted - allow both parties to set. */}
-        {hasEditPermission || isReservedUser ? (
-          <ButtonAction
-            style={{ marginRight: 10 }}
-            isToggled={isToggled}
-            title={
-              isPaused
-                ? 'Logistik ordnad'
-                : "Logistik ordnad, sätt som 'väntar på upphämtning'"
-            }
-            onSelect={toggleIsReadyHandle.bind(this)}
-          />
+        {!isPickedUp &&
+        (hasEditPermission || isReservedUser || isOrganisedUser) ? (
+          <>
+            {!isOrganised ? (
+              <HeaderThree
+                text={`Kontakta varandra in${Moment(
+                  selectedProduct.reservedUntil
+                )
+                  .locale('sv')
+                  .endOf('hour')
+                  .subtract(1, 'hour')
+                  .fromNow()}`}
+                style={detailStyles.centeredHeader}
+              />
+            ) : null}
+            {/* Organising logistics - allow both parties to change the status to organised. */}
+            <ButtonAction
+              style={{ marginRight: 10 }}
+              isToggled={isToggled}
+              title={`Sätt/Ändra upphämtningsdatum`}
+              onSelect={setAsOrganised.bind(this)}
+            />
+          </>
         ) : null}
+
         <SectionCard>
           {/* Info about who created the product post */}
           <ContactDetails
@@ -388,8 +431,8 @@ const ProductDetailScreen = (props) => {
           ) : null}
         </SectionCard>
 
-        {/* Buttons to show for products ready to be reserved */}
-        {!isPickedUp && !isReserved ? (
+        {/* Reserve button */}
+        {!isPickedUp && !isReserved && !isOrganised ? (
           <SectionCard>
             <View
               style={{
@@ -400,14 +443,11 @@ const ProductDetailScreen = (props) => {
                 marginVertical: 10,
               }}
             >
-              {/* Reserve */}
-              {!isPaused ? (
-                <ButtonAction
-                  disabled={isReserved}
-                  onSelect={toggleReserveButton}
-                  title={'reservera'}
-                />
-              ) : null}
+              <ButtonAction
+                disabled={isReserved}
+                onSelect={toggleReserveButton}
+                title={'reservera'}
+              />
             </View>
           </SectionCard>
         ) : null}
@@ -442,17 +482,6 @@ const ProductDetailScreen = (props) => {
                 />
               ) : null}
             </View>
-          </SectionCard>
-        ) : null}
-
-        {/* Show pause badge if product is paused */}
-        {isPaused ? (
-          <SectionCard>
-            <StatusBadge
-              text={'Logistik ordnad! Väntar på leverans'}
-              icon={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
-              backgroundColor={Colors.neutral}
-            />
           </SectionCard>
         ) : null}
       </View>

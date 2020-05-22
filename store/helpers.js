@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { Notifications } from 'expo';
 
 export const getIndex = (stateSegment, matchId) => {
   return stateSegment.findIndex((item) => item.id === matchId);
@@ -41,18 +42,26 @@ export function convertImage(image) {
   };
 }
 
-
 export function updateExpoTokens(userId, remove = false) {
   try {
-    firebase.database().ref('profiles').orderByChild('profileId').equalTo(userId).on('value', async snapshot => {
-      const user = snapshot.val();
-      const newToken = await Notifications.getExpoPushTokenAsync();
+    firebase
+      .database()
+      .ref('profiles')
+      .orderByChild('profileId')
+      .equalTo(userId)
+      .on('value', async (snapshot) => {
+        const user = snapshot.val();
+        const newToken = await Notifications.getExpoPushTokenAsync();
 
-      const nextTokens = remove ? user.expoTokens.filter(token => token !== newToken) : [...user.expoTokens, newToken];
+        const nextTokens = remove
+          ? user.expoTokens.filter((token) => token !== newToken)
+          : [...user.expoTokens, newToken];
 
-      snapshot.forEach(action => action.ref.update({ expoTokens: nextTokens }));
-    });
+        snapshot.forEach((action) =>
+          action.ref.update({ expoTokens: nextTokens })
+        );
+      });
   } catch (error) {
-    console.error(error.message)
+    console.error(error.message);
   }
 }

@@ -36,7 +36,7 @@ const ProductItem = (props) => {
       <Card
         style={props.isHorizontal ? styles.horizontalProduct : styles.product}
       >
-        {props.itemData.status === 'bearbetas' ? (
+        {props.itemData.status === 'ordnad' ? (
           <Ionicons
             style={{
               ...styles.icon,
@@ -47,7 +47,7 @@ const ProductItem = (props) => {
               paddingBottom: 5,
               fontSize: 15,
             }}
-            name={Platform.OS === 'android' ? 'md-pause' : 'ios-pause'}
+            name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
             size={23}
             color={props.itemData.color}
           />

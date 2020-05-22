@@ -5,6 +5,7 @@ class Product {
     id,
     ownerId,
     reservedUserId,
+    collectingUserId,
     newOwnerId,
     category,
     condition,
@@ -22,10 +23,10 @@ class Product {
     price,
     date,
     status,
-    pauseDate,
     readyDate,
     reservedDate,
     reservedUntil,
+    collectingDate,
     collectedDate,
     projectId,
     internalComments
@@ -33,6 +34,7 @@ class Product {
     this.id = id;
     this.ownerId = ownerId;
     this.reservedUserId = reservedUserId;
+    this.collectingUserId = collectingUserId;
     this.newOwnerId = newOwnerId;
     this.category = category;
     this.condition = condition;
@@ -50,10 +52,10 @@ class Product {
     this.price = price;
     this.date = date;
     this.status = status;
-    this.pauseDate = pauseDate;
     this.readyDate = readyDate;
     this.reservedDate = reservedDate;
     this.reservedUntil = reservedUntil;
+    this.collectingDate = collectingDate;
     this.collectedDate = collectedDate;
     this.projectId = projectId;
     this.internalComments = internalComments;

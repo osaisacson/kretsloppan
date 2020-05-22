@@ -92,7 +92,7 @@ const UserProductsScreen = (props) => {
       <HeaderTwo
         title={'Ditt upplagda återbruk'}
         subTitle={
-          'Allt som är redo att hämtas, håller på att bearbetas, eller har blivit hämtat.'
+          'Allt som är redo att hämtas, väntar på eller har blivit hämtat.'
         }
         icon={
           <MaterialIcons
