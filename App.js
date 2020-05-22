@@ -9,8 +9,8 @@ import I18n from 'ex-react-native-i18n';
 import { enableScreens } from 'react-native-screens';
 // import { composeWithDevTools } from 'redux-devtools-extension';
 import * as firebase from 'firebase';
-import env from './env'
 import 'firebase/database';
+import env from './env'
 
 //Reducers
 import productsReducer from './store/reducers/products';
