@@ -14,14 +14,11 @@ import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import Loader from '../../components/UI/Loader';
 import FilterLine from '../../components/UI/FilterLine';
-import RoundItem from '../../components/UI/RoundItem';
+import ProductButtonLogic from './ProductButtonLogic';
 import ButtonIcon from '../../components/UI/ButtonIcon';
-import ButtonAction from '../../components/UI/ButtonAction';
 import SectionCard from '../../components/UI/SectionCard';
-import StatusBadge from '../../components/UI/StatusBadge';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -39,8 +36,6 @@ const ProductDetailScreen = (props) => {
 
   //Set up state hooks
   const [isLoading, setIsLoading] = useState(false);
-  const [isToggled, setIsToggled] = useState(false);
-  const [showUserProjects, setShowUserProjects] = useState(false);
 
   //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>
@@ -55,8 +50,6 @@ const ProductDetailScreen = (props) => {
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
-  const isOrganised = selectedProduct.status === 'ordnad';
-  const isReserved = selectedProduct.status === 'reserverad';
   const isPickedUp = selectedProduct.status === 'hämtad';
 
   const editProductHandler = (id) => {
@@ -82,121 +75,7 @@ const ProductDetailScreen = (props) => {
     );
   };
 
-  const collectHandler = () => {
-    const id = selectedProduct.id;
-    const projectId = selectedProduct.projectId;
-    Alert.alert(
-      'Är produkten hämtad?',
-      'Genom att klicka här bekräftar du att produkten är hämtad. Den kommer då försvinna från det aktiva förrådet och hamna i ditt Gett Igen förråd.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Ja, flytta den',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              productsActions.changeProductStatus(id, 'hämtad', projectId)
-            );
-            props.navigation.goBack();
-          },
-        },
-      ]
-    );
-  };
-
-  const setAsOrganised = () => {
-    const { id, projectId, reservedUserId } = selectedProduct;
-    const checkedProjectId = projectId ? projectId : '000';
-
-    Alert.alert(
-      'Överenskommet',
-      'Genom att klicka här markerar du att ni kommit överens om när ni ska hämta/lämna återbruket.',
-      [
-        { text: 'Avbryt', style: 'default' },
-        {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              productsActions.changeProductStatus(
-                id,
-                'ordnad',
-                checkedProjectId,
-                reservedUserId,
-                new Date()
-              )
-            );
-            setShowUserProjects(false);
-          },
-        },
-      ]
-    );
-  };
-
-  const toggleReserveButton = () => {
-    setShowUserProjects((prevState) => !prevState);
-  };
-
-  const unReserveHandler = () => {
-    Alert.alert(
-      'Avbryt reservation?',
-      'Om du avbryter reservationen kommer återbruket igen bli tillgängligt för andra.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Ja, ta bort',
-          style: 'destructive',
-          onPress: () => {
-            setIsLoading(true);
-            dispatch(productsActions.unReserveProduct(selectedProduct.id)).then(
-              setIsLoading(false)
-            );
-          },
-        },
-      ]
-    );
-  };
-
-  const reserveHandler = (clickedProjectId) => {
-    const id = selectedProduct.id;
-    const projectId = clickedProjectId ? clickedProjectId : '000';
-
-    Alert.alert(
-      'Kom ihåg',
-      'Denna reservation gäller i ett dygn. Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
-      [
-        { text: 'Avbryt', style: 'default' },
-        {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              productsActions.changeProductStatus(id, 'reserverad', projectId)
-            );
-            props.navigation.navigate('Min Sida');
-          },
-        },
-      ]
-    );
-  };
-
-  const {
-    reservedUserId,
-    collectingUserId,
-    category,
-    condition,
-    style,
-    material,
-    color,
-  } = selectedProduct;
-
-  const shorterDate = Moment(selectedProduct.reservedUntil)
-    .locale('sv')
-    .calendar();
-
-  const isReservedOrPickedUp = isReserved || isPickedUp;
-  const isReservedUser = reservedUserId === loggedInUserId;
-  const isOrganisedUser = collectingUserId === loggedInUserId;
+  const { category, condition, style, material, color } = selectedProduct;
 
   if (isLoading) {
     return <Loader />;
@@ -210,115 +89,39 @@ const ProductDetailScreen = (props) => {
           {Moment(selectedProduct.date).locale('sv').startOf('hour').fromNow()}
         </Text>
 
-        {/* Information about the reservation */}
-        {isReservedOrPickedUp ? (
+        {/* Buttons for handling reservation, coordination and collection */}
+        <ProductButtonLogic
+          selectedProduct={selectedProduct}
+          hasEditPermission={hasEditPermission}
+          navigation={props.navigation}
+        />
+
+        {isPickedUp ? (
           <>
-            {/* Show collected badge if product is collected */}
-            {isPickedUp ? (
-              <StatusBadge
-                style={{ alignSelf: 'center', marginTop: 10 }}
-                text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
-                icon={
-                  Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
-                }
-                backgroundColor={Colors.completed}
-              />
-            ) : null}
-            {isReserved ? (
-              <StatusBadge
-                style={{ alignSelf: 'center', marginTop: 10 }}
-                text={`Reserverad ${
-                  isReservedUser ? 'av dig ' : ''
-                }tills ${shorterDate}`}
-                icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-                backgroundColor={Colors.primary}
-              />
-            ) : null}
-
-            {!isReservedUser ? (
-              <>
-                <HeaderThree
-                  style={{ marginLeft: 15, marginBottom: 5 }}
-                  text={'Av:'}
-                />
-                <ContactDetails
-                  profileId={
-                    reservedUserId ? reservedUserId : selectedProduct.newOwnerId
-                  }
-                  hideButton={isPickedUp || !hasEditPermission}
-                  buttonText={'kontaktdetaljer'}
-                />
-              </>
-            ) : null}
-            {selectedProduct.projectId &&
-            projectForProduct.length &&
-            isPickedUp ? (
-              <>
-                <Divider />
-                <View style={detailStyles.centered}>
-                  <HeaderThree
-                    text={'Används i '}
-                    style={detailStyles.centeredHeader}
-                  />
-
-                  <HorizontalScroll
-                    scrollHeight={155}
-                    roundItem={true}
-                    detailPath={'ProjectDetail'}
-                    scrollData={projectForProduct}
-                    navigation={props.navigation}
-                  />
-                </View>
-              </>
-            ) : null}
-          </>
-        ) : null}
-
-        {/* Show organised badge if product is organised */}
-        {isOrganised ? (
-          <StatusBadge
-            style={{ alignSelf: 'center', marginTop: 10 }}
-            text={`Upphämtning satt till ${Moment(
-              selectedProduct.collectingDate
-            )
-              .locale('sv')
-              .calendar()}`}
-            icon={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
-            backgroundColor={Colors.neutral}
-          />
-        ) : null}
-        {!isPickedUp &&
-        (hasEditPermission || isReservedUser || isOrganisedUser) ? (
-          <>
-            {!isOrganised ? (
+            <Divider />
+            <View style={detailStyles.centered}>
               <HeaderThree
-                text={`Kontakta varandra in${Moment(
-                  selectedProduct.reservedUntil
-                )
-                  .locale('sv')
-                  .endOf('hour')
-                  .subtract(1, 'hour')
-                  .fromNow()}`}
+                text={'Används i '}
                 style={detailStyles.centeredHeader}
               />
-            ) : null}
-            {/* Organising logistics - allow both parties to change the status to organised. */}
-            <ButtonAction
-              style={{ marginRight: 10 }}
-              isToggled={isToggled}
-              title={`Sätt/Ändra upphämtningsdatum`}
-              onSelect={setAsOrganised.bind(this)}
-            />
+
+              <HorizontalScroll
+                scrollHeight={155}
+                roundItem={true}
+                detailPath={'ProjectDetail'}
+                scrollData={projectForProduct}
+                navigation={props.navigation}
+              />
+            </View>
           </>
         ) : null}
-
         <SectionCard>
           {/* Info about who created the product post */}
           <ContactDetails
             profileId={ownerId}
             productId={selectedProduct.id}
             hideButton={isPickedUp}
-            buttonText={'hämtningsdetaljer'}
+            buttonText={'kontaktdetaljer'}
           />
 
           {/* Product image */}
@@ -398,95 +201,7 @@ const ProductDetailScreen = (props) => {
           <Paragraph style={{ textAlign: 'right', padding: 20 }}>
             {selectedProduct.price ? `${selectedProduct.price} kr` : 'Gratis'}
           </Paragraph>
-
-          {/* When trying to reserve, open this up for selection of associated project */}
-          {!isReservedOrPickedUp && showUserProjects ? (
-            <>
-              <HeaderThree
-                text={'Vilket projekt ska återbruket användas i?'}
-                style={detailStyles.centeredHeader}
-              />
-
-              <HorizontalScrollContainer>
-                <RoundItem
-                  itemData={{
-                    image: './../../assets/avatar-placeholder-image.png',
-                    title: 'Inget projekt',
-                  }}
-                  key={'000'}
-                  isHorizontal={true}
-                  onSelect={() => {
-                    reserveHandler('000');
-                  }}
-                />
-                {userProjects.map((item) => (
-                  <RoundItem
-                    itemData={item}
-                    key={item.id}
-                    isHorizontal={true}
-                    onSelect={() => {
-                      reserveHandler(item.id);
-                    }}
-                  />
-                ))}
-              </HorizontalScrollContainer>
-            </>
-          ) : null}
         </SectionCard>
-
-        {/* Reserve button */}
-        {!isPickedUp && !isReserved && !isOrganised ? (
-          <SectionCard>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                marginVertical: 10,
-              }}
-            >
-              <ButtonAction
-                disabled={isReserved}
-                onSelect={toggleReserveButton}
-                title={'reservera'}
-              />
-            </View>
-          </SectionCard>
-        ) : null}
-
-        {/* Buttons to show for products that have been reserved */}
-        {isReserved && (isReservedUser || hasEditPermission) ? (
-          <SectionCard>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                marginVertical: 10,
-              }}
-            >
-              {/* Change to 'collected' - to show if user is the creator */}
-              {hasEditPermission ? (
-                <ButtonAction
-                  disabled={isPickedUp}
-                  title="byt till hämtad"
-                  onSelect={collectHandler.bind(this)}
-                />
-              ) : null}
-
-              {/* Un-reserve. */}
-              {isReservedUser ? (
-                <ButtonAction
-                  disabled={isPickedUp}
-                  onSelect={unReserveHandler}
-                  title={'avreservera'}
-                />
-              ) : null}
-            </View>
-          </SectionCard>
-        ) : null}
       </View>
     </DetailWrapper>
   );
