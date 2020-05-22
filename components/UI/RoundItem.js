@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import CachedImage from '../../components/UI/CachedImage';
+import Colors from '../../constants/Colors';
 
 const RoundItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -22,7 +23,9 @@ const RoundItem = (props) => {
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.project}>
-      <View style={styles.touchable}>
+      <View
+        style={props.isSelected ? styles.selectedTouchable : styles.touchable}
+      >
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View style={styles.imageContainer}>
             <CachedImage style={styles.image} uri={props.itemData.image} />
@@ -56,6 +59,14 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 0.1,
     borderColor: '#000',
+  },
+  selectedTouchable: {
+    height: 100,
+    width: 100,
+    borderRadius: 100 / 2,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: Colors.primary,
   },
   imageContainer: {
     position: 'relative',

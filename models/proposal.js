@@ -1,7 +1,8 @@
 class Proposal {
-  constructor(id, ownerId, title, description, price, date, status) {
+  constructor(id, ownerId, projectId, title, description, price, date, status) {
     this.id = id;
     this.ownerId = ownerId;
+    this.projectId = projectId;
     this.title = title;
     this.description = description;
     this.price = price;

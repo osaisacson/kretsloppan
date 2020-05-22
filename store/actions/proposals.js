@@ -23,6 +23,7 @@ export function fetchProposals() {
           new Proposal(
             key,
             resData[key].ownerId,
+            resData[key].projectId,
             resData[key].title,
             resData[key].description,
             resData[key].price,
@@ -71,7 +72,7 @@ export const deleteProposal = (proposalId) => {
   };
 };
 
-export function createProposal(title, description, price) {
+export function createProposal(title, description, price, projectId) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -82,6 +83,7 @@ export function createProposal(title, description, price) {
 
       const proposalData = {
         ownerId: userId,
+        projectId,
         title,
         description,
         price,
@@ -105,6 +107,7 @@ export function createProposal(title, description, price) {
         proposalData: {
           id: returnedProposalData.name,
           ownerId: userId,
+          projectId,
           title,
           description,
           price,
@@ -123,7 +126,7 @@ export function createProposal(title, description, price) {
   };
 }
 
-export function updateProposal(id, title, description, price) {
+export function updateProposal(id, title, description, price, projectId) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
@@ -134,6 +137,7 @@ export function updateProposal(id, title, description, price) {
         title,
         description,
         price,
+        projectId,
       };
 
       // Perform the API call - create the proposal, passing the proposalData object above
