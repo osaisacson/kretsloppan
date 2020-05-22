@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 export const getIndex = (stateSegment, matchId) => {
   return stateSegment.findIndex((item) => item.id === matchId);
 };

@@ -12,6 +12,7 @@ import * as authActions from '../store/actions/auth';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import useAsyncEffect from '../hooks/useAsyncEffect';
+import { Notifications } from 'expo'
 
 const StartupScreen = (props) => {
   const isMountedRef = useRef(null);
