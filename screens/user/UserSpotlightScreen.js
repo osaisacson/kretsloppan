@@ -209,7 +209,7 @@ const UserSpotlightScreen = (props) => {
       {/* Product, project and propsal sections */}
       {reservedProducts.length ? (
         <HorizontalScroll
-          title={'Reservationer'}
+          title={'Reservationer - att kontaktas'}
           subTitle={
             'Väntar på att ni kontaktar varandra för organisering av upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar.'
           }
@@ -224,7 +224,7 @@ const UserSpotlightScreen = (props) => {
       ) : null}
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
-          title={'Att hämtas från dig'}
+          title={'Överenskommet - att hämtas'}
           subTitle={
             'Återbruk där ni kommit överens om logistik - väntar på att hämtas av dig.'
           }
@@ -236,7 +236,7 @@ const UserSpotlightScreen = (props) => {
       ) : null}
       {toBeCollectedFromUser.length ? (
         <HorizontalScroll
-          title={'Att lämnas till dig'}
+          title={'Överenskommet - att lämnas'}
           subTitle={
             'Återbruk där ni kommit överens om logistik - väntar på att lämnas till dig.'
           }
