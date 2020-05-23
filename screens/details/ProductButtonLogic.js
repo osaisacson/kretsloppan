@@ -5,17 +5,19 @@ import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Button, Divider } from 'react-native-paper';
 
 import moment from 'moment/min/moment-with-locales';
+import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
+import StatusBadge from '../../components/UI/StatusBadge';
+
 import Loader from '../../components/UI/Loader';
 import ButtonAction from '../../components/UI/ButtonAction';
 import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import RoundItem from '../../components/UI/RoundItem';
 import UserAvatar from '../../components/UI/UserAvatar';
-import CalendarStrip from 'react-native-calendar-strip';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -34,6 +36,8 @@ const ProductButtonLogic = (props) => {
   const [showUserProjects, setShowUserProjects] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [suggestedDateLocal, setSuggestedDateLocal] = useState();
+  const [sellerAgreedLocal, setSellerAgreedLocal] = useState(false);
+  const [buyerAgreedLocal, setBuyerAgreedLocal] = useState(false);
   const [suggestedDT, setSuggestedDT] = useState();
 
   //Get all projects from state, and then return the ones that matches the id of the current product
@@ -52,6 +56,8 @@ const ProductButtonLogic = (props) => {
     collectingDate,
     phone,
     address,
+    sellerAgreed,
+    buyerAgreed,
   } = props.selectedProduct;
 
   //Check status of product and privileges of user
@@ -109,17 +115,12 @@ const ProductButtonLogic = (props) => {
     setShowTimePicker(false);
   };
 
-  const setTime = (dateTime) => {
-    setSuggestedDT(dateTime);
-    hideTimePicker();
-  };
-
   const reserveHandler = (clickedProjectId) => {
     const checkedProjectId = clickedProjectId ? clickedProjectId : '000';
 
     Alert.alert(
       'Kom ihåg',
-      'Denna reservation gäller i ett dygn. Du måste själv kontakta säljaren för att komma överens om hämtningstid. Du hittar reservationen under din profil.',
+      'Denna reservation gäller i ett dygn. Nästa steg är att föreslå en upphämtningstid och om det behövs kontakta säljaren för att diskutera detaljer. Du hittar alltid reservationen under din profil.',
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -133,8 +134,8 @@ const ProductButtonLogic = (props) => {
                 checkedProjectId
               )
             );
+            setShowOptions(true);
             setShowUserProjects(false);
-            // props.navigation.navigate('Min Sida');
           },
         },
       ]
@@ -163,6 +164,7 @@ const ProductButtonLogic = (props) => {
             dispatch(productsActions.unReserveProduct(id)).then(
               setIsLoading(false)
             );
+            props.navigation.goBack();
           },
         },
       ]
@@ -201,10 +203,16 @@ const ProductButtonLogic = (props) => {
 
   const sendSuggestedDT = (dateTime) => {
     const checkedProjectId = projectId ? projectId : '000';
+    const sAgreed = hasEditPermission ? true : false;
+    const bAgreed = isReservedUser || isOrganisedUser ? true : false;
 
     Alert.alert(
       'Föreslå tid',
-      'Genom att klicka här föreslår du en tid för upphämtning och om motparten godkänner denna åtar du dig att vara på/ plats vid denna tidpunkt. För frågor och andra detaljer kontakta varandra via uppgifterna ovan.',
+      `Genom att klicka här föreslår du ${moment(dateTime)
+        .locale('sv')
+        .format(
+          'HH:mm, D MMMM'
+        )} som tid för upphämtning. Om motparten godkänner tiden åtar du dig att vara på överenskommen plats vid denna tidpunkt.`,
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -220,6 +228,10 @@ const ProductButtonLogic = (props) => {
                 dateTime //sets product.suggestedDate
               )
             );
+            dispatch(
+              productsActions.changeProductAgreement(id, sAgreed, bAgreed)
+            );
+            hideTimePicker();
             setShowUserProjects(false);
           },
         },
@@ -253,6 +265,22 @@ const ProductButtonLogic = (props) => {
         },
       ]
     );
+  };
+
+  const agreedHandler = () => {
+    const approvedByBoth = sellerAgreedLocal && buyerAgreedLocal;
+    if (approvedByBoth) {
+      approveSuggestedDateTime(suggestedDT);
+    } else {
+      dispatch(
+        productsActions.changeProductAgreement(
+          id,
+          sellerAgreedLocal,
+          buyerAgreedLocal
+        )
+      );
+      props.navigation.navigate('Min sida');
+    }
   };
 
   const collectHandler = () => {
@@ -299,12 +327,14 @@ const ProductButtonLogic = (props) => {
       <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
         <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
         <Button
+          labelStyle={{ fontSize: 10 }}
           color={Colors.darkPrimary}
-          style={{ width: 120, position: 'absolute', left: '35%' }}
-          icon="unfold-more-horizontal"
-          mode="text"
+          style={{ position: 'absolute', left: '35%' }}
+          mode="outlined"
           onPress={toggleShowOptions}
-        />
+        >
+          Logistik
+        </Button>
         <View
           style={{
             flex: 1,
@@ -395,7 +425,7 @@ const ProductButtonLogic = (props) => {
               {address ? (
                 <Text>{address ? address : 'Ingen address angiven'}</Text>
               ) : null}
-              {hasEditPermission ? (
+              {(isReserved || isOrganised) && hasEditPermission ? (
                 <ButtonAction
                   style={{ marginVertical: 10 }}
                   disabled={isPickedUp}
@@ -439,95 +469,149 @@ const ProductButtonLogic = (props) => {
           {isReserved &&
           (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
+              {suggestedDate && hasEditPermission ? (
+                <HeaderThree
+                  style={{ textAlign: 'center', marginBottom: 20 }}
+                  text={
+                    'Om du vill ändra plats gör detta genom att redigera din produkt och uppdatera upphämtningsaddress där.'
+                  }
+                />
+              ) : null}
               <HeaderThree
-                style={{ textAlign: 'center', marginBottom: 20 }}
-                text={`Kom överens om upphämtning nedan in${moment(
-                  reservedUntil
-                )
+                style={{ textAlign: 'center', marginBottom: 10 }}
+                text={`Reservationen går ut ${moment(reservedUntil)
                   .locale('sv')
-                  .endOf('hour')
-                  .subtract(1, 'hour')
-                  .fromNow()}, om ni båda inte kommit överens om en tid innan dess så slutar reservationen gälla. Om inget annat bestäms så hämtas återbruket på given address uppe till vänster vid överenskommen tid.`}
+                  .endOf('day')
+                  .fromNow()}`}
               />
               {!suggestedDate ? (
-                <View style={{ flex: 1 }}>
-                  <CalendarStrip
-                    scrollable
-                    selectedDate={suggestedDateLocal}
-                    daySelectionAnimation={{
-                      type: 'border',
-                      borderWidth: 0.5,
-                      borderHighlightColor: Colors.darkPrimary,
-                      duration: 200,
-                    }}
-                    highlightDateNameStyle={{ color: Colors.darkPrimary }}
-                    highlightDateNumberStyle={{ color: Colors.darkPrimary }}
-                    styleWeekend={true}
-                    onDateSelected={(date) => {
-                      handleTimePicker(date);
-                    }}
-                    style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-                    type={'border'}
-                    borderWidth={1}
-                    borderHighlightColor={'#666'}
+                <>
+                  <HeaderThree
+                    style={{ textAlign: 'center', marginBottom: 10 }}
+                    text={'Föreslå tid för upphämtning nedan.'}
                   />
-                  <DateTimePickerModal
-                    date={new Date(suggestedDateLocal)}
-                    cancelTextIOS={'Avbryt'}
-                    confirmTextIOS={'Klar!'}
-                    headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
-                      .locale('sv')
-                      .format('D MMMM')}. Välj tid:`}
-                    isVisible={showTimePicker}
-                    mode="time"
-                    locale="sv_SV" // Use "en_GB" here
-                    onConfirm={(dateTime) => {
-                      setTime(dateTime);
-                    }}
-                    onCancel={hideTimePicker}
-                  />
-                </View>
+                  <View style={{ flex: 1 }}>
+                    <CalendarStrip
+                      scrollable
+                      selectedDate={suggestedDateLocal}
+                      daySelectionAnimation={{
+                        type: 'border',
+                        borderWidth: 0.5,
+                        borderHighlightColor: Colors.darkPrimary,
+                        duration: 200,
+                      }}
+                      highlightDateNameStyle={{ color: Colors.darkPrimary }}
+                      highlightDateNumberStyle={{ color: Colors.darkPrimary }}
+                      styleWeekend={true}
+                      onDateSelected={(date) => {
+                        handleTimePicker(date);
+                      }}
+                      style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+                      type={'border'}
+                      borderWidth={1}
+                      borderHighlightColor={'#666'}
+                    />
+                    <DateTimePickerModal
+                      date={new Date(suggestedDateLocal)}
+                      isDarkModeEnabled={true}
+                      cancelTextIOS={'Avbryt'}
+                      confirmTextIOS={'Klar!'}
+                      headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
+                        .locale('sv')
+                        .format('D MMMM')}. Välj tid:`}
+                      isVisible={showTimePicker}
+                      mode="time"
+                      locale="sv_SV" // Use "en_GB" here
+                      onConfirm={(dateTime) => {
+                        sendSuggestedDT(dateTime);
+                      }}
+                      onCancel={hideTimePicker}
+                    />
+                  </View>
+                </>
               ) : null}
 
               {suggestedDateLocal && !collectingDate ? (
                 <>
-                  <HeaderThree
-                    style={{ textAlign: 'center' }}
-                    text={`Föreslagen tid: ${moment(suggestedDT)
-                      .locale('sv')
-                      .format('D MMMM, HH:mm')}`}
-                  />
+                  <View
+                    style={{
+                      padding: 5,
+                      alignSelf: 'center',
+                      borderWidth: 0.5,
+                      borderColor: Colors.darkPrimary,
+                    }}
+                  >
+                    <HeaderThree
+                      style={{
+                        textAlign: 'center',
+                      }}
+                      text={`Föreslagen tid: ${moment(suggestedDT)
+                        .locale('sv')
+                        .format('D MMMM, HH:mm')}`}
+                    />
+                    <HeaderThree
+                      style={{ textAlign: 'center' }}
+                      text={`Plats: ${address}`}
+                    />
+                  </View>
                   {suggestedDate ? (
                     <View style={styles.actionButtons}>
-                      <ButtonAction
-                        style={{ marginRight: 10 }}
-                        title={`Godkänn föreslagen tid`}
-                        onSelect={() => {
-                          approveSuggestedDateTime(suggestedDT);
-                        }}
-                      />
-                      <ButtonAction
-                        style={{ marginRight: 10 }}
-                        title={`Föreslå annan tid`}
-                        onSelect={() => {
-                          resetSuggestedDT();
-                        }}
-                      />
+                      {!sellerAgreed && hasEditPermission ? (
+                        <ButtonAction
+                          style={{ marginRight: 10 }}
+                          title={`Godkänn föreslagen tid`}
+                          onSelect={() => {
+                            setSellerAgreedLocal(true);
+                            agreedHandler();
+                          }}
+                        />
+                      ) : null}
+                      {hasEditPermission ||
+                      isReservedUser ||
+                      isOrganisedUser ? (
+                        <ButtonAction
+                          style={{ marginRight: 10 }}
+                          title={`Föreslå annan tid`}
+                          onSelect={() => {
+                            resetSuggestedDT();
+                          }}
+                        />
+                      ) : null}
+                      {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
+                        <ButtonAction
+                          style={{ marginRight: 10 }}
+                          title={`Godkänn föreslagen tid`}
+                          onSelect={() => {
+                            setBuyerAgreedLocal(true);
+                            agreedHandler();
+                          }}
+                        />
+                      ) : null}
                     </View>
-                  ) : (
-                    <View style={styles.actionButtons}>
-                      <ButtonAction
-                        style={{ marginRight: 10 }}
-                        title={'Föreslå denna tid'}
-                        onSelect={() => {
-                          sendSuggestedDT(suggestedDT);
-                        }}
-                      />
-                    </View>
-                  )}
+                  ) : null}
                 </>
               ) : null}
-              {suggestedDateLocal && collectingDate ? (
+              {!collectingDate && suggestedDate ? (
+                <StatusBadge
+                  style={{
+                    marginTop: 8,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                  }}
+                  textStyle={{
+                    textTransform: 'uppercase',
+                    fontSize: 10,
+                    padding: 4,
+                    color: '#fff',
+                  }}
+                  text={'Väntar på motpartens godkännande'}
+                  icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
+                  backgroundColor={Colors.primary}
+                />
+              ) : null}
+              {suggestedDateLocal &&
+              collectingDate &&
+              (hasEditPermission || isReservedUser) ? (
                 <>
                   <HeaderThree
                     style={{ textAlign: 'center' }}

@@ -4,6 +4,7 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
+export const CHANGE_PRODUCT_AGREEMENT = 'CHANGE_PRODUCT_AGREEMENT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 import { convertImage } from '../helpers';
@@ -26,6 +27,8 @@ export function unReserveProduct(id) {
         collectingDate: '',
         collectedDate: '',
         projectId: '',
+        sellerAgreed: '',
+        buyerAgreed: '',
       };
 
       console.log('updatedProduct to be sent to API: ', updatedProduct);
@@ -61,6 +64,8 @@ export function unReserveProduct(id) {
           collectingDate: updatedData.collectingDate,
           collectedDate: updatedData.collectedDate,
           projectId: updatedData.projectId,
+          sellerAgreed: updatedData.sellerAgreed,
+          buyerAgreed: updatedData.buyerAgreed,
         },
       });
       console.log('----------actions/products/unReserveProduct--------END');
@@ -148,7 +153,9 @@ export function fetchProducts() {
               updatedResult.collectingDate,
               updatedResult.collectedDate,
               updatedResult.projectId,
-              updatedResult.internalComments
+              updatedResult.internalComments,
+              updatedResult.sellerAgreed,
+              updatedResult.buyerAgreed
             )
           );
         }
@@ -184,7 +191,9 @@ export function fetchProducts() {
             resData[key].collectingDate,
             resData[key].collectedDate,
             resData[key].projectId,
-            resData[key].internalComments
+            resData[key].internalComments,
+            resData[key].sellerAgreed,
+            resData[key].buyerAgreed
           )
         );
       }
@@ -283,6 +292,8 @@ export function createProduct(
         collectedDate: '',
         projectId: '000',
         internalComments,
+        sellerAgreed: '',
+        buyerAgreed: '',
       };
 
       // Perform the API call - create the product, passing the productData object above
@@ -329,6 +340,8 @@ export function createProduct(
           collectedDate: '',
           projectId: '000',
           internalComments,
+          sellerAgreed: '',
+          buyerAgreed: '',
         },
       });
       console.log('----------actions/products/createProduct--------END');
@@ -481,6 +494,8 @@ export const changeProductStatus = (
         collectingDate: '',
         collectedDate: '',
         projectId: projectId ? projectId : '000',
+        sellerAgreed: '',
+        buyerAgreed: '',
       };
     }
 
@@ -564,6 +579,40 @@ export const changeProductStatus = (
         type: CHANGE_PRODUCT_STATUS,
         pid: id,
         productData: productDataToUpdate,
+      });
+    } catch (error) {
+      // Rethrow so returned Promise is rejected
+      throw error;
+    }
+  };
+};
+
+export const changeProductAgreement = (id, sellerAgreed, buyerAgreed) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    try {
+      await fetch(
+        `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sellerAgreed: sellerAgreed,
+            buyerAgreed: buyerAgreed,
+          }),
+        }
+      );
+
+      dispatch({
+        type: CHANGE_PRODUCT_AGREEMENT,
+        pid: id,
+        productData: {
+          sellerAgreed: sellerAgreed,
+          buyerAgreed: buyerAgreed,
+        },
       });
     } catch (error) {
       // Rethrow so returned Promise is rejected

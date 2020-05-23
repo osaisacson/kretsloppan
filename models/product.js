@@ -30,7 +30,9 @@ class Product {
     collectingDate,
     collectedDate,
     projectId,
-    internalComments
+    internalComments,
+    sellerAgreed,
+    buyerAgreed
   ) {
     this.id = id;
     this.ownerId = ownerId;
@@ -61,6 +63,8 @@ class Product {
     this.collectedDate = collectedDate;
     this.projectId = projectId;
     this.internalComments = internalComments;
+    this.sellerAgreed = sellerAgreed;
+    this.buyerAgreed = buyerAgreed;
   }
   get readableDate() {
     return moment(this.date).format('MMMM Do YYYY, hh:mm');

@@ -6,6 +6,7 @@ import {
   UPDATE_PRODUCT,
   CHANGE_PRODUCT_STATUS,
   SET_PRODUCTS,
+  CHANGE_PRODUCT_AGREEMENT,
 } from '../actions/products';
 import Product from '../../models/product';
 
@@ -53,7 +54,9 @@ export default (state = initialState, action) => {
         action.productData.collectingDate,
         action.productData.collectedDate,
         action.productData.projectId,
-        action.productData.internalComments
+        action.productData.internalComments,
+        action.productData.sellerAgreed,
+        action.productData.buyerAgreed
       );
       console.log(
         'store/reducers/products/CREATE_PRODUCT, new product: ',
@@ -95,7 +98,9 @@ export default (state = initialState, action) => {
         state.userProducts[userProductIndex].collectingDate,
         state.userProducts[userProductIndex].collectedDate,
         state.userProducts[userProductIndex].projectId,
-        action.productData.internalComments
+        action.productData.internalComments,
+        state.userProducts[userProductIndex].sellerAgreed,
+        state.userProducts[userProductIndex].buyerAgreed
       );
       console.log(
         'store/reducers/products/UPDATE_PRODUCT, updated product: ',
@@ -154,7 +159,9 @@ export default (state = initialState, action) => {
         action.productData.collectingDate,
         action.productData.collectedDate,
         action.productData.projectId,
-        state.availableProducts[availableProductsIndexCPS].internalComments
+        state.availableProducts[availableProductsIndexCPS].internalComments,
+        state.availableProducts[availableProductsIndexCPS].sellerAgreed,
+        state.availableProducts[availableProductsIndexCPS].buyerAgreed
       );
 
       console.log(
@@ -177,6 +184,64 @@ export default (state = initialState, action) => {
         ...state,
         availableProducts: updatedAvailableProductsCPS,
         userProducts: updatedUserProductsCPS,
+      };
+    case CHANGE_PRODUCT_AGREEMENT:
+      const productIndexAg = getIndex(state.availableProducts, action.pid);
+
+      const updatedProductAgreement = new Product( //Whenever we do a new product we have to pass the full params to match model
+        action.pid,
+        state.availableProducts[productIndexAg].ownerId,
+        state.availableProducts[productIndexAg].reservedUserId,
+        state.availableProducts[productIndexAg].collectingUserId,
+        state.availableProducts[productIndexAg].newOwnerId,
+        state.availableProducts[productIndexAg].category,
+        state.availableProducts[productIndexAg].condition,
+        state.availableProducts[productIndexAg].style,
+        state.availableProducts[productIndexAg].material,
+        state.availableProducts[productIndexAg].color,
+        state.availableProducts[productIndexAg].title,
+        state.availableProducts[productIndexAg].image,
+        state.availableProducts[productIndexAg].address,
+        state.availableProducts[productIndexAg].phone,
+        state.availableProducts[productIndexAg].description,
+        state.availableProducts[productIndexAg].length,
+        state.availableProducts[productIndexAg].height,
+        state.availableProducts[productIndexAg].width,
+        state.availableProducts[productIndexAg].price,
+        state.availableProducts[productIndexAg].date,
+        state.availableProducts[productIndexAg].status,
+        state.availableProducts[productIndexAg].readyDate,
+        state.availableProducts[productIndexAg].reservedDate,
+        state.availableProducts[productIndexAg].reservedUntil,
+        state.availableProducts[productIndexAg].suggestedDate,
+        state.availableProducts[productIndexAg].collectingDate,
+        state.availableProducts[productIndexAg].collectedDate,
+        state.availableProducts[productIndexAg].projectId,
+        state.availableProducts[productIndexAg].internalComments,
+        action.productData.sellerAgreed,
+        action.productData.buyerAgreed
+      );
+
+      console.log(
+        'store/reducers/products/CHANGE_PRODUCT_STATUS, updated product: ',
+        updatedProductAgreement
+      );
+      //Update state
+      const updatedAvailableProductsAgreement = updateCollection(
+        state.availableProducts,
+        action.pid,
+        updatedProductAgreement
+      );
+      const updatedUserProductsAgreement = updateCollection(
+        state.userProducts,
+        action.pid,
+        updatedProductAgreement
+      );
+
+      return {
+        ...state,
+        availableProducts: updatedAvailableProductsAgreement,
+        userProducts: updatedUserProductsAgreement,
       };
     case DELETE_PRODUCT:
       return {
