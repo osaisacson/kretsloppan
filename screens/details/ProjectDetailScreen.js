@@ -87,6 +87,9 @@ const ProjectDetailScreen = (props) => {
     <View>
       <SectionCard>
         <Text style={styles.title}>{selectedProject.title}</Text>
+        {selectedProject.location ? (
+          <Text style={styles.subTitle}>{selectedProject.location}</Text>
+        ) : null}
         <Divider style={{ marginBottom: 8 }} />
         <ContactDetails
           hideButton={true}
@@ -94,9 +97,7 @@ const ProjectDetailScreen = (props) => {
           projectId={selectedProject.id}
           buttonText={'kontaktdetaljer'}
         />
-        {selectedProject.location ? (
-          <Text style={styles.subTitle}>{selectedProject.location}</Text>
-        ) : null}
+
         <CachedImage
           style={styles.image}
           uri={selectedProject.image ? selectedProject.image : ''}
@@ -126,7 +127,9 @@ const ProjectDetailScreen = (props) => {
       </SectionCard>
       {selectedProject.description ? (
         <SectionCard>
-          <Paragraph>{selectedProject.description}</Paragraph>
+          <Paragraph style={{ padding: 5 }}>
+            {selectedProject.description}
+          </Paragraph>
         </SectionCard>
       ) : null}
 
