@@ -72,7 +72,6 @@ const ProductDetailScreen = (props) => {
   );
 
   const projectForProduct = projectForProductSelection[0];
-  console.log('projectForProduct: ', projectForProduct);
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
@@ -103,10 +102,6 @@ const ProductDetailScreen = (props) => {
     );
   };
 
-  console.log('reservedUserId: ', reservedUserId);
-  console.log('collectingUserId: ', collectingUserId);
-  console.log('newOwnerId: ', newOwnerId);
-
   const profileContactId = isReserved
     ? reservedUserId
     : isOrganised
@@ -123,7 +118,6 @@ const ProductDetailScreen = (props) => {
     ? 'Ny ägare:'
     : null;
 
-  console.log('profileContactId: ', profileContactId);
   if (isLoading) {
     return <Loader />;
   }

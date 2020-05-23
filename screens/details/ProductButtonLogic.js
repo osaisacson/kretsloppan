@@ -2,17 +2,20 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Alert } from 'react-native';
+import { View, Alert, Text, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
+
 import Moment from 'moment/min/moment-with-locales';
 
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
-import ContactDetails from '../../components/UI/ContactDetails';
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import Loader from '../../components/UI/Loader';
 import ButtonAction from '../../components/UI/ButtonAction';
 import StatusBadge from '../../components/UI/StatusBadge';
+import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import RoundItem from '../../components/UI/RoundItem';
+import UserAvatar from '../../components/UI/UserAvatar';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -27,6 +30,7 @@ const ProductButtonLogic = (props) => {
 
   //Set up state hooks
   const [isLoading, setIsLoading] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const [showUserProjects, setShowUserProjects] = useState(false);
 
   //Get all projects from state, and then return the ones that matches the id of the current product
@@ -36,21 +40,81 @@ const ProductButtonLogic = (props) => {
     id,
     projectId,
     status,
+    ownerId,
     reservedUserId,
     collectingUserId,
     newOwnerId,
     reservedUntil,
     collectingDate,
+    phone,
+    address,
   } = props.selectedProduct;
-  const hasEditPermission = props.hasEditPermission;
+
+  //These will change based on where we are in the reservation process
+  let receivingId;
+  let statusText;
+  let statusIcon;
+  let statusColor;
 
   //Check status of product and privileges of user
-  const isReady = status === 'redo' || '';
   const isReserved = status === 'reserverad';
   const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
   const isReservedUser = reservedUserId === loggedInUserId;
   const isOrganisedUser = collectingUserId === loggedInUserId;
+  const hasEditPermission = props.hasEditPermission;
+
+  if (isReserved) {
+    receivingId = reservedUserId;
+    statusText = `Reserverad ${isReservedUser ? 'av dig ' : ''}tills ${Moment(
+      reservedUntil
+    )
+      .locale('sv')
+      .calendar()}`;
+    statusIcon = 'clock';
+    statusColor = Colors.primary;
+  }
+
+  if (isOrganised) {
+    receivingId = collectingUserId;
+    statusText = `Upphämtning satt till ${Moment(collectingDate)
+      .locale('sv')
+      .calendar()}`;
+    statusIcon = 'star';
+    statusColor = Colors.neutral;
+  }
+
+  if (isPickedUp) {
+    receivingId = newOwnerId;
+    statusText = `Hämtad${isReservedUser ? ' av dig' : ''}!`;
+    statusIcon = 'checkmark';
+    statusColor = Colors.completed;
+  }
+
+  //Avatar logic
+  const profiles = useSelector((state) => state.profiles.allProfiles);
+
+  const ownerProfile = profiles.find(
+    (profile) => profile.profileId === ownerId
+  );
+
+  const receivingProfile = profiles.find(
+    (profile) => profile.profileId === receivingId
+  );
+
+  const associatedProject = useSelector(
+    (state) => state.projects.availableProjects
+  );
+
+  const projectForProduct = associatedProject.find(
+    (proj) => proj.id === projectId
+  );
+
+  console.log('receivingId: ', receivingId);
+  console.log('receivingProfile: ', receivingProfile);
+  console.log('statusText: ', statusText);
+  console.log('statusIcon: ', statusIcon);
+  console.log('statusColor: ', statusColor);
 
   const reserveHandler = (clickedProjectId) => {
     const checkedProjectId = clickedProjectId ? clickedProjectId : '000';
@@ -71,7 +135,8 @@ const ProductButtonLogic = (props) => {
                 checkedProjectId
               )
             );
-            props.navigation.navigate('Min Sida');
+            setShowUserProjects(false);
+            // props.navigation.navigate('Min Sida');
           },
         },
       ]
@@ -80,6 +145,10 @@ const ProductButtonLogic = (props) => {
 
   const toggleReserveButton = () => {
     setShowUserProjects((prevState) => !prevState);
+  };
+
+  const toggleShowOptions = () => {
+    setShowOptions((prevState) => !prevState);
   };
 
   const unReserveHandler = () => {
@@ -150,9 +219,200 @@ const ProductButtonLogic = (props) => {
     );
   };
 
+  const HeaderAvatar = (props) => {
+    return (
+      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+        <UserAvatar
+          userId={props.profileId}
+          style={{ marginRight: 10 }}
+          showBadge={false}
+          actionOnPress={() => {
+            props.navigation.navigate('Användare', {
+              detailId: props.profileId,
+            });
+          }}
+        />
+        {props.showName ? (
+          <Text
+            style={{
+              textAlign: 'left',
+              fontFamily: 'roboto-regular',
+              fontSize: 14,
+            }}
+          >
+            {props.profile.profileName}
+          </Text>
+        ) : null}
+      </View>
+    );
+  };
+
   if (isLoading) {
     return <Loader />;
   }
+
+  return (
+    <View style={{ marginTop: 20 }}>
+      {/* If we have a status of the product, show a badge with conditional copy */}
+      {statusText ? (
+        <StatusBadge
+          style={{ alignSelf: 'center', marginTop: 10 }}
+          text={statusText}
+          icon={
+            Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`
+          }
+          backgroundColor={statusColor}
+        />
+      ) : null}
+
+      <View style={styles.oneLineSpread}>
+        <HeaderAvatar
+          profileId={ownerId}
+          profile={ownerProfile}
+          navigation={props.navigation}
+        />
+        <Button
+          icon="unfold-more-horizontal"
+          mode="text"
+          onPress={toggleShowOptions}
+        />
+        <View>
+          {receivingProfile ? (
+            <View style={styles.centerAlign}>
+              <HeaderThree text={'Av:'} />{' '}
+              <HeaderAvatar
+                profileId={receivingId}
+                profile={receivingProfile}
+                navigation={props.navigation}
+              />
+            </View>
+          ) : null}
+          {projectForProduct ? (
+            <View style={styles.centerAlign}>
+              <HeaderThree text={'Till:'} />
+              <SmallRoundItem
+                detailPath={'ProjectDetail'}
+                item={projectForProduct}
+                navigation={props.navigation}
+              />
+            </View>
+          ) : null}
+          {!isReserved && !isOrganised && !isPickedUp ? (
+            <ButtonAction
+              disabled={isReserved}
+              onSelect={toggleReserveButton}
+              title={'reservera'}
+            />
+          ) : null}
+        </View>
+      </View>
+
+      {/* When trying to reserve, open this up for selection of associated project */}
+      {showUserProjects ? (
+        <>
+          <HeaderThree
+            text={'Vilket projekt ska återbruket användas i?'}
+            style={detailStyles.centeredHeader}
+          />
+
+          <HorizontalScrollContainer>
+            <RoundItem
+              itemData={{
+                image: './../../assets/avatar-placeholder-image.png',
+                title: 'Inget projekt',
+              }}
+              key={'000'}
+              isHorizontal={true}
+              onSelect={() => {
+                reserveHandler('000');
+              }}
+            />
+            {userProjects.map((item) => (
+              <RoundItem
+                itemData={item}
+                key={item.id}
+                isHorizontal={true}
+                onSelect={() => {
+                  reserveHandler(item.id);
+                }}
+              />
+            ))}
+          </HorizontalScrollContainer>
+        </>
+      ) : null}
+
+      {/* Details about the item, and options for the logistics */}
+      {showOptions ? (
+        <>
+          <View style={styles.oneLineSpread}>
+            <View>
+              <Text style={styles.contactDetailsLeft}>
+                {ownerProfile.profileName}
+              </Text>
+              <Text style={styles.contactDetailsLeft}>
+                {ownerProfile.email
+                  ? ownerProfile.email
+                  : 'Ingen email angiven'}
+              </Text>
+              <Text style={styles.contactDetailsLeft}>
+                {phone ? phone : 'Ingen telefon angiven'}
+              </Text>
+              {address ? (
+                <Text style={styles.contactDetailsLeft}>
+                  {address ? address : 'Ingen address angiven'}
+                </Text>
+              ) : null}
+            </View>
+
+            {receivingProfile ? (
+              <View>
+                <Text style={styles.contactDetailsRight}>
+                  {receivingProfile.profileName}
+                </Text>
+                <Text style={styles.contactDetailsRight}>
+                  {receivingProfile.email
+                    ? receivingProfile.email
+                    : 'Ingen email angiven'}
+                </Text>
+                <Text style={styles.contactDetailsRight}>
+                  {receivingProfile.phone
+                    ? receivingProfile.phone
+                    : 'Ingen telefon angiven'}
+                </Text>
+                {receivingProfile.address ? (
+                  <Text style={styles.contactDetailsRight}>
+                    {receivingProfile.address
+                      ? receivingProfile.address
+                      : 'Ingen address angiven'}
+                  </Text>
+                ) : null}
+              </View>
+            ) : null}
+          </View>
+          {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
+          {!isOrganised &&
+          (hasEditPermission || isReservedUser || isOrganisedUser) ? (
+            <HeaderThree
+              text={`Kontakta varandra in${Moment(reservedUntil)
+                .locale('sv')
+                .endOf('hour')
+                .subtract(1, 'hour')
+                .fromNow()}`}
+              style={detailStyles.centeredHeader}
+            />
+          ) : null}
+          {/* TBD: In-app messaging - Button for passing an object 
+            reference to the in-app messaging screen */}
+          {/* <ButtonAction
+              large={true}
+              icon="email"
+              title={'Skicka meddelande'} //Send message
+              onSelect={() => {}} //Should open the in-app messaging view, forwarding a title to what the message is about: {`Angående: ${objectForDetails.title}`}. Title should in the message link to the post it refers to.
+            /> */}
+        </>
+      ) : null}
+    </View>
+  );
 
   return (
     <View style={{ marginVertical: 20 }}>
@@ -304,11 +564,15 @@ const ProductButtonLogic = (props) => {
   );
 };
 
-//Sets/overrides the default navigation options in the ShopNavigator
-export const screenOptions = (navData) => {
-  return {
-    headerTitle: '',
-  };
-};
+const styles = StyleSheet.create({
+  oneLineSpread: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  contactDetailsRight: {
+    textAlign: 'right',
+  },
+});
 
 export default ProductButtonLogic;
