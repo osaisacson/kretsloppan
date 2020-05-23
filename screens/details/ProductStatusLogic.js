@@ -28,7 +28,6 @@ const ProductStatusLogic = (props) => {
   const isReserved = status === 'reserverad';
   const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
-  const isReservedUser = reservedUserId === loggedInUserId;
 
   if (isReserved) {
     statusText = `Reserverad tills ${Moment(reservedUntil)

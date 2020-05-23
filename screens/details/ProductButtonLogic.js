@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Button, Divider } from 'react-native-paper';
@@ -49,9 +48,6 @@ const ProductButtonLogic = (props) => {
     address,
   } = props.selectedProduct;
 
-  //Will change based on where we are in the reservation process
-  let receivingId;
-
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
   const isOrganised = status === 'ordnad';
@@ -60,16 +56,23 @@ const ProductButtonLogic = (props) => {
   const isOrganisedUser = collectingUserId === loggedInUserId;
   const hasEditPermission = props.hasEditPermission;
 
+  //Will change based on where we are in the reservation process
+  let receivingId;
+  let statusColor;
+
   if (isReserved) {
     receivingId = reservedUserId;
+    statusColor = Colors.primary;
   }
 
   if (isOrganised) {
     receivingId = collectingUserId;
+    statusColor = Colors.neutral;
   }
 
   if (isPickedUp) {
     receivingId = newOwnerId;
+    statusColor = Colors.completed;
   }
 
   //Avatar logic
@@ -198,7 +201,7 @@ const ProductButtonLogic = (props) => {
     return (
       <UserAvatar
         userId={props.profileId}
-        style={{ margin: 0 }}
+        style={[{ margin: 0 }, props.style]}
         showBadge={false}
         actionOnPress={() => {
           props.navigation.navigate('Användare', {
@@ -218,7 +221,8 @@ const ProductButtonLogic = (props) => {
       <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
         <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
         <Button
-          style={{ position: 'absolute', left: '45%' }}
+          color={Colors.darkPrimary}
+          style={{ width: 120, position: 'absolute', left: '35%' }}
           icon="unfold-more-horizontal"
           mode="text"
           onPress={toggleShowOptions}
@@ -227,17 +231,15 @@ const ProductButtonLogic = (props) => {
           style={{
             flex: 1,
             flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
-            textAlign: 'right',
-            alignSelf: 'flex-end',
             position: 'absolute',
             right: 0,
           }}
         >
           {projectForProduct ? (
             <View style={styles.textAndBadge}>
-              <View style={styles.smallBadge}>
+              <View
+                style={[styles.smallBadge, { backgroundColor: statusColor }]}
+              >
                 <Text style={styles.smallText}>För</Text>
               </View>
               <SmallRoundItem
@@ -249,21 +251,24 @@ const ProductButtonLogic = (props) => {
           ) : null}
           {receivingProfile ? (
             <View style={styles.textAndBadge}>
-              <View style={styles.smallBadge}>
-                <Text style={styles.smallText}>Av</Text>
+              <View
+                style={[styles.smallBadge, { backgroundColor: statusColor }]}
+              >
+                <Text style={styles.smallText}>Till</Text>
               </View>
               <HeaderAvatar
                 profileId={receivingId}
                 navigation={props.navigation}
               />
             </View>
-          ) : (
+          ) : null}
+          {!isReserved && !isPickedUp && !isOrganised ? (
             <ButtonAction
               disabled={isReserved}
               onSelect={toggleReserveButton}
-              title={'reservera'}
+              title={'reservera i 24h'}
             />
-          )}
+          ) : null}
         </View>
       </View>
 
@@ -314,7 +319,10 @@ const ProductButtonLogic = (props) => {
               ) : null}
               {hasEditPermission ? (
                 <ButtonAction
+                  style={{ marginVertical: 10 }}
                   disabled={isPickedUp}
+                  buttonColor={Colors.completed}
+                  buttonLabelStyle={{ color: '#fff' }}
                   title="Byt till hämtad"
                   onSelect={collectHandler.bind(this)}
                 />
@@ -336,9 +344,12 @@ const ProductButtonLogic = (props) => {
                       : 'Ingen address angiven'}
                   </Text>
                 ) : null}
-                {isReservedUser ? (
+                {isReservedUser || hasEditPermission ? (
                   <ButtonAction
+                    style={{ marginVertical: 10 }}
                     disabled={isPickedUp}
+                    buttonColor={Colors.warning}
+                    buttonLabelStyle={{ color: '#fff' }}
                     onSelect={unReserveHandler}
                     title={'avreservera'}
                   />
@@ -347,22 +358,38 @@ const ProductButtonLogic = (props) => {
             ) : null}
           </View>
           {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
-          {!isOrganised &&
+          {isReserved &&
+          !isOrganised &&
           (hasEditPermission || isReservedUser || isOrganisedUser) ? (
-            <HeaderThree
-              style={{ textAlign: 'center', marginBottom: 20 }}
-              text={`Kontakta varandra in${Moment(reservedUntil)
-                .locale('sv')
-                .endOf('hour')
-                .subtract(1, 'hour')
-                .fromNow()}`}
-            />
-          ) : (
+            <>
+              <HeaderThree
+                style={{ textAlign: 'center', marginBottom: 20 }}
+                text={`Kontakta varandra in${Moment(reservedUntil)
+                  .locale('sv')
+                  .endOf('hour')
+                  .subtract(1, 'hour')
+                  .fromNow()}`}
+              />
+              <View style={styles.actionButtons}>
+                <ButtonAction
+                  style={{ marginRight: 10 }}
+                  title={`Sätt/Ändra upphämtningsdatum`}
+                  onSelect={setAsOrganised.bind(this)}
+                />
+              </View>
+            </>
+          ) : null}
+
+          {isReserved &&
+          !isOrganised &&
+          !hasEditPermission &&
+          !isReservedUser &&
+          !isOrganisedUser ? (
             <HeaderThree
               style={{ textAlign: 'center', marginBottom: 20 }}
               text={'Parterna är i processen att ordna med logistik'}
             />
-          )}
+          ) : null}
           {/* TBD: In-app messaging - Button for passing an object 
             reference to the in-app messaging screen */}
           {/* <ButtonAction
@@ -371,17 +398,6 @@ const ProductButtonLogic = (props) => {
               title={'Skicka meddelande'} //Send message
               onSelect={() => {}} //Should open the in-app messaging view, forwarding a title to what the message is about: {`Angående: ${objectForDetails.title}`}. Title should in the message link to the post it refers to.
             /> */}
-          {/* Organising logistics - allow both parties to change the status to organised. */}
-
-          {hasEditPermission || isOrganisedUser ? (
-            <View style={styles.actionButtons}>
-              <ButtonAction
-                style={{ marginRight: 10 }}
-                title={`Sätt/Ändra upphämtningsdatum`}
-                onSelect={setAsOrganised.bind(this)}
-              />
-            </View>
-          ) : null}
         </>
       ) : null}
     </View>
@@ -399,7 +415,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    height: 120,
+    height: 110,
   },
   receivingOptions: {
     flex: 1,
@@ -413,6 +429,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     right: 0,
+  },
+  leftTextAndBadge: {
+    marginLeft: -10,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   textAndBadge: {
     flex: 1,

@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   StyleSheet,
+  ShadowPropTypesIOS,
 } from 'react-native';
 import { Button } from 'react-native-paper';
 
@@ -16,11 +17,12 @@ const ButtonAction = (props) => {
   return (
     <TouchableCmp style={{ ...styles.container, ...props.style }}>
       <Button
+        color={props.buttonColor}
         disabled={props.disabled ? props.disabled : false}
         mode="contained"
         compact={props.isLarge ? false : true}
         style={styles.button}
-        labelStyle={styles.label}
+        labelStyle={[styles.label, props.buttonLabelStyle]}
         onPress={props.onSelect}
         icon={props.icon}
       >
