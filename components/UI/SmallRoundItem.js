@@ -47,16 +47,18 @@ const SmallRoundItem = (props) => {
           </View>
         </TouchableCmp>
       </View>
-      <Text
-        style={{
-          marginLeft: 10,
-          textAlign: 'left',
-          fontFamily: 'roboto-regular',
-          fontSize: 14,
-        }}
-      >
-        {props.item.title}
-      </Text>
+      {props.showText ? (
+        <Text
+          style={{
+            marginLeft: 10,
+            textAlign: 'left',
+            fontFamily: 'roboto-regular',
+            fontSize: 14,
+          }}
+        >
+          {props.item.title}
+        </Text>
+      ) : null}
     </View>
   );
 };

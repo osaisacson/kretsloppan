@@ -276,10 +276,10 @@ const ProductButtonLogic = (props) => {
           mode="text"
           onPress={toggleShowOptions}
         />
-        <View>
+        <View style={styles.oneLineRight}>
           {receivingProfile ? (
             <View style={styles.centerAlign}>
-              <HeaderThree text={'Av:'} />{' '}
+              <HeaderThree text={'Av:'} />
               <HeaderAvatar
                 profileId={receivingId}
                 profile={receivingProfile}
@@ -569,6 +569,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  oneLineRight: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   contactDetailsRight: {
     textAlign: 'right',
