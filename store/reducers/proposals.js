@@ -25,6 +25,7 @@ export default (state = initialState, action) => {
       const newProposal = new Proposal(
         action.proposalData.id,
         action.proposalData.ownerId,
+        action.proposalData.projectId,
         action.proposalData.title,
         action.proposalData.description,
         action.proposalData.price,
@@ -46,6 +47,7 @@ export default (state = initialState, action) => {
       const updatedUserProposal = new Proposal( //Whenever we do a new proposal we have to pass the full params to match model
         action.pid,
         state.userProposals[userProposalIndex].ownerId,
+        action.proposalData.projectId,
         action.proposalData.title,
         action.proposalData.description,
         action.proposalData.price,
@@ -88,6 +90,7 @@ export default (state = initialState, action) => {
       const updatedProductCPS = new Proposal( //Whenever we do a new proposal we have to pass the full params to match model
         action.pid,
         state.availableProposals[availableProposalsIndexCPS].ownerId,
+        state.availableProposals[availableProposalsIndexCPS].projectId,
         state.availableProposals[availableProposalsIndexCPS].title,
         state.availableProposals[availableProposalsIndexCPS].description,
         state.availableProposals[availableProposalsIndexCPS].price,

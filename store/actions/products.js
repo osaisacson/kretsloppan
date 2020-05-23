@@ -13,15 +13,16 @@ export function unReserveProduct(id) {
     const token = getState().auth.token;
 
     try {
-      //Since the products reservation date has passed, reset these values as:
+      //Since the products reservation date has passed and no collectingDate has been set, reset these values as:
       const updatedProduct = {
         reservedUserId: '',
+        collectingUserId: '',
         newOwnerId: '',
         status: 'redo',
-        pauseDate: '',
         readyDate: new Date().toISOString(), //Current date
         reservedDate: '',
         reservedUntil: '',
+        collectingDate: '',
         collectedDate: '',
         projectId: '',
       };
@@ -49,12 +50,13 @@ export function unReserveProduct(id) {
         pid: id,
         productData: {
           reservedUserId: updatedData.reservedUserId,
+          collectingUserId: updatedData.collectingUserId,
           newOwnerId: updatedData.newOwnerId,
           status: updatedData.status,
-          pauseDate: updatedData.pauseDate,
           readyDate: updatedData.readyDate,
           reservedDate: updatedData.reservedDate,
           reservedUntil: updatedData.reservedUntil,
+          collectingDate: updatedData.collectingDate,
           collectedDate: updatedData.collectedDate,
           projectId: updatedData.projectId,
         },
@@ -62,9 +64,8 @@ export function unReserveProduct(id) {
       console.log('----------actions/products/unReserveProduct--------END');
       return updatedData;
     } catch (error) {
-      console.log(error)(
-        '----------actions/products/unReserveProduct--------END'
-      );
+      console.log(error);
+      ('----------actions/products/unReserveProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -93,13 +94,16 @@ export function fetchProducts() {
         //Is the product reservation expired?
         const reservationExpiryDate = new Date(resData[key].reservedUntil);
         const isPickedUp = resData[key].status === 'hämtad';
+        const collectionIsNotAgreed = !resData[key].collectingDate;
         const shouldBeReset =
           !isPickedUp &&
+          collectionIsNotAgreed &&
           reservationExpiryDate instanceof Date &&
           reservationExpiryDate <= new Date();
 
         //If the product has expired, call a function which passes correct new fields and then push the updated product to the loadedProducts array
         if (shouldBeReset) {
+          console.log('EXPIRED PRODUCT: ', resData[key]);
           console.log(
             'Found expired product, calling unReserveProduct ------>'
           );
@@ -117,6 +121,7 @@ export function fetchProducts() {
               key,
               updatedResult.ownerId,
               updatedResult.reservedUserId,
+              updatedResult.collectingUserId,
               updatedResult.newOwnerId,
               updatedResult.category,
               updatedResult.condition,
@@ -134,10 +139,10 @@ export function fetchProducts() {
               updatedResult.price,
               updatedResult.date,
               updatedResult.status,
-              updatedResult.pauseDate,
               updatedResult.readyDate,
               updatedResult.reservedDate,
               updatedResult.reservedUntil,
+              updatedResult.collectingDate,
               updatedResult.collectedDate,
               updatedResult.projectId,
               updatedResult.internalComments
@@ -151,6 +156,7 @@ export function fetchProducts() {
             key,
             resData[key].ownerId,
             resData[key].reservedUserId,
+            resData[key].collectingUserId,
             resData[key].newOwnerId,
             resData[key].category,
             resData[key].condition,
@@ -168,10 +174,10 @@ export function fetchProducts() {
             resData[key].price,
             resData[key].date,
             resData[key].status,
-            resData[key].pauseDate,
             resData[key].readyDate,
             resData[key].reservedDate,
             resData[key].reservedUntil,
+            resData[key].collectingDate,
             resData[key].collectedDate,
             resData[key].projectId,
             resData[key].internalComments
@@ -187,7 +193,8 @@ export function fetchProducts() {
       });
       ('----------actions/products/fetchProducts--------END');
     } catch (error) {
-      console.log(error)('----------actions/products/fetchProducts--------END');
+      console.log(error);
+      ('----------actions/products/fetchProducts--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -246,6 +253,7 @@ export function createProduct(
       const productData = {
         ownerId: userId,
         reservedUserId: '',
+        collectingUserId: '',
         newOwnerId: '',
         category,
         condition,
@@ -263,10 +271,10 @@ export function createProduct(
         price,
         date: currentDate,
         status: 'redo',
-        pauseDate: '',
         readyDate: currentDate,
         reservedDate: '',
         reservedUntil: '',
+        collectingDate: '',
         collectedDate: '',
         projectId: '000',
         internalComments,
@@ -290,6 +298,7 @@ export function createProduct(
           id: returnedProductData.name,
           ownerId: userId,
           reservedUserId: '',
+          collectingUserId: '',
           newOwnerId: '',
           category,
           condition,
@@ -308,10 +317,9 @@ export function createProduct(
           date: currentDate,
           status: 'redo',
           readyDate: currentDate,
-          pauseDate: '',
-          readyDate: currentDate,
           reservedDate: '',
           reservedUntil: '',
+          collectingDate: '',
           collectedDate: '',
           projectId: '000',
           internalComments,
@@ -319,7 +327,8 @@ export function createProduct(
       });
       console.log('----------actions/products/createProduct--------END');
     } catch (error) {
-      console.log(error)('----------actions/products/createProduct--------END');
+      console.log(error);
+      ('----------actions/products/createProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -419,21 +428,27 @@ export function updateProduct(
 
       console.log('----------actions/products/updateProduct--------END');
     } catch (error) {
-      console.log(error)('----------actions/products/updateProduct--------END');
+      console.log(error);
+      ('----------actions/products/updateProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
   };
 }
 
-export const changeProductStatus = (id, status, projectId) => {
+export const changeProductStatus = (
+  id,
+  status,
+  projectId,
+  collectingUserId = '',
+  collectingDate = ''
+) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const currentUserId = getState().auth.userId;
     const currentDate = new Date().toISOString();
 
     const isReady = status === 'redo';
-    const isPaused = status === 'bearbetas';
     const isReserved = status === 'reserverad';
     const isCollected = status === 'hämtad';
 
@@ -453,20 +468,18 @@ export const changeProductStatus = (id, status, projectId) => {
     let updatedNewOwnerId = isCollected ? currentUserId : '';
     let updatedCollectedDate = isCollected ? currentDate : '';
 
-    //If we are updating the status to paused, set the date when the product was paused to today.
-    let updatedPauseDate = isPaused ? currentDate : '';
-
     //If we are updating the status to ready, set the date when the product was made available again to today.
     let updatedReadyDate = isReady ? currentDate : '';
 
     const productDataToUpdate = {
       reservedUserId: updatedReservedUserId,
+      collectingUserId,
       newOwnerId: updatedNewOwnerId,
       status,
-      pauseDate: updatedPauseDate,
       readyDate: updatedReadyDate,
       reservedDate: updatedReservedDate,
       reservedUntil: updatedReservedUntil,
+      collectingDate,
       collectedDate: updatedCollectedDate,
       projectId: updatedProjectId,
     };

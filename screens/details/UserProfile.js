@@ -75,9 +75,9 @@ const UserProfile = (props) => {
     (product) => product.newOwnerId !== visitedUserId
   );
 
-  //PAUSED: Gets all products which the user has put on hold
+  //AVAILABLE: Gets all products which are not booked or organised
   const availableUserProductsRaw = userProducts.filter(
-    (product) => product.status === 'redo' || product.status === 'bearbetas'
+    (product) => product.status === 'redo'
   );
 
   const availableUserProducts = availableUserProductsRaw.sort(function (a, b) {

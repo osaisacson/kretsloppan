@@ -93,7 +93,7 @@ const ProductsScreen = (props) => {
                 itemData.item.title
               );
             }}
-          ></ProductItem>
+          />
         )}
         ListHeaderComponent={
           <HeaderTwo

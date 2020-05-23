@@ -8,11 +8,14 @@ import {
   DetailWrapper,
   detailStyles,
 } from '../../components/wrappers/DetailWrapper';
-import ContactDetails from '../../components/UI/ContactDetails';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ButtonAction from '../../components/UI/ButtonAction';
+import ContactDetails from '../../components/UI/ContactDetails';
+import HeaderThree from '../../components/UI/HeaderThree';
+import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import StatusBadge from '../../components/UI/StatusBadge';
 import SectionCard from '../../components/UI/SectionCard';
+import Moment from 'moment/min/moment-with-locales';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -32,6 +35,12 @@ const ProposalDetailScreen = (props) => {
     state.proposals.availableProposals.find(
       (proposal) => proposal.id === proposalId
     )
+  );
+
+  //Get all projects from state, and then return the ones that matches the id of the current proposal
+  const userProjects = useSelector((state) => state.projects.userProjects);
+  const projectForProposal = userProjects.filter(
+    (proj) => proj.id === selectedProposal.projectId
   );
 
   const ownerId = selectedProposal ? selectedProposal.ownerId : null;
@@ -81,6 +90,17 @@ const ProposalDetailScreen = (props) => {
 
   return selectedProposal ? (
     <DetailWrapper>
+      <Text style={{ textAlign: 'right', color: '#666' }}>
+        Upplagt{' '}
+        {Moment(selectedProposal.date).locale('sv').startOf('hour').fromNow()}
+      </Text>
+      {isResolved ? (
+        <StatusBadge
+          text={'Löst!'}
+          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+          backgroundColor={Colors.completed}
+        />
+      ) : null}
       <SectionCard>
         {/* Show contact info only if the user is not the creator */}
         <ContactDetails
@@ -134,6 +154,25 @@ const ProposalDetailScreen = (props) => {
         ) : null}
       </SectionCard>
 
+      {selectedProposal.projectId && projectForProposal.length ? (
+        <SectionCard>
+          <View style={detailStyles.centered}>
+            <HeaderThree
+              text={'Relaterar till projektet:'}
+              style={detailStyles.centeredHeader}
+            />
+
+            <HorizontalScroll
+              scrollHeight={155}
+              roundItem={true}
+              detailPath={'ProjectDetail'}
+              scrollData={projectForProposal}
+              navigation={props.navigation}
+            />
+          </View>
+        </SectionCard>
+      ) : null}
+
       {!isResolved && hasEditPermission ? (
         <SectionCard>
           <View style={detailStyles.toggles}>
@@ -145,16 +184,6 @@ const ProposalDetailScreen = (props) => {
               title={'Avaktivera och markera som löst'}
             />
           </View>
-        </SectionCard>
-      ) : null}
-
-      {isResolved ? (
-        <SectionCard>
-          <StatusBadge
-            text={'Löst!'}
-            icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-            backgroundColor={Colors.completed}
-          />
         </SectionCard>
       ) : null}
     </DetailWrapper>

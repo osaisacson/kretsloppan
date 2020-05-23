@@ -8,7 +8,12 @@ import {
   FormFieldWrapper,
   formStyles,
 } from '../../components/wrappers/FormFieldWrapper';
+import { detailStyles } from '../../components/wrappers/DetailWrapper';
+
+import HeaderThree from '../../components/UI/HeaderThree';
+import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import Loader from '../../components/UI/Loader';
+import RoundItem from '../../components/UI/RoundItem';
 
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
@@ -39,6 +44,8 @@ const formReducer = (state, action) => {
 };
 
 const EditProposalScreen = (props) => {
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -48,18 +55,22 @@ const EditProposalScreen = (props) => {
   const editedProposal = useSelector((state) =>
     state.proposals.userProposals.find((proposal) => proposal.id === proposalId)
   );
-  const dispatch = useDispatch();
+
+  //Find the user's projects
+  const userProjects = useSelector((state) => state.projects.userProjects);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: editedProposal ? editedProposal.title : '',
       description: editedProposal ? editedProposal.description : '',
       price: editedProposal ? editedProposal.price : '',
+      projectId: editedProposal ? editedProposal.projectId : '',
     },
     inputValidities: {
       title: editedProposal ? true : false,
       description: editedProposal ? true : false,
       price: editedProposal ? true : false,
+      projectId: true,
     },
     formIsValid: editedProposal ? true : false,
   });
@@ -88,7 +99,8 @@ const EditProposalScreen = (props) => {
             proposalId,
             formState.inputValues.title,
             formState.inputValues.description,
-            +formState.inputValues.price
+            +formState.inputValues.price,
+            formState.inputValues.projectId
           )
         );
       } else {
@@ -96,7 +108,8 @@ const EditProposalScreen = (props) => {
           proposalsActions.createProposal(
             formState.inputValues.title,
             formState.inputValues.description,
-            +formState.inputValues.price
+            +formState.inputValues.price,
+            formState.inputValues.projectId
           )
         );
       }
@@ -109,6 +122,9 @@ const EditProposalScreen = (props) => {
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
+    console.log('inputIdentifier: ', inputIdentifier);
+    console.log('text: ', text);
+
     //inputIdentifier and text will act as key:value in the form reducer
 
     let isValid = true;
@@ -169,6 +185,35 @@ const EditProposalScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
+
+      <>
+        <HeaderThree
+          text={'Relaterar efterlysningen till ett projekt?'}
+          style={detailStyles.centeredHeader}
+        />
+
+        <HorizontalScrollContainer>
+          <RoundItem
+            itemData={{
+              image: './../../assets/avatar-placeholder-image.png',
+              title: 'Inget projekt',
+            }}
+            key={'000'}
+            isHorizontal={true}
+            isSelected={formState.inputValues.projectId === '000'}
+            onSelect={textChangeHandler.bind(this, 'projectId', '000')}
+          />
+          {userProjects.map((item) => (
+            <RoundItem
+              itemData={item}
+              key={item.id}
+              isHorizontal={true}
+              isSelected={formState.inputValues.projectId === item.id}
+              onSelect={textChangeHandler.bind(this, 'projectId', item.id)}
+            />
+          ))}
+        </HorizontalScrollContainer>
+      </>
     </FormWrapper>
   );
 };

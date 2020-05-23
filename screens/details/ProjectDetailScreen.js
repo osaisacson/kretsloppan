@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
@@ -9,18 +9,16 @@ import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
+import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import SectionCard from '../../components/UI/SectionCard';
 import SaferArea from '../../components/UI/SaferArea';
-import UsedItem from '../../components/UI/UsedItem';
+import ProductItem from '../../components/UI/ProductItem';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectDetailScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const projectId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
@@ -33,6 +31,12 @@ const ProjectDetailScreen = (props) => {
   const associatedProducts = useSelector((state) =>
     state.products.availableProducts.filter(
       (prod) => prod.projectId === projectId
+    )
+  );
+
+  const associatedProposals = useSelector((state) =>
+    state.proposals.availableProposals.filter(
+      (proposal) => proposal.projectId === projectId
     )
   );
 
@@ -70,10 +74,6 @@ const ProjectDetailScreen = (props) => {
       ]
     );
   };
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   const projectHeader = selectedProject ? (
     <View>
@@ -143,6 +143,14 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
+      {associatedProposals.length ? (
+        <HorizontalScroll
+          textItem={true}
+          detailPath="ProposalDetail"
+          scrollData={associatedProposals}
+          navigation={props.navigation}
+        />
+      ) : null}
       <FlatList
         initialNumToRender={8}
         horizontal={false}
@@ -151,12 +159,8 @@ const ProjectDetailScreen = (props) => {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={projectHeader}
         renderItem={(itemData) => (
-          <UsedItem
-            key={itemData.item.id}
-            isHorizontal={true}
-            image={itemData.item.image}
-            title={itemData.item.title}
-            status={itemData.item.status}
+          <ProductItem
+            itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(
                 itemData.item.id,

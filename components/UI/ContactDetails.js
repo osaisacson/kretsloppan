@@ -10,7 +10,6 @@ import { detailStyles } from '../wrappers/DetailWrapper';
 
 const ContactDetails = (props) => {
   const navigation = useNavigation();
-
   const [toggleDetails, setToggleDetails] = useState(false);
 
   //Find the profile which matches the id we passed on clicking to the detail
@@ -18,14 +17,12 @@ const ContactDetails = (props) => {
     (state) => state.profiles.allProfiles
   ).filter((profile) => profile.profileId === props.profileId);
 
-  const selectedProfile = profilesArray[0];
+  let objectForDetails = profilesArray[0];
 
   const contactEmail =
-    selectedProfile && selectedProfile.email
-      ? selectedProfile.email
+    objectForDetails && objectForDetails.email
+      ? objectForDetails.email
       : 'Ingen email';
-
-  let objectForDetails = selectedProfile;
 
   //If we are looking at the details for a product, proposal or project, instead show the specific details for this
   if (props.productId) {
@@ -62,7 +59,7 @@ const ContactDetails = (props) => {
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <UserAvatar
               userId={props.profileId}
-              style={{ marginRight: 10, marginLeft: 3 }}
+              style={{ marginRight: 10 }}
               showBadge={false}
               actionOnPress={() => {
                 navigation.navigate('Användare', {
@@ -77,7 +74,7 @@ const ContactDetails = (props) => {
                 fontSize: 14,
               }}
             >
-              {selectedProfile.profileName}
+              {objectForDetails.profileName}
             </Text>
           </View>
           {props.hideButton ? null : (

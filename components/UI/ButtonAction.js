@@ -12,11 +12,12 @@ const ButtonAction = (props) => {
   return (
     <TouchableCmp style={{ ...styles.container, ...props.style }}>
       <Button
+        color={props.buttonColor}
         disabled={props.disabled ? props.disabled : false}
         mode="contained"
         compact={!props.isLarge}
         style={styles.button}
-        labelStyle={styles.label}
+        labelStyle={[styles.label, props.buttonLabelStyle]}
         onPress={props.onSelect}
         icon={props.icon}>
         {props.title}

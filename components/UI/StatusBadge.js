@@ -13,7 +13,6 @@ const StatusBadge = (props) => {
         flex: 1,
         flexDirection: 'row',
         color: '#fff',
-        alignSelf: 'left',
         marginBottom: 10,
         paddingHorizontal: 5,
         backgroundColor: props.backgroundColor,
