@@ -22,6 +22,7 @@ export function unReserveProduct(id) {
         readyDate: new Date().toISOString(), //Current date
         reservedDate: '',
         reservedUntil: '',
+        suggestedDate: '',
         collectingDate: '',
         collectedDate: '',
         projectId: '',
@@ -56,6 +57,7 @@ export function unReserveProduct(id) {
           readyDate: updatedData.readyDate,
           reservedDate: updatedData.reservedDate,
           reservedUntil: updatedData.reservedUntil,
+          suggestedDate: updatedData.suggestedDate,
           collectingDate: updatedData.collectingDate,
           collectedDate: updatedData.collectedDate,
           projectId: updatedData.projectId,
@@ -142,6 +144,7 @@ export function fetchProducts() {
               updatedResult.readyDate,
               updatedResult.reservedDate,
               updatedResult.reservedUntil,
+              updatedResult.suggestedDate,
               updatedResult.collectingDate,
               updatedResult.collectedDate,
               updatedResult.projectId,
@@ -177,6 +180,7 @@ export function fetchProducts() {
             resData[key].readyDate,
             resData[key].reservedDate,
             resData[key].reservedUntil,
+            resData[key].suggestedDate,
             resData[key].collectingDate,
             resData[key].collectedDate,
             resData[key].projectId,
@@ -274,6 +278,7 @@ export function createProduct(
         readyDate: currentDate,
         reservedDate: '',
         reservedUntil: '',
+        suggestedDate: '',
         collectingDate: '',
         collectedDate: '',
         projectId: '000',
@@ -319,6 +324,7 @@ export function createProduct(
           readyDate: currentDate,
           reservedDate: '',
           reservedUntil: '',
+          suggestedDate: '',
           collectingDate: '',
           collectedDate: '',
           projectId: '000',
@@ -440,8 +446,8 @@ export const changeProductStatus = (
   id,
   status,
   projectId,
-  collectingUserId = '',
-  collectingDate = ''
+  idRelatedToStatus,
+  dateRelatedToStatus
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -450,6 +456,8 @@ export const changeProductStatus = (
 
     const isReady = status === 'redo';
     const isReserved = status === 'reserverad';
+    const isSuggested = status === 'ordnas';
+    const isOrganised = status === 'ordnad';
     const isCollected = status === 'hämtad';
 
     //Getting a date one week from now, to use for updated reservedUntil if status is 'reserved'
@@ -458,31 +466,87 @@ export const changeProductStatus = (
       today.getTime() + 24 * 60 * 60 * 1000
     ).toISOString();
 
-    //If we are updating the status to reserved, change the reserved fields to match the current user and date.
-    let updatedReservedUserId = isReserved ? currentUserId : '';
-    let updatedReservedDate = isReserved ? currentDate : '';
-    let updatedReservedUntil = isReserved ? oneDayFromNow : '';
-    let updatedProjectId = projectId ? projectId : '000';
+    let productDataToUpdate;
 
-    //If we are updating the status to collected, set the new owner if and the date it was collected.
-    let updatedNewOwnerId = isCollected ? currentUserId : '';
-    let updatedCollectedDate = isCollected ? currentDate : '';
+    if (isReady) {
+      productDataToUpdate = {
+        reservedUserId: '',
+        collectingUserId: '',
+        newOwnerId: '',
+        status: 'redo',
+        readyDate: currentDate,
+        reservedDate: '',
+        reservedUntil: '',
+        suggestedDate: '',
+        collectingDate: '',
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+      };
+    }
 
-    //If we are updating the status to ready, set the date when the product was made available again to today.
-    let updatedReadyDate = isReady ? currentDate : '';
+    if (isReserved) {
+      productDataToUpdate = {
+        reservedUserId: idRelatedToStatus ? idRelatedToStatus : currentUserId,
+        collectingUserId: '',
+        newOwnerId: '',
+        status: 'reserverad',
+        readyDate: '',
+        reservedDate: currentDate,
+        reservedUntil: oneDayFromNow,
+        suggestedDate: '',
+        collectingDate: '',
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+      };
+    }
 
-    const productDataToUpdate = {
-      reservedUserId: updatedReservedUserId,
-      collectingUserId,
-      newOwnerId: updatedNewOwnerId,
-      status,
-      readyDate: updatedReadyDate,
-      reservedDate: updatedReservedDate,
-      reservedUntil: updatedReservedUntil,
-      collectingDate,
-      collectedDate: updatedCollectedDate,
-      projectId: updatedProjectId,
-    };
+    if (isSuggested) {
+      productDataToUpdate = {
+        reservedUserId: idRelatedToStatus,
+        collectingUserId: '',
+        newOwnerId: '',
+        status: 'reserverad', //sätt tillbaka status till reserverad
+        readyDate: '',
+        reservedDate: currentDate,
+        reservedUntil: oneDayFromNow,
+        suggestedDate: dateRelatedToStatus,
+        collectingDate: '',
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+      };
+    }
+
+    if (isOrganised) {
+      productDataToUpdate = {
+        reservedUserId: '',
+        collectingUserId: idRelatedToStatus,
+        newOwnerId: '',
+        status: 'ordnad',
+        readyDate: '',
+        reservedDate: '',
+        reservedUntil: '',
+        suggestedDate: '',
+        collectingDate: dateRelatedToStatus,
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+      };
+    }
+
+    if (isCollected) {
+      productDataToUpdate = {
+        reservedUserId: '',
+        collectingUserId: '',
+        newOwnerId: idRelatedToStatus,
+        status: 'hämtad',
+        readyDate: '',
+        reservedDate: '',
+        reservedUntil: '',
+        suggestedDate: '',
+        collectingDate: '',
+        collectedDate: currentDate,
+        projectId: projectId ? projectId : '000',
+      };
+    }
 
     try {
       await fetch(

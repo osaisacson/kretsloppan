@@ -26,6 +26,7 @@ class Product {
     readyDate,
     reservedDate,
     reservedUntil,
+    suggestedDate,
     collectingDate,
     collectedDate,
     projectId,
@@ -55,6 +56,7 @@ class Product {
     this.readyDate = readyDate;
     this.reservedDate = reservedDate;
     this.reservedUntil = reservedUntil;
+    this.suggestedDate = suggestedDate;
     this.collectingDate = collectingDate;
     this.collectedDate = collectedDate;
     this.projectId = projectId;
