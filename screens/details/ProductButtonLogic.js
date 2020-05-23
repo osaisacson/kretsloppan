@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Button, Divider } from 'react-native-paper';
 
-import Moment from 'moment/min/moment-with-locales';
+import moment from 'moment/min/moment-with-locales';
 
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import HeaderThree from '../../components/UI/HeaderThree';
@@ -14,6 +14,7 @@ import ButtonAction from '../../components/UI/ButtonAction';
 import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import RoundItem from '../../components/UI/RoundItem';
 import UserAvatar from '../../components/UI/UserAvatar';
+import CalendarStrip from 'react-native-calendar-strip';
 
 //Constants
 import Colors from '../../constants/Colors';
@@ -30,6 +31,7 @@ const ProductButtonLogic = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showUserProjects, setShowUserProjects] = useState(false);
+  const [suggestedTime, setSuggestedTime] = useState();
 
   //Get all projects from state, and then return the ones that matches the id of the current product
   const userProjects = useSelector((state) => state.projects.userProjects);
@@ -47,6 +49,8 @@ const ProductButtonLogic = (props) => {
     phone,
     address,
   } = props.selectedProduct;
+
+  let startDate = moment(); // today
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -153,8 +157,8 @@ const ProductButtonLogic = (props) => {
     const checkedProjectId = projectId ? projectId : '000';
 
     Alert.alert(
-      'Överenskommet',
-      'Genom att klicka här markerar du att ni kommit överens om när ni ska hämta/lämna återbruket.',
+      'Föreslå ett upphämtningsdatum',
+      'Du kan föreslå datum/tid för upphämtning här, men följ gärna upp med den som lagt upp återbruket via telefon',
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -167,7 +171,7 @@ const ProductButtonLogic = (props) => {
                 'ordnad',
                 checkedProjectId,
                 reservedUserId,
-                new Date()
+                suggestedTime
               )
             );
             setShowUserProjects(false);
@@ -364,16 +368,38 @@ const ProductButtonLogic = (props) => {
             <>
               <HeaderThree
                 style={{ textAlign: 'center', marginBottom: 20 }}
-                text={`Kontakta varandra in${Moment(reservedUntil)
+                text={`Kontakta varandra in${moment(reservedUntil)
                   .locale('sv')
                   .endOf('hour')
                   .subtract(1, 'hour')
                   .fromNow()}`}
               />
+              <View style={{ flex: 1 }}>
+                <CalendarStrip
+                  scrollable
+                  daySelectionAnimation={{
+                    type: 'border',
+                    borderWidth: 0.5,
+                    borderHighlightColor: Colors.darkPrimary,
+                    duration: 200,
+                  }}
+                  highlightDateNameStyle={{ color: Colors.darkPrimary }}
+                  highlightDateNumberStyle={{ color: Colors.darkPrimary }}
+                  styleWeekend={true}
+                  onDateSelected={(date) => {
+                    setSuggestedTime(date.format('YYYY-MM-DD'));
+                  }}
+                  style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+                  type={'border'}
+                  borderWidth={1}
+                  borderHighlightColor={'#666'}
+                />
+              </View>
+              <Text>{suggestedTime}</Text>
               <View style={styles.actionButtons}>
                 <ButtonAction
                   style={{ marginRight: 10 }}
-                  title={`Sätt/Ändra upphämtningsdatum`}
+                  title={`Föreslå upphämtningsdatum`}
                   onSelect={setAsOrganised.bind(this)}
                 />
               </View>
