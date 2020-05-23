@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
 import { View, Alert, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Divider } from 'react-native-paper';
 
 import Moment from 'moment/min/moment-with-locales';
 
@@ -197,10 +197,10 @@ const ProductButtonLogic = (props) => {
 
   const HeaderAvatar = (props) => {
     return (
-      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
         <UserAvatar
           userId={props.profileId}
-          style={{ marginRight: 10 }}
+          style={{ margin: 0 }}
           showBadge={false}
           actionOnPress={() => {
             props.navigation.navigate('Användare', {
@@ -208,17 +208,6 @@ const ProductButtonLogic = (props) => {
             });
           }}
         />
-        {props.showName ? (
-          <Text
-            style={{
-              textAlign: 'left',
-              fontFamily: 'roboto-regular',
-              fontSize: 14,
-            }}
-          >
-            {props.profile.profileName}
-          </Text>
-        ) : null}
       </View>
     );
   };
@@ -229,31 +218,19 @@ const ProductButtonLogic = (props) => {
 
   return (
     <View>
-      <View style={styles.oneLineSpread}>
-        <HeaderAvatar
-          profileId={ownerId}
-          profile={ownerProfile}
-          navigation={props.navigation}
-        />
+      <View style={[styles.oneLineSpread, { marginBottom: 10 }]}>
+        <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
         <Button
           icon="unfold-more-horizontal"
           mode="text"
           onPress={toggleShowOptions}
         />
         <View style={styles.oneLineRight}>
-          {receivingProfile ? (
-            <View style={styles.centerAlign}>
-              {/* <HeaderThree text={'Av'} /> */}
-              <HeaderAvatar
-                profileId={receivingId}
-                profile={receivingProfile}
-                navigation={props.navigation}
-              />
-            </View>
-          ) : null}
           {projectForProduct ? (
-            <View style={styles.centerAlign}>
-              {/* <HeaderThree text={'För'} /> */}
+            <View style={styles.textAndBadge}>
+              <View style={styles.smallBadge}>
+                <Text style={styles.smallText}>För</Text>
+              </View>
               <SmallRoundItem
                 detailPath={'ProjectDetail'}
                 item={projectForProduct}
@@ -261,6 +238,18 @@ const ProductButtonLogic = (props) => {
               />
             </View>
           ) : null}
+          {receivingProfile ? (
+            <View style={styles.textAndBadge}>
+              <View style={styles.smallBadge}>
+                <Text style={styles.smallText}>Av</Text>
+              </View>
+              <HeaderAvatar
+                profileId={receivingId}
+                navigation={props.navigation}
+              />
+            </View>
+          ) : null}
+
           {!isReserved && !isOrganised && !isPickedUp ? (
             <ButtonAction
               disabled={isReserved}
@@ -308,6 +297,7 @@ const ProductButtonLogic = (props) => {
       {/* Details about the item, and options for the logistics */}
       {showOptions ? (
         <>
+          <Divider style={{ marginVertical: 10 }} />
           <View style={styles.oneLineSpread}>
             <View>
               <Text style={styles.contactDetailsLeft}>
@@ -529,9 +519,6 @@ const ProductButtonLogic = (props) => {
 };
 
 const styles = StyleSheet.create({
-  centerAlign: {
-    alignItems: 'center',
-  },
   oneLineSpread: {
     flex: 1,
     flexDirection: 'row',
@@ -542,9 +529,28 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  textAndBadge: {
+    flex: 1,
+    flexDirection: 'row',
   },
   contactDetailsRight: {
     textAlign: 'right',
+  },
+  smallBadge: {
+    zIndex: 10,
+    right: -10,
+    paddingHorizontal: 2,
+    borderRadius: 5,
+    backgroundColor: Colors.primary,
+    height: 17,
+  },
+  smallText: {
+    textTransform: 'uppercase',
+    fontSize: 10,
+    padding: 2,
+    color: '#fff',
   },
 });
 

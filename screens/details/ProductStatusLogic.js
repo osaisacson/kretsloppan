@@ -31,9 +31,7 @@ const ProductStatusLogic = (props) => {
   const isReservedUser = reservedUserId === loggedInUserId;
 
   if (isReserved) {
-    statusText = `Reserverad ${isReservedUser ? 'av dig ' : ''}tills ${Moment(
-      reservedUntil
-    )
+    statusText = `Reserverad tills ${Moment(reservedUntil)
       .locale('sv')
       .calendar()}`;
     statusIcon = 'clock';
@@ -49,7 +47,7 @@ const ProductStatusLogic = (props) => {
   }
 
   if (isPickedUp) {
-    statusText = `Hämtad${isReservedUser ? ' av dig' : ''}!`;
+    statusText = 'Hämtad';
     statusIcon = 'checkmark';
     statusColor = Colors.completed;
   }
