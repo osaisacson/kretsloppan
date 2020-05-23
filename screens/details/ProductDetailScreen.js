@@ -11,12 +11,11 @@ import {
   detailStyles,
 } from '../../components/wrappers/DetailWrapper';
 import CachedImage from '../../components/UI/CachedImage';
-import ContactDetails from '../../components/UI/ContactDetails';
-import HeaderThree from '../../components/UI/HeaderThree';
-import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import Loader from '../../components/UI/Loader';
 import FilterLine from '../../components/UI/FilterLine';
 import ProductButtonLogic from './ProductButtonLogic';
+import ProductStatusLogic from './ProductStatusLogic';
+
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import SectionCard from '../../components/UI/SectionCard';
 
@@ -75,10 +74,10 @@ const ProductDetailScreen = (props) => {
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
-  const isReady = status === 'redo';
   const isReserved = status === 'reserverad';
   const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
+  const isTouched = isReserved || isOrganised || isPickedUp;
 
   const editProductHandler = (id) => {
     navigation.navigate('EditProduct', { detailId: id });
@@ -102,22 +101,6 @@ const ProductDetailScreen = (props) => {
     );
   };
 
-  const profileContactId = isReserved
-    ? reservedUserId
-    : isOrganised
-    ? collectingUserId
-    : isPickedUp
-    ? newOwnerId
-    : null;
-
-  const copyForProduct = isReserved
-    ? 'Reserverad av:'
-    : isOrganised
-    ? 'Hämtas av:'
-    : isPickedUp
-    ? 'Ny ägare:'
-    : null;
-
   if (isLoading) {
     return <Loader />;
   }
@@ -129,48 +112,17 @@ const ProductDetailScreen = (props) => {
           Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
         </Text>
 
-        {profileContactId ? (
-          <SectionCard style={{ marginLeft: 15 }}>
-            <HeaderThree text={copyForProduct} style={{ marginBottom: 5 }} />
-            <ContactDetails
-              profileId={profileContactId}
-              hideButton={isPickedUp || !hasEditPermission}
-              buttonText={'kontaktdetaljer'}
-            />
-
-            {projectForProduct ? (
-              <>
-                <Divider style={{ marginBottom: 10 }} />
-                <HeaderThree
-                  text={'Till projekt:'}
-                  style={{ marginBottom: 5 }}
-                />
-                <SmallRoundItem
-                  detailPath={'ProjectDetail'}
-                  item={projectForProduct}
-                  navigation={props.navigation}
-                />
-              </>
-            ) : null}
-          </SectionCard>
+        {isTouched ? (
+          <ProductStatusLogic selectedProduct={selectedProduct} />
         ) : null}
 
-        {/* Buttons for handling reservation, coordination and collection */}
-        <ProductButtonLogic
-          selectedProduct={selectedProduct}
-          hasEditPermission={hasEditPermission}
-          navigation={props.navigation}
-        />
-
         <SectionCard>
-          {/* Info about who created the product post */}
-          <ContactDetails
-            profileId={ownerId}
-            productId={id}
-            hideButton={isPickedUp}
-            buttonText={'kontaktdetaljer'}
+          {/* Buttons for handling reservation, coordination and collection */}
+          <ProductButtonLogic
+            selectedProduct={selectedProduct}
+            hasEditPermission={hasEditPermission}
+            navigation={props.navigation}
           />
-
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
 

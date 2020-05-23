@@ -50,11 +50,8 @@ const ProductButtonLogic = (props) => {
     address,
   } = props.selectedProduct;
 
-  //These will change based on where we are in the reservation process
+  //Will change based on where we are in the reservation process
   let receivingId;
-  let statusText;
-  let statusIcon;
-  let statusColor;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -66,29 +63,14 @@ const ProductButtonLogic = (props) => {
 
   if (isReserved) {
     receivingId = reservedUserId;
-    statusText = `Reserverad ${isReservedUser ? 'av dig ' : ''}tills ${Moment(
-      reservedUntil
-    )
-      .locale('sv')
-      .calendar()}`;
-    statusIcon = 'clock';
-    statusColor = Colors.primary;
   }
 
   if (isOrganised) {
     receivingId = collectingUserId;
-    statusText = `Upphämtning satt till ${Moment(collectingDate)
-      .locale('sv')
-      .calendar()}`;
-    statusIcon = 'star';
-    statusColor = Colors.neutral;
   }
 
   if (isPickedUp) {
     receivingId = newOwnerId;
-    statusText = `Hämtad${isReservedUser ? ' av dig' : ''}!`;
-    statusIcon = 'checkmark';
-    statusColor = Colors.completed;
   }
 
   //Avatar logic
@@ -109,12 +91,6 @@ const ProductButtonLogic = (props) => {
   const projectForProduct = associatedProject.find(
     (proj) => proj.id === projectId
   );
-
-  console.log('receivingId: ', receivingId);
-  console.log('receivingProfile: ', receivingProfile);
-  console.log('statusText: ', statusText);
-  console.log('statusIcon: ', statusIcon);
-  console.log('statusColor: ', statusColor);
 
   const reserveHandler = (clickedProjectId) => {
     const checkedProjectId = clickedProjectId ? clickedProjectId : '000';
@@ -252,19 +228,7 @@ const ProductButtonLogic = (props) => {
   }
 
   return (
-    <View style={{ marginTop: 20 }}>
-      {/* If we have a status of the product, show a badge with conditional copy */}
-      {statusText ? (
-        <StatusBadge
-          style={{ alignSelf: 'center', marginTop: 10 }}
-          text={statusText}
-          icon={
-            Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`
-          }
-          backgroundColor={statusColor}
-        />
-      ) : null}
-
+    <View>
       <View style={styles.oneLineSpread}>
         <HeaderAvatar
           profileId={ownerId}
@@ -279,7 +243,7 @@ const ProductButtonLogic = (props) => {
         <View style={styles.oneLineRight}>
           {receivingProfile ? (
             <View style={styles.centerAlign}>
-              <HeaderThree text={'Av:'} />
+              {/* <HeaderThree text={'Av'} /> */}
               <HeaderAvatar
                 profileId={receivingId}
                 profile={receivingProfile}
@@ -289,7 +253,7 @@ const ProductButtonLogic = (props) => {
           ) : null}
           {projectForProduct ? (
             <View style={styles.centerAlign}>
-              <HeaderThree text={'Till:'} />
+              {/* <HeaderThree text={'För'} /> */}
               <SmallRoundItem
                 detailPath={'ProjectDetail'}
                 item={projectForProduct}
@@ -565,10 +529,14 @@ const ProductButtonLogic = (props) => {
 };
 
 const styles = StyleSheet.create({
+  centerAlign: {
+    alignItems: 'center',
+  },
   oneLineSpread: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   oneLineRight: {
     flex: 1,
