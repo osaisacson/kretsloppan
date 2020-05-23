@@ -110,8 +110,6 @@ const ProductButtonLogic = (props) => {
 
   const setTime = (dateTime) => {
     setSuggestedDateTime(dateTime);
-    console.log('SUGGESTED DATE: ', suggestedDate);
-    console.log('SUGGESTED DATETIME: ', suggestedDateTime);
     hideTimePicker();
   };
 
@@ -417,6 +415,7 @@ const ProductButtonLogic = (props) => {
                 <DateTimePickerModal
                   date={new Date(suggestedDate)}
                   cancelTextIOS={'Avbryt'}
+                  confirmTextIOS={'Förslå tid'}
                   headerTextIOS={`Valt datum ${moment(suggestedDate)
                     .locale('sv')
                     .format('D MMMM')}. Välj tid:`}
