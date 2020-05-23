@@ -12,7 +12,6 @@ import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import Loader from '../../components/UI/Loader';
 import ButtonAction from '../../components/UI/ButtonAction';
-import StatusBadge from '../../components/UI/StatusBadge';
 import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import RoundItem from '../../components/UI/RoundItem';
 import UserAvatar from '../../components/UI/UserAvatar';
@@ -197,18 +196,16 @@ const ProductButtonLogic = (props) => {
 
   const HeaderAvatar = (props) => {
     return (
-      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-        <UserAvatar
-          userId={props.profileId}
-          style={{ margin: 0 }}
-          showBadge={false}
-          actionOnPress={() => {
-            props.navigation.navigate('Användare', {
-              detailId: props.profileId,
-            });
-          }}
-        />
-      </View>
+      <UserAvatar
+        userId={props.profileId}
+        style={{ margin: 0 }}
+        showBadge={false}
+        actionOnPress={() => {
+          props.navigation.navigate('Användare', {
+            detailId: props.profileId,
+          });
+        }}
+      />
     );
   };
 
@@ -218,14 +215,26 @@ const ProductButtonLogic = (props) => {
 
   return (
     <View>
-      <View style={[styles.oneLineSpread, { marginBottom: 10 }]}>
+      <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
         <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
         <Button
+          style={{ position: 'absolute', left: '45%' }}
           icon="unfold-more-horizontal"
           mode="text"
           onPress={toggleShowOptions}
         />
-        <View style={styles.oneLineRight}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            textAlign: 'right',
+            alignSelf: 'flex-end',
+            position: 'absolute',
+            right: 0,
+          }}
+        >
           {projectForProduct ? (
             <View style={styles.textAndBadge}>
               <View style={styles.smallBadge}>
@@ -248,15 +257,13 @@ const ProductButtonLogic = (props) => {
                 navigation={props.navigation}
               />
             </View>
-          ) : null}
-
-          {!isReserved && !isOrganised && !isPickedUp ? (
+          ) : (
             <ButtonAction
               disabled={isReserved}
               onSelect={toggleReserveButton}
               title={'reservera'}
             />
-          ) : null}
+          )}
         </View>
       </View>
 
@@ -297,166 +304,38 @@ const ProductButtonLogic = (props) => {
       {/* Details about the item, and options for the logistics */}
       {showOptions ? (
         <>
-          <Divider style={{ marginVertical: 10 }} />
+          <Divider style={{ marginBottom: 10 }} />
           <View style={styles.oneLineSpread}>
-            <View>
-              <Text style={styles.contactDetailsLeft}>
-                {ownerProfile.profileName}
-              </Text>
-              <Text style={styles.contactDetailsLeft}>
-                {ownerProfile.email
-                  ? ownerProfile.email
-                  : 'Ingen email angiven'}
-              </Text>
-              <Text style={styles.contactDetailsLeft}>
-                {phone ? phone : 'Ingen telefon angiven'}
-              </Text>
+            <View style={styles.ownerOptions}>
+              <Text>{ownerProfile.profileName}</Text>
+              <Text>{phone ? phone : 'Ingen telefon angiven'}</Text>
               {address ? (
-                <Text style={styles.contactDetailsLeft}>
-                  {address ? address : 'Ingen address angiven'}
-                </Text>
+                <Text>{address ? address : 'Ingen address angiven'}</Text>
+              ) : null}
+              {hasEditPermission ? (
+                <ButtonAction
+                  disabled={isPickedUp}
+                  title="Byt till hämtad"
+                  onSelect={collectHandler.bind(this)}
+                />
               ) : null}
             </View>
 
             {receivingProfile ? (
-              <View>
-                <Text style={styles.contactDetailsRight}>
-                  {receivingProfile.profileName}
-                </Text>
-                <Text style={styles.contactDetailsRight}>
-                  {receivingProfile.email
-                    ? receivingProfile.email
-                    : 'Ingen email angiven'}
-                </Text>
-                <Text style={styles.contactDetailsRight}>
+              <View style={styles.receivingOptions}>
+                <Text>{receivingProfile.profileName}</Text>
+                <Text>
                   {receivingProfile.phone
                     ? receivingProfile.phone
                     : 'Ingen telefon angiven'}
                 </Text>
                 {receivingProfile.address ? (
-                  <Text style={styles.contactDetailsRight}>
+                  <Text>
                     {receivingProfile.address
                       ? receivingProfile.address
                       : 'Ingen address angiven'}
                   </Text>
                 ) : null}
-              </View>
-            ) : null}
-          </View>
-          {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
-          {!isOrganised &&
-          (hasEditPermission || isReservedUser || isOrganisedUser) ? (
-            <HeaderThree
-              text={`Kontakta varandra in${Moment(reservedUntil)
-                .locale('sv')
-                .endOf('hour')
-                .subtract(1, 'hour')
-                .fromNow()}`}
-              style={detailStyles.centeredHeader}
-            />
-          ) : null}
-          {/* TBD: In-app messaging - Button for passing an object 
-            reference to the in-app messaging screen */}
-          {/* <ButtonAction
-              large={true}
-              icon="email"
-              title={'Skicka meddelande'} //Send message
-              onSelect={() => {}} //Should open the in-app messaging view, forwarding a title to what the message is about: {`Angående: ${objectForDetails.title}`}. Title should in the message link to the post it refers to.
-            /> */}
-        </>
-      ) : null}
-    </View>
-  );
-
-  return (
-    <View style={{ marginVertical: 20 }}>
-      {/* If product is not reserved */}
-      {isReady && !hasEditPermission ? (
-        <>
-          <ButtonAction
-            disabled={isReserved}
-            onSelect={toggleReserveButton}
-            title={'reservera'}
-          />
-          {/* When trying to reserve, open this up for selection of associated project */}
-          {showUserProjects ? (
-            <>
-              <HeaderThree
-                text={'Vilket projekt ska återbruket användas i?'}
-                style={detailStyles.centeredHeader}
-              />
-
-              <HorizontalScrollContainer>
-                <RoundItem
-                  itemData={{
-                    image: './../../assets/avatar-placeholder-image.png',
-                    title: 'Inget projekt',
-                  }}
-                  key={'000'}
-                  isHorizontal={true}
-                  onSelect={() => {
-                    reserveHandler('000');
-                  }}
-                />
-                {userProjects.map((item) => (
-                  <RoundItem
-                    itemData={item}
-                    key={item.id}
-                    isHorizontal={true}
-                    onSelect={() => {
-                      reserveHandler(item.id);
-                    }}
-                  />
-                ))}
-              </HorizontalScrollContainer>
-            </>
-          ) : null}
-        </>
-      ) : null}
-
-      {/* If product is reserved */}
-      {isReserved ? (
-        <>
-          <StatusBadge
-            style={{ alignSelf: 'center', marginTop: 10 }}
-            text={`Reserverad ${isReservedUser ? 'av dig ' : ''}tills ${Moment(
-              reservedUntil
-            )
-              .locale('sv')
-              .calendar()}`}
-            icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-            backgroundColor={Colors.primary}
-          />
-
-          {hasEditPermission || isReservedUser || isOrganisedUser ? (
-            <>
-              {!isOrganised ? (
-                <HeaderThree
-                  text={`Kontakta varandra in${Moment(reservedUntil)
-                    .locale('sv')
-                    .endOf('hour')
-                    .subtract(1, 'hour')
-                    .fromNow()}`}
-                  style={detailStyles.centeredHeader}
-                />
-              ) : null}
-
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  marginVertical: 10,
-                  justifyContent: 'space-around',
-                }}
-              >
-                {/* Organising logistics - allow both parties to change the status to organised. */}
-                <ButtonAction
-                  style={{ marginRight: 10 }}
-                  title={`Sätt upphämtningsdatum`}
-                  onSelect={setAsOrganised.bind(this)}
-                />
-
-                {/* Un-reserve. */}
                 {isReservedUser ? (
                   <ButtonAction
                     disabled={isPickedUp}
@@ -465,54 +344,45 @@ const ProductButtonLogic = (props) => {
                   />
                 ) : null}
               </View>
-            </>
+            ) : null}
+          </View>
+          {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
+          {!isOrganised &&
+          (hasEditPermission || isReservedUser || isOrganisedUser) ? (
+            <HeaderThree
+              style={{ textAlign: 'center', marginBottom: 20 }}
+              text={`Kontakta varandra in${Moment(reservedUntil)
+                .locale('sv')
+                .endOf('hour')
+                .subtract(1, 'hour')
+                .fromNow()}`}
+            />
+          ) : (
+            <HeaderThree
+              style={{ textAlign: 'center', marginBottom: 20 }}
+              text={'Parterna är i processen att ordna med logistik'}
+            />
+          )}
+          {/* TBD: In-app messaging - Button for passing an object 
+            reference to the in-app messaging screen */}
+          {/* <ButtonAction
+              large={true}
+              icon="email"
+              title={'Skicka meddelande'} //Send message
+              onSelect={() => {}} //Should open the in-app messaging view, forwarding a title to what the message is about: {`Angående: ${objectForDetails.title}`}. Title should in the message link to the post it refers to.
+            /> */}
+          {/* Organising logistics - allow both parties to change the status to organised. */}
+
+          {hasEditPermission || isOrganisedUser ? (
+            <View style={styles.actionButtons}>
+              <ButtonAction
+                style={{ marginRight: 10 }}
+                title={`Sätt/Ändra upphämtningsdatum`}
+                onSelect={setAsOrganised.bind(this)}
+              />
+            </View>
           ) : null}
         </>
-      ) : null}
-
-      {/* If product is organised */}
-      {isOrganised ? (
-        <>
-          <StatusBadge
-            style={{ alignSelf: 'center', marginTop: 10 }}
-            text={`Upphämtning satt till ${Moment(collectingDate)
-              .locale('sv')
-              .calendar()}`}
-            icon={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
-            backgroundColor={Colors.neutral}
-          />
-
-          {/* Organising logistics - allow both parties to change the status to organised. */}
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              marginVertical: 10,
-              justifyContent: 'space-around',
-            }}
-          >
-            <ButtonAction
-              style={{ marginRight: 10 }}
-              title={'Ändra upphämtningsdatum'}
-              onSelect={setAsOrganised.bind(this)}
-            />
-            <ButtonAction
-              disabled={isPickedUp}
-              title="Byt till hämtad"
-              onSelect={collectHandler.bind(this)}
-            />
-          </View>
-        </>
-      ) : null}
-
-      {/* If product is picked up */}
-      {isPickedUp ? (
-        <StatusBadge
-          style={{ alignSelf: 'center', marginTop: 10 }}
-          text={`Hämtad${isReservedUser ? ' av dig' : ''}!`}
-          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-          backgroundColor={Colors.completed}
-        />
       ) : null}
     </View>
   );
@@ -525,18 +395,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  ownerOptions: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    height: 120,
+  },
+  receivingOptions: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    height: 120,
+  },
   oneLineRight: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    right: 0,
   },
   textAndBadge: {
     flex: 1,
     flexDirection: 'row',
-  },
-  contactDetailsRight: {
-    textAlign: 'right',
+    justifyContent: 'flex-end',
   },
   smallBadge: {
     zIndex: 10,
@@ -551,6 +432,12 @@ const styles = StyleSheet.create({
     fontSize: 10,
     padding: 2,
     color: '#fff',
+  },
+  actionButtons: {
+    flex: 1,
+    flexDirection: 'row',
+    marginVertical: 10,
+    justifyContent: 'space-around',
   },
 });
 
