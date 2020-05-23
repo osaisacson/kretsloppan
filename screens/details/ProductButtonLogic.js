@@ -5,6 +5,7 @@ import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Button, Divider } from 'react-native-paper';
 
 import moment from 'moment/min/moment-with-locales';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import HeaderThree from '../../components/UI/HeaderThree';
@@ -31,7 +32,9 @@ const ProductButtonLogic = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showUserProjects, setShowUserProjects] = useState(false);
-  const [suggestedTime, setSuggestedTime] = useState();
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [suggestedDate, setSuggestedDate] = useState();
+  const [suggestedDateTime, setSuggestedDateTime] = useState();
 
   //Get all projects from state, and then return the ones that matches the id of the current product
   const userProjects = useSelector((state) => state.projects.userProjects);
@@ -49,8 +52,6 @@ const ProductButtonLogic = (props) => {
     phone,
     address,
   } = props.selectedProduct;
-
-  let startDate = moment(); // today
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -97,6 +98,22 @@ const ProductButtonLogic = (props) => {
   const projectForProduct = associatedProject.find(
     (proj) => proj.id === projectId
   );
+
+  const handleTimePicker = (date) => {
+    setSuggestedDate(date);
+    setShowTimePicker(true);
+  };
+
+  const hideTimePicker = () => {
+    setShowTimePicker(false);
+  };
+
+  const setTime = (dateTime) => {
+    setSuggestedDateTime(dateTime);
+    console.log('SUGGESTED DATE: ', suggestedDate);
+    console.log('SUGGESTED DATETIME: ', suggestedDateTime);
+    hideTimePicker();
+  };
 
   const reserveHandler = (clickedProjectId) => {
     const checkedProjectId = clickedProjectId ? clickedProjectId : '000';
@@ -171,7 +188,7 @@ const ProductButtonLogic = (props) => {
                 'ordnad',
                 checkedProjectId,
                 reservedUserId,
-                suggestedTime
+                suggestedDate
               )
             );
             setShowUserProjects(false);
@@ -368,16 +385,18 @@ const ProductButtonLogic = (props) => {
             <>
               <HeaderThree
                 style={{ textAlign: 'center', marginBottom: 20 }}
-                text={`Kontakta varandra in${moment(reservedUntil)
+                text={`Kom överens om upphämtning nedan in${moment(
+                  reservedUntil
+                )
                   .locale('sv')
                   .endOf('hour')
                   .subtract(1, 'hour')
-                  .fromNow()}`}
+                  .fromNow()}, om ni båda inte kommit överens om en tid innan dess så slutar reservationen gälla. Om inget annat bestäms så hämtas återbruket på given address uppe till vänster vid överenskommen tid.`}
               />
               <View style={{ flex: 1 }}>
                 <CalendarStrip
                   scrollable
-                  selectedDate={suggestedTime}
+                  selectedDate={suggestedDate}
                   daySelectionAnimation={{
                     type: 'border',
                     borderWidth: 0.5,
@@ -388,33 +407,52 @@ const ProductButtonLogic = (props) => {
                   highlightDateNumberStyle={{ color: Colors.darkPrimary }}
                   styleWeekend={true}
                   onDateSelected={(date) => {
-                    setSuggestedTime(date.format('YYYY-MM-DD'));
+                    handleTimePicker(date);
                   }}
                   style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
                   type={'border'}
                   borderWidth={1}
                   borderHighlightColor={'#666'}
                 />
+                <DateTimePickerModal
+                  date={new Date(suggestedDate)}
+                  cancelTextIOS={'Avbryt'}
+                  headerTextIOS={`Valt datum ${moment(suggestedDate)
+                    .locale('sv')
+                    .format('D MMMM')}. Välj tid:`}
+                  isVisible={showTimePicker}
+                  mode="time"
+                  locale="sv_SV" // Use "en_GB" here
+                  onConfirm={(dateTime) => {
+                    setTime(dateTime);
+                  }}
+                  onCancel={hideTimePicker}
+                />
               </View>
 
-              {suggestedTime ? (
-                <HeaderThree
-                  style={{ textAlign: 'center' }}
-                  text={`Föreslagen tid: ${suggestedTime}`}
-                />
+              {suggestedDate ? (
+                <>
+                  <HeaderThree
+                    style={{ textAlign: 'center' }}
+                    text={`Föreslagen tid: ${moment(suggestedDateTime)
+                      .locale('sv')
+                      .calendar()}`}
+                  />
+                  <View style={styles.actionButtons}>
+                    <ButtonAction
+                      disabled={!hasEditPermission}
+                      style={{ marginRight: 10 }}
+                      title={`Godkänn föreslagen tid`}
+                      onSelect={setAsOrganised.bind(this)}
+                    />
+                    <ButtonAction
+                      style={{ marginRight: 10 }}
+                      title={`Godkänn föreslagen tid`}
+                      onSelect={setAsOrganised.bind(this)}
+                    />
+                  </View>
+                </>
               ) : null}
-              <View style={styles.actionButtons}>
-                <ButtonAction
-                  style={{ marginRight: 10 }}
-                  title={`Godkänn föreslagen tid`}
-                  onSelect={setAsOrganised.bind(this)}
-                />
-                <ButtonAction
-                  style={{ marginRight: 10 }}
-                  title={`Godkänn föreslagen tid`}
-                  onSelect={setAsOrganised.bind(this)}
-                />
-              </View>
             </>
           ) : null}
 
