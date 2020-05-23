@@ -258,7 +258,7 @@ const ProductButtonLogic = (props) => {
               <View
                 style={[styles.smallBadge, { backgroundColor: statusColor }]}
               >
-                <Text style={styles.smallText}>Till</Text>
+                <Text style={styles.smallText}>Av</Text>
               </View>
               <HeaderAvatar
                 profileId={receivingId}
