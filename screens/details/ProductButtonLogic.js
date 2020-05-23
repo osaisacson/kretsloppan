@@ -377,6 +377,7 @@ const ProductButtonLogic = (props) => {
               <View style={{ flex: 1 }}>
                 <CalendarStrip
                   scrollable
+                  selectedDate={suggestedTime}
                   daySelectionAnimation={{
                     type: 'border',
                     borderWidth: 0.5,
@@ -395,11 +396,22 @@ const ProductButtonLogic = (props) => {
                   borderHighlightColor={'#666'}
                 />
               </View>
-              <Text>{suggestedTime}</Text>
+
+              {suggestedTime ? (
+                <HeaderThree
+                  style={{ textAlign: 'center' }}
+                  text={`Föreslagen tid: ${suggestedTime}`}
+                />
+              ) : null}
               <View style={styles.actionButtons}>
                 <ButtonAction
                   style={{ marginRight: 10 }}
-                  title={`Föreslå upphämtningsdatum`}
+                  title={`Godkänn föreslagen tid`}
+                  onSelect={setAsOrganised.bind(this)}
+                />
+                <ButtonAction
+                  style={{ marginRight: 10 }}
+                  title={`Godkänn föreslagen tid`}
                   onSelect={setAsOrganised.bind(this)}
                 />
               </View>
