@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FAB, Portal, Provider } from 'react-native-paper';
 
 const AddButton = (props) => {
@@ -7,6 +7,8 @@ const AddButton = (props) => {
   const toggleOpen = () => {
     setIsOpen((prevState) => !prevState);
   };
+
+  const fabIcon = useMemo(() => (isOpen ? 'plus' : 'plus'), [isOpen]);
 
   return (
     <Provider>
@@ -29,7 +31,7 @@ const AddButton = (props) => {
               onPress: () => props.navigation.navigate('EditProposal'),
             },
           ]}
-          icon={isOpen ? 'plus' : 'plus'}
+          icon={fabIcon}
           onPress={() => {
             if (isOpen) {
               // do something if the speed dial is open
