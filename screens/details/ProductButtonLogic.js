@@ -454,7 +454,9 @@ const ProductButtonLogic = (props) => {
                     padding: 4,
                     color: '#fff',
                   }}
-                  text={'Väntar på godkännande'}
+                  text={`Väntar på godkännande av ${
+                    sellerAgreed ? 'köpare' : 'säljare'
+                  }`}
                   icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
                   backgroundColor={Colors.primary}
                 />
