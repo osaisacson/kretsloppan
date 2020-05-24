@@ -1,10 +1,12 @@
 {
     "extends": "universe/native",
-    "plugins": ["react-native"],
+    "plugins": ["react-native", "react-hooks"],
     "rules": {
         "import/no-unresolved": "error",
         "react/jsx-sort-props": "error",
         "react-native/no-unused-styles": "error",
-        "react-native/sort-styles": "error"
+        "react-native/sort-styles": "error",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     }
 }
