@@ -42,6 +42,15 @@ export function convertImage(image) {
   };
 }
 
+export function denormalizeData(data) {
+  const id = Object.keys(data).pop();
+
+  return {
+    id,
+    ...data[id],
+  };
+}
+
 export function updateExpoTokens(userId, remove = false) {
   try {
     firebase
@@ -50,16 +59,19 @@ export function updateExpoTokens(userId, remove = false) {
       .orderByChild('profileId')
       .equalTo(userId)
       .on('value', async (snapshot) => {
-        const user = snapshot.val();
+        const user = denormalizeData(snapshot.val());
         const newToken = await Notifications.getExpoPushTokenAsync();
+        const tokens = user.expoTokens || [];
 
-        const nextTokens = remove
-          ? user.expoTokens.filter((token) => token !== newToken)
-          : [...user.expoTokens, newToken];
+        if (!tokens.includes(newToken)) {
+          const nextTokens = remove
+            ? tokens.filter((token) => token !== newToken)
+            : [...tokens, newToken];
 
-        snapshot.forEach((action) => action.ref.update({ expoTokens: nextTokens }));
+          snapshot.forEach((action) => action.ref.update({ expoTokens: nextTokens }));
+        }
       });
   } catch (error) {
-    console.error(error.message);
+    console.error('updateExpoTokens', error.message);
   }
 }

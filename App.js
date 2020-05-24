@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
+import I18n from 'ex-react-native-i18n';
 import { AppLoading, Notifications } from 'expo';
 import * as Font from 'expo-font'; //Lets us use expo fonts
-import ReduxThunk from 'redux-thunk';
-import I18n from 'ex-react-native-i18n';
-// Before rendering any navigation stack
-import { enableScreens } from 'react-native-screens';
-// import { composeWithDevTools } from 'redux-devtools-extension';
 import * as firebase from 'firebase';
-import 'firebase/database';
-import env from './env'
-
-//Reducers
-import productsReducer from './store/reducers/products';
-import projectsReducer from './store/reducers/projects';
-import profilesReducer from './store/reducers/profiles';
-import proposalsReducer from './store/reducers/proposals';
-
-import authReducer from './store/reducers/auth';
-
-import AppNavigator from './navigation/AppNavigator';
+import React, { useState } from 'react';
 import { Vibration } from 'react-native';
+import { enableScreens } from 'react-native-screens';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import ReduxThunk from 'redux-thunk';
+// Before rendering any navigation stack
+
+import 'firebase/database';
+import env from './env';
+//Reducers
+import AppNavigator from './navigation/AppNavigator';
+import authReducer from './store/reducers/auth';
+import productsReducer from './store/reducers/products';
+import profilesReducer from './store/reducers/profiles';
+import projectsReducer from './store/reducers/projects';
+import proposalsReducer from './store/reducers/proposals';
 
 //Combines all the reducers which manages our redux state. This is where we geet our current state from in the child screens.
 const rootReducer = combineReducers({
@@ -40,9 +38,9 @@ if (!firebase.apps.length) {
 
 Notifications.addListener(() => Vibration.vibrate());
 //NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
-// const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)));
 
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); //Redux, manages our state.
+// const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); //Redux, manages our state.
 
 //Sets up requiring and asynchronically fetching our fonts when the app loads
 const fetchFonts = () => {

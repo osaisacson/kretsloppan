@@ -1,18 +1,14 @@
+import { Notifications } from 'expo';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  ActivityIndicator,
-  StyleSheet,
-  AsyncStorage,
-} from 'react-native';
+import { Platform, View, ActivityIndicator, StyleSheet, AsyncStorage } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Colors from '../constants/Colors';
-import * as authActions from '../store/actions/auth';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
 import useAsyncEffect from '../hooks/useAsyncEffect';
-import { Notifications } from 'expo'
+import * as authActions from '../store/actions/auth';
+import { updateExpoTokens } from '../store/helpers';
 
 const StartupScreen = (props) => {
   const isMountedRef = useRef(null);
@@ -20,14 +16,10 @@ const StartupScreen = (props) => {
 
   useAsyncEffect(async () => {
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(
-        Permissions.NOTIFICATIONS
-      );
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(
-          Permissions.NOTIFICATIONS
-        );
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
@@ -68,6 +60,7 @@ const StartupScreen = (props) => {
         }
 
         const expirationTime = expirationDate.getTime() - new Date().getTime();
+        updateExpoTokens(userId);
         //If we instead succeed and have a valid token then we go to the shop page
         //We dispatch an action where we authenticate the user, which changes data in our redux store (sets the token, etc. the token is originally null)
         dispatch(authActions.authenticate(userId, token, expirationTime));
