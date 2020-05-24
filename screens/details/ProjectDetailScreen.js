@@ -1,26 +1,19 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 //Components
-import {
-  View,
-  Text,
-  StyleSheet,
-  Alert,
-  FlatList,
-  ScrollView,
-} from 'react-native';
-import { Divider } from 'react-native-paper';
-import { Paragraph } from 'react-native-paper';
+import { View, Text, StyleSheet, Alert, FlatList, ScrollView } from 'react-native';
+import { Divider, Paragraph } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
+
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import CachedImage from '../../components/UI/CachedImage';
 import ContactDetails from '../../components/UI/ContactDetails';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import SectionCard from '../../components/UI/SectionCard';
-import SaferArea from '../../components/UI/SaferArea';
 import ProductItem from '../../components/UI/ProductItem';
+import SaferArea from '../../components/UI/SaferArea';
+import SectionCard from '../../components/UI/SectionCard';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -37,15 +30,11 @@ const ProjectDetailScreen = (props) => {
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
   const associatedProducts = useSelector((state) =>
-    state.products.availableProducts.filter(
-      (prod) => prod.projectId === projectId
-    )
+    state.products.availableProducts.filter((prod) => prod.projectId === projectId)
   );
 
   const associatedProposals = useSelector((state) =>
-    state.proposals.availableProposals.filter(
-      (proposal) => proposal.projectId === projectId
-    )
+    state.proposals.availableProposals.filter((proposal) => proposal.projectId === projectId)
   );
 
   const dispatch = useDispatch();
@@ -60,7 +49,7 @@ const ProjectDetailScreen = (props) => {
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
       detailId: id,
-      ownerId: ownerId,
+      ownerId,
       detailTitle: title,
     });
   };
@@ -92,10 +81,10 @@ const ProjectDetailScreen = (props) => {
         ) : null}
         <Divider style={{ marginBottom: 8 }} />
         <ContactDetails
-          hideButton={true}
+          hideButton
           profileId={ownerId}
           projectId={selectedProject.id}
-          buttonText={'kontaktdetaljer'}
+          buttonText="kontaktdetaljer"
         />
 
         <CachedImage
@@ -127,9 +116,7 @@ const ProjectDetailScreen = (props) => {
       </SectionCard>
       {selectedProject.description ? (
         <SectionCard>
-          <Paragraph style={{ padding: 5 }}>
-            {selectedProject.description}
-          </Paragraph>
+          <Paragraph style={{ padding: 5 }}>{selectedProject.description}</Paragraph>
         </SectionCard>
       ) : null}
 
@@ -137,17 +124,13 @@ const ProjectDetailScreen = (props) => {
         <View style={{ marginVertical: 10 }}>
           {/* Information about the project */}
           <HeaderTwo
-            title={'Återbruk'}
-            subTitle={'Återbruk som används i projektet'}
-            indicator={
-              associatedProducts.length ? associatedProducts.length : 0
-            }
+            title="Återbruk"
+            subTitle="Återbruk som används i projektet"
+            indicator={associatedProducts.length ? associatedProducts.length : 0}
           />
         </View>
       ) : (
-        <EmptyState style={{ marginVertical: 30 }}>
-          Inget återbruk i projektet ännu
-        </EmptyState>
+        <EmptyState style={{ marginVertical: 30 }}>Inget återbruk i projektet ännu</EmptyState>
       )}
     </View>
   ) : null;
@@ -166,18 +149,14 @@ const ProjectDetailScreen = (props) => {
             <ProductItem
               itemData={itemData.item}
               onSelect={() => {
-                selectItemHandler(
-                  itemData.item.id,
-                  itemData.item.ownerId,
-                  itemData.item.title
-                );
+                selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
               }}
             />
           )}
         />
         {associatedProposals.length ? (
           <HorizontalScroll
-            textItem={true}
+            textItem
             detailPath="ProposalDetail"
             scrollData={associatedProposals}
             navigation={props.navigation}

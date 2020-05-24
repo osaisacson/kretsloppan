@@ -20,6 +20,9 @@ import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions,
 } from '../screens/details/ProductDetailScreen';
 //Details
+import ProjectDetailScreen, {
+  screenOptions as projectDetailScreenOptions,
+} from '../screens/details/ProjectDetailScreen';
 import ProposalDetailScreen, {
   screenOptions as proposalDetailScreenOptions,
 } from '../screens/details/ProposalDetailScreen';
@@ -75,6 +78,11 @@ export const SpotlightNavigator = () => {
         name="ProposalDetail"
         component={ProposalDetailScreen}
         options={proposalDetailScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
       />
       {/* Edits */}
       <SpotlightStackNavigator.Screen

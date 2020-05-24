@@ -1,16 +1,11 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 //Headers
-import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';
 
 //Tab screens
-import ProjectsScreen from '../screens/shop/ProjectsScreen';
 
 //Details
-import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
 
 //Edit screens
 import EditProductScreen, {
@@ -22,6 +17,11 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
+import ProjectDetailScreen, {
+  screenOptions as projectDetailScreenOptions,
+} from '../screens/details/ProjectDetailScreen';
+import ProjectsScreen from '../screens/shop/ProjectsScreen';
+import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';
 
 const ProjectsStackNavigator = createStackNavigator();
 

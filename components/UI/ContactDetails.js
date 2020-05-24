@@ -49,7 +49,7 @@ const ContactDetails = (props) => {
           style={{
             flex: 1,
             flexDirection: 'row',
-            justifyContent: 'left',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             marginRight: 5,
           }}>

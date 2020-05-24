@@ -1,15 +1,16 @@
+import { Entypo } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { FlatList } from 'react-native';
-import SaferArea from '../../components/UI/SaferArea';
-import HeaderTwo from '../../components/UI/HeaderTwo';
+import { useSelector, useDispatch } from 'react-redux';
+
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import ProjectItem from '../../components/UI/ProjectItem';
+import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
-import { Entypo } from '@expo/vector-icons';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
@@ -53,7 +54,7 @@ const ProjectsScreen = (props) => {
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProjectDetail', {
       detailId: id,
-      ownerId: ownerId,
+      ownerId,
       detailTitle: title,
     });
   };
@@ -89,24 +90,20 @@ const ProjectsScreen = (props) => {
           <ProjectItem
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title
-              );
+              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
             }}
-          ></ProjectItem>
+          />
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title={'Projekt'}
-            subTitle={'Projekt byggda med återbruk'}
+            title="Projekt"
+            subTitle="Projekt byggda med återbruk"
             buttonIcon="plus"
-            buttonText={'Projekt'}
+            buttonText="Projekt"
             buttonOnPress={() => props.navigation.navigate('EditProject')}
             icon={
               <Entypo
-                name={'tools'}
+                name="tools"
                 size={20}
                 style={{
                   marginRight: 5,

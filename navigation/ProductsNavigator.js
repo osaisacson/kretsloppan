@@ -1,10 +1,25 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 //Tab screens
+import EditProductScreen, {
+  screenOptions as editProductScreenOptions,
+} from '../screens/addAndEdit/EditProductScreen';
+import EditProfileScreen, {
+  screenOptions as editProfileScreenOptions,
+} from '../screens/addAndEdit/EditProfileScreen';
+import EditProjectScreen, {
+  screenOptions as editProjectScreenOptions,
+} from '../screens/addAndEdit/EditProjectScreen';
+import ProductDetailScreen, {
+  screenOptions as productDetailScreenOptions,
+} from '../screens/details/ProductDetailScreen';
+import ProjectDetailScreen, {
+  screenOptions as projectDetailScreenOptions,
+} from '../screens/details/ProjectDetailScreen';
+import UserProfile from '../screens/details/UserProfile';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
-
 //Headers
 import {
   defaultNavOptions,
@@ -14,24 +29,8 @@ import {
 } from './NavHeaders';
 
 //Details
-import ProductDetailScreen, {
-  screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetailScreen';
-import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
-import UserProfile from '../screens/details/UserProfile';
 
 //Edit screens
-import EditProductScreen, {
-  screenOptions as editProductScreenOptions,
-} from '../screens/addAndEdit/EditProductScreen';
-import EditProjectScreen, {
-  screenOptions as editProjectScreenOptions,
-} from '../screens/addAndEdit/EditProjectScreen';
-import EditProfileScreen, {
-  screenOptions as editProfileScreenOptions,
-} from '../screens/addAndEdit/EditProfileScreen';
 
 const ProductsStackNavigator = createStackNavigator();
 
