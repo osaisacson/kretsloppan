@@ -1,7 +1,7 @@
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
+import { SafeAreaView, View, Platform } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
@@ -165,7 +165,14 @@ export const ShopNavigator = (props) => {
                   alignItems: 'center',
                   marginTop: 30,
                 }}>
-                <View style={{ paddingTop: 20 }}>
+                <View
+                  style={Platform.select({
+                    default: { paddingTop: 20 },
+                    android: {
+                      paddingTop: 20,
+                      paddingLeft: 10,
+                    },
+                  })}>
                   <UserAvatar
                     showBadge
                     actionOnPress={() => {

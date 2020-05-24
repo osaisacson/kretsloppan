@@ -1,6 +1,6 @@
 import React from 'react';
 //Components
-import { Platform, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import HeaderButton from '../components/UI/HeaderButton';
@@ -37,9 +37,12 @@ export const defaultMainPageOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: () => (
-      <View>
+      <View
+        style={Platform.select({
+          android: styles.userAvatar,
+        })}>
         <UserAvatar
-          style={{ marginTop: 15, marginRight: 10 }}
+          style={Platform.select({ ios: styles.userAvatar })}
           showBadge
           actionOnPress={() => {
             navData.navigation.navigate('Min Sida');
@@ -54,9 +57,12 @@ export const mainPageOptionsWithUser = (navData) => {
   return {
     headerTitle: '',
     headerRight: () => (
-      <View>
+      <View
+        style={Platform.select({
+          android: styles.userAvatar,
+        })}>
         <UserAvatar
-          style={{ marginTop: 15, marginRight: 10 }}
+          style={Platform.select({ ios: styles.userAvatar })}
           showBadge
           actionOnPress={() => {
             navData.navigation.navigate('Min Sida');
@@ -91,3 +97,7 @@ export const emptyHeader = (navData) => {
     headerRight: '',
   };
 };
+
+const styles = StyleSheet.create({
+  userAvatar: { marginTop: 15, marginRight: 10 },
+});
