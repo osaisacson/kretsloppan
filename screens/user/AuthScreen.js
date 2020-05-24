@@ -1,6 +1,7 @@
+import Icon from '@expo/vector-icons/FontAwesome';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-//Components
 import {
   ScrollView,
   View,
@@ -12,19 +13,17 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import Input from '../../components/UI/Input';
-import Card from '../../components/UI/Card';
-import Colors from '../../constants/Colors';
 import { Avatar, Button } from 'react-native-paper';
-import Icon from '@expo/vector-icons/FontAwesome';
+import { useDispatch } from 'react-redux';
+//Components
 
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-
+import Card from '../../components/UI/Card';
+import Input from '../../components/UI/Input';
+import Colors from '../../constants/Colors';
 //Actions
 import * as authActions from '../../store/actions/auth';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -65,11 +64,9 @@ const AuthScreen = (props) => {
       Permissions.CAMERA //permissions for taking photo
     );
     if (result.status !== 'granted') {
-      Alert.alert(
-        'Å Nej!',
-        'Du måste tillåta att öppna kameran för att kunna ta ett kort.',
-        [{ text: 'Ok' }]
-      );
+      Alert.alert('Å Nej!', 'Du måste tillåta att öppna kameran för att kunna ta ett kort.', [
+        { text: 'Ok' },
+      ]);
       return false;
     }
     return true;
@@ -108,11 +105,11 @@ const AuthScreen = (props) => {
     inputValidities: {
       email: false,
       password: false,
-      profileName: isSignup ? false : true,
+      profileName: !isSignup,
       profileDescription: true,
-      phone: isSignup ? false : true,
-      address: isSignup ? false : true,
-      image: !isSignup && selectedImage ? true : false,
+      phone: !isSignup,
+      address: !isSignup,
+      image: !!(!isSignup && selectedImage),
     },
     formIsValid: false,
   });
@@ -127,9 +124,7 @@ const AuthScreen = (props) => {
   const authHandler = async () => {
     let action;
     if (isSignup && !selectedImage) {
-      Alert.alert('Å Nej!', 'Du måste välja en profilbild först', [
-        { text: 'Ok' },
-      ]);
+      Alert.alert('Å Nej!', 'Du måste välja en profilbild först', [{ text: 'Ok' }]);
       setIsLoading(false);
       return;
     }
@@ -145,10 +140,7 @@ const AuthScreen = (props) => {
       );
       setIsLoading(true);
     } else {
-      action = authActions.login(
-        formState.inputValues.email,
-        formState.inputValues.password
-      );
+      action = authActions.login(formState.inputValues.email, formState.inputValues.password);
       setIsLoading(true);
     }
     setIsLoading(false);
@@ -179,24 +171,19 @@ const AuthScreen = (props) => {
         style={{ backgroundColor: '#000' }}
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.screen}
-        scrollEnabled={false}
-      >
+        scrollEnabled={false}>
         <ImageBackground
           source={{
             uri:
               'https://images.unsplash.com/photo-1496439653932-606caa506e0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2011&q=80',
           }}
           resizeMode="cover"
-          style={styles.backgroundImage}
-        >
-          <Card
-            style={isSignup ? styles.authContainerLarge : styles.authContainer}
-          >
+          style={styles.backgroundImage}>
+          <Card style={isSignup ? styles.authContainerLarge : styles.authContainer}>
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ flexGrow: 1 }}
-              keyboardShouldPersistTaps="handled"
-            >
+              keyboardShouldPersistTaps="handled">
               {isSignup ? (
                 <>
                   <View style={styles.imagePicker}>
@@ -218,8 +205,7 @@ const AuthScreen = (props) => {
                             borderRadius: 100 / 2,
                             borderColor: '#a9a9a9',
                             borderWidth: 0.5,
-                          }}
-                        >
+                          }}>
                           <Icon name="camera" size={24} color="#666" />
                         </Button>
                       ) : (
@@ -312,7 +298,7 @@ const AuthScreen = (props) => {
                   <ActivityIndicator size="small" color={Colors.primary} />
                 ) : (
                   <Button
-                    color={'#000'}
+                    color="#000"
                     mode="outlined"
                     contentStyle={{
                       justifyContent: 'center',
@@ -324,8 +310,7 @@ const AuthScreen = (props) => {
                       fontFamily: 'bebas-neue-bold',
                       fontSize: 28,
                     }}
-                    onPress={authHandler}
-                  >
+                    onPress={authHandler}>
                     {isSignup ? 'Gå med' : 'Logga in'}
                   </Button>
                 )}
@@ -343,11 +328,10 @@ const AuthScreen = (props) => {
                     fontFamily: 'bebas-neue-bold',
                     fontSize: 12,
                   }}
-                  compact={true}
+                  compact
                   onPress={() => {
                     setIsSignup((prevState) => !prevState);
-                  }}
-                >
+                  }}>
                   {`Byt till ${isSignup ? 'logga in' : 'skapa konto'}`}
                 </Button>
               </View>

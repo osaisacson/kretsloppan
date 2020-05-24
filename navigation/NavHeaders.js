@@ -1,12 +1,10 @@
 import React from 'react';
-
 //Components
+import { Platform, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import HeaderButton from '../components/UI/HeaderButton';
-import { Platform } from 'react-native';
-import ButtonIcon from '../components/UI/ButtonIcon';
-import UserAvatar from '../components/UI/UserAvatar';
 
+import HeaderButton from '../components/UI/HeaderButton';
+import UserAvatar from '../components/UI/UserAvatar';
 //Constants
 import Colors from '../constants/Colors';
 
@@ -39,13 +37,14 @@ export const defaultMainPageOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: () => (
-      <UserAvatar
-        style={{ marginTop: 20, marginRight: 10 }}
-        showBadge={true}
-        actionOnPress={() => {
-          navData.navigation.navigate('Min Sida');
-        }}
-      />
+      <View style={{ marginTop: 20, marginRight: 10 }}>
+        <UserAvatar
+          showBadge
+          actionOnPress={() => {
+            navData.navigation.navigate('Min Sida');
+          }}
+        />
+      </View>
     ),
   };
 };
@@ -56,7 +55,7 @@ export const mainPageOptionsWithUser = (navData) => {
     headerRight: () => (
       <UserAvatar
         style={{ marginTop: 20, marginRight: 10 }}
-        showBadge={true}
+        showBadge
         actionOnPress={() => {
           navData.navigation.navigate('Min Sida');
         }}

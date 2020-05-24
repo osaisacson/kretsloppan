@@ -29,9 +29,7 @@ const ProductItem = (props) => {
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.container}>
-      <Card
-        style={props.isHorizontal ? styles.horizontalProduct : styles.product}
-      >
+      <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         {props.itemData.collectingDate ? (
           <StatusBadge
             style={{
@@ -67,19 +65,15 @@ const ProductItem = (props) => {
                   padding: 4,
                   color: '#fff',
                 }}
-                text={`Förslag: ${moment(props.itemData.suggestedDate)
-                  .locale('sv')
-                  .calendar()}`}
-                icon={
-                  Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'
-                }
+                text={`Förslag: ${moment(props.itemData.suggestedDate).locale('sv').calendar()}`}
+                icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
                 backgroundColor={Colors.subtlePurple}
               />
             ) : null}
             <StatusBadge
               style={{
                 padding: 0,
-                marginTop: props.itemData.suggestedDate ? 23 : 0,
+                marginTop: props.itemData.suggestedDate ? 22 : 0,
                 position: 'absolute',
                 zIndex: 100,
               }}
@@ -89,12 +83,8 @@ const ProductItem = (props) => {
                 padding: 4,
                 color: '#fff',
               }}
-              text={moment(props.itemData.reservedUntil)
-                .locale('sv')
-                .calendar()}
-              icon={
-                Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'
-              }
+              text={moment(props.itemData.reservedUntil).locale('sv').calendar()}
+              icon={Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'}
               backgroundColor={Colors.primary}
             />
           </>
@@ -123,9 +113,7 @@ const ProductItem = (props) => {
               <View style={styles.imageContainer}>
                 <CachedImage style={styles.image} uri={props.itemData.image} />
               </View>
-              <Text style={styles.price}>
-                {props.itemData.price ? props.itemData.price : 0} kr
-              </Text>
+              <Text style={styles.price}>{props.itemData.price ? props.itemData.price : 0} kr</Text>
             </View>
           </TouchableCmp>
         </View>

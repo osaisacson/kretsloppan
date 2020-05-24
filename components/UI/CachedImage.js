@@ -1,6 +1,6 @@
+import * as ImageManipulator from 'expo-image-manipulator';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Image, CacheManager } from 'react-native-expo-image-cache';
-import * as ImageManipulator from 'expo-image-manipulator';
 
 const CachedImage = (props) => {
   const [source, setSource] = useState(null);
@@ -22,11 +22,10 @@ const CachedImage = (props) => {
 
   const base64Image = useCallback(async () => {
     await CacheManager.get(uri).getPath();
-    await ImageManipulator.manipulateAsync(
-      uri,
-      [{ resize: { width: 5, height: 5 } }],
-      { base64: true, format: 'jpeg' }
-    );
+    await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 5, height: 5 } }], {
+      base64: true,
+      format: 'jpeg',
+    });
   }, []);
 
   return <Image style={props.style} {...{ preview: source, uri }} />;

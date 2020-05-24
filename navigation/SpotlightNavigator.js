@@ -1,44 +1,39 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 //Headers
-import {
-  defaultNavOptions,
-  defaultMainPageOptions,
-  mainPageOptionsNoUser,
-  mainPageOptionsWithUser,
-} from './NavHeaders';
 
 //Tab screens
-import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
-import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
-import UserProductsScreen from '../screens/user/UserProductsScreen';
-
-//Details
-import ProductDetailScreen, {
-  screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetailScreen';
-import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
-import UserProfile from '../screens/details/UserProfile';
-
-//Edit screens
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
+import EditProfileScreen, {
+  screenOptions as editProfileScreenOptions,
+} from '../screens/addAndEdit/EditProfileScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions,
 } from '../screens/addAndEdit/EditProjectScreen';
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
-import EditProfileScreen, {
-  screenOptions as editProfileScreenOptions,
-} from '../screens/addAndEdit/EditProfileScreen';
+import ProductDetailScreen, {
+  screenOptions as productDetailScreenOptions,
+} from '../screens/details/ProductDetailScreen';
+//Details
+import ProposalDetailScreen, {
+  screenOptions as proposalDetailScreenOptions,
+} from '../screens/details/ProposalDetailScreen';
+import UserProfile from '../screens/details/UserProfile';
+import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
+import UserProductsScreen from '../screens/user/UserProductsScreen';
+import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
+//Edit screens
+import {
+  defaultNavOptions,
+  defaultMainPageOptions,
+  mainPageOptionsNoUser,
+  mainPageOptionsWithUser,
+} from './NavHeaders';
 
 const SpotlightStackNavigator = createStackNavigator();
 
@@ -75,11 +70,6 @@ export const SpotlightNavigator = () => {
         name="ProductDetail"
         component={ProductDetailScreen}
         options={productDetailScreenOptions}
-      />
-      <SpotlightStackNavigator.Screen
-        name="ProjectDetail"
-        component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
       />
       <SpotlightStackNavigator.Screen
         name="ProposalDetail"

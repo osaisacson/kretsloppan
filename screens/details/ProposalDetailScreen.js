@@ -1,22 +1,19 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import Moment from 'moment/min/moment-with-locales';
+import React from 'react';
 //Components
 import { View, Text, Alert, Platform } from 'react-native';
 import { Divider } from 'react-native-paper';
-import {
-  DetailWrapper,
-  detailStyles,
-} from '../../components/wrappers/DetailWrapper';
-import ButtonIcon from '../../components/UI/ButtonIcon';
+import { useDispatch, useSelector } from 'react-redux';
+
 import ButtonAction from '../../components/UI/ButtonAction';
+import ButtonIcon from '../../components/UI/ButtonIcon';
 import ContactDetails from '../../components/UI/ContactDetails';
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import StatusBadge from '../../components/UI/StatusBadge';
 import SectionCard from '../../components/UI/SectionCard';
-import Moment from 'moment/min/moment-with-locales';
-
+import StatusBadge from '../../components/UI/StatusBadge';
+import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWrapper';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -32,22 +29,16 @@ const ProposalDetailScreen = (props) => {
 
   //Find us the proposal that matches the current proposalId
   const selectedProposal = useSelector((state) =>
-    state.proposals.availableProposals.find(
-      (proposal) => proposal.id === proposalId
-    )
+    state.proposals.availableProposals.find((proposal) => proposal.id === proposalId)
   );
 
   //Get all projects from state, and then return the ones that matches the id of the current proposal
   const userProjects = useSelector((state) => state.projects.userProjects);
-  const projectForProposal = userProjects.filter(
-    (proj) => proj.id === selectedProposal.projectId
-  );
+  const projectForProposal = userProjects.filter((proj) => proj.id === selectedProposal.projectId);
 
   const ownerId = selectedProposal ? selectedProposal.ownerId : null;
   const hasEditPermission = ownerId === loggedInUserId;
-  const isResolved = selectedProposal
-    ? selectedProposal.status === 'löst'
-    : null;
+  const isResolved = selectedProposal ? selectedProposal.status === 'löst' : null;
 
   const editProposalHandler = (proposalId) => {
     navigation.navigate('EditProposal', { detailId: proposalId });
@@ -91,13 +82,12 @@ const ProposalDetailScreen = (props) => {
   return selectedProposal ? (
     <DetailWrapper>
       <Text style={{ textAlign: 'right', color: '#666' }}>
-        Upplagt{' '}
-        {Moment(selectedProposal.date).locale('sv').startOf('hour').fromNow()}
+        Upplagt {Moment(selectedProposal.date).locale('sv').startOf('hour').fromNow()}
       </Text>
       {isResolved ? (
         <StatusBadge
           style={{ alignSelf: 'flex-start', marginTop: 5 }}
-          text={'Löst!'}
+          text="Löst!"
           icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
           backgroundColor={Colors.completed}
         />
@@ -107,26 +97,20 @@ const ProposalDetailScreen = (props) => {
         <ContactDetails
           profileId={ownerId}
           proposalId={selectedProposal.id}
-          buttonText={'kontaktdetaljer'}
+          buttonText="kontaktdetaljer"
         />
         <Divider style={{ marginVertical: 10 }} />
 
         <View style={detailStyles.textCard}>
-          <Text style={detailStyles.proposalText}>
-            {selectedProposal.title}
-          </Text>
+          <Text style={detailStyles.proposalText}>{selectedProposal.title}</Text>
         </View>
         <View style={detailStyles.textCard}>
-          <Text style={detailStyles.boundaryText}>
-            {selectedProposal.description}
-          </Text>
+          <Text style={detailStyles.boundaryText}>{selectedProposal.description}</Text>
         </View>
         {selectedProposal.price ? (
           <>
             <Divider style={{ marginTop: 40 }} />
-            <Text style={detailStyles.price}>
-              {`Ersättning: ${selectedProposal.price} kr`}
-            </Text>
+            <Text style={detailStyles.price}>{`Ersättning: ${selectedProposal.price} kr`}</Text>
           </>
         ) : null}
         {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
@@ -158,15 +142,12 @@ const ProposalDetailScreen = (props) => {
       {selectedProposal.projectId && projectForProposal.length ? (
         <SectionCard>
           <View style={detailStyles.centered}>
-            <HeaderThree
-              text={'Relaterar till projektet:'}
-              style={detailStyles.centeredHeader}
-            />
+            <HeaderThree text="Relaterar till projektet:" style={detailStyles.centeredHeader} />
 
             <HorizontalScroll
               scrollHeight={155}
-              roundItem={true}
-              detailPath={'ProjectDetail'}
+              roundItem
+              detailPath="ProjectDetail"
               scrollData={projectForProposal}
               navigation={props.navigation}
             />
@@ -182,7 +163,7 @@ const ProposalDetailScreen = (props) => {
               onSelect={() => {
                 collectHandler(selectedProposal.id);
               }}
-              title={'Avaktivera och markera som löst'}
+              title="Avaktivera och markera som löst"
             />
           </View>
         </SectionCard>

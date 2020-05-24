@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState, useCallback } from 'react';
 //Components
 import { FlatList } from 'react-native';
-import SaferArea from '../../components/UI/SaferArea';
-import HeaderTwo from '../../components/UI/HeaderTwo';
+import { useSelector, useDispatch } from 'react-redux';
+
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
+import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
-import { MaterialIcons } from '@expo/vector-icons';
-
 //Actions
 import * as productsActions from '../../store/actions/products';
 
@@ -65,7 +65,7 @@ const UserProductsScreen = (props) => {
   const selectItemHandler = (id, ownerId, title, detailPath) => {
     props.navigation.navigate(detailPath, {
       detailId: id,
-      ownerId: ownerId,
+      ownerId,
       detailTitle: title,
     });
   };
@@ -90,17 +90,9 @@ const UserProductsScreen = (props) => {
         placeholder="Leta bland ditt återbruk"
       />
       <HeaderTwo
-        title={'Ditt upplagda återbruk'}
-        subTitle={
-          'Allt som är redo att hämtas, väntar på eller har blivit hämtat.'
-        }
-        icon={
-          <MaterialIcons
-            name="file-upload"
-            size={20}
-            style={{ marginRight: 5 }}
-          />
-        }
+        title="Ditt upplagda återbruk"
+        subTitle="Allt som är redo att hämtas, väntar på eller har blivit hämtat."
+        icon={<MaterialIcons name="file-upload" size={20} style={{ marginRight: 5 }} />}
         indicator={productsSorted.length ? productsSorted.length : 0}
       />
       <FlatList
@@ -122,7 +114,7 @@ const UserProductsScreen = (props) => {
                 'ProductDetail'
               );
             }}
-          ></ProductItem>
+          />
         )}
       />
     </SaferArea>

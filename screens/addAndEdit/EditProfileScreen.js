@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 //Components
-import { Alert, TextInput } from 'react-native';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import {
-  FormFieldWrapper,
-  formStyles,
-} from '../../components/wrappers/FormFieldWrapper';
-import Loader from '../../components/UI/Loader';
 import ImagePicker from '../../components/UI/ImgPicker';
+import Loader from '../../components/UI/Loader';
+import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
 
@@ -44,9 +41,9 @@ const EditProfileScreen = (props) => {
 
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector((state) => state.auth.userId);
-  const profilesArray = useSelector(
-    (state) => state.profiles.allProfiles
-  ).filter((profile) => profile.profileId === loggedInUserId);
+  const profilesArray = useSelector((state) => state.profiles.allProfiles).filter(
+    (profile) => profile.profileId === loggedInUserId
+  );
 
   const firebaseId = props.route.params ? props.route.params.detailId : null;
 
@@ -58,31 +55,27 @@ const EditProfileScreen = (props) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       profileName: currentProfile ? currentProfile.profileName : '',
-      profileDescription: currentProfile
-        ? currentProfile.profileDescription
-        : '',
+      profileDescription: currentProfile ? currentProfile.profileDescription : '',
       email: currentProfile ? currentProfile.email : '',
       phone: currentProfile ? currentProfile.phone : '',
       address: currentProfile ? currentProfile.address : '',
       image: currentProfile ? currentProfile.image : '',
     },
     inputValidities: {
-      profileName: currentProfile ? true : false,
+      profileName: !!currentProfile,
       profileDescription: true,
-      email: currentProfile ? true : false,
-      phone: currentProfile ? true : false,
-      address: currentProfile ? true : false,
-      image: currentProfile ? true : false,
+      email: !!currentProfile,
+      phone: !!currentProfile,
+      address: !!currentProfile,
+      image: !!currentProfile,
     },
-    formIsValid: currentProfile ? true : false,
+    formIsValid: !!currentProfile,
   });
 
   //Handlers
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert('Något är felskrivet!', 'Kolla så du fyllt i alla fält.', [
-        { text: 'Ok' },
-      ]);
+      Alert.alert('Något är felskrivet!', 'Kolla så du fyllt i alla fält.', [{ text: 'Ok' }]);
       return;
     }
     setError(null);
@@ -120,7 +113,7 @@ const EditProfileScreen = (props) => {
   }, [dispatch, currentProfile, formState]);
 
   //Manages validation of title input
-  const textChangeHandler = (inputIdentifier, text) => {
+  const textChangeHandler = (inputIdentifier) => (text) => {
     //inputIdentifier and text will act as key:value in the form reducer
 
     let isValid = true;
@@ -133,7 +126,7 @@ const EditProfileScreen = (props) => {
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
       value: text,
-      isValid: isValid,
+      isValid,
       input: inputIdentifier,
     });
   };
@@ -153,11 +146,10 @@ const EditProfileScreen = (props) => {
     <FormWrapper
       submitButtonText="Spara Profil"
       handlerForButtonSubmit={submitHandler}
-      isLoading={isLoading}
-    >
+      isLoading={isLoading}>
       <FormFieldWrapper prompt="Välj en profilbild">
         <ImagePicker
-          onImageTaken={textChangeHandler.bind(this, 'image')}
+          onImageTaken={textChangeHandler('image')}
           passedImage={formState.inputValues.image}
         />
       </FormFieldWrapper>
@@ -166,7 +158,7 @@ const EditProfileScreen = (props) => {
           placeholder="Användarnamn"
           style={formStyles.input}
           value={formState.inputValues.profileName}
-          onChangeText={textChangeHandler.bind(this, 'profileName')}
+          onChangeText={textChangeHandler('profileName')}
           keyboardType="default"
           autoCapitalize="none"
           returnKeyType="next"
@@ -179,7 +171,7 @@ const EditProfileScreen = (props) => {
           value={formState.inputValues.profileDescription}
           multiline
           numberOfLines={4}
-          onChangeText={textChangeHandler.bind(this, 'profileDescription')}
+          onChangeText={textChangeHandler('profileDescription')}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -188,7 +180,7 @@ const EditProfileScreen = (props) => {
           placeholder="Telefon"
           style={formStyles.input}
           value={formState.inputValues.phone.toString()}
-          onChangeText={textChangeHandler.bind(this, 'phone')}
+          onChangeText={textChangeHandler('phone')}
           keyboardType="number-pad"
           returnKeyType="next"
         />
@@ -198,7 +190,7 @@ const EditProfileScreen = (props) => {
           placeholder="Email"
           style={formStyles.input}
           value={formState.inputValues.email}
-          onChangeText={textChangeHandler.bind(this, 'email')}
+          onChangeText={textChangeHandler('email')}
           keyboardType="email-address"
           required
           email
@@ -211,7 +203,7 @@ const EditProfileScreen = (props) => {
           placeholder="Address"
           style={formStyles.input}
           value={formState.inputValues.address}
-          onChangeText={textChangeHandler.bind(this, 'address')}
+          onChangeText={textChangeHandler('address')}
           keyboardType="default"
           autoCapitalize="none"
           returnKeyType="done"

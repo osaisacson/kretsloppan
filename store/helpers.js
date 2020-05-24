@@ -1,5 +1,5 @@
-import firebase from 'firebase';
 import { Notifications } from 'expo';
+import firebase from 'firebase';
 
 export const getIndex = (stateSegment, matchId) => {
   return stateSegment.findIndex((item) => item.id === matchId);
@@ -25,7 +25,7 @@ export function convertImage(image) {
         {
           method: 'POST',
           body: JSON.stringify({
-            image: image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
+            image, //this gets the base64 of the image to upload into cloud storage. note: very long string. Expo currently doesn't work well with react native and firebase storage, so this is why we are doing this approach through cloud functions.
           }),
         }
       );
@@ -57,9 +57,7 @@ export function updateExpoTokens(userId, remove = false) {
           ? user.expoTokens.filter((token) => token !== newToken)
           : [...user.expoTokens, newToken];
 
-        snapshot.forEach((action) =>
-          action.ref.update({ expoTokens: nextTokens })
-        );
+        snapshot.forEach((action) => action.ref.update({ expoTokens: nextTokens }));
       });
   } catch (error) {
     console.error(error.message);
