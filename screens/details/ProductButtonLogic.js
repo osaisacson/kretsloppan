@@ -532,7 +532,7 @@ const ProductButtonLogic = (props) => {
                 </>
               ) : null}
 
-              {suggestedDateLocal && !collectingDate ? (
+              {suggestedDate && !collectingDate ? (
                 <>
                   <View
                     style={{
@@ -555,42 +555,40 @@ const ProductButtonLogic = (props) => {
                       text={`Plats: ${address}`}
                     />
                   </View>
-                  {suggestedDate ? (
-                    <View style={styles.actionButtons}>
-                      {!sellerAgreed && hasEditPermission ? (
-                        <ButtonAction
-                          style={{ marginRight: 10 }}
-                          title={`Godkänn föreslagen tid`}
-                          onSelect={() => {
-                            setSellerAgreedLocal(true);
-                            agreedHandler();
-                          }}
-                        />
-                      ) : null}
-                      {hasEditPermission ||
-                      isReservedUser ||
-                      isOrganisedUser ? (
-                        <ButtonAction
-                          style={{ marginRight: 10 }}
-                          title={`Föreslå annan tid`}
-                          onSelect={() => {
-                            resetSuggestedDT();
-                          }}
-                        />
-                      ) : null}
-                      {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
-                        <ButtonAction
-                          style={{ marginRight: 10 }}
-                          title={`Godkänn föreslagen tid`}
-                          onSelect={() => {
-                            setBuyerAgreedLocal(true);
-                            agreedHandler();
-                          }}
-                        />
-                      ) : null}
-                    </View>
-                  ) : null}
                 </>
+              ) : null}
+              {suggestedDate ? (
+                <View style={styles.actionButtons}>
+                  {!sellerAgreed && hasEditPermission ? (
+                    <ButtonAction
+                      style={{ marginRight: 10 }}
+                      title={`Godkänn föreslagen tid`}
+                      onSelect={() => {
+                        setSellerAgreedLocal(true);
+                        agreedHandler();
+                      }}
+                    />
+                  ) : null}
+                  {hasEditPermission || isReservedUser || isOrganisedUser ? (
+                    <ButtonAction
+                      style={{ marginRight: 10 }}
+                      title={`Föreslå annan tid`}
+                      onSelect={() => {
+                        resetSuggestedDT();
+                      }}
+                    />
+                  ) : null}
+                  {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
+                    <ButtonAction
+                      style={{ marginRight: 10 }}
+                      title={`Godkänn föreslagen tid`}
+                      onSelect={() => {
+                        setBuyerAgreedLocal(true);
+                        agreedHandler();
+                      }}
+                    />
+                  ) : null}
+                </View>
               ) : null}
               {!collectingDate && suggestedDate ? (
                 <StatusBadge
