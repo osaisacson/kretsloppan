@@ -31,12 +31,8 @@ const SpotlightProductsScreen = (props) => {
   return (
     <SaferArea>
       <Introduction
-        pic={
-          'https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80'
-        }
-        text={
-          'Mer återbruk åt folket! Här nere kan du se tillgängligt material, aktuella efterlysningar och projekt som håller på att byggas med återbruk. Lägg upp och hantera återbruk via din profilsida. Välkommen! Version: 1.0-beta2'
-        }
+        pic="https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80"
+        text="Mer återbruk åt folket! Här nere kan du se tillgängligt material, aktuella efterlysningar och projekt som håller på att byggas med återbruk. Lägg upp och hantera återbruk via din profilsida. Välkommen! Version: 1.0-beta2"
       />
       <ScrollView nestedScrollEnabled>
         <HorizontalScroll

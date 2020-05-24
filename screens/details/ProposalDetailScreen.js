@@ -87,7 +87,7 @@ const ProposalDetailScreen = (props) => {
       {isResolved ? (
         <StatusBadge
           style={{ alignSelf: 'flex-start', marginTop: 5 }}
-          text={'Löst!'}
+          text="Löst!"
           icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
           backgroundColor={Colors.completed}
         />
