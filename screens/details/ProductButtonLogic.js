@@ -461,8 +461,10 @@ const ProductButtonLogic = (props) => {
                       padding: 4,
                       color: '#fff',
                     }}
-                    text={`Väntar på godkännande av ${
-                      hasEditPermission && !sellerAgreed ? 'dig' : 'motpart'
+                    text={`Väntar på godkännande ${
+                      !buyerAgreed && (isReservedUser || isOrganisedUser)
+                        ? 'av dig'
+                        : 'av motpart'
                     }`}
                     icon={
                       Platform.OS === 'android'
