@@ -1,12 +1,6 @@
-import { getIndex, updateCollection } from '../helpers';
-
-import {
-  DELETE_PROJECT,
-  CREATE_PROJECT,
-  UPDATE_PROJECT,
-  SET_PROJECTS,
-} from '../actions/projects';
 import Project from '../../models/project';
+import { DELETE_PROJECT, CREATE_PROJECT, UPDATE_PROJECT, SET_PROJECTS } from '../actions/projects';
+import { getIndex, updateCollection } from '../helpers';
 
 const initialState = {
   availableProjects: [],
@@ -32,10 +26,7 @@ export default (state = initialState, action) => {
         action.projectData.date,
         action.projectData.status
       );
-      console.log(
-        'store/reducers/projects/CREATE_PROJECT, new project: ',
-        newProject
-      );
+      console.log('store/reducers/projects/CREATE_PROJECT, new project: ', newProject);
       return {
         ...state,
         availableProjects: state.availableProjects.concat(newProject),
@@ -55,10 +46,7 @@ export default (state = initialState, action) => {
         state.userProjects[userProjectIndex].date,
         state.userProjects[userProjectIndex].status
       );
-      console.log(
-        'store/reducers/projects/UPDATE_PROJECT, updated project: ',
-        updatedUserProject
-      );
+      console.log('store/reducers/projects/UPDATE_PROJECT, updated project: ', updatedUserProject);
 
       //Update state
       const updatedAvailableProjects = updateCollection(
@@ -80,12 +68,8 @@ export default (state = initialState, action) => {
     case DELETE_PROJECT:
       return {
         ...state,
-        userProjects: state.userProjects.filter(
-          (project) => project.id !== action.pid
-        ),
-        availableProjects: state.availableProjects.filter(
-          (project) => project.id !== action.pid
-        ),
+        userProjects: state.userProjects.filter((project) => project.id !== action.pid),
+        availableProjects: state.availableProjects.filter((project) => project.id !== action.pid),
       };
   }
   return state;

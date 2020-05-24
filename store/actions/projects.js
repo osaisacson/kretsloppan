@@ -8,7 +8,7 @@ export const SET_PROJECTS = 'SET_PROJECTS';
 
 export function fetchProjects() {
   return async (dispatch, getState) => {
-    // const userId = getState().auth.userId;
+    const userId = getState().auth.userId;
 
     console.log('START----------actions/projects/fetchProjects--------');
 
@@ -34,11 +34,11 @@ export function fetchProjects() {
       }
       console.log('Dispatch SET_PROJECTS, passing it loadedProjects');
       // Set our projects in the reducer
-      // dispatch({
-      //   type: SET_PROJECTS,
-      //   projects: loadedProjects,
-      //   userProjects: loadedProjects.filter((proj) => proj.ownerId === userId),
-      // });
+      dispatch({
+        type: SET_PROJECTS,
+        projects: loadedProjects,
+        userProjects: loadedProjects.filter((proj) => proj.ownerId === userId),
+      });
       console.log('----------actions/projects/fetchProjects--------END');
     } catch (error) {
       console.log(error);
