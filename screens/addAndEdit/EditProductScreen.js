@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import ImagePicker from '../../components/UI/ImgPicker';
-
-//Components
 import { Alert, TextInput, View } from 'react-native';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import {
-  FormFieldWrapper,
-  formStyles,
-} from '../../components/wrappers/FormFieldWrapper';
-import PickerItem from '../../components/UI/PickerItem';
-import Loader from '../../components/UI/Loader';
-import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
+import { useSelector, useDispatch } from 'react-redux';
 
+import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
+import ImagePicker from '../../components/UI/ImgPicker';
+//Components
+import Loader from '../../components/UI/Loader';
+import PickerItem from '../../components/UI/PickerItem';
+import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 //Actions
 import * as productsActions from '../../store/actions/products';
-
 //Data
 import { PART, CONDITION, STYLE, MATERIAL, COLOR } from './../../data/filters';
 
@@ -86,23 +81,23 @@ const EditProductScreen = (props) => {
       color: editedProduct ? editedProduct.color : 'Ingen',
     },
     inputValidities: {
-      title: editedProduct ? true : false,
-      description: editedProduct ? true : false,
+      title: !!editedProduct,
+      description: !!editedProduct,
       internalComments: true,
       length: true,
       height: true,
       width: true,
-      price: editedProduct ? true : false,
+      price: !!editedProduct,
       address: true,
       phone: true,
-      image: editedProduct ? true : false,
-      category: editedProduct ? true : false,
-      condition: editedProduct ? true : false,
-      style: editedProduct ? true : false,
-      material: editedProduct ? true : false,
-      color: editedProduct ? true : false,
+      image: !!editedProduct,
+      category: !!editedProduct,
+      condition: !!editedProduct,
+      style: !!editedProduct,
+      material: !!editedProduct,
+      color: !!editedProduct,
     },
-    formIsValid: editedProduct ? true : false,
+    formIsValid: !!editedProduct,
   });
 
   useEffect(() => {
@@ -186,7 +181,7 @@ const EditProductScreen = (props) => {
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
       value: text,
-      isValid: isValid,
+      isValid,
       input: inputIdentifier,
     });
   };
@@ -199,8 +194,7 @@ const EditProductScreen = (props) => {
     <FormWrapper
       submitButtonText="Spara Återbruk"
       handlerForButtonSubmit={submitHandler}
-      isLoading={isLoading}
-    >
+      isLoading={isLoading}>
       <FormFieldWrapper prompt="Välj en bild av återbruket">
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
@@ -220,8 +214,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Lägg in ett pris (det kan vara 0)"
-        subLabel={'Notera att betalning hanteras utanför appen'}
-      >
+        subLabel="Notera att betalning hanteras utanför appen">
         <TextInput
           placeholder="Styckpris - För företag: ange pris inklusive moms"
           style={formStyles.input}
@@ -259,8 +252,7 @@ const EditProductScreen = (props) => {
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'space-between',
-          }}
-        >
+          }}>
           <TextInput
             placeholder="Längd"
             style={formStyles.input}
@@ -284,10 +276,7 @@ const EditProductScreen = (props) => {
           />
         </View>
       </FormFieldWrapper>
-      <FormFieldWrapper
-        label="Upphämtningsdetaljer"
-        prompt="Den address återbruket kan hämtas på"
-      >
+      <FormFieldWrapper label="Upphämtningsdetaljer" prompt="Den address återbruket kan hämtas på">
         <TextInput
           placeholder="Address"
           style={formStyles.input}
@@ -322,10 +311,7 @@ const EditProductScreen = (props) => {
         </HorizontalScrollContainer>
       </FormFieldWrapper>
       {/* Condition */}
-      <FormFieldWrapper
-        label="Skick"
-        prompt="Välj skick på ditt upplagda återbruk"
-      >
+      <FormFieldWrapper label="Skick" prompt="Välj skick på ditt upplagda återbruk">
         <HorizontalScrollContainer scrollHeight={75}>
           {CONDITION.map((item) => (
             <PickerItem
@@ -387,9 +373,7 @@ const EditProductScreen = (props) => {
 export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.detailId
-      ? 'Redigera återbruk'
-      : 'Lägg till återbruk',
+    headerTitle: routeParams.detailId ? 'Redigera återbruk' : 'Lägg till återbruk',
   };
 };
 

@@ -9,9 +9,6 @@ import {
   Platform,
 } from 'react-native';
 
-//Constants
-import Colors from '../../constants/Colors';
-
 const PickerItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
@@ -31,18 +28,14 @@ const PickerItem = (props) => {
             backgroundColor: props.color,
             height: props.isSelected ? 45 : 35,
           }}
-          useForeground
-        >
+          useForeground>
           <View style={styles.textContainer}>
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: props.isSelected
-                  ? 'bebas-neue'
-                  : 'bebas-neue-light',
+                fontFamily: props.isSelected ? 'bebas-neue' : 'bebas-neue-light',
                 color: '#000',
-              }}
-            >
+              }}>
               {props.title}
             </Text>
           </View>

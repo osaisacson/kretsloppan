@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+
 import CachedImage from './CachedImage';
 
 const LargeImageItem = (props) => {
@@ -27,10 +28,7 @@ const LargeImageItem = (props) => {
           {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
           <View>
             <View style={styles.largeImageContainer}>
-              <CachedImage
-                style={styles.largeImage}
-                uri={props.itemData.image}
-              />
+              <CachedImage style={styles.largeImage} uri={props.itemData.image} />
             </View>
           </View>
         </TouchableCmp>

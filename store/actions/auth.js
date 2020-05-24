@@ -1,12 +1,11 @@
 import { AsyncStorage } from 'react-native';
-export const AUTHENTICATE = 'AUTHENTICATE';
-export const LOGOUT = 'LOGOUT';
-export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
-import * as profilesActions from './profiles';
-import * as firebase from 'firebase';
 
 import ENV from '../../env';
 import { updateExpoTokens } from '../helpers';
+import * as profilesActions from './profiles';
+export const AUTHENTICATE = 'AUTHENTICATE';
+export const LOGOUT = 'LOGOUT';
+export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
 
 let timer;
 
@@ -16,20 +15,12 @@ export const setDidTryAutoLogin = () => {
 
 export const authenticate = (userId, token, expiryTime) => {
   return (dispatch) => {
-    dispatch(setLogoutTimer(expiryTime));
-    dispatch({ type: AUTHENTICATE, userId: userId, token: token });
+    // dispatch(setLogoutTimer(expiryTime));
+    dispatch({ type: AUTHENTICATE, userId, token });
   };
 };
 
-export const signup = (
-  email,
-  password,
-  profileName,
-  profileDescription,
-  phone,
-  address,
-  image
-) => {
+export const signup = (email, password, profileName, profileDescription, phone, address, image) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -40,8 +31,8 @@ export const signup = (
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: email,
-            password: password,
+            email,
+            password,
             returnSecureToken: true,
           }),
         }
@@ -57,8 +48,7 @@ export const signup = (
           message = 'Den här emailen finns redan';
         }
         if (errorId === 'INVALID_EMAIL') {
-          message =
-            'Det verkar som emailen inte är en riktig email, prova igen';
+          message = 'Det verkar som emailen inte är en riktig email, prova igen';
         }
         if (errorId === 'MISSING_PASSWORD') {
           message = 'Du verkar inte ha skrivit in något lösenord.';
@@ -69,20 +59,12 @@ export const signup = (
       }
       updateExpoTokens(resData.localId);
       await dispatch(
-        authenticate(
-          resData.localId,
-          resData.idToken,
-          parseInt(resData.expiresIn) * 1000
-        )
+        authenticate(resData.localId, resData.idToken, parseInt(resData.expiresIn) * 1000)
       );
-      const expirationDate = new Date(
-        new Date().getTime() + parseInt(resData.expiresIn) * 1000
-      );
+      const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
       saveDataToStorage(resData.idToken, resData.localId, expirationDate);
 
-      console.log(
-        'store/actions/auth: attempting to create a profile with this data:'
-      );
+      console.log('store/actions/auth: attempting to create a profile with this data:');
       console.log('profileName: ', profileName);
       console.log('profileDescription: ', profileDescription);
       console.log('email: ', email);
@@ -127,8 +109,8 @@ export const login = (email, password) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: email,
-            password: password,
+            email,
+            password,
             returnSecureToken: true,
           }),
         }
@@ -144,8 +126,7 @@ export const login = (email, password) => {
             'Emailen kan inte hittas. Byt till att skapa konto om du aldrig loggat in innan, annars kolla stavningen.';
         }
         if (errorId === 'INVALID_EMAIL') {
-          message =
-            'Det verkar som emailen inte är en riktig email, prova igen';
+          message = 'Det verkar som emailen inte är en riktig email, prova igen';
         }
         if (errorId === 'INVALID_PASSWORD') {
           message = 'Lösenordet passar inte emailen, prova igen';
@@ -158,19 +139,11 @@ export const login = (email, password) => {
         return (process.exitCode = 1);
       }
 
-      const expirationDate = new Date(
-        new Date().getTime() + parseInt(resData.expiresIn) * 1000
-      );
+      const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
 
       updateExpoTokens(resData.localId);
 
-      dispatch(
-        authenticate(
-          resData.localId,
-          resData.idToken,
-          parseInt(resData.expiresIn) * 1000
-        )
-      );
+      dispatch(authenticate(resData.localId, resData.idToken, parseInt(resData.expiresIn) * 1000));
 
       saveDataToStorage(resData.idToken, resData.localId, expirationDate);
     } catch (error) {
@@ -211,8 +184,8 @@ const saveDataToStorage = (token, userId, expirationDate) => {
     AsyncStorage.setItem(
       'userData',
       JSON.stringify({
-        token: token,
-        userId: userId,
+        token,
+        userId,
         expiryDate: expirationDate.toISOString(),
       })
     );

@@ -7,10 +7,11 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import { Badge, Button } from 'react-native-paper';
 import { Tooltip } from 'react-native-elements';
-import Colors from './../../constants/Colors';
+import { Badge, Button } from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import Colors from './../../constants/Colors';
 
 const HeaderTwo = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -26,9 +27,7 @@ const HeaderTwo = (props) => {
           {props.icon ? props.icon : null}
           <Text style={styles.contentHeader}>{props.title}</Text>
           {props.showNotificationBadge ? (
-            <Badge style={{ marginBottom: 5, fontWeight: 'bold' }}>
-              {props.indicator}
-            </Badge>
+            <Badge style={{ marginBottom: 5, fontWeight: 'bold' }}>{props.indicator}</Badge>
           ) : null}
         </View>
         <Text style={styles.subTitle}>{props.subTitle}</Text>
@@ -50,8 +49,7 @@ const HeaderTwo = (props) => {
             }}
             icon={props.buttonIcon}
             mode="contained"
-            onPress={props.buttonOnPress}
-          >
+            onPress={props.buttonOnPress}>
             {props.buttonText}
           </Button>
         ) : null}
@@ -60,14 +58,9 @@ const HeaderTwo = (props) => {
             <Tooltip
               width={250}
               containerStyle={{ flexWrap: 'wrap' }}
-              backgroundColor={'#c0c0c0'}
-              popover={<Text>{props.questionText}</Text>}
-            >
-              <FontAwesome
-                name={'question'}
-                size={15}
-                color={'#fff'}
-              ></FontAwesome>
+              backgroundColor="#c0c0c0"
+              popover={<Text>{props.questionText}</Text>}>
+              <FontAwesome name="question" size={15} color="#fff" />
             </Tooltip>
           </TouchableCmp>
         ) : null}

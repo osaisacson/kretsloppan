@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 //Components
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback,
   Platform,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { Divider } from 'react-native-paper';
+
 import ResolvedBadge from '../../components/UI/ResolvedBadge';
-//Constants
 import Colors from '../../constants/Colors';
+//Constants
 
 const TextItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -21,6 +22,16 @@ const TextItem = (props) => {
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
 
+  const lostBadge = useMemo(
+    () =>
+      props.itemData.status === 'löst' ? (
+        <ResolvedBadge badgeText="Löst!" />
+      ) : (
+        <View style={styles.spacer} />
+      ),
+    [props.itemData.status]
+  );
+
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
@@ -29,21 +40,15 @@ const TextItem = (props) => {
       <View style={styles.container}>
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
-            {props.itemData.status === 'löst' ? (
-              <ResolvedBadge badgeText={'Löst!'} />
-            ) : (
-              <View style={styles.spacer}></View>
-            )}
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.title}>
-              {props.itemData.title}
-            </Text>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode={'tail'}
-              style={styles.subTitle}
-            >
-              {props.itemData.description}
-            </Text>
+            <>
+              {lostBadge}
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+                {props.itemData.title}
+              </Text>
+              <Text numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
+                {props.itemData.description}
+              </Text>
+            </>
           </TouchableCmp>
         </View>
       </View>
