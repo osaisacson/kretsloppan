@@ -569,7 +569,7 @@ const ProductButtonLogic = (props) => {
                     {hasEditPermission || isReservedUser || isOrganisedUser ? (
                       <ButtonAction
                         style={{ marginRight: 10 }}
-                        title={`Föreslå annan tid`}
+                        title={`Annan tid`}
                         onSelect={() => {
                           resetSuggestedDT();
                         }}
