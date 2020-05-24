@@ -1,23 +1,20 @@
 import Project from '../../models/project';
+import { convertImage } from '../helpers';
 
 export const DELETE_PROJECT = 'DELETE_PROJECT';
 export const CREATE_PROJECT = 'CREATE_PROJECT';
 export const UPDATE_PROJECT = 'UPDATE_PROJECT';
 export const SET_PROJECTS = 'SET_PROJECTS';
 
-import { convertImage } from '../helpers';
-
 export function fetchProjects() {
   return async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+    // const userId = getState().auth.userId;
 
-    ('START----------actions/projects/fetchProjects--------');
+    console.log('START----------actions/projects/fetchProjects--------');
 
     // Perform the API call - fetching all projects
     try {
-      const response = await fetch(
-        'https://egnahemsfabriken.firebaseio.com/projects.json'
-      );
+      const response = await fetch('https://egnahemsfabriken.firebaseio.com/projects.json');
       const resData = await response.json();
       const loadedProjects = [];
       for (const key in resData) {
@@ -37,15 +34,15 @@ export function fetchProjects() {
       }
       console.log('Dispatch SET_PROJECTS, passing it loadedProjects');
       // Set our projects in the reducer
-      dispatch({
-        type: SET_PROJECTS,
-        projects: loadedProjects,
-        userProjects: loadedProjects.filter((proj) => proj.ownerId === userId),
-      });
-      ('----------actions/projects/fetchProjects--------END');
+      // dispatch({
+      //   type: SET_PROJECTS,
+      //   projects: loadedProjects,
+      //   userProjects: loadedProjects.filter((proj) => proj.ownerId === userId),
+      // });
+      console.log('----------actions/projects/fetchProjects--------END');
     } catch (error) {
       console.log(error);
-      ('----------actions/projects/fetchProjects--------END');
+      console.log('----------actions/projects/fetchProjects--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -65,21 +62,14 @@ export const deleteProject = (projectId) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      let message = errorId;
+      const message = errorId;
       throw new Error(message);
     }
     dispatch({ type: DELETE_PROJECT, pid: projectId });
   };
 };
 
-export function createProject(
-  title,
-  location,
-  description,
-  slogan,
-  image,
-  status
-) {
+export function createProject(title, location, description, slogan, image, status) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -132,7 +122,7 @@ export function createProject(
     } catch (error) {
       console.log(error);
 
-      ('----------actions/projects/createProject--------END');
+      console.log('----------actions/projects/createProject--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -176,10 +166,7 @@ export function updateProject(id, title, location, description, slogan, image) {
       );
       const returnedProjectData = await response.json();
 
-      console.log(
-        'returnedProjectData from updating project, after patch',
-        returnedProjectData
-      );
+      console.log('returnedProjectData from updating project, after patch', returnedProjectData);
 
       console.log('dispatching UPDATE_PROJECT');
 
@@ -192,7 +179,7 @@ export function updateProject(id, title, location, description, slogan, image) {
       console.log('----------actions/projects/updateProject--------END');
     } catch (error) {
       console.log(error);
-      ('----------actions/projects/updateProject--------END');
+      console.log('----------actions/projects/updateProject--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }

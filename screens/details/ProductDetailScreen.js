@@ -1,28 +1,23 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
+import Moment from 'moment/min/moment-with-locales';
+import React, { useState } from 'react';
 import { View, Alert, Text } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
-import Moment from 'moment/min/moment-with-locales';
-
-import {
-  DetailWrapper,
-  detailStyles,
-} from '../../components/wrappers/DetailWrapper';
-import CachedImage from '../../components/UI/CachedImage';
-import Loader from '../../components/UI/Loader';
-import FilterLine from '../../components/UI/FilterLine';
-import ProductButtonLogic from './ProductButtonLogic';
-import ProductStatusLogic from './ProductStatusLogic';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonIcon from '../../components/UI/ButtonIcon';
+import CachedImage from '../../components/UI/CachedImage';
+import FilterLine from '../../components/UI/FilterLine';
+import Loader from '../../components/UI/Loader';
 import SectionCard from '../../components/UI/SectionCard';
-
+import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWrapper';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
 import * as productsActions from '../../store/actions/products';
+import ProductButtonLogic from './ProductButtonLogic';
+import ProductStatusLogic from './ProductStatusLogic';
 
 const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
@@ -34,7 +29,7 @@ const ProductDetailScreen = (props) => {
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Set up state hooks
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>
@@ -44,7 +39,7 @@ const ProductDetailScreen = (props) => {
   const {
     category,
     color,
-    collectingUserId,
+    // collectingUserId,
     condition,
     date,
     description,
@@ -54,23 +49,21 @@ const ProductDetailScreen = (props) => {
     internalComments,
     length,
     material,
-    newOwnerId,
+    // newOwnerId,
     price,
     projectId,
     status,
     style,
     title,
-    reservedUserId,
+    // reservedUserId,
     width,
   } = selectedProduct;
 
   //Get all projects from state, and then return the ones that matches the id of the current product
   const userProjects = useSelector((state) => state.projects.userProjects);
-  const projectForProductSelection = userProjects.filter(
-    (proj) => proj.id === projectId
-  );
+  const projectForProductSelection = userProjects.filter((proj) => proj.id === projectId);
 
-  const projectForProduct = projectForProductSelection[0];
+  // const projectForProduct = projectForProductSelection[0];
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
@@ -101,9 +94,9 @@ const ProductDetailScreen = (props) => {
     );
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <DetailWrapper>
@@ -112,9 +105,7 @@ const ProductDetailScreen = (props) => {
           Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
         </Text>
 
-        {isTouched ? (
-          <ProductStatusLogic selectedProduct={selectedProduct} />
-        ) : null}
+        {isTouched ? <ProductStatusLogic selectedProduct={selectedProduct} /> : null}
 
         <SectionCard>
           {/* Buttons for handling reservation, coordination and collection */}
@@ -138,11 +129,7 @@ const ProductDetailScreen = (props) => {
                     editProductHandler(id);
                   }}
                 />
-                <ButtonIcon
-                  icon="delete"
-                  color={Colors.warning}
-                  onSelect={deleteHandler.bind(this)}
-                />
+                <ButtonIcon icon="delete" color={Colors.warning} onSelect={deleteHandler} />
               </View>
             </>
           ) : null}
@@ -157,9 +144,7 @@ const ProductDetailScreen = (props) => {
           <Title>{title}</Title>
           <Paragraph>{description}</Paragraph>
 
-          {length || height || width ? (
-            <Divider style={{ marginVertical: 10 }} />
-          ) : null}
+          {length || height || width ? <Divider style={{ marginVertical: 10 }} /> : null}
           {length ? (
             <View style={detailStyles.spaceBetweenRow}>
               <Paragraph>Längd:</Paragraph>
@@ -185,9 +170,7 @@ const ProductDetailScreen = (props) => {
             <>
               <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
                 {category === 'Ingen' ? null : <FilterLine filter={category} />}
-                {condition === 'Inget' ? null : (
-                  <FilterLine filter={`${condition} skick`} />
-                )}
+                {condition === 'Inget' ? null : <FilterLine filter={`${condition} skick`} />}
                 {style === 'Ingen' ? null : <FilterLine filter={style} />}
                 {material === 'Inget' ? null : <FilterLine filter={material} />}
                 {color === 'Ingen' ? null : <FilterLine filter={color} />}
