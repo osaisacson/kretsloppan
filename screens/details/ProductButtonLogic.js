@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { View, Alert, Text, StyleSheet } from 'react-native';
-import { Button, Divider } from 'react-native-paper';
+import { Badge, Button, Divider } from 'react-native-paper';
 
 import moment from 'moment/min/moment-with-locales';
 import CalendarStrip from 'react-native-calendar-strip';
@@ -36,7 +36,6 @@ const ProductButtonLogic = (props) => {
   const [showUserProjects, setShowUserProjects] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [suggestedDateLocal, setSuggestedDateLocal] = useState();
-  const [suggestedDT, setSuggestedDT] = useState();
 
   //Get all projects from state, and then return the ones that matches the id of the current product
   const userProjects = useSelector((state) => state.projects.userProjects);
@@ -188,12 +187,11 @@ const ProductButtonLogic = (props) => {
                 'reserverad',
                 checkedProjectId,
                 prevReservedUser
-              ) //by default sets the date to be in 24 hours, since the status is 'reserved'
+              ) //by default resets the date to expire in 24 hours, since the status is 'reserved'
             );
             setSuggestedDateLocal('');
-            setSuggestedDT('');
             setShowUserProjects(false);
-            props.navigation.navigate('Min Sida');
+            props.navigation.goBack();
           },
         },
       ]
@@ -230,7 +228,6 @@ const ProductButtonLogic = (props) => {
             dispatch(
               productsActions.changeProductAgreement(id, sAgreed, bAgreed)
             );
-            setSuggestedDT(dateTime);
             hideTimePicker();
             setShowUserProjects(false);
           },
@@ -279,7 +276,12 @@ const ProductButtonLogic = (props) => {
           style: 'destructive',
           onPress: () => {
             dispatch(
-              productsActions.changeProductStatus(id, 'hämtad', projectId)
+              productsActions.changeProductStatus(
+                id,
+                'hämtad',
+                projectId,
+                collectingUserId
+              )
             );
             props.navigation.goBack();
           },
@@ -311,15 +313,17 @@ const ProductButtonLogic = (props) => {
     <View>
       <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
         <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
-        <Button
-          labelStyle={{ fontSize: 10 }}
-          color={Colors.darkPrimary}
-          style={{ position: 'absolute', left: '35%' }}
-          mode="outlined"
-          onPress={toggleShowOptions}
-        >
-          Logistik
-        </Button>
+        {!isPickedUp ? (
+          <Button
+            labelStyle={{ fontSize: 10 }}
+            color={Colors.darkPrimary}
+            style={{ position: 'absolute', left: '36%' }}
+            mode="outlined"
+            onPress={toggleShowOptions}
+          >
+            Logistik
+          </Button>
+        ) : null}
         <View
           style={{
             flex: 1,
@@ -421,7 +425,7 @@ const ProductButtonLogic = (props) => {
                     : 'Ingen telefon angiven'}
                 </Text>
                 {receivingProfile.address ? (
-                  <Text>
+                  <Text style={{ textAlign: 'right' }}>
                     {receivingProfile.address
                       ? receivingProfile.address
                       : 'Ingen address angiven'}
@@ -430,12 +434,12 @@ const ProductButtonLogic = (props) => {
               </View>
             ) : null}
           </View>
-          <Divider style={{ marginBottom: 10 }} />
 
           {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
           {isReserved &&
           (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
+              <Divider style={{ marginBottom: 10 }} />
               <HeaderThree
                 style={{ textAlign: 'center', marginBottom: 10 }}
                 text={`Reservationen går ut ${moment(reservedUntil)
@@ -444,24 +448,44 @@ const ProductButtonLogic = (props) => {
                   .fromNow()}`}
               />
               {!collectingDate && suggestedDate ? (
-                <StatusBadge
-                  style={{
-                    marginTop: 8,
-                    alignSelf: 'center',
-                    justifyContent: 'center',
-                  }}
-                  textStyle={{
-                    textTransform: 'uppercase',
-                    fontSize: 10,
-                    padding: 4,
-                    color: '#fff',
-                  }}
-                  text={`Väntar på godkännande av ${
-                    sellerAgreed ? 'köpare' : 'säljare'
-                  }`}
-                  icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-                  backgroundColor={Colors.primary}
-                />
+                <>
+                  <StatusBadge
+                    style={{
+                      marginTop: 8,
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                    }}
+                    textStyle={{
+                      textTransform: 'uppercase',
+                      fontSize: 10,
+                      padding: 4,
+                      color: '#fff',
+                    }}
+                    text={`Väntar på godkännande av ${
+                      hasEditPermission && !sellerAgreed ? 'dig' : 'motpart'
+                    }`}
+                    icon={
+                      Platform.OS === 'android'
+                        ? 'md-information-circle'
+                        : 'ios-information-circle'
+                    }
+                    backgroundColor={Colors.darkPrimary}
+                  />
+                  <View style={styles.box}>
+                    <HeaderThree
+                      style={styles.boxText}
+                      text={`Föreslagen tid av ${
+                        !hasEditPermission && buyerAgreed ? 'dig' : 'motpart'
+                      }: ${moment(suggestedDate)
+                        .locale('sv')
+                        .format('D MMMM, HH:mm')}`}
+                    />
+                    <HeaderThree
+                      style={styles.boxText}
+                      text={`Plats: ${address}`}
+                    />
+                  </View>
+                </>
               ) : null}
               {!suggestedDate ? (
                 <>
@@ -510,33 +534,6 @@ const ProductButtonLogic = (props) => {
                 </>
               ) : null}
 
-              {suggestedDate && !collectingDate ? (
-                <>
-                  <View
-                    style={{
-                      padding: 5,
-                      alignSelf: 'center',
-                      borderWidth: 0.5,
-                      borderColor: Colors.darkPrimary,
-                    }}
-                  >
-                    <HeaderThree
-                      style={{
-                        textAlign: 'center',
-                      }}
-                      text={`Föreslagen tid ${
-                        sellerAgreed ? 'av säljare' : 'av köpare'
-                      }: ${moment(suggestedDate)
-                        .locale('sv')
-                        .format('D MMMM, HH:mm')}`}
-                    />
-                    <HeaderThree
-                      style={{ textAlign: 'center' }}
-                      text={`Plats: ${address}`}
-                    />
-                  </View>
-                </>
-              ) : null}
               {suggestedDate && hasEditPermission ? (
                 <HeaderThree
                   style={{
@@ -549,8 +546,10 @@ const ProductButtonLogic = (props) => {
                   }
                 />
               ) : null}
+              <Divider style={{ marginTop: 10 }} />
+
               <View style={styles.actionButtons}>
-                {(isReserved || isOrganised) && hasEditPermission ? (
+                {collectingDate && hasEditPermission ? (
                   <ButtonAction
                     disabled={isPickedUp}
                     buttonColor={Colors.completed}
@@ -561,27 +560,29 @@ const ProductButtonLogic = (props) => {
                 ) : null}
                 {suggestedDate ? (
                   <>
-                    {!sellerAgreed && hasEditPermission ? (
-                      <ButtonAction
-                        style={{ marginRight: 10 }}
-                        title={`Godkänn förslag`}
-                        onSelect={() => {
-                          approveSuggestedDateTime(suggestedDate);
-                        }}
-                      />
-                    ) : null}
                     {hasEditPermission || isReservedUser || isOrganisedUser ? (
                       <ButtonAction
-                        style={{ marginRight: 10 }}
+                        buttonColor={Colors.darkRed}
                         title={`Annan tid`}
                         onSelect={() => {
                           resetSuggestedDT();
                         }}
                       />
                     ) : null}
+                    {!sellerAgreed && hasEditPermission ? (
+                      <ButtonAction
+                        buttonLabelStyle={{ color: '#fff' }}
+                        buttonColor={Colors.approved}
+                        title={`Godkänn förslag`}
+                        onSelect={() => {
+                          approveSuggestedDateTime(suggestedDate);
+                        }}
+                      />
+                    ) : null}
                     {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
                       <ButtonAction
-                        style={{ marginRight: 10 }}
+                        buttonLabelStyle={{ color: '#fff' }}
+                        buttonColor={Colors.approved}
                         title={`Godkänn förslag`}
                         onSelect={() => {
                           approveSuggestedDateTime(suggestedDate);
@@ -591,7 +592,7 @@ const ProductButtonLogic = (props) => {
                     {isReservedUser ? (
                       <ButtonAction
                         disabled={isPickedUp}
-                        buttonColor={Colors.warning}
+                        buttonColor={Colors.subtleRed}
                         buttonLabelStyle={{ color: '#fff' }}
                         onSelect={unReserveHandler}
                         title={'avreservera'}
@@ -606,35 +607,28 @@ const ProductButtonLogic = (props) => {
           {collectingDate &&
           (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
-              <View
-                style={{
-                  padding: 5,
-                  alignSelf: 'center',
-                  borderWidth: 0.5,
-                  borderColor: '#000',
-                }}
-              >
+              <Divider style={{ marginBottom: 10 }} />
+              <View style={styles.box}>
                 <HeaderThree
-                  style={{
-                    color: '#000',
-                    textAlign: 'center',
-                  }}
+                  style={styles.boxText}
                   text={`Överenskommen tid: ${moment(collectingDate)
                     .locale('sv')
                     .format('D MMMM, HH:mm')}`}
                 />
                 <HeaderThree
-                  style={{ textAlign: 'center', color: '#000' }}
+                  style={styles.boxText}
                   text={`Plats: ${address}`}
                 />
               </View>
               <ButtonAction
+                buttonColor={Colors.darkRed}
                 style={{ marginVertical: 10 }}
                 title={`Ändra tid`}
                 onSelect={() => {
                   resetSuggestedDT();
                 }}
               />
+              <Divider />
             </>
           ) : null}
 
@@ -718,6 +712,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 10,
     justifyContent: 'space-around',
+  },
+  box: {
+    padding: 6,
+    alignSelf: 'center',
+    backgroundColor: Colors.darkPrimary,
+  },
+  boxText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#fff',
+    textAlign: 'center',
   },
 });
 
