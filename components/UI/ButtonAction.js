@@ -13,13 +13,13 @@ const ButtonAction = (props) => {
     <TouchableCmp style={{ ...styles.container, ...props.style }}>
       <Button
         color={props.buttonColor}
-        disabled={props.disabled ? props.disabled : false}
-        mode="contained"
         compact={!props.isLarge}
-        style={styles.button}
+        disabled={props.disabled ? props.disabled : false}
+        icon={props.icon}
         labelStyle={[styles.label, props.buttonLabelStyle]}
+        mode="contained"
         onPress={props.onSelect}
-        icon={props.icon}>
+        style={styles.button}>
         {props.title}
       </Button>
     </TouchableCmp>
@@ -27,7 +27,12 @@ const ButtonAction = (props) => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'center',
+    minWidth: 100,
+  },
   container: {
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -35,11 +40,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
-  },
-  button: {
-    minWidth: 100,
-    alignSelf: 'center',
   },
   label: {
     fontFamily: 'roboto-regular',

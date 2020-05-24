@@ -144,9 +144,9 @@ const EditProfileScreen = (props) => {
 
   return (
     <FormWrapper
-      submitButtonText="Spara Profil"
       handlerForButtonSubmit={submitHandler}
-      isLoading={isLoading}>
+      isLoading={isLoading}
+      submitButtonText="Spara Profil">
       <FormFieldWrapper prompt="Välj en profilbild">
         <ImagePicker
           onImageTaken={textChangeHandler('image')}
@@ -155,58 +155,58 @@ const EditProfileScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in ett användarnamn">
         <TextInput
+          autoCapitalize="none"
+          keyboardType="default"
+          onChangeText={textChangeHandler('profileName')}
           placeholder="Användarnamn"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.profileName}
-          onChangeText={textChangeHandler('profileName')}
-          keyboardType="default"
-          autoCapitalize="none"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in en kort beskrivning">
         <TextInput
-          placeholder="Beskrivning"
-          style={formStyles.multilineInput}
-          value={formState.inputValues.profileDescription}
           multiline
           numberOfLines={4}
           onChangeText={textChangeHandler('profileDescription')}
+          placeholder="Beskrivning"
           returnKeyType="next"
+          style={formStyles.multilineInput}
+          value={formState.inputValues.profileDescription}
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Lägg in ett kontaktnummer">
         <TextInput
+          keyboardType="number-pad"
+          onChangeText={textChangeHandler('phone')}
           placeholder="Telefon"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.phone.toString()}
-          onChangeText={textChangeHandler('phone')}
-          keyboardType="number-pad"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in den email folk kan kontakta dig på">
         <TextInput
+          autoCapitalize="none"
+          email
+          keyboardType="email-address"
+          onChangeText={textChangeHandler('email')}
           placeholder="Email"
+          required
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.email}
-          onChangeText={textChangeHandler('email')}
-          keyboardType="email-address"
-          required
-          email
-          autoCapitalize="none"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in addressen återbruket vanligtvis kan hämtas på">
         <TextInput
+          autoCapitalize="none"
+          keyboardType="default"
+          onChangeText={textChangeHandler('address')}
           placeholder="Address"
+          returnKeyType="done"
           style={formStyles.input}
           value={formState.inputValues.address}
-          onChangeText={textChangeHandler('address')}
-          keyboardType="default"
-          autoCapitalize="none"
-          returnKeyType="done"
         />
       </FormFieldWrapper>
     </FormWrapper>

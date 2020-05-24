@@ -38,45 +38,45 @@ export const ProductsNavigator = () => {
   return (
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
-        name="Återbruk"
         component={ProductsScreen}
+        name="Återbruk"
         options={defaultMainPageOptions}
       />
       <ProductsStackNavigator.Screen
-        name="Min Sida"
         component={UserSpotlightScreen}
+        name="Min Sida"
         options={mainPageOptionsNoUser}
       />
       <ProductsStackNavigator.Screen
-        name="Användare"
         component={UserProfile}
+        name="Användare"
         options={mainPageOptionsWithUser}
       />
       <ProductsStackNavigator.Screen
-        name="EditProfile"
         component={EditProfileScreen}
+        name="EditProfile"
         options={editProfileScreenOptions}
       />
       {/* Details */}
       <ProductsStackNavigator.Screen
-        name="ProductDetail"
         component={ProductDetailScreen}
+        name="ProductDetail"
         options={productDetailScreenOptions}
       />
       <ProductsStackNavigator.Screen
-        name="ProjectDetail"
         component={ProjectDetailScreen}
+        name="ProjectDetail"
         options={projectDetailScreenOptions}
       />
       {/* Edits */}
       <ProductsStackNavigator.Screen
-        name="EditProduct"
         component={EditProductScreen}
+        name="EditProduct"
         options={editProductScreenOptions}
       />
       <ProductsStackNavigator.Screen
-        name="EditProject"
         component={EditProjectScreen}
+        name="EditProject"
         options={editProjectScreenOptions}
       />
     </ProductsStackNavigator.Navigator>

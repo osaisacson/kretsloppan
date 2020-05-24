@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+
 import CachedImage from '../../components/UI/CachedImage';
 import Colors from '../../constants/Colors';
 
@@ -22,7 +23,7 @@ const SmallRoundItem = (props) => {
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate(props.detailPath, {
       detailId: id,
-      ownerId: ownerId,
+      ownerId,
       detailTitle: title,
     });
   };
@@ -34,14 +35,9 @@ const SmallRoundItem = (props) => {
       <View style={styles.touchable}>
         <TouchableCmp
           onPress={() => {
-            selectItemHandler(
-              props.item.id,
-              props.item.ownerId,
-              props.item.title
-            );
+            selectItemHandler(props.item.id, props.item.ownerId, props.item.title);
           }}
-          useForeground
-        >
+          useForeground>
           <View style={styles.imageContainer}>
             <CachedImage style={styles.image} uri={props.item.image} />
           </View>
@@ -54,8 +50,7 @@ const SmallRoundItem = (props) => {
             textAlign: 'left',
             fontFamily: 'roboto-regular',
             fontSize: 14,
-          }}
-        >
+          }}>
           {props.item.title}
         </Text>
       ) : null}
@@ -64,48 +59,31 @@ const SmallRoundItem = (props) => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginTop: 5,
-    fontFamily: 'roboto-bold-italic',
-    fontSize: 13,
-    textAlign: 'center',
-    alignSelf: 'center',
+  image: {
+    borderRadius: 100 / 2,
+    height: '100%',
+    width: '100%',
   },
+  imageContainer: {
+    borderRadius: 100 / 2,
+    height: '100%',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+  },
+
   project: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     flexDirection: 'row',
   },
   touchable: {
-    height: 40,
-    width: 40,
-    borderRadius: 100 / 2,
-    overflow: 'hidden',
-    borderWidth: 0.1,
     borderColor: '#000',
-  },
-  selectedTouchable: {
+    borderRadius: 100 / 2,
+    borderWidth: 0.1,
     height: 40,
+    overflow: 'hidden',
     width: 40,
-    borderRadius: 100 / 2,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: Colors.primary,
-  },
-  imageContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    borderRadius: 100 / 2,
-    overflow: 'hidden',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 100 / 2,
-  },
-  details: {
-    color: '#000',
   },
 });
 

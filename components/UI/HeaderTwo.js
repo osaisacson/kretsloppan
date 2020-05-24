@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Tooltip } from 'react-native-elements';
 import { Badge, Button } from 'react-native-paper';
+// eslint-disable-next-line import/no-unresolved
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import Colors from './../../constants/Colors';
@@ -39,7 +40,7 @@ const HeaderTwo = (props) => {
         {props.buttonText ? (
           <Button
             color={props.isNavigationButton ? Colors.darkPrimary : null}
-            style={{ marginRight: 5, paddingHorizontal: 0 }}
+            icon={props.buttonIcon}
             labelStyle={{
               marginLeft: 4,
               marginRight: props.buttonIcon ? 11 : 4,
@@ -47,20 +48,20 @@ const HeaderTwo = (props) => {
               paddingRight: 0,
               fontSize: 10,
             }}
-            icon={props.buttonIcon}
             mode="contained"
-            onPress={props.buttonOnPress}>
+            onPress={props.buttonOnPress}
+            style={{ marginRight: 5, paddingHorizontal: 0 }}>
             {props.buttonText}
           </Button>
         ) : null}
         {props.questionText ? (
           <TouchableCmp style={styles.questionMarkSection} useForeground>
             <Tooltip
-              width={250}
-              containerStyle={{ flexWrap: 'wrap' }}
               backgroundColor="#c0c0c0"
-              popover={<Text>{props.questionText}</Text>}>
-              <FontAwesome name="question" size={15} color="#fff" />
+              containerStyle={{ flexWrap: 'wrap' }}
+              popover={<Text>{props.questionText}</Text>}
+              width={250}>
+              <FontAwesome color="#fff" name="question" size={15} />
             </Tooltip>
           </TouchableCmp>
         ) : null}
@@ -70,57 +71,49 @@ const HeaderTwo = (props) => {
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  textSection: {
-    paddingTop: 20,
-    paddingLeft: 15,
-    paddingRight: 10,
-    paddingBottom: 2,
-    maxWidth: '80%',
-    flexGrow: 3,
-  },
-  indicatorSection: {
-    flexGrow: 1,
-    marginRight: 5,
-  },
-  textAndBadge: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-  },
   contentHeader: {
     fontFamily: 'bebas-neue-bold',
     fontSize: 25,
     marginRight: 6,
   },
-  indicator: {
-    fontFamily: 'roboto-regular',
+  extraSubTitle: {
+    fontFamily: 'roboto-bold-italic',
     fontSize: 16,
-    paddingBottom: 2,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  indicatorSection: {
+    flexGrow: 1,
+    marginRight: 5,
+  },
+  questionMarkSection: {
+    alignItems: 'center',
+    backgroundColor: Colors.neutral,
+    borderRadius: 100 / 2,
+    height: 20,
+    justifyContent: 'center',
+    marginRight: 10,
+    width: 20,
   },
   subTitle: {
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
   },
-  extraSubTitle: {
-    fontFamily: 'roboto-bold-italic',
-    fontSize: 16,
+  textAndBadge: {
+    alignItems: 'baseline',
+    flexDirection: 'row',
   },
-  questionMarkSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 20,
-    width: 20,
-    marginRight: 10,
-    backgroundColor: Colors.neutral,
-    borderRadius: 100 / 2,
-  },
-  questionMark: {
-    color: '#fff',
+  textSection: {
+    flexGrow: 3,
+    maxWidth: '80%',
+    paddingBottom: 2,
+    paddingLeft: 15,
+    paddingRight: 10,
+    paddingTop: 20,
   },
 });
 

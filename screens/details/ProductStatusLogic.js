@@ -1,23 +1,17 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-//Components
-import { View } from 'react-native';
 import Moment from 'moment/min/moment-with-locales';
-import StatusBadge from '../../components/UI/StatusBadge';
+import React from 'react';
+import { View, Platform } from 'react-native';
 
+//Components
+import StatusBadge from '../../components/UI/StatusBadge';
 //Constants
 import Colors from '../../constants/Colors';
 
 const ProductStatusLogic = (props) => {
   //Get product and owner id from navigation params (from parent screen) and current user id from state
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  // const loggedInUserId = useSelector((state) => state.auth.userId);
 
-  const {
-    status,
-    reservedUserId,
-    reservedUntil,
-    collectingDate,
-  } = props.selectedProduct;
+  const { status, reservedUntil, collectingDate } = props.selectedProduct;
 
   //These will change based on where we are in the reservation process
   let statusText;
@@ -30,17 +24,13 @@ const ProductStatusLogic = (props) => {
   const isPickedUp = status === 'hämtad';
 
   if (isReserved) {
-    statusText = `Reserverad tills ${Moment(reservedUntil)
-      .locale('sv')
-      .calendar()}`;
+    statusText = `Reserverad tills ${Moment(reservedUntil).locale('sv').calendar()}`;
     statusIcon = 'clock';
     statusColor = Colors.primary;
   }
 
   if (isOrganised) {
-    statusText = `Upphämtning satt till ${Moment(collectingDate)
-      .locale('sv')
-      .calendar()}`;
+    statusText = `Upphämtning satt till ${Moment(collectingDate).locale('sv').calendar()}`;
     statusIcon = 'star';
     statusColor = Colors.subtleBlue;
   }
@@ -55,12 +45,10 @@ const ProductStatusLogic = (props) => {
     <View style={{ marginTop: 20 }}>
       {/* If we have a status of the product, show a badge with conditional copy */}
       <StatusBadge
+        backgroundColor={statusColor}
+        icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
         style={{ alignSelf: 'flex-end' }}
         text={statusText}
-        icon={
-          Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`
-        }
-        backgroundColor={statusColor}
       />
     </View>
   );

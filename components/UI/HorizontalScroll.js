@@ -1,19 +1,20 @@
 import React from 'react';
 //Components
-import { Divider } from 'react-native-paper';
 import { ScrollView, View } from 'react-native';
+import { Divider } from 'react-native-paper';
+
+import EmptyState from '../../components/UI/EmptyState';
+import LargeImageItem from '../../components/UI/LargeImageItem';
 import ProductItem from '../../components/UI/ProductItem';
 import RoundItem from '../../components/UI/RoundItem';
-import LargeImageItem from '../../components/UI/LargeImageItem';
 import TextItem from '../../components/UI/TextItem';
-import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from './HeaderTwo';
 
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
   let RenderedItem = ProductItem;
   let scrollHeight = props.scrollHeight ? props.scrollHeight : 250;
-  let detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
+  const detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
   //Check if we instead should render the RoundItem
   if (props.roundItem) {
@@ -42,7 +43,7 @@ const HorizontalScroll = (props) => {
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate(detailPath, {
       detailId: id,
-      ownerId: ownerId,
+      ownerId,
       detailTitle: title,
     });
   };
@@ -54,58 +55,48 @@ const HorizontalScroll = (props) => {
         scrollEventThrottle={16}
         style={{
           backgroundColor: props.bgColor ? props.bgColor : 'transparent',
-        }}
-      >
+        }}>
         {props.title ? (
           <HeaderTwo
-            title={props.title}
-            subTitle={props.subTitle}
-            extraSubTitle={props.extraSubTitle}
-            isNavigationButton={props.isNavigationButton}
             buttonIcon={props.buttonIcon}
             buttonOnPress={props.buttonOnPress}
             buttonText={props.buttonText}
-            questionText={props.questionText}
+            extraSubTitle={props.extraSubTitle}
             icon={props.icon}
             indicator={scrollData.length ? scrollData.length : 0}
+            isNavigationButton={props.isNavigationButton}
+            questionText={props.questionText}
             showNotificationBadge={props.showNotificationBadge}
+            subTitle={props.subTitle}
+            title={props.title}
           />
         ) : null}
         <View
           style={{
             flex: 1,
             height: scrollHeight,
-          }}
-        >
+          }}>
           {/* If dataset passed is not empty  */}
           {scrollData.length ? (
             <View
               style={{
                 height: scrollHeight,
                 marginTop: 20,
-              }}
-            >
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
+              }}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {scrollData.map((item) => (
                   <RenderedItem
+                    isHorizontal
                     itemData={item}
                     key={item.id}
-                    isHorizontal={true}
                     onSelect={
                       props.customHandler
                         ? props.customHandler
                         : () => {
-                            selectItemHandler(
-                              item.id,
-                              item.ownerId,
-                              item.title
-                            );
+                            selectItemHandler(item.id, item.ownerId, item.title);
                           }
                     }
-                  ></RenderedItem>
+                  />
                 ))}
               </ScrollView>
             </View>

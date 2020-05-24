@@ -82,18 +82,18 @@ const UserProfile = (props) => {
     <ScrollViewToTop>
       <View style={userProfileStyles.centeredContent}>
         <Avatar.Image
+          size={80}
+          source={
+            currentProfile && currentProfile.image
+              ? { uri: currentProfile.image }
+              : require('./../../assets/avatar-placeholder-image.png')
+          }
           style={{
             color: '#fff',
             backgroundColor: '#fff',
             borderWidth: 0.3,
             borderColor: '#000',
           }}
-          source={
-            currentProfile && currentProfile.image
-              ? { uri: currentProfile.image }
-              : require('./../../assets/avatar-placeholder-image.png')
-          }
-          size={80}
         />
 
         <Title style={userProfileStyles.title}>{currentProfile.profileName}</Title>
@@ -125,57 +125,57 @@ const UserProfile = (props) => {
 
       <View style={userProfileStyles.centeredContent}>
         <ContactDetails
+          buttonText="kontaktdetaljer"
           isProfile
           profileId={currentProfile.profileId}
-          buttonText="kontaktdetaljer"
         />
       </View>
 
       {/* Product, project and proposal sections */}
       <HorizontalScroll
-        title="Tillgängligt förråd"
-        subTitle="Återbruk upplagt av användaren"
-        scrollData={availableUserProducts}
         navigation={props.navigation}
+        scrollData={availableUserProducts}
+        subTitle="Återbruk upplagt av användaren"
+        title="Tillgängligt förråd"
       />
       {reservedUserProducts.length ? (
         <HorizontalScroll
-          title="Reserverat"
-          subTitle="Återbruk upplagt av användaren, reserverat"
-          scrollData={reservedUserProducts}
           navigation={props.navigation}
+          scrollData={reservedUserProducts}
+          subTitle="Återbruk upplagt av användaren, reserverat"
+          title="Reserverat"
         />
       ) : null}
       <HorizontalScroll
-        textItem
         detailPath="ProposalDetail"
-        title="Efterlysningar"
-        subTitle="Återbruk, tjänster, tips..."
-        scrollData={userProposals}
         navigation={props.navigation}
+        scrollData={userProposals}
+        subTitle="Återbruk, tjänster, tips..."
+        textItem
+        title="Efterlysningar"
       />
       <HorizontalScroll
-        largeImageItem
         detailPath="ProjectDetail"
-        title="Projekt"
-        subTitle="Projekt användaren bygger med återbruk"
-        scrollData={userProjects}
+        largeImageItem
         navigation={props.navigation}
+        scrollData={userProjects}
+        subTitle="Projekt användaren bygger med återbruk"
+        title="Projekt"
       />
       {collectedByUser.length ? (
         <HorizontalScroll
-          title="Hämtat"
-          subTitle="Återbruk använt av användaren"
-          scrollData={collectedByUser}
           navigation={props.navigation}
+          scrollData={collectedByUser}
+          subTitle="Återbruk använt av användaren"
+          title="Hämtat"
         />
       ) : null}
       {givenByUser.length ? (
         <HorizontalScroll
-          title="Gett Igen"
-          subTitle="Återbruk användaren har gett till andra"
-          scrollData={givenByUser}
           navigation={props.navigation}
+          scrollData={givenByUser}
+          subTitle="Återbruk användaren har gett till andra"
+          title="Gett Igen"
         />
       ) : null}
     </ScrollViewToTop>
@@ -183,46 +183,40 @@ const UserProfile = (props) => {
 };
 
 export const userProfileStyles = StyleSheet.create({
-  userInfoSection: {
-    paddingTop: 10,
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   centeredContent: {
-    textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  title: {
-    fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: -6,
-  },
-  subtitle: {
-    paddingHorizontal: 20,
-    lineHeight: 14,
-    paddingBottom: 14,
-    fontWeight: 'normal',
-    textAlign: 'center',
-    fontSize: 12,
-  },
-  row: {
-    marginTop: 0,
-    marginBottom: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  section: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 15,
   },
   paragraph: {
     fontWeight: 'bold',
-    textAlign: 'center',
     marginRight: 3,
+    textAlign: 'center',
+  },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 15,
+    marginTop: 0,
+  },
+  section: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginRight: 15,
+  },
+  subtitle: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    lineHeight: 14,
+    paddingBottom: 14,
+    paddingHorizontal: 20,
+    textAlign: 'center',
+  },
+  title: {
+    fontWeight: 'bold',
+    marginTop: -6,
+    textAlign: 'center',
   },
 });
 

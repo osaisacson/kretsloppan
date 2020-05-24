@@ -1,5 +1,7 @@
-import React from 'react';
 //Components
+import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment/min/moment-with-locales';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,14 +10,12 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import Card from './Card';
-import { Ionicons } from '@expo/vector-icons';
-import CachedImage from '../../components/UI/CachedImage';
-import moment from 'moment/min/moment-with-locales';
-import StatusBadge from '../../components/UI/StatusBadge';
 
+import CachedImage from '../../components/UI/CachedImage';
+import StatusBadge from '../../components/UI/StatusBadge';
 //Constants
 import Colors from './../../constants/Colors';
+import Card from './Card';
 
 const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -32,66 +32,69 @@ const ProductItem = (props) => {
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         {props.itemData.collectingDate ? (
           <StatusBadge
+            backgroundColor={Colors.subtleBlue}
+            icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
             style={{
               padding: 0,
               margin: 0,
               position: 'absolute',
               zIndex: 100,
             }}
+            text={moment(props.itemData.collectingDate).locale('sv').calendar()}
             textStyle={{
               textTransform: 'uppercase',
               fontSize: 10,
               padding: 4,
               color: '#fff',
             }}
-            text={moment(props.itemData.collectingDate).locale('sv').calendar()}
-            icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-            backgroundColor={Colors.subtleBlue}
           />
         ) : null}
         {props.itemData.status === 'reserverad' && (
           <>
             {props.itemData.suggestedDate ? (
               <StatusBadge
+                backgroundColor={Colors.subtlePurple}
+                icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
                 style={{
                   padding: 0,
                   marginTop: 0,
                   position: 'absolute',
                   zIndex: 100,
                 }}
+                text={`Förslag: ${moment(props.itemData.suggestedDate).locale('sv').calendar()}`}
                 textStyle={{
                   textTransform: 'uppercase',
                   fontSize: 10,
                   padding: 4,
                   color: '#fff',
                 }}
-                text={`Förslag: ${moment(props.itemData.suggestedDate).locale('sv').calendar()}`}
-                icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
-                backgroundColor={Colors.subtlePurple}
               />
             ) : null}
             <StatusBadge
+              backgroundColor={Colors.primary}
+              icon={Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'}
               style={{
                 padding: 0,
                 marginTop: props.itemData.suggestedDate ? 22 : 0,
                 position: 'absolute',
                 zIndex: 100,
               }}
+              text={moment(props.itemData.reservedUntil).locale('sv').calendar()}
               textStyle={{
                 textTransform: 'uppercase',
                 fontSize: 10,
                 padding: 4,
                 color: '#fff',
               }}
-              text={moment(props.itemData.reservedUntil).locale('sv').calendar()}
-              icon={Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'}
-              backgroundColor={Colors.primary}
             />
           </>
         )}
 
         {props.itemData.status === 'hämtad' && (
           <Ionicons
+            color={props.itemData.color}
+            name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+            size={23}
             style={{
               ...styles.icon,
               backgroundColor: Colors.completed,
@@ -101,9 +104,6 @@ const ProductItem = (props) => {
               paddingBottom: 0,
               fontSize: 25,
             }}
-            name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-            size={23}
-            color={props.itemData.color}
           />
         )}
         <View style={styles.touchable}>
@@ -118,7 +118,7 @@ const ProductItem = (props) => {
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.title}>
+      <Text ellipsizeMode="tail" numberOfLines={2} style={styles.title}>
         {props.itemData.title}
       </Text>
     </View>
@@ -131,69 +131,66 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  product: {
-    height: 150,
-    width: '93%',
-    margin: '1.5%',
-    borderWidth: 0.5,
-    borderColor: '#ddd',
-    marginTop: 15,
-  },
   horizontalProduct: {
-    height: 150,
-    width: 185,
-    marginLeft: 10,
-    borderWidth: 0.5,
     borderColor: '#ddd',
+    borderWidth: 0.5,
+    height: 150,
+    marginLeft: 10,
+    width: 185,
+  },
+  icon: {
+    elevation: 2,
+    padding: 5,
+    position: 'absolute',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    zIndex: 99, //Because shadow only work on iOS, elevation is same thing but for android.
+  },
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+  imageContainer: {
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    height: '100%',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%', //To make sure any child (in this case the image) cannot overlap what we set in the image container
+  },
+  price: {
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    bottom: 0,
+    fontFamily: 'roboto-bold',
+    fontSize: 15,
+    marginRight: 8,
+    padding: 5,
+    position: 'absolute',
+    right: -9,
+    textAlign: 'right',
+    zIndex: 99,
+  },
+
+  product: {
+    borderColor: '#ddd',
+    borderWidth: 0.5,
+    height: 150,
+    margin: '1.5%',
+    marginTop: 15,
+    width: '93%',
+  },
+  title: {
+    fontFamily: 'roboto-light-italic',
+    fontSize: 16,
+    marginLeft: 8,
+    paddingLeft: 4,
+    width: '90%',
   },
   touchable: {
     borderRadius: 5,
     overflow: 'hidden',
-  },
-  imageContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
-  },
-  icon: {
-    position: 'absolute',
-    padding: 5,
-    zIndex: 99,
-    shadowColor: 'black',
-    shadowOpacity: 0.12,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
-  },
-
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  details: {
-    color: '#000',
-  },
-  title: {
-    paddingLeft: 4,
-    width: '90%',
-    fontFamily: 'roboto-light-italic',
-    fontSize: 16,
-    marginLeft: 8,
-  },
-  price: {
-    position: 'absolute',
-    right: -9,
-    bottom: 0,
-    padding: 5,
-    zIndex: 99,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    fontFamily: 'roboto-bold',
-    fontSize: 15,
-    textAlign: 'right',
-    marginRight: 8,
   },
 });
 

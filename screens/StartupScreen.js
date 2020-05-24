@@ -73,16 +73,16 @@ const StartupScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <ActivityIndicator size="large" color={Colors.primary} />
+      <ActivityIndicator color={Colors.primary} size="large" />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   screen: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

@@ -42,10 +42,10 @@ const TextItem = (props) => {
           <TouchableCmp onPress={props.onSelect} useForeground>
             <>
               {lostBadge}
-              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+              <Text ellipsizeMode="tail" numberOfLines={1} style={styles.title}>
                 {props.itemData.title}
               </Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
+              <Text ellipsizeMode="tail" numberOfLines={2} style={styles.subTitle}>
                 {props.itemData.description}
               </Text>
             </>
@@ -62,28 +62,28 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 15,
   },
-  touchable: {
-    overflow: 'hidden',
-    marginRight: 25,
-    paddingBottom: 15,
-  },
   spacer: {
     height: 30,
   },
-  title: {
-    color: Colors.primary,
-    width: 300,
-    fontFamily: 'roboto-bold',
-    fontSize: 18,
-    marginLeft: 4,
-  },
   subTitle: {
     color: Colors.primary,
-    paddingBottom: 25,
-    width: 300,
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
     marginLeft: 4,
+    paddingBottom: 25,
+    width: 300,
+  },
+  title: {
+    color: Colors.primary,
+    fontFamily: 'roboto-bold',
+    fontSize: 18,
+    marginLeft: 4,
+    width: 300,
+  },
+  touchable: {
+    marginRight: 25,
+    overflow: 'hidden',
+    paddingBottom: 15,
   },
 });
 

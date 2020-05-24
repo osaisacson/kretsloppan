@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 //Components
-import { View, Alert, Text, StyleSheet } from 'react-native';
-import { Badge, Button, Divider } from 'react-native-paper';
 
 import moment from 'moment/min/moment-with-locales';
+import React, { useState } from 'react';
+import { View, Alert, Text, StyleSheet, Platform } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { Button, Divider } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { detailStyles } from '../../components/wrappers/DetailWrapper';
+import ButtonAction from '../../components/UI/ButtonAction';
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
-import StatusBadge from '../../components/UI/StatusBadge';
-
 import Loader from '../../components/UI/Loader';
-import ButtonAction from '../../components/UI/ButtonAction';
-import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import RoundItem from '../../components/UI/RoundItem';
+import SmallRoundItem from '../../components/UI/SmallRoundItem';
+import StatusBadge from '../../components/UI/StatusBadge';
 import UserAvatar from '../../components/UI/UserAvatar';
-
+import { detailStyles } from '../../components/wrappers/DetailWrapper';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -87,21 +85,13 @@ const ProductButtonLogic = (props) => {
   //Avatar logic
   const profiles = useSelector((state) => state.profiles.allProfiles);
 
-  const ownerProfile = profiles.find(
-    (profile) => profile.profileId === ownerId
-  );
+  const ownerProfile = profiles.find((profile) => profile.profileId === ownerId);
 
-  const receivingProfile = profiles.find(
-    (profile) => profile.profileId === receivingId
-  );
+  const receivingProfile = profiles.find((profile) => profile.profileId === receivingId);
 
-  const associatedProject = useSelector(
-    (state) => state.projects.availableProjects
-  );
+  const associatedProject = useSelector((state) => state.projects.availableProjects);
 
-  const projectForProduct = associatedProject.find(
-    (proj) => proj.id === projectId
-  );
+  const projectForProduct = associatedProject.find((proj) => proj.id === projectId);
 
   const handleTimePicker = (date) => {
     setSuggestedDateLocal(date);
@@ -124,13 +114,7 @@ const ProductButtonLogic = (props) => {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
-            dispatch(
-              productsActions.changeProductStatus(
-                id,
-                'reserverad',
-                checkedProjectId
-              )
-            );
+            dispatch(productsActions.changeProductStatus(id, 'reserverad', checkedProjectId));
             setShowOptions(true);
             setShowUserProjects(false);
           },
@@ -158,9 +142,7 @@ const ProductButtonLogic = (props) => {
           style: 'destructive',
           onPress: () => {
             setIsLoading(true);
-            dispatch(productsActions.unReserveProduct(id)).then(
-              setIsLoading(false)
-            );
+            dispatch(productsActions.unReserveProduct(id)).then(setIsLoading(false));
             props.navigation.goBack();
           },
         },
@@ -200,8 +182,8 @@ const ProductButtonLogic = (props) => {
 
   const sendSuggestedDT = (dateTime) => {
     const checkedProjectId = projectId ? projectId : '000';
-    const sAgreed = hasEditPermission ? true : false;
-    const bAgreed = isReservedUser || isOrganisedUser ? true : false;
+    const sAgreed = !!hasEditPermission;
+    const bAgreed = !!(isReservedUser || isOrganisedUser);
 
     Alert.alert(
       'Föreslå tid',
@@ -225,9 +207,7 @@ const ProductButtonLogic = (props) => {
                 dateTime //sets product.suggestedDate
               )
             );
-            dispatch(
-              productsActions.changeProductAgreement(id, sAgreed, bAgreed)
-            );
+            dispatch(productsActions.changeProductAgreement(id, sAgreed, bAgreed));
             hideTimePicker();
             setShowUserProjects(false);
           },
@@ -276,12 +256,7 @@ const ProductButtonLogic = (props) => {
           style: 'destructive',
           onPress: () => {
             dispatch(
-              productsActions.changeProductStatus(
-                id,
-                'hämtad',
-                projectId,
-                collectingUserId
-              )
+              productsActions.changeProductStatus(id, 'hämtad', projectId, collectingUserId)
             );
             props.navigation.goBack();
           },
@@ -293,14 +268,14 @@ const ProductButtonLogic = (props) => {
   const HeaderAvatar = (props) => {
     return (
       <UserAvatar
-        userId={props.profileId}
-        style={[{ margin: 0 }, props.style]}
-        showBadge={false}
         actionOnPress={() => {
           props.navigation.navigate('Användare', {
             detailId: props.profileId,
           });
         }}
+        showBadge={false}
+        style={[{ margin: 0 }, props.style]}
+        userId={props.profileId}
       />
     );
   };
@@ -312,15 +287,14 @@ const ProductButtonLogic = (props) => {
   return (
     <View>
       <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
-        <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
+        <HeaderAvatar navigation={props.navigation} profileId={ownerId} />
         {!isPickedUp ? (
           <Button
-            labelStyle={{ fontSize: 10 }}
             color={Colors.darkPrimary}
-            style={{ position: 'absolute', left: '36%' }}
+            labelStyle={{ fontSize: 10 }}
             mode="outlined"
             onPress={toggleShowOptions}
-          >
+            style={{ position: 'absolute', left: '36%' }}>
             Logistik
           </Button>
         ) : null}
@@ -330,17 +304,14 @@ const ProductButtonLogic = (props) => {
             flexDirection: 'row',
             position: 'absolute',
             right: 0,
-          }}
-        >
+          }}>
           {projectForProduct ? (
             <View style={styles.textAndBadge}>
-              <View
-                style={[styles.smallBadge, { backgroundColor: statusColor }]}
-              >
+              <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
                 <Text style={styles.smallText}>För</Text>
               </View>
               <SmallRoundItem
-                detailPath={'ProjectDetail'}
+                detailPath="ProjectDetail"
                 item={projectForProduct}
                 navigation={props.navigation}
               />
@@ -348,22 +319,17 @@ const ProductButtonLogic = (props) => {
           ) : null}
           {receivingProfile ? (
             <View style={styles.textAndBadge}>
-              <View
-                style={[styles.smallBadge, { backgroundColor: statusColor }]}
-              >
+              <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
                 <Text style={styles.smallText}>Av</Text>
               </View>
-              <HeaderAvatar
-                profileId={receivingId}
-                navigation={props.navigation}
-              />
+              <HeaderAvatar navigation={props.navigation} profileId={receivingId} />
             </View>
           ) : null}
           {!hasEditPermission && !isReserved && !isPickedUp && !isOrganised ? (
             <ButtonAction
               disabled={isReserved}
               onSelect={toggleReserveButton}
-              title={'reservera i 24h'}
+              title="reservera i 24h"
             />
           ) : null}
         </View>
@@ -373,27 +339,27 @@ const ProductButtonLogic = (props) => {
       {showUserProjects ? (
         <>
           <HeaderThree
-            text={'Vilket projekt ska återbruket användas i?'}
             style={detailStyles.centeredHeader}
+            text="Vilket projekt ska återbruket användas i?"
           />
 
           <HorizontalScrollContainer>
             <RoundItem
+              isHorizontal
               itemData={{
                 image: './../../assets/avatar-placeholder-image.png',
                 title: 'Inget projekt',
               }}
-              key={'000'}
-              isHorizontal={true}
+              key="000"
               onSelect={() => {
                 reserveHandler('000');
               }}
             />
             {userProjects.map((item) => (
               <RoundItem
+                isHorizontal
                 itemData={item}
                 key={item.id}
-                isHorizontal={true}
                 onSelect={() => {
                   reserveHandler(item.id);
                 }}
@@ -411,24 +377,18 @@ const ProductButtonLogic = (props) => {
             <View style={styles.ownerOptions}>
               <Text>{ownerProfile.profileName}</Text>
               <Text>{phone ? phone : 'Ingen telefon angiven'}</Text>
-              {address ? (
-                <Text>{address ? address : 'Ingen address angiven'}</Text>
-              ) : null}
+              {address ? <Text>{address ? address : 'Ingen address angiven'}</Text> : null}
             </View>
 
             {receivingProfile ? (
               <View style={styles.receivingOptions}>
                 <Text>{receivingProfile.profileName}</Text>
                 <Text>
-                  {receivingProfile.phone
-                    ? receivingProfile.phone
-                    : 'Ingen telefon angiven'}
+                  {receivingProfile.phone ? receivingProfile.phone : 'Ingen telefon angiven'}
                 </Text>
                 {receivingProfile.address ? (
                   <Text style={{ textAlign: 'right' }}>
-                    {receivingProfile.address
-                      ? receivingProfile.address
-                      : 'Ingen address angiven'}
+                    {receivingProfile.address ? receivingProfile.address : 'Ingen address angiven'}
                   </Text>
                 ) : null}
               </View>
@@ -436,8 +396,7 @@ const ProductButtonLogic = (props) => {
           </View>
 
           {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
-          {isReserved &&
-          (hasEditPermission || isReservedUser || isOrganisedUser) ? (
+          {isReserved && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
               <Divider style={{ marginBottom: 10 }} />
               <HeaderThree
@@ -450,47 +409,33 @@ const ProductButtonLogic = (props) => {
               {!collectingDate && suggestedDate ? (
                 <>
                   <StatusBadge
+                    backgroundColor={Colors.subtlePurple}
+                    icon={
+                      Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'
+                    }
                     style={{
                       marginTop: 8,
                       alignSelf: 'center',
                       justifyContent: 'center',
                     }}
+                    text={`Väntar på godkännande ${
+                      !buyerAgreed && (isReservedUser || isOrganisedUser) ? 'av dig' : 'av motpart'
+                    }`}
                     textStyle={{
                       textTransform: 'uppercase',
                       fontSize: 10,
                       padding: 4,
                       color: '#fff',
                     }}
-                    text={`Väntar på godkännande ${
-                      !buyerAgreed && (isReservedUser || isOrganisedUser)
-                        ? 'av dig'
-                        : 'av motpart'
-                    }`}
-                    icon={
-                      Platform.OS === 'android'
-                        ? 'md-information-circle'
-                        : 'ios-information-circle'
-                    }
-                    backgroundColor={Colors.subtlePurple}
                   />
-                  <View
-                    style={[
-                      styles.box,
-                      { backgroundColor: Colors.subtlePurple },
-                    ]}
-                  >
+                  <View style={[styles.box, { backgroundColor: Colors.subtlePurple }]}>
                     <HeaderThree
                       style={styles.boxText}
                       text={`Föreslagen tid av ${
                         !hasEditPermission && buyerAgreed ? 'dig' : 'motpart'
-                      }: ${moment(suggestedDate)
-                        .locale('sv')
-                        .format('D MMMM, HH:mm')}`}
+                      }: ${moment(suggestedDate).locale('sv').format('D MMMM, HH:mm')}`}
                     />
-                    <HeaderThree
-                      style={styles.boxText}
-                      text={`Plats: ${address}`}
-                    />
+                    <HeaderThree style={styles.boxText} text={`Plats: ${address}`} />
                   </View>
                 </>
               ) : null}
@@ -498,12 +443,12 @@ const ProductButtonLogic = (props) => {
                 <>
                   <HeaderThree
                     style={{ textAlign: 'center', marginBottom: 10 }}
-                    text={'Föreslå tid för upphämtning nedan.'}
+                    text="Föreslå tid för upphämtning nedan."
                   />
                   <View style={{ flex: 1 }}>
                     <CalendarStrip
-                      scrollable
-                      selectedDate={suggestedDateLocal}
+                      borderHighlightColor="#666"
+                      borderWidth={1}
                       daySelectionAnimation={{
                         type: 'border',
                         borderWidth: 0.5,
@@ -512,30 +457,30 @@ const ProductButtonLogic = (props) => {
                       }}
                       highlightDateNameStyle={{ color: Colors.darkPrimary }}
                       highlightDateNumberStyle={{ color: Colors.darkPrimary }}
-                      styleWeekend={true}
                       onDateSelected={(date) => {
                         handleTimePicker(date);
                       }}
+                      scrollable
+                      selectedDate={suggestedDateLocal}
                       style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-                      type={'border'}
-                      borderWidth={1}
-                      borderHighlightColor={'#666'}
+                      styleWeekend
+                      type="border"
                     />
                     <DateTimePickerModal
+                      cancelTextIOS="Avbryt"
+                      confirmTextIOS="Klar!"
                       date={new Date(suggestedDateLocal)}
-                      isDarkModeEnabled={true}
-                      cancelTextIOS={'Avbryt'}
-                      confirmTextIOS={'Klar!'}
                       headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
                         .locale('sv')
                         .format('D MMMM')}. Välj tid:`}
+                      isDarkModeEnabled
                       isVisible={showTimePicker}
-                      mode="time"
-                      locale="sv_SV" // Use "en_GB" here
+                      locale="sv_SV"
+                      mode="time" // Use "en_GB" here
+                      onCancel={hideTimePicker}
                       onConfirm={(dateTime) => {
                         sendSuggestedDT(dateTime);
                       }}
-                      onCancel={hideTimePicker}
                     />
                   </View>
                 </>
@@ -548,9 +493,7 @@ const ProductButtonLogic = (props) => {
                     marginBottom: 20,
                     marginTop: 10,
                   }}
-                  text={
-                    'Om du vill ändra plats gör detta genom att redigera din produkt och uppdatera upphämtningsaddress där.'
-                  }
+                  text="Om du vill ändra plats gör detta genom att redigera din produkt och uppdatera upphämtningsaddress där."
                 />
               ) : null}
               <Divider style={{ marginTop: 10 }} />
@@ -561,39 +504,39 @@ const ProductButtonLogic = (props) => {
                     {hasEditPermission || isReservedUser || isOrganisedUser ? (
                       <ButtonAction
                         buttonColor={Colors.darkRed}
-                        title={`Annan tid`}
                         onSelect={() => {
                           resetSuggestedDT();
                         }}
+                        title="Annan tid"
                       />
                     ) : null}
                     {!sellerAgreed && hasEditPermission ? (
                       <ButtonAction
-                        buttonLabelStyle={{ color: '#fff' }}
                         buttonColor={Colors.approved}
-                        title={`Godkänn förslag`}
+                        buttonLabelStyle={{ color: '#fff' }}
                         onSelect={() => {
                           approveSuggestedDateTime(suggestedDate);
                         }}
+                        title="Godkänn förslag"
                       />
                     ) : null}
                     {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
                       <ButtonAction
-                        buttonLabelStyle={{ color: '#fff' }}
                         buttonColor={Colors.approved}
-                        title={`Godkänn förslag`}
+                        buttonLabelStyle={{ color: '#fff' }}
                         onSelect={() => {
                           approveSuggestedDateTime(suggestedDate);
                         }}
+                        title="Godkänn förslag"
                       />
                     ) : null}
                     {isReservedUser ? (
                       <ButtonAction
-                        disabled={isPickedUp}
                         buttonColor={Colors.subtleRed}
                         buttonLabelStyle={{ color: '#fff' }}
+                        disabled={isPickedUp}
                         onSelect={unReserveHandler}
-                        title={'avreservera'}
+                        title="avreservera"
                       />
                     ) : null}
                   </>
@@ -602,41 +545,35 @@ const ProductButtonLogic = (props) => {
             </>
           ) : null}
 
-          {collectingDate &&
-          (hasEditPermission || isReservedUser || isOrganisedUser) ? (
+          {collectingDate && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
               <Divider style={{ marginBottom: 10 }} />
-              <View
-                style={[styles.box, { backgroundColor: Colors.subtleBlue }]}
-              >
+              <View style={[styles.box, { backgroundColor: Colors.subtleBlue }]}>
                 <HeaderThree
                   style={styles.boxText}
                   text={`Överenskommen tid: ${moment(collectingDate)
                     .locale('sv')
                     .format('D MMMM, HH:mm')}`}
                 />
-                <HeaderThree
-                  style={styles.boxText}
-                  text={`Plats: ${address}`}
-                />
+                <HeaderThree style={styles.boxText} text={`Plats: ${address}`} />
               </View>
               <Divider style={{ marginTop: 10 }} />
 
               <View style={styles.actionButtons}>
                 <ButtonAction
                   buttonColor={Colors.darkRed}
-                  title={`Ändra tid`}
                   onSelect={() => {
                     resetSuggestedDT();
                   }}
+                  title="Ändra tid"
                 />
                 {hasEditPermission ? (
                   <ButtonAction
-                    disabled={isPickedUp}
                     buttonColor={Colors.approved}
                     buttonLabelStyle={{ color: '#fff' }}
-                    title="Byt till hämtad"
+                    disabled={isPickedUp}
                     onSelect={collectHandler.bind(this)}
+                    title="Byt till hämtad"
                   />
                 ) : null}
               </View>
@@ -651,7 +588,7 @@ const ProductButtonLogic = (props) => {
           !isOrganisedUser ? (
             <HeaderThree
               style={{ textAlign: 'center', marginBottom: 20 }}
-              text={'Parterna är i processen att ordna med logistik'}
+              text="Parterna är i processen att ordna med logistik"
             />
           ) : null}
           {/* TBD: In-app messaging - Button for passing an object 
@@ -669,6 +606,22 @@ const ProductButtonLogic = (props) => {
 };
 
 const styles = StyleSheet.create({
+  actionButtons: {
+    flex: 1,
+    flexDirection: 'row',
+    marginVertical: 10,
+    justifyContent: 'space-around',
+  },
+  box: {
+    alignSelf: 'center',
+    padding: 6,
+  },
+  boxText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
   oneLineSpread: {
     flex: 1,
     flexDirection: 'row',
@@ -687,53 +640,24 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     height: 80,
   },
-  oneLineRight: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    right: 0,
+  smallBadge: {
+    backgroundColor: Colors.primary,
+    borderRadius: 5,
+    height: 17,
+    paddingHorizontal: 2,
+    right: -10,
+    zIndex: 10,
   },
-  leftTextAndBadge: {
-    marginLeft: -10,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+  smallText: {
+    color: '#fff',
+    fontSize: 10,
+    padding: 2,
+    textTransform: 'uppercase',
   },
   textAndBadge: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-  },
-  smallBadge: {
-    zIndex: 10,
-    right: -10,
-    paddingHorizontal: 2,
-    borderRadius: 5,
-    backgroundColor: Colors.primary,
-    height: 17,
-  },
-  smallText: {
-    textTransform: 'uppercase',
-    fontSize: 10,
-    padding: 2,
-    color: '#fff',
-  },
-  actionButtons: {
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 10,
-    justifyContent: 'space-around',
-  },
-  box: {
-    padding: 6,
-    alignSelf: 'center',
-  },
-  boxText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#fff',
-    textAlign: 'center',
   },
 });
 

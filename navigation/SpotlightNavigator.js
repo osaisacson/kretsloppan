@@ -44,60 +44,60 @@ export const SpotlightNavigator = () => {
   return (
     <SpotlightStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <SpotlightStackNavigator.Screen
-        name="Ge Igen"
         component={SpotlightProductsScreen}
+        name="Ge Igen"
         options={defaultMainPageOptions}
       />
       <SpotlightStackNavigator.Screen
-        name="Min Sida"
         component={UserSpotlightScreen}
+        name="Min Sida"
         options={mainPageOptionsNoUser}
       />
       <SpotlightStackNavigator.Screen
-        name="Mitt upplagda återbruk"
         component={UserProductsScreen}
+        name="Mitt upplagda återbruk"
         options={mainPageOptionsNoUser}
       />
       <SpotlightStackNavigator.Screen
-        name="Användare"
         component={UserProfile}
+        name="Användare"
         options={mainPageOptionsWithUser}
       />
       <SpotlightStackNavigator.Screen
-        name="EditProfile"
         component={EditProfileScreen}
+        name="EditProfile"
         options={editProfileScreenOptions}
       />
       {/* Details */}
       <SpotlightStackNavigator.Screen
-        name="ProductDetail"
         component={ProductDetailScreen}
+        name="ProductDetail"
         options={productDetailScreenOptions}
       />
       <SpotlightStackNavigator.Screen
-        name="ProposalDetail"
         component={ProposalDetailScreen}
+        name="ProposalDetail"
         options={proposalDetailScreenOptions}
       />
       <SpotlightStackNavigator.Screen
-        name="ProjectDetail"
         component={ProjectDetailScreen}
+        name="ProjectDetail"
         options={projectDetailScreenOptions}
       />
       {/* Edits */}
       <SpotlightStackNavigator.Screen
-        name="EditProduct"
         component={EditProductScreen}
+        name="EditProduct"
         options={editProductScreenOptions}
       />
       <SpotlightStackNavigator.Screen
-        name="EditProject"
         component={EditProjectScreen}
+        name="EditProject"
         options={editProjectScreenOptions}
       />
       <SpotlightStackNavigator.Screen
-        name="EditProposal"
         component={EditProposalScreen}
+        name="EditProposal"
         options={editProposalScreenOptions}
       />
     </SpotlightStackNavigator.Navigator>

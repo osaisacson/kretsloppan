@@ -46,34 +46,24 @@ const PickerItem = (props) => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginTop: 5,
-    fontFamily: 'roboto-bold-italic',
-    fontSize: 13,
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
   item: {
-    minWidth: 100,
     marginLeft: 14,
+    minWidth: 100,
+  },
+  textContainer: {
+    alignItems: 'center',
+    height: '100%',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    paddingTop: 3,
+    position: 'relative',
+    textAlign: 'center',
+    width: '100%',
   },
   touchable: {
     borderRadius: 3,
-    overflow: 'hidden',
     marginBottom: 20,
-  },
-  textContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    textAlign: 'center',
-    paddingTop: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
     overflow: 'hidden',
-  },
-  details: {
-    color: '#000',
   },
 });
 

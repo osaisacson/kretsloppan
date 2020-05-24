@@ -15,16 +15,16 @@ const ButtonIcon = (props) => {
       <>
         {props.badge ? <Badge style={styles.badge}>{props.badge}</Badge> : null}
         <IconButton
-          icon={props.icon}
-          size={props.size ? props.size : 20}
           animated
           color="#fff"
+          icon={props.icon}
+          onPress={props.onSelect}
+          size={props.size ? props.size : 20}
           style={{
             borderColor: props.borderColor ? props.borderColor : '#fff',
             borderWidth: 0.5,
             backgroundColor: props.color,
           }}
-          onPress={props.onSelect}
         />
       </>
     </TouchableCmp>
@@ -32,7 +32,14 @@ const ButtonIcon = (props) => {
 };
 
 const styles = StyleSheet.create({
+  badge: {
+    borderColor: '#fff',
+    borderWidth: 0.7,
+    position: 'absolute',
+    zIndex: 100,
+  },
   container: {
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -40,13 +47,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
-  },
-  badge: {
-    borderWidth: 0.7,
-    borderColor: '#fff',
-    position: 'absolute',
-    zIndex: 100,
   },
 });
 

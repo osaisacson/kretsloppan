@@ -1,12 +1,11 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 
-const SaferArea = props => {
+const SaferArea = (props) => {
   return (
     <SafeAreaView
-      style={{ ...styles.container, ...props.style }}
       forceInset={{ top: 'always', bottom: 'always' }}
-    >
+      style={{ ...styles.container, ...props.style }}>
       {props.children}
     </SafeAreaView>
   );
@@ -14,8 +13,8 @@ const SaferArea = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default SaferArea;

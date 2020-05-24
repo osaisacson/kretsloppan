@@ -166,36 +166,30 @@ const AuthScreen = (props) => {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
       <KeyboardAwareScrollView
-        style={{ backgroundColor: '#000' }}
-        resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.screen}
-        scrollEnabled={false}>
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        scrollEnabled={false}
+        style={{ backgroundColor: '#000' }}>
         <ImageBackground
+          resizeMode="cover"
           source={{
             uri:
               'https://images.unsplash.com/photo-1496439653932-606caa506e0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2011&q=80',
           }}
-          resizeMode="cover"
           style={styles.backgroundImage}>
           <Card style={isSignup ? styles.authContainerLarge : styles.authContainer}>
             <ScrollView
-              showsVerticalScrollIndicator={false}
               contentContainerStyle={{ flexGrow: 1 }}
-              keyboardShouldPersistTaps="handled">
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}>
               {isSignup ? (
                 <>
                   <View style={styles.imagePicker}>
                     <View style={styles.imagePreview}>
                       {!placeholderPic ? (
                         <Button
-                          mode="outlined"
-                          onPress={takeImageHandler}
-                          style={{
-                            backgroundColor: 'transparent',
-                            borderRadius: 100 / 2,
-                          }}
                           contentStyle={{
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -205,101 +199,106 @@ const AuthScreen = (props) => {
                             borderRadius: 100 / 2,
                             borderColor: '#a9a9a9',
                             borderWidth: 0.5,
+                          }}
+                          mode="outlined"
+                          onPress={takeImageHandler}
+                          style={{
+                            backgroundColor: 'transparent',
+                            borderRadius: 100 / 2,
                           }}>
-                          <Icon name="camera" size={24} color="#666" />
+                          <Icon color="#666" name="camera" size={24} />
                         </Button>
                       ) : (
                         <TouchableOpacity onPress={takeImageHandler}>
                           <Avatar.Image
+                            size={80}
+                            source={
+                              placeholderPic
+                                ? { uri: placeholderPic }
+                                : require('./../../assets/avatar-placeholder-image.png')
+                            }
                             style={{
                               padding: 0,
                               margin: 0,
                               color: '#fff',
                               backgroundColor: '#fff',
                             }}
-                            source={
-                              placeholderPic
-                                ? { uri: placeholderPic }
-                                : require('./../../assets/avatar-placeholder-image.png')
-                            }
-                            size={80}
                           />
                         </TouchableOpacity>
                       )}
                     </View>
                   </View>
                   <Input
-                    id="profileName"
-                    placeholder="Användarnamn"
-                    keyboardType="default"
-                    required
                     autoCapitalize="none"
                     errorText="Skriv in ett användarnamn"
-                    onInputChange={inputChangeHandler}
+                    id="profileName"
                     initialValue=""
+                    keyboardType="default"
+                    onInputChange={inputChangeHandler}
+                    placeholder="Användarnamn"
+                    required
                   />
                   <Input
-                    id="profileDescription"
-                    placeholder="Beskrivning"
-                    keyboardType="default"
                     autoCapitalize="none"
                     errorText="Skriv in en kort beskrivning"
-                    onInputChange={inputChangeHandler}
+                    id="profileDescription"
                     initialValue=""
+                    keyboardType="default"
+                    onInputChange={inputChangeHandler}
+                    placeholder="Beskrivning"
                   />
                   <Input
-                    id="phone"
-                    placeholder="Telefonnummer"
-                    keyboardType="number-pad"
-                    required
                     autoCapitalize="none"
                     errorText="Lägg in ett kontaktnummer"
-                    onInputChange={inputChangeHandler}
+                    id="phone"
                     initialValue=""
+                    keyboardType="number-pad"
+                    onInputChange={inputChangeHandler}
+                    placeholder="Telefonnummer"
+                    required
                   />
 
                   <Input
-                    id="address"
-                    placeholder="Address"
-                    keyboardType="default"
-                    required
                     autoCapitalize="none"
                     errorText="Skriv in addressen återbruket vanligtvis kan hämtas på"
-                    onInputChange={inputChangeHandler}
+                    id="address"
                     initialValue=""
+                    keyboardType="default"
+                    onInputChange={inputChangeHandler}
+                    placeholder="Address"
+                    required
                   />
                 </>
               ) : null}
               <Input
-                id="email"
-                placeholder="E-Mail"
-                keyboardType="email-address"
-                required
-                email
                 autoCapitalize="none"
+                email
                 errorText="Skriv in en giltig e-post, den kommer också vara ditt inloggningsnamn"
-                onInputChange={inputChangeHandler}
+                id="email"
                 initialValue=""
+                keyboardType="email-address"
+                onInputChange={inputChangeHandler}
+                placeholder="E-Mail"
+                required
               />
               <Input
-                id="password"
-                placeholder="Password"
-                keyboardType="default"
-                secureTextEntry
-                required
-                minLength={5}
                 autoCapitalize="none"
                 errorText="Skriv in ett giltigt lösenord"
-                onInputChange={inputChangeHandler}
+                id="password"
                 initialValue=""
+                keyboardType="default"
+                minLength={5}
+                onInputChange={inputChangeHandler}
+                placeholder="Password"
+                required
+                secureTextEntry
               />
               <View style={styles.buttonContainer}>
                 {isLoading ? (
-                  <ActivityIndicator size="small" color={Colors.primary} />
+                  <ActivityIndicator color={Colors.primary} size="small" />
                 ) : (
                   <Button
                     color="#000"
-                    mode="outlined"
                     contentStyle={{
                       justifyContent: 'center',
                       borderWidth: 0.25,
@@ -310,6 +309,7 @@ const AuthScreen = (props) => {
                       fontFamily: 'bebas-neue-bold',
                       fontSize: 28,
                     }}
+                    mode="outlined"
                     onPress={authHandler}>
                     {isSignup ? 'Gå med' : 'Logga in'}
                   </Button>
@@ -318,19 +318,19 @@ const AuthScreen = (props) => {
               <View style={styles.buttonContainer}>
                 <Button
                   color={isSignup ? Colors.darkPrimary : Colors.primary}
-                  mode="contained"
-                  style={{
-                    width: '60%',
-                    alignSelf: 'center',
-                  }}
+                  compact
                   labelStyle={{
                     paddingTop: 2,
                     fontFamily: 'bebas-neue-bold',
                     fontSize: 12,
                   }}
-                  compact
+                  mode="contained"
                   onPress={() => {
                     setIsSignup((prevState) => !prevState);
+                  }}
+                  style={{
+                    width: '60%',
+                    alignSelf: 'center',
                   }}>
                   {`Byt till ${isSignup ? 'logga in' : 'skapa konto'}`}
                 </Button>
@@ -350,37 +350,37 @@ export const screenOptions = {
 const d = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-  backgroundImage: {
-    position: 'absolute',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.45)',
-    width: d.width,
-    height: d.height,
-  },
   authContainer: {
-    width: '80%',
-    maxWidth: 400,
     maxHeight: 400,
+    maxWidth: 400,
     padding: 20,
+    width: '80%',
   },
   authContainerLarge: {
-    width: '80%',
-    maxWidth: 400,
     maxHeight: 800,
+    maxWidth: 400,
     padding: 20,
+    width: '80%',
+  },
+  backgroundImage: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    flex: 1,
+    height: d.height,
+    justifyContent: 'center',
+    position: 'absolute',
+    width: d.width,
+  },
+  buttonContainer: {
+    marginTop: 10,
   },
   imagePicker: {
     alignItems: 'center',
     marginBottom: 15,
   },
 
-  buttonContainer: {
-    marginTop: 10,
+  screen: {
+    flex: 1,
   },
 });
 

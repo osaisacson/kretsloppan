@@ -2,32 +2,28 @@ import React from 'react';
 //Components
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import { Button } from 'react-native-paper';
+
 import ScrollViewToTop from './ScrollViewToTop';
 
 const FormWrapper = (props) => {
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={120}
-    >
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={120} style={{ flex: 1 }}>
       <ScrollViewToTop>
         <View style={styles.formWrapper}>{props.children}</View>
 
         <Button
-          mode="contained"
           disabled={props.isLoading}
-          style={{
-            width: '90%',
-            alignSelf: 'center',
-            marginBottom: 140,
-          }}
           labelStyle={{
             fontFamily: 'roboto-light',
             fontSize: 18,
           }}
+          mode="contained"
           onPress={props.handlerForButtonSubmit}
-        >
+          style={{
+            width: '90%',
+            alignSelf: 'center',
+            marginBottom: 140,
+          }}>
           {props.submitButtonText}
         </Button>
       </ScrollViewToTop>

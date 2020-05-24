@@ -24,28 +24,28 @@ export const ProfilesNavigator = () => {
   return (
     <ProfilesStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProfilesStackNavigator.Screen
-        name="Alla Användare"
         component={AllProfilesScreen}
+        name="Alla Användare"
         options={defaultMainPageOptions}
       />
       <ProfilesStackNavigator.Screen
-        name="Användare"
         component={UserProfile}
+        name="Användare"
         options={mainPageOptionsWithUser}
       />
       <ProfilesStackNavigator.Screen
-        name="ProjectDetail"
         component={ProjectDetailScreen}
+        name="ProjectDetail"
         options={projectDetailScreenOptions}
       />
       <ProfilesStackNavigator.Screen
-        name="ProductDetail"
         component={ProductDetailScreen}
+        name="ProductDetail"
         options={productDetailScreenOptions}
       />
       <ProfilesStackNavigator.Screen
-        name="ProposalDetail"
         component={ProposalDetailScreen}
+        name="ProposalDetail"
         options={proposalDetailScreenOptions}
       />
     </ProfilesStackNavigator.Navigator>

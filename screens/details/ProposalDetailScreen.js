@@ -86,18 +86,18 @@ const ProposalDetailScreen = (props) => {
       </Text>
       {isResolved ? (
         <StatusBadge
+          backgroundColor={Colors.completed}
+          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
           style={{ alignSelf: 'flex-start', marginTop: 5 }}
           text="Löst!"
-          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-          backgroundColor={Colors.completed}
         />
       ) : null}
       <SectionCard>
         {/* Show contact info only if the user is not the creator */}
         <ContactDetails
+          buttonText="kontaktdetaljer"
           profileId={ownerId}
           proposalId={selectedProposal.id}
-          buttonText="kontaktdetaljer"
         />
         <Divider style={{ marginVertical: 10 }} />
 
@@ -120,16 +120,16 @@ const ProposalDetailScreen = (props) => {
             <View style={detailStyles.spaceBetweenRow}>
               {/* Delete button */}
               <ButtonIcon
-                icon="delete"
                 color={Colors.warning}
+                icon="delete"
                 onSelect={() => {
                   deleteHandler(selectedProposal.id);
                 }}
               />
 
               <ButtonIcon
-                icon="pen"
                 color={Colors.neutral}
+                icon="pen"
                 onSelect={() => {
                   editProposalHandler(selectedProposal.id);
                 }}
@@ -142,14 +142,14 @@ const ProposalDetailScreen = (props) => {
       {selectedProposal.projectId && projectForProposal.length ? (
         <SectionCard>
           <View style={detailStyles.centered}>
-            <HeaderThree text="Relaterar till projektet:" style={detailStyles.centeredHeader} />
+            <HeaderThree style={detailStyles.centeredHeader} text="Relaterar till projektet:" />
 
             <HorizontalScroll
-              scrollHeight={155}
-              roundItem
               detailPath="ProjectDetail"
-              scrollData={projectForProposal}
               navigation={props.navigation}
+              roundItem
+              scrollData={projectForProposal}
+              scrollHeight={155}
             />
           </View>
         </SectionCard>

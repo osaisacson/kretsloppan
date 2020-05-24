@@ -29,30 +29,30 @@ export const ProjectsNavigator = () => {
   return (
     <ProjectsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProjectsStackNavigator.Screen
-        name="Projekt"
         component={ProjectsScreen}
+        name="Projekt"
         options={defaultMainPageOptions}
       />
       {/* Details */}
       <ProjectsStackNavigator.Screen
-        name="ProjectDetail"
         component={ProjectDetailScreen}
+        name="ProjectDetail"
         options={projectDetailScreenOptions}
       />
       {/* Edits */}
       <ProjectsStackNavigator.Screen
-        name="EditProduct"
         component={EditProductScreen}
+        name="EditProduct"
         options={editProductScreenOptions}
       />
       <ProjectsStackNavigator.Screen
-        name="EditProject"
         component={EditProjectScreen}
+        name="EditProject"
         options={editProjectScreenOptions}
       />
       <ProjectsStackNavigator.Screen
-        name="EditProposal"
         component={EditProposalScreen}
+        name="EditProposal"
         options={editProposalScreenOptions}
       />
     </ProjectsStackNavigator.Navigator>

@@ -9,8 +9,7 @@ const SectionCard = (props) => {
         paddingVertical: 10,
 
         marginVertical: 5,
-      }}
-    >
+      }}>
       {props.children}
     </Card>
   );

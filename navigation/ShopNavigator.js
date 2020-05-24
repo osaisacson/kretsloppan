@@ -174,11 +174,11 @@ export const ShopNavigator = (props) => {
                     },
                   })}>
                   <UserAvatar
-                    showBadge
                     actionOnPress={() => {
                       props.navigation.navigate('Min Sida');
                       props.navigation.closeDrawer();
                     }}
+                    showBadge
                   />
                 </View>
               </View>
@@ -197,20 +197,20 @@ export const ShopNavigator = (props) => {
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <Button
                 color="#666"
-                mode="contained"
-                style={{
-                  marginTop: 200,
-                  width: '60%',
-                  alignSelf: 'center',
-                }}
+                compact
                 labelStyle={{
                   paddingTop: 2,
                   fontFamily: 'bebas-neue-bold',
                   fontSize: 14,
                 }}
-                compact
+                mode="contained"
                 onPress={() => {
                   dispatch(authActions.logout());
+                }}
+                style={{
+                  marginTop: 200,
+                  width: '60%',
+                  alignSelf: 'center',
                 }}>
                 Logga ut
               </Button>
@@ -218,22 +218,22 @@ export const ShopNavigator = (props) => {
           </View>
         );
       }}
-      initialRouteName="Home"
       drawerContentOptions={{
         activeTintColor: Colors.primary,
-      }}>
+      }}
+      initialRouteName="Home">
       <ShopDrawerNavigator.Screen
-        name="Ge Igen"
         component={TabNavigator}
+        name="Ge Igen"
         options={{
-          drawerIcon: (props) => <MaterialIcons name="home" size={23} color={props.color} />,
+          drawerIcon: (props) => <MaterialIcons color={props.color} name="home" size={23} />,
         }}
       />
       <ShopDrawerNavigator.Screen
-        name="Användare"
         component={ProfilesNavigator}
+        name="Användare"
         options={{
-          drawerIcon: (props) => <FontAwesome name="users" size={23} color={props.color} />,
+          drawerIcon: (props) => <FontAwesome color={props.color} name="users" size={23} />,
         }}
       />
     </ShopDrawerNavigator.Navigator>

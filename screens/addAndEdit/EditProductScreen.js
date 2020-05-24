@@ -192,9 +192,9 @@ const EditProductScreen = (props) => {
 
   return (
     <FormWrapper
-      submitButtonText="Spara Återbruk"
       handlerForButtonSubmit={submitHandler}
-      isLoading={isLoading}>
+      isLoading={isLoading}
+      submitButtonText="Spara Återbruk">
       <FormFieldWrapper prompt="Välj en bild av återbruket">
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
@@ -203,47 +203,47 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in en titel">
         <TextInput
+          autoCapitalize="sentences"
+          keyboardType="default"
+          onChangeText={textChangeHandler.bind(this, 'title')}
           placeholder="Titel"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.title}
-          onChangeText={textChangeHandler.bind(this, 'title')}
-          keyboardType="default"
-          autoCapitalize="sentences"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Lägg in ett pris (det kan vara 0)"
         subLabel="Notera att betalning hanteras utanför appen">
         <TextInput
+          keyboardType="number-pad"
+          onChangeText={textChangeHandler.bind(this, 'price')}
           placeholder="Styckpris - För företag: ange pris inklusive moms"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
-          onChangeText={textChangeHandler.bind(this, 'price')}
-          keyboardType="number-pad"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in en kort beskrivning">
         <TextInput
-          placeholder="Beskrivning"
-          style={formStyles.multilineInput}
-          value={formState.inputValues.description}
           multiline
           numberOfLines={4}
           onChangeText={textChangeHandler.bind(this, 'description')}
+          placeholder="Beskrivning"
           returnKeyType="next"
+          style={formStyles.multilineInput}
+          value={formState.inputValues.description}
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in interna kommentarer, som ID -nummer ">
         <TextInput
+          autoCapitalize="sentences"
+          keyboardType="default"
+          onChangeText={textChangeHandler.bind(this, 'internalComments')}
           placeholder="Intern listning (om tillämpligt)"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.internalComments}
-          onChangeText={textChangeHandler.bind(this, 'internalComments')}
-          keyboardType="default"
-          autoCapitalize="sentences"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in en längd, höjd och/eller bredd">
@@ -254,46 +254,46 @@ const EditProductScreen = (props) => {
             justifyContent: 'space-between',
           }}>
           <TextInput
+            onChangeText={textChangeHandler.bind(this, 'length')}
             placeholder="Längd"
+            returnKeyType="next"
             style={formStyles.input}
             value={formState.inputValues.length}
-            onChangeText={textChangeHandler.bind(this, 'length')}
-            returnKeyType="next"
           />
           <TextInput
+            onChangeText={textChangeHandler.bind(this, 'height')}
             placeholder="Höjd"
+            returnKeyType="next"
             style={formStyles.input}
             value={formState.inputValues.height}
-            onChangeText={textChangeHandler.bind(this, 'height')}
-            returnKeyType="next"
           />
           <TextInput
+            onChangeText={textChangeHandler.bind(this, 'width')}
             placeholder="Bredd"
+            returnKeyType="next"
             style={formStyles.input}
             value={formState.inputValues.width}
-            onChangeText={textChangeHandler.bind(this, 'width')}
-            returnKeyType="next"
           />
         </View>
       </FormFieldWrapper>
       <FormFieldWrapper label="Upphämtningsdetaljer" prompt="Den address återbruket kan hämtas på">
         <TextInput
+          keyboardType="default"
+          onChangeText={textChangeHandler.bind(this, 'address')}
           placeholder="Address"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.address}
-          onChangeText={textChangeHandler.bind(this, 'address')}
-          keyboardType="default"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Det telefonnummer man bäst kan kontakta dig på ">
         <TextInput
+          keyboardType="number-pad"
+          onChangeText={textChangeHandler.bind(this, 'phone')}
           placeholder="Telefon"
+          returnKeyType="done"
           style={formStyles.input}
           value={formState.inputValues.phone.toString()}
-          onChangeText={textChangeHandler.bind(this, 'phone')}
-          keyboardType="number-pad"
-          returnKeyType="done"
         />
       </FormFieldWrapper>
       {/* Category */}
@@ -301,11 +301,11 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {PART.map((item) => (
             <PickerItem
-              title={item.title}
               color={item.color}
-              key={item.id}
               isSelected={formState.inputValues.category === item.title}
+              key={item.id}
               onSelect={textChangeHandler.bind(this, 'category', item.title)}
+              title={item.title}
             />
           ))}
         </HorizontalScrollContainer>
@@ -315,11 +315,11 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {CONDITION.map((item) => (
             <PickerItem
-              title={item.title}
               color={item.color}
-              key={item.id}
               isSelected={formState.inputValues.condition === item.title}
+              key={item.id}
               onSelect={textChangeHandler.bind(this, 'condition', item.title)}
+              title={item.title}
             />
           ))}
         </HorizontalScrollContainer>
@@ -329,11 +329,11 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {STYLE.map((item) => (
             <PickerItem
-              title={item.title}
               color={item.color}
-              key={item.id}
               isSelected={formState.inputValues.style === item.title}
+              key={item.id}
               onSelect={textChangeHandler.bind(this, 'style', item.title)}
+              title={item.title}
             />
           ))}
         </HorizontalScrollContainer>
@@ -343,11 +343,11 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {MATERIAL.map((item) => (
             <PickerItem
-              title={item.title}
               color={item.color}
-              key={item.id}
               isSelected={formState.inputValues.material === item.title}
+              key={item.id}
               onSelect={textChangeHandler.bind(this, 'material', item.title)}
+              title={item.title}
             />
           ))}
         </HorizontalScrollContainer>
@@ -357,11 +357,11 @@ const EditProductScreen = (props) => {
         <HorizontalScrollContainer scrollHeight={75}>
           {COLOR.map((item) => (
             <PickerItem
-              title={item.title}
               color={item.color}
-              key={item.id}
               isSelected={formState.inputValues.color === item.id}
-              onSelect={textChangeHandler.bind(this, 'color', item.id)} //Special case, since we don't have a title on colors
+              key={item.id}
+              onSelect={textChangeHandler.bind(this, 'color', item.id)}
+              title={item.title} //Special case, since we don't have a title on colors
             />
           ))}
         </HorizontalScrollContainer>

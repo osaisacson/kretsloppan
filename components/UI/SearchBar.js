@@ -6,30 +6,27 @@ import { StyleSheet, TextInput } from 'react-native';
 //Constants
 import Colors from '../../constants/Colors';
 
-const SearchBar = props => {
+const SearchBar = (props) => {
   return (
     <TextInput
-      style={styles.textInputStyle}
       onChangeText={props.actionOnChangeText}
-      value={props.searchQuery}
-      underlineColorAndroid="transparent"
       placeholder={props.placeholder}
+      style={styles.textInputStyle}
+      underlineColorAndroid="transparent"
+      value={props.searchQuery}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  textStyle: {
-    padding: 10
-  },
   textInputStyle: {
-    textAlign: 'center',
-    height: 40,
-    borderWidth: 1,
-    paddingLeft: 10,
+    backgroundColor: '#FFFFFF',
     borderColor: Colors.neutral,
-    backgroundColor: '#FFFFFF'
-  }
+    borderWidth: 1,
+    height: 40,
+    paddingLeft: 10,
+    textAlign: 'center',
+  },
 });
 
 export default SearchBar;

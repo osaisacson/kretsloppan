@@ -110,9 +110,9 @@ const ProductDetailScreen = (props) => {
         <SectionCard>
           {/* Buttons for handling reservation, coordination and collection */}
           <ProductButtonLogic
-            selectedProduct={selectedProduct}
             hasEditPermission={hasEditPermission}
             navigation={props.navigation}
+            selectedProduct={selectedProduct}
           />
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
@@ -123,13 +123,13 @@ const ProductDetailScreen = (props) => {
             <>
               <View style={detailStyles.editOptions}>
                 <ButtonIcon
-                  icon="pen"
                   color={Colors.neutral}
+                  icon="pen"
                   onSelect={() => {
                     editProductHandler(id);
                   }}
                 />
-                <ButtonIcon icon="delete" color={Colors.warning} onSelect={deleteHandler} />
+                <ButtonIcon color={Colors.warning} icon="delete" onSelect={deleteHandler} />
               </View>
             </>
           ) : null}

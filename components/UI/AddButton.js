@@ -10,10 +10,8 @@ const AddButton = (props) => {
 
   return (
     <Provider>
-      <Portal direction={'down'}>
+      <Portal direction="down">
         <FAB.Group
-          open={isOpen}
-          icon={isOpen ? 'plus' : 'plus'}
           actions={[
             {
               icon: 'star',
@@ -31,12 +29,14 @@ const AddButton = (props) => {
               onPress: () => props.navigation.navigate('EditProposal'),
             },
           ]}
-          onStateChange={toggleOpen}
+          icon={isOpen ? 'plus' : 'plus'}
           onPress={() => {
             if (isOpen) {
               // do something if the speed dial is open
             }
           }}
+          onStateChange={toggleOpen}
+          open={isOpen}
         />
       </Portal>
     </Provider>

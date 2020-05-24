@@ -39,10 +39,10 @@ const ContactDetails = (props) => {
     <>
       {props.isProfile ? (
         <ButtonAction
-          large
           icon="phone"
-          title={toggleDetails ? 'Dölj kontaktdetaljer' : 'kontaktdetaljer'}
+          large
           onSelect={toggleShowDetails}
+          title={toggleDetails ? 'Dölj kontaktdetaljer' : 'kontaktdetaljer'}
         />
       ) : (
         <View
@@ -55,14 +55,14 @@ const ContactDetails = (props) => {
           }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <UserAvatar
-              userId={props.profileId}
-              style={{ marginRight: 10 }}
-              showBadge={false}
               actionOnPress={() => {
                 navigation.navigate('Användare', {
                   detailId: props.profileId,
                 });
               }}
+              showBadge={false}
+              style={{ marginRight: 10 }}
+              userId={props.profileId}
             />
             <Text
               style={{
@@ -75,10 +75,10 @@ const ContactDetails = (props) => {
           </View>
           {props.hideButton ? null : (
             <ButtonAction
-              large
               icon="phone"
-              title={toggleDetails ? `Dölj ${props.buttonText}` : props.buttonText}
+              large
               onSelect={toggleShowDetails}
+              title={toggleDetails ? `Dölj ${props.buttonText}` : props.buttonText}
             />
           )}
         </View>

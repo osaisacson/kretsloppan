@@ -108,20 +108,20 @@ const UserSpotlightScreen = (props) => {
     <ScrollViewToTop>
       <View style={userProfileStyles.userInfoSection}>
         <Avatar.Image
+          size={80}
+          source={
+            currentProfile && currentProfile.image
+              ? { uri: currentProfile.image }
+              : require('./../../assets/avatar-placeholder-image.png')
+          }
           style={{
             color: '#fff',
             backgroundColor: '#fff',
             borderWidth: 0.3,
             borderColor: '#000',
           }}
-          source={
-            currentProfile && currentProfile.image
-              ? { uri: currentProfile.image }
-              : require('./../../assets/avatar-placeholder-image.png')
-          }
-          size={80}
         />
-        <ButtonIcon icon="settings" color={Colors.neutral} onSelect={editProfileHandler} />
+        <ButtonIcon color={Colors.neutral} icon="settings" onSelect={editProfileHandler} />
 
         {/* <AddButton navigation={props.navigation} /> */}
         <Title style={userProfileStyles.title}>{currentProfile.profileName}</Title>
@@ -146,24 +146,24 @@ const UserSpotlightScreen = (props) => {
         </View>
         <View style={userProfileStyles.row}>
           <Button
-            style={{ marginRight: 5 }}
-            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
             icon="plus"
+            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
             mode="contained"
-            onPress={() => props.navigation.navigate('EditProduct')}>
+            onPress={() => props.navigation.navigate('EditProduct')}
+            style={{ marginRight: 5 }}>
             Återbruk
           </Button>
           <Button
-            style={{ marginRight: 5 }}
-            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
             icon="plus"
+            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
             mode="contained"
-            onPress={() => props.navigation.navigate('EditProject')}>
+            onPress={() => props.navigation.navigate('EditProject')}
+            style={{ marginRight: 5 }}>
             Projekt
           </Button>
           <Button
-            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
             icon="plus"
+            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
             mode="contained"
             onPress={() => props.navigation.navigate('EditProposal')}>
             Efterlysning
@@ -174,75 +174,75 @@ const UserSpotlightScreen = (props) => {
       {/* Product, project and propsal sections */}
       {reservedProducts.length ? (
         <HorizontalScroll
-          title="Reservationer - att kontaktas"
-          subTitle="Väntar på att ni kontaktar varandra för organisering av upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar."
-          extraSubTitle="Nästa steg: kontakta intressenten/uppläggaren för att ordna logistik runt återbrukets upphämtning eller avlämning"
           bgColor={Colors.lightPrimary}
+          extraSubTitle="Nästa steg: kontakta intressenten/uppläggaren för att ordna logistik runt återbrukets upphämtning eller avlämning"
+          navigation={props.navigation}
           scrollData={reservedProducts}
           showNotificationBadge
-          navigation={props.navigation}
+          subTitle="Väntar på att ni kontaktar varandra för organisering av upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar."
+          title="Reservationer - att kontaktas"
         />
       ) : null}
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
-          title="Överenskommet - att hämtas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att hämtas av dig."
           bgColor={Colors.mediumPrimary}
+          navigation={props.navigation}
           scrollData={toBeCollectedByUser}
           showNotificationBadge
-          navigation={props.navigation}
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på att hämtas av dig."
+          title="Överenskommet - att hämtas"
         />
       ) : null}
       {toBeCollectedFromUser.length ? (
         <HorizontalScroll
-          title="Överenskommet - att lämnas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att lämnas till dig."
           bgColor={Colors.mediumPrimary}
+          navigation={props.navigation}
           scrollData={toBeCollectedFromUser}
           showNotificationBadge
-          navigation={props.navigation}
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på att lämnas till dig."
+          title="Överenskommet - att lämnas"
         />
       ) : null}
       <HorizontalScroll
-        title="Upplagt av mig"
-        subTitle="Återbruk upplagt av mig"
-        isNavigationButton
-        buttonText=" Se allt"
         buttonOnPress={() => props.navigation.navigate('Mitt upplagda återbruk')}
-        scrollData={uploadedByUser}
+        buttonText=" Se allt"
+        isNavigationButton
         navigation={props.navigation}
+        scrollData={uploadedByUser}
+        subTitle="Återbruk upplagt av mig"
+        title="Upplagt av mig"
       />
 
       <HorizontalScroll
-        textItem
         detailPath="ProposalDetail"
-        title="Efterlysningar"
-        subTitle="Mina upplagda efterlysningar"
-        scrollData={userProposals}
         navigation={props.navigation}
+        scrollData={userProposals}
+        subTitle="Mina upplagda efterlysningar"
+        textItem
+        title="Efterlysningar"
       />
       <HorizontalScroll
-        largeImageItem
         detailPath="ProjectDetail"
-        title="Mina projekt"
-        subTitle="Projekt jag bygger med återbruk"
-        scrollData={userProjects}
+        largeImageItem
         navigation={props.navigation}
+        scrollData={userProjects}
+        subTitle="Projekt jag bygger med återbruk"
+        title="Mina projekt"
       />
       {collectedByUser.length ? (
         <HorizontalScroll
-          title="Hämtat"
-          subTitle="Återbruk använt av mig"
-          scrollData={collectedByUser}
           navigation={props.navigation}
+          scrollData={collectedByUser}
+          subTitle="Återbruk använt av mig"
+          title="Hämtat"
         />
       ) : null}
       {givenByUser.length ? (
         <HorizontalScroll
-          title="Gett Igen"
-          subTitle="Återbruk jag gett till andra"
-          scrollData={givenByUser}
           navigation={props.navigation}
+          scrollData={givenByUser}
+          subTitle="Återbruk jag gett till andra"
+          title="Gett Igen"
         />
       ) : null}
     </ScrollViewToTop>

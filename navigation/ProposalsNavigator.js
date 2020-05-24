@@ -1,16 +1,11 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
 //Headers
-import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';
 
 //Tab screens
-import ProposalsScreen from '../screens/shop/ProposalsScreen';
 
 //Details
-import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
 
 //Edit screens
 import EditProductScreen, {
@@ -22,6 +17,11 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
+import ProposalDetailScreen, {
+  screenOptions as proposalDetailScreenOptions,
+} from '../screens/details/ProposalDetailScreen';
+import ProposalsScreen from '../screens/shop/ProposalsScreen';
+import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';
 
 const ProposalsStackNavigator = createStackNavigator();
 
@@ -29,30 +29,30 @@ export const ProposalsNavigator = () => {
   return (
     <ProposalsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProposalsStackNavigator.Screen
-        name="Efterlysningar"
         component={ProposalsScreen}
+        name="Efterlysningar"
         options={defaultMainPageOptions}
       />
       {/* Details */}
       <ProposalsStackNavigator.Screen
-        name="ProposalDetail"
         component={ProposalDetailScreen}
+        name="ProposalDetail"
         options={proposalDetailScreenOptions}
       />
       {/* Edits */}
       <ProposalsStackNavigator.Screen
-        name="EditProduct"
         component={EditProductScreen}
+        name="EditProduct"
         options={editProductScreenOptions}
       />
       <ProposalsStackNavigator.Screen
-        name="EditProject"
         component={EditProjectScreen}
+        name="EditProject"
         options={editProjectScreenOptions}
       />
       <ProposalsStackNavigator.Screen
-        name="EditProposal"
         component={EditProposalScreen}
+        name="EditProposal"
         options={editProposalScreenOptions}
       />
     </ProposalsStackNavigator.Navigator>

@@ -36,15 +36,9 @@ const SpotlightProductsScreen = (props) => {
       />
       <ScrollView nestedScrollEnabled>
         <HorizontalScroll
-          roundItem
-          detailPath="ProjectDetail"
-          title="Projekt"
-          subTitle="Projekt som håller på att byggas med återbruk"
-          isNavigationButton
-          buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Projekt')}
-          scrollData={allProjects}
-          navigation={props.navigation}
+          buttonText="Se alla"
+          detailPath="ProjectDetail"
           icon={
             <Entypo
               name="tools"
@@ -54,35 +48,35 @@ const SpotlightProductsScreen = (props) => {
               }}
             />
           }
+          isNavigationButton
+          navigation={props.navigation}
+          roundItem
+          scrollData={allProjects}
+          subTitle="Projekt som håller på att byggas med återbruk"
+          title="Projekt"
         />
         <HorizontalScroll
-          title="nya tillskott"
-          subTitle="Senast uppladdade återbruket"
-          isNavigationButton
-          buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Återbruk')}
+          buttonText="Se alla"
+          isNavigationButton
+          navigation={props.navigation}
           scrollData={recentProducts}
-          navigation={props.navigation}
+          subTitle="Senast uppladdade återbruket"
+          title="nya tillskott"
         />
         <HorizontalScroll
-          title="Reservationer som snart går ut"
-          subTitle="Reserverat återbruk blir tillgängligt igen om logistik med upphämtning inte hanteras inom 24 timmar. Här är det återbruk som snart blir ledigt."
-          isNavigationButton
-          buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Återbruk')}
-          scrollData={bookedProducts}
+          buttonText="Se alla"
+          isNavigationButton
           navigation={props.navigation}
+          scrollData={bookedProducts}
+          subTitle="Reserverat återbruk blir tillgängligt igen om logistik med upphämtning inte hanteras inom 24 timmar. Här är det återbruk som snart blir ledigt."
+          title="Reservationer som snart går ut"
         />
         <HorizontalScroll
-          textItem
-          detailPath="ProposalDetail"
-          title="efterlysningar"
-          subTitle="Kreti och pleti. Kontakta efterlysaren om du sitter på svaret."
-          isNavigationButton
-          buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Efterlysningar')}
-          scrollData={allProposals}
-          navigation={props.navigation}
+          buttonText="Se alla"
+          detailPath="ProposalDetail"
           icon={
             <MaterialCommunityIcons
               name="alert-decagram-outline"
@@ -92,6 +86,12 @@ const SpotlightProductsScreen = (props) => {
               }}
             />
           }
+          isNavigationButton
+          navigation={props.navigation}
+          scrollData={allProposals}
+          subTitle="Kreti och pleti. Kontakta efterlysaren om du sitter på svaret."
+          textItem
+          title="efterlysningar"
         />
       </ScrollView>
     </SaferArea>

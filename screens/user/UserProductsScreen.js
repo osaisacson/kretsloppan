@@ -86,23 +86,23 @@ const UserProductsScreen = (props) => {
     <SaferArea>
       <SearchBar
         actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
         placeholder="Leta bland ditt återbruk"
+        searchQuery={searchQuery}
       />
       <HeaderTwo
-        title="Ditt upplagda återbruk"
-        subTitle="Allt som är redo att hämtas, väntar på eller har blivit hämtat."
         icon={<MaterialIcons name="file-upload" size={20} style={{ marginRight: 5 }} />}
         indicator={productsSorted.length ? productsSorted.length : 0}
+        subTitle="Allt som är redo att hämtas, väntar på eller har blivit hämtat."
+        title="Ditt upplagda återbruk"
       />
       <FlatList
-        initialNumToRender={8}
+        data={productsSorted}
         horizontal={false}
+        initialNumToRender={8}
+        keyExtractor={(item) => item.id}
         numColumns={3}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
-        data={productsSorted}
-        keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProductItem
             itemData={itemData.item}

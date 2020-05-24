@@ -16,39 +16,39 @@ const TabStackNavigator = createMaterialBottomTabNavigator();
 export const TabNavigator = () => {
   return (
     <TabStackNavigator.Navigator
+      activeColor={Colors.lightPrimary}
+      barStyle={{ backgroundColor: Colors.darkPrimary }}
+      inactiveColor={Colors.lightPrimary}
       initialRouteName="Ge Igen"
       labeled
-      shifting
-      activeColor={Colors.lightPrimary}
-      inactiveColor={Colors.lightPrimary}
-      barStyle={{ backgroundColor: Colors.darkPrimary }}>
+      shifting>
       <TabStackNavigator.Screen
-        name="Ge Igen"
         component={SpotlightNavigator}
+        name="Ge Igen"
         options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="home" color={color} size={23} />,
+          tabBarIcon: ({ color }) => <MaterialIcons color={color} name="home" size={23} />,
         }}
       />
       <TabStackNavigator.Screen
-        name="Återbruk"
         component={ProductsNavigator}
+        name="Återbruk"
         options={{
-          tabBarIcon: ({ color }) => <FontAwesome5 name="recycle" color={color} size={23} />,
+          tabBarIcon: ({ color }) => <FontAwesome5 color={color} name="recycle" size={23} />,
         }}
       />
       <TabStackNavigator.Screen
-        name="Projekt"
         component={ProjectsNavigator}
+        name="Projekt"
         options={{
-          tabBarIcon: ({ color }) => <Entypo name="tools" size={23} color={color} />,
+          tabBarIcon: ({ color }) => <Entypo color={color} name="tools" size={23} />,
         }}
       />
       <TabStackNavigator.Screen
-        name="Efterlysningar"
         component={ProposalsNavigator}
+        name="Efterlysningar"
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="alert-decagram-outline" color={color} size={23} />
+            <MaterialCommunityIcons color={color} name="alert-decagram-outline" size={23} />
           ),
         }}
       />

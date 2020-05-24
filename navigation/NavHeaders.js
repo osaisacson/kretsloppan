@@ -28,11 +28,11 @@ export const defaultMainPageOptions = (navData) => {
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Menu"
           iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}
+          title="Menu"
         />
       </HeaderButtons>
     ),
@@ -42,11 +42,11 @@ export const defaultMainPageOptions = (navData) => {
           android: styles.userAvatar,
         })}>
         <UserAvatar
-          style={Platform.select({ ios: styles.userAvatar })}
-          showBadge
           actionOnPress={() => {
             navData.navigation.navigate('Min Sida');
           }}
+          showBadge
+          style={Platform.select({ ios: styles.userAvatar })}
         />
       </View>
     ),
@@ -62,11 +62,11 @@ export const mainPageOptionsWithUser = (navData) => {
           android: styles.userAvatar,
         })}>
         <UserAvatar
-          style={Platform.select({ ios: styles.userAvatar })}
-          showBadge
           actionOnPress={() => {
             navData.navigation.navigate('Min Sida');
           }}
+          showBadge
+          style={Platform.select({ ios: styles.userAvatar })}
         />
       </View>
     ),
@@ -99,5 +99,5 @@ export const emptyHeader = (navData) => {
 };
 
 const styles = StyleSheet.create({
-  userAvatar: { marginTop: 15, marginRight: 10 },
+  userAvatar: { marginRight: 10, marginTop: 15 },
 });

@@ -81,10 +81,10 @@ const ProjectDetailScreen = (props) => {
         ) : null}
         <Divider style={{ marginBottom: 8 }} />
         <ContactDetails
+          buttonText="kontaktdetaljer"
           hideButton
           profileId={ownerId}
           projectId={selectedProject.id}
-          buttonText="kontaktdetaljer"
         />
 
         <CachedImage
@@ -97,15 +97,15 @@ const ProjectDetailScreen = (props) => {
           <View style={styles.actions}>
             {/* Delete button */}
             <ButtonIcon
-              icon="delete"
               color={Colors.warning}
+              icon="delete"
               onSelect={() => {
                 deleteHandler(selectedProject.id);
               }}
             />
             <ButtonIcon
-              icon="pen"
               color={Colors.neutral}
+              icon="pen"
               onSelect={() => {
                 editProjectHandler(selectedProject.id);
               }}
@@ -124,9 +124,9 @@ const ProjectDetailScreen = (props) => {
         <View style={{ marginVertical: 10 }}>
           {/* Information about the project */}
           <HeaderTwo
-            title="Återbruk"
-            subTitle="Återbruk som används i projektet"
             indicator={associatedProducts.length ? associatedProducts.length : 0}
+            subTitle="Återbruk som används i projektet"
+            title="Återbruk"
           />
         </View>
       ) : (
@@ -139,12 +139,12 @@ const ProjectDetailScreen = (props) => {
     <SaferArea>
       <ScrollView>
         <FlatList
-          initialNumToRender={8}
-          horizontal={false}
-          numColumns={3}
-          data={associatedProducts}
-          keyExtractor={(item) => item.id}
           ListHeaderComponent={projectHeader}
+          data={associatedProducts}
+          horizontal={false}
+          initialNumToRender={8}
+          keyExtractor={(item) => item.id}
+          numColumns={3}
           renderItem={(itemData) => (
             <ProductItem
               itemData={itemData.item}
@@ -156,10 +156,10 @@ const ProjectDetailScreen = (props) => {
         />
         {associatedProposals.length ? (
           <HorizontalScroll
-            textItem
             detailPath="ProposalDetail"
-            scrollData={associatedProposals}
             navigation={props.navigation}
+            scrollData={associatedProposals}
+            textItem
           />
         ) : null}
       </ScrollView>
@@ -175,10 +175,6 @@ export const screenOptions = (navData) => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    height: 300,
-    width: '100%',
-  },
   actions: {
     flex: 1,
     flexDirection: 'row',
@@ -187,23 +183,27 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
   },
-  title: {
-    fontFamily: 'bebas-neue-book',
-    fontSize: 26,
-    textAlign: 'center',
-    paddingVertical: 8,
-  },
-  subTitle: {
-    fontFamily: 'roboto-light-italic',
-    fontSize: 14,
-    textAlign: 'center',
-    paddingBottom: 10,
+  image: {
+    height: 300,
+    width: '100%',
   },
   slogan: {
     fontFamily: 'roboto-light-italic',
     fontSize: 14,
-    textAlign: 'center',
     paddingVertical: 10,
+    textAlign: 'center',
+  },
+  subTitle: {
+    fontFamily: 'roboto-light-italic',
+    fontSize: 14,
+    paddingBottom: 10,
+    textAlign: 'center',
+  },
+  title: {
+    fontFamily: 'bebas-neue-book',
+    fontSize: 26,
+    paddingVertical: 8,
+    textAlign: 'center',
   },
 });
 

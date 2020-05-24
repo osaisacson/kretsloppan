@@ -33,7 +33,7 @@ const ProjectItem = (props) => {
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+      <Text ellipsizeMode="tail" numberOfLines={1} style={styles.title}>
         {props.itemData.title}
       </Text>
     </View>
@@ -46,46 +46,36 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+  imageContainer: {
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    height: '100%',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%', //To make sure any child (in this case the image) cannot overlap what we set in the image container
+  },
   product: {
-    height: 250,
-    width: '93%',
-    margin: '1.5%',
-    borderWidth: 0.5,
     borderColor: '#ddd',
+    borderWidth: 0.5,
+    height: 250,
+    margin: '1.5%',
     marginTop: 15,
+    width: '93%',
+  },
+  title: {
+    fontFamily: 'roboto-light-italic',
+    fontSize: 16,
+    marginLeft: 8,
+    paddingLeft: 4,
+    width: '90%',
   },
   touchable: {
     borderRadius: 5,
     overflow: 'hidden',
-  },
-  imageContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
-  },
-  icon: {
-    position: 'absolute',
-    padding: 5,
-    zIndex: 99,
-    shadowColor: 'black',
-    shadowOpacity: 0.12,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  title: {
-    paddingLeft: 4,
-    width: '90%',
-    fontFamily: 'roboto-light-italic',
-    fontSize: 16,
-    marginLeft: 8,
   },
 });
 

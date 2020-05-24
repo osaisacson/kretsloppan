@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import {
-  FormFieldWrapper,
-  formStyles,
-} from '../../components/wrappers/FormFieldWrapper';
+
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
+import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 //Actions
 import * as projectsActions from '../../store/actions/projects';
 
@@ -57,13 +55,13 @@ const EditProjectScreen = (props) => {
       slogan: editedProject ? editedProject.slogan : '',
     },
     inputValidities: {
-      title: editedProject ? true : false,
-      location: editedProject ? true : false,
+      title: !!editedProject,
+      location: !!editedProject,
       description: true,
-      image: editedProject ? true : false,
+      image: !!editedProject,
       slogan: true,
     },
-    formIsValid: editedProject ? true : false,
+    formIsValid: !!editedProject,
   });
 
   useEffect(() => {
@@ -74,9 +72,7 @@ const EditProjectScreen = (props) => {
 
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert('Fel input!', 'Kolla så alla fält är ifyllda.', [
-        { text: 'Ok' },
-      ]);
+      Alert.alert('Fel input!', 'Kolla så alla fält är ifyllda.', [{ text: 'Ok' }]);
       return;
     }
     setError(null);
@@ -125,7 +121,7 @@ const EditProjectScreen = (props) => {
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
       value: text,
-      isValid: isValid,
+      isValid,
       input: inputIdentifier,
     });
   };
@@ -136,10 +132,9 @@ const EditProjectScreen = (props) => {
 
   return (
     <FormWrapper
-      submitButtonText="Spara Projekt"
       handlerForButtonSubmit={submitHandler}
       isLoading={isLoading}
-    >
+      submitButtonText="Spara Projekt">
       <FormFieldWrapper prompt="Välj en bild som representerar projektet">
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
@@ -149,41 +144,41 @@ const EditProjectScreen = (props) => {
 
       <FormFieldWrapper prompt="Skriv in en titel">
         <TextInput
+          autoCapitalize="sentences"
+          keyboardType="default"
+          onChangeText={textChangeHandler.bind(this, 'title')}
           placeholder="Titel"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.title}
-          onChangeText={textChangeHandler.bind(this, 'title')}
-          keyboardType="default"
-          autoCapitalize="sentences"
-          returnKeyType="next"
         />
       </FormFieldWrapper>
 
       <FormFieldWrapper prompt="Skriv in en kort slogan för ditt projekt">
         <TextInput
+          onChangeText={textChangeHandler.bind(this, 'slogan')}
           placeholder="Slogan"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.slogan}
-          onChangeText={textChangeHandler.bind(this, 'slogan')}
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Beskrivning av projektet (valfritt)">
         <TextInput
+          onChangeText={textChangeHandler.bind(this, 'description')}
           placeholder="Beskrivning"
+          returnKeyType="next"
           style={formStyles.input}
           value={formState.inputValues.description}
-          onChangeText={textChangeHandler.bind(this, 'description')}
-          returnKeyType="next"
         />
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Vart ligger projektet?">
         <TextInput
+          onChangeText={textChangeHandler.bind(this, 'location')}
           placeholder="Plats"
+          returnKeyType="done"
           style={formStyles.input}
           value={formState.inputValues.location}
-          onChangeText={textChangeHandler.bind(this, 'location')}
-          returnKeyType="done"
         />
       </FormFieldWrapper>
     </FormWrapper>
@@ -193,9 +188,7 @@ const EditProjectScreen = (props) => {
 export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.projectId
-      ? 'Redigera projekt'
-      : 'Lägg till projekt',
+    headerTitle: routeParams.projectId ? 'Redigera projekt' : 'Lägg till projekt',
   };
 };
 

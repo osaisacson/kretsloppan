@@ -75,32 +75,15 @@ const ProjectsScreen = (props) => {
     <SaferArea>
       <SearchBar
         actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
         placeholder="Leta bland projekt"
+        searchQuery={searchQuery}
       />
       <FlatList
-        horizontal={false}
-        numColumns={1}
-        initialNumToRender={4}
-        onRefresh={loadProjects}
-        refreshing={isRefreshing}
-        data={renderedProjects}
-        keyExtractor={(item) => item.id}
-        renderItem={(itemData) => (
-          <ProjectItem
-            itemData={itemData.item}
-            onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
-            }}
-          />
-        )}
         ListHeaderComponent={
           <HeaderTwo
-            title="Projekt"
-            subTitle="Projekt byggda med återbruk"
             buttonIcon="plus"
-            buttonText="Projekt"
             buttonOnPress={() => props.navigation.navigate('EditProject')}
+            buttonText="Projekt"
             icon={
               <Entypo
                 name="tools"
@@ -111,8 +94,25 @@ const ProjectsScreen = (props) => {
               />
             }
             indicator={renderedProjects.length ? renderedProjects.length : 0}
+            subTitle="Projekt byggda med återbruk"
+            title="Projekt"
           />
         }
+        data={renderedProjects}
+        horizontal={false}
+        initialNumToRender={4}
+        keyExtractor={(item) => item.id}
+        numColumns={1}
+        onRefresh={loadProjects}
+        refreshing={isRefreshing}
+        renderItem={(itemData) => (
+          <ProjectItem
+            itemData={itemData.item}
+            onSelect={() => {
+              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+            }}
+          />
+        )}
       />
     </SaferArea>
   );

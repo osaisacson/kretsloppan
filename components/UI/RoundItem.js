@@ -24,9 +24,7 @@ const RoundItem = (props) => {
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.project}>
-      <View
-        style={props.isSelected ? styles.selectedTouchable : styles.touchable}
-      >
+      <View style={props.isSelected ? styles.selectedTouchable : styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View style={styles.imageContainer}>
             <CachedImage style={styles.image} uri={props.itemData.image} />
@@ -39,50 +37,47 @@ const RoundItem = (props) => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginTop: 5,
-    fontFamily: 'roboto-bold-italic',
-    fontSize: 13,
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
-  project: {
-    height: 100,
-    width: 100,
-    marginLeft: 10,
-    marginRight: 10,
+  image: {
     borderRadius: 100 / 2,
-  },
-  touchable: {
-    height: 100,
-    width: 100,
-    borderRadius: 100 / 2,
-    overflow: 'hidden',
-    borderWidth: 0.1,
-    borderColor: '#000',
-  },
-  selectedTouchable: {
-    height: 100,
-    width: 100,
-    borderRadius: 100 / 2,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: Colors.primary,
+    height: '100%',
+    width: '100%',
   },
   imageContainer: {
+    borderRadius: 100 / 2,
+    height: '100%',
+    overflow: 'hidden',
     position: 'relative',
     width: '100%',
-    height: '100%',
+  },
+  project: {
     borderRadius: 100 / 2,
+    height: 100,
+    marginLeft: 10,
+    marginRight: 10,
+    width: 100,
+  },
+  selectedTouchable: {
+    borderColor: Colors.primary,
+    borderRadius: 100 / 2,
+    borderWidth: 1,
+    height: 100,
     overflow: 'hidden',
+    width: 100,
   },
-  image: {
-    width: '100%',
-    height: '100%',
+  title: {
+    alignSelf: 'center',
+    fontFamily: 'roboto-bold-italic',
+    fontSize: 13,
+    marginTop: 5,
+    textAlign: 'center',
+  },
+  touchable: {
+    borderColor: '#000',
     borderRadius: 100 / 2,
-  },
-  details: {
-    color: '#000',
+    borderWidth: 0.1,
+    height: 100,
+    overflow: 'hidden',
+    width: 100,
   },
 });
 

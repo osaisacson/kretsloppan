@@ -1,19 +1,17 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
+const { Storage } = require('@google-cloud/storage');
+const cors = require('cors')({ origin: true });
+const { Expo } = require('expo-server-sdk');
+const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 // The Firebase Admin SDK to access the Firebase Realtime Database.
-const admin = require('firebase-admin');
 admin.initializeApp();
-const cors = require('cors')({ origin: true });
 const fs = require('fs');
 const UUID = require('uuid-v4');
 // Imports the Google Cloud client library
-const { Storage } = require('@google-cloud/storage');
-
-const { Expo } = require('expo-server-sdk');
 
 // Create a new Expo SDK client
-let expo = new Expo();
-
+const expo = new Expo();
 
 // Creates a client
 const storage = new Storage({
@@ -25,14 +23,8 @@ exports.storeImage = functions.https.onRequest((request, response) => {
   return cors(request, response, () => {
     const body = JSON.parse(request.body);
     console.log('request from cloud function storeImage in index.js', request);
-    console.log(
-      'request.body from cloud function storeImage in index.js',
-      request.body
-    );
-    console.log(
-      'JSON.parse(request.body) from cloud function storeImage in index.js',
-      body
-    );
+    console.log('request.body from cloud function storeImage in index.js', request.body);
+    console.log('JSON.parse(request.body) from cloud function storeImage in index.js', body);
     fs.writeFileSync('/tmp/uploaded-image.jpg', body.image, 'base64', (err) => {
       console.log(err);
       return response.status(500).json({ error: err });
@@ -75,8 +67,6 @@ exports.storeImage = functions.https.onRequest((request, response) => {
   });
 });
 
-
-
 function denormalize(data) {
   const keys = Object.keys(data);
 
@@ -88,54 +78,58 @@ function denormalize(data) {
 
 function getUserProfileById(profileId) {
   return new Promise((resolve, reject) => {
-    admin.database().ref('profiles').orderByChild('profileId').equalTo(profileId).on('value', snapshot => {
-
-      if (snapshot.exists) {
-        resolve(denormalize(snapshot.val()))
-      } else {
-        reject();
-      }
-    });
+    admin
+      .database()
+      .ref('profiles')
+      .orderByChild('profileId')
+      .equalTo(profileId)
+      .on('value', (snapshot) => {
+        if (snapshot.exists) {
+          resolve(denormalize(snapshot.val()));
+        } else {
+          reject(new Error('Data does not exist!'));
+        }
+      });
   });
 }
 
+exports.sendPushNotificationsOnReserve = functions.database
+  .ref('/products/{productId}')
+  .onUpdate(async ({ before, after }) => {
+    const beforeVal = before.val();
+    const afterVal = after.val();
+    const beforeReservedDate = beforeVal.reservedDate;
+    const afterReservedDate = afterVal.reservedDate;
 
-exports.sendPushNotificationsOnReserve = functions.database.ref('/products/{productId}').onUpdate(async ({ before, after }) => {
-  const beforeVal = before.val();
-  const afterVal = after.val();
-  const beforeReservedDate = beforeVal.reservedDate;
-  const afterReservedDate = afterVal.reservedDate;
+    if (!beforeReservedDate && afterReservedDate) {
+      const reservedUserId = afterVal.reservedUserId;
+      const ownerId = afterVal.ownerId;
+      const productName = afterVal.title;
 
-  if (!beforeReservedDate && afterReservedDate) {
-    const reservedUserId = afterVal.reservedUserId;
-    const ownerId = afterVal.ownerId;
-    const productName = afterVal.title;
+      try {
+        const [reservedBy, productOwner] = await Promise.all([
+          getUserProfileById(reservedUserId),
+          getUserProfileById(ownerId),
+        ]);
 
-    try {
-      const [reservedBy, productOwner] = await Promise.all([
-        getUserProfileById(reservedUserId),
-        getUserProfileById(ownerId)
-      ]);
+        if (reservedBy && productOwner.expoTokens) {
+          const message = {
+            to: productOwner.expoTokens,
+            sound: 'default',
+            title: 'Produkt Reserverad',
+            body: `${reservedBy.profileName} reserverade precis ditt återbruk ${productName}`,
+            _displayInForeground: true,
+          };
 
-      if (reservedBy && productOwner.expoTokens) {
-        const message = {
-          to: productOwner.expoTokens,
-          sound: 'default',
-          title: 'Produkt Reserverad',
-          body: `${reservedBy.profileName} reserverade precis ditt återbruk ${productName}`,
-          _displayInForeground: true,
-        };
-
-        return expo.sendPushNotificationsAsync([message])
-          .then(() => console.info("Product notification sent!"))
-          .catch((e) => console.error("Product notification failed!", e.message));
+          return expo
+            .sendPushNotificationsAsync([message])
+            .then(() => console.info('Product notification sent!'))
+            .catch((e) => console.error('Product notification failed!', e.message));
+        }
+      } catch (error) {
+        return console.error(error.message);
       }
-    } catch (error) {
-      return console.error(error.message);
     }
 
-
-  }
-
-  return null;
-});
+    return null;
+  });

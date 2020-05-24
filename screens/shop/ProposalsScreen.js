@@ -1,15 +1,16 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 //Components
 import { FlatList } from 'react-native';
-import SaferArea from '../../components/UI/SaferArea';
-import HeaderTwo from '../../components/UI/HeaderTwo';
+import { useSelector, useDispatch } from 'react-redux';
+
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
-import TextItem from '../../components/UI/TextItem';
+import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import TextItem from '../../components/UI/TextItem';
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
 
@@ -53,7 +54,7 @@ const ProposalsScreen = (props) => {
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProposalDetail', {
       detailId: id,
-      ownerId: ownerId,
+      ownerId,
       detailTitle: title,
     });
   };
@@ -74,39 +75,18 @@ const ProposalsScreen = (props) => {
     <SaferArea>
       <SearchBar
         actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
         placeholder="Leta bland efterlysningar"
+        searchQuery={searchQuery}
       />
       <FlatList
-        horizontal={false}
-        numColumns={1}
-        initialNumToRender={10}
-        onRefresh={loadProposals}
-        refreshing={isRefreshing}
-        data={renderedProposals}
-        keyExtractor={(item) => item.id}
-        renderItem={(itemData) => (
-          <TextItem
-            itemData={itemData.item}
-            onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title
-              );
-            }}
-          />
-        )}
         ListHeaderComponent={
           <HeaderTwo
-            title={'Efterlysningar'}
-            subTitle={'Från självbyggare'}
             buttonIcon="plus"
-            buttonText={'Efterlysning'}
             buttonOnPress={() => props.navigation.navigate('EditProposal')}
+            buttonText="Efterlysning"
             icon={
               <MaterialCommunityIcons
-                name={'alert-decagram-outline'}
+                name="alert-decagram-outline"
                 size={24}
                 style={{
                   marginRight: 3,
@@ -114,8 +94,25 @@ const ProposalsScreen = (props) => {
               />
             }
             indicator={renderedProposals.length ? renderedProposals.length : 0}
+            subTitle="Från självbyggare"
+            title="Efterlysningar"
           />
         }
+        data={renderedProposals}
+        horizontal={false}
+        initialNumToRender={10}
+        keyExtractor={(item) => item.id}
+        numColumns={1}
+        onRefresh={loadProposals}
+        refreshing={isRefreshing}
+        renderItem={(itemData) => (
+          <TextItem
+            itemData={itemData.item}
+            onSelect={() => {
+              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+            }}
+          />
+        )}
       />
     </SaferArea>
   );

@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+
 //Components
 import FormErrorText from './FormErrorText';
 
@@ -40,7 +41,7 @@ const Input = (props) => {
   }, [inputState, onInputChange, id]);
 
   const textChangeHandler = (text) => {
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     let isValid = true;
     if (props.required && text.trim().length === 0) {
       isValid = false;
@@ -57,7 +58,7 @@ const Input = (props) => {
     if (props.minLength != null && text.length < props.minLength) {
       isValid = false;
     }
-    dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
+    dispatch({ type: INPUT_CHANGE, value: text, isValid });
   };
 
   const lostFocusHandler = () => {
@@ -69,16 +70,14 @@ const Input = (props) => {
       <Text style={styles.label}>{props.label}</Text>
       <TextInput
         {...props}
+        onBlur={lostFocusHandler}
+        onChangeText={textChangeHandler}
         placeholder={props.placeholder}
         placeholderTextColor="#666"
         style={styles.input}
         value={inputState.value}
-        onChangeText={textChangeHandler}
-        onBlur={lostFocusHandler}
       />
-      {!inputState.isValid && inputState.touched && (
-        <FormErrorText errorText={props.errorText} />
-      )}
+      {!inputState.isValid && inputState.touched && <FormErrorText errorText={props.errorText} />}
     </View>
   );
 };
@@ -87,14 +86,14 @@ const styles = StyleSheet.create({
   formControl: {
     width: '100%',
   },
-  label: {
-    marginVertical: 8,
-  },
   input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+  },
+  label: {
+    marginVertical: 8,
   },
 });
 

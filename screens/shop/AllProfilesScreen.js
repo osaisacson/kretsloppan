@@ -1,17 +1,17 @@
+import { FontAwesome } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-//Components
 import { View, Text, FlatList } from 'react-native';
-import SaferArea from '../../components/UI/SaferArea';
-import HeaderTwo from '../../components/UI/HeaderTwo';
+import { Divider } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
+
+//Components
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
+import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
-import { FontAwesome } from '@expo/vector-icons';
-import { Divider } from 'react-native-paper';
-
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
 
@@ -47,9 +47,7 @@ const AllProfilesScreen = (props) => {
 
   const searchHandler = (text) => {
     const newData = renderedProfiles.filter((item) => {
-      const itemData = item.profileName
-        ? item.profileName.toUpperCase()
-        : ''.toUpperCase();
+      const itemData = item.profileName ? item.profileName.toUpperCase() : ''.toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
     });
@@ -80,17 +78,28 @@ const AllProfilesScreen = (props) => {
     <SaferArea>
       <SearchBar
         actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
         placeholder="Leta bland användare"
+        searchQuery={searchQuery}
       />
       <FlatList
-        initialNumToRender={8}
+        ListHeaderComponent={
+          <HeaderTwo
+            icon={
+              <FontAwesome name="users" size={18} style={{ marginRight: 5, paddingBottom: 2 }} />
+            }
+            indicator={profilesSorted.length ? profilesSorted.length : 0}
+            questionText="Här hittar du alla användare på plattformen"
+            subTitle="Alla som har skapat sig en profil"
+            title="Användare"
+          />
+        }
+        data={profilesSorted}
         horizontal={false}
+        initialNumToRender={8}
+        keyExtractor={(item) => item.id}
         numColumns={1}
         onRefresh={loadProfiles}
         refreshing={isRefreshing}
-        data={profilesSorted}
-        keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <View>
             <View
@@ -100,18 +109,14 @@ const AllProfilesScreen = (props) => {
                 padding: 10,
                 borderBottom: 0.2,
                 borderColor: '#666',
-              }}
-            >
+              }}>
               <RoundItem
-                key={itemData.item.profileId}
                 itemData={itemData.item}
+                key={itemData.item.profileId}
                 onSelect={() => {
-                  selectItemHandler(
-                    itemData.item.profileId,
-                    itemData.item.profileName
-                  );
+                  selectItemHandler(itemData.item.profileId, itemData.item.profileName);
                 }}
-              ></RoundItem>
+              />
               <Text style={{ alignSelf: 'center', paddingLeft: 10 }}>
                 {itemData.item.profileName}
               </Text>
@@ -119,21 +124,6 @@ const AllProfilesScreen = (props) => {
             <Divider />
           </View>
         )}
-        ListHeaderComponent={
-          <HeaderTwo
-            title={'Användare'}
-            subTitle={'Alla som har skapat sig en profil'}
-            questionText={'Här hittar du alla användare på plattformen'}
-            icon={
-              <FontAwesome
-                name="users"
-                size={18}
-                style={{ marginRight: 5, paddingBottom: 2 }}
-              />
-            }
-            indicator={profilesSorted.length ? profilesSorted.length : 0}
-          />
-        }
       />
     </SaferArea>
   );

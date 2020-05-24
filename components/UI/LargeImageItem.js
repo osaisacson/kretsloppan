@@ -40,34 +40,34 @@ const LargeImageItem = (props) => {
 };
 
 const styles = StyleSheet.create({
-  largeProject: {
-    height: 250,
-    width: 370,
-    marginLeft: 10,
-    borderWidth: 0.5,
-    borderRadius: 5,
-    borderColor: '#ddd',
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  largeTouchable: {
-    height: 250,
-    width: 370,
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  largeImageContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    borderRadius: 5,
-    overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
-  },
   largeImage: {
     borderRadius: 5,
-    width: '100%',
     height: '100%',
+    width: '100%',
+  },
+  largeImageContainer: {
+    borderRadius: 5,
+    height: '100%',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%', //To make sure any child (in this case the image) cannot overlap what we set in the image container
+  },
+  largeProject: {
+    alignItems: 'center',
+    borderColor: '#ddd',
+    borderRadius: 5,
+    borderWidth: 0.5,
+    flex: 1,
+    flexDirection: 'column',
+    height: 250,
+    marginLeft: 10,
+    width: 370,
+  },
+  largeTouchable: {
+    borderRadius: 5,
+    height: 250,
+    overflow: 'hidden',
+    width: 370,
   },
   slogan: {
     fontFamily: 'roboto-light-italic',

@@ -1,5 +1,4 @@
 import React from 'react';
-
 //Components
 import { View, Text } from 'react-native';
 
@@ -13,8 +12,7 @@ const FilterLine = (props) => {
         backgroundColor: '#a2a2a2',
         marginHorizontal: 2,
         marginVertical: 8,
-      }}
-    >
+      }}>
       <Text
         style={{
           paddingVertical: 5,
@@ -22,8 +20,7 @@ const FilterLine = (props) => {
           textTransform: 'uppercase',
           fontSize: 11,
           color: '#fff',
-        }}
-      >
+        }}>
         {filter}
       </Text>
     </View>
