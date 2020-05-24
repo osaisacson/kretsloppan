@@ -37,7 +37,7 @@ export const defaultMainPageOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: () => (
-      <View style={{ marginTop: 0, marginRight: 10 }}>
+      <View>
         <UserAvatar
           showBadge
           actionOnPress={() => {

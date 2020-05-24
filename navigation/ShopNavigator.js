@@ -164,24 +164,15 @@ export const ShopNavigator = (props) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   marginTop: 30,
-                  paddingLeft: 10,
                 }}>
                 <View style={{ paddingTop: 20 }}>
                   <UserAvatar
-                    style={{
-                      padding: 100,
-                      marginTop: 100,
-                    }}
                     showBadge
                     actionOnPress={() => {
                       props.navigation.navigate('Min Sida');
                       props.navigation.closeDrawer();
                     }}
                   />
-                </View>
-
-                <View>
-                  <Text style={{ marginLeft: 5 }}>Min sida</Text>
                 </View>
               </View>
               {/* <Text
