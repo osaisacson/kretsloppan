@@ -184,6 +184,7 @@ const UserProfile = (props) => {
 
 export const userProfileStyles = StyleSheet.create({
   userInfoSection: {
+    paddingTop: 10,
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',

@@ -159,21 +159,30 @@ export const ShopNavigator = (props) => {
         return (
           <View style={{ flex: 1 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <UserAvatar
-                  showBadge
-                  actionOnPress={() => {
-                    props.navigation.navigate('Min Sida');
-                    props.navigation.closeDrawer();
-                  }}
-                />
-                <Text
-                  style={{
-                    marginLeft: 5,
-                    marginTop: 20,
-                  }}>
-                  Min sida
-                </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: 30,
+                  paddingLeft: 10,
+                }}>
+                <View style={{ paddingTop: 20 }}>
+                  <UserAvatar
+                    style={{
+                      padding: 100,
+                      marginTop: 100,
+                    }}
+                    showBadge
+                    actionOnPress={() => {
+                      props.navigation.navigate('Min Sida');
+                      props.navigation.closeDrawer();
+                    }}
+                  />
+                </View>
+
+                <View>
+                  <Text style={{ marginLeft: 5 }}>Min sida</Text>
+                </View>
               </View>
               {/* <Text
                 style={{
@@ -185,7 +194,7 @@ export const ShopNavigator = (props) => {
               >
                 Ge igen
               </Text> */}
-              <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
+              <Divider style={{ backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
               <Button
