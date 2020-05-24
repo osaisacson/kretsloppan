@@ -39,6 +39,7 @@ export const defaultMainPageOptions = (navData) => {
     headerRight: () => (
       <View>
         <UserAvatar
+          style={{ marginTop: 15, marginRight: 10 }}
           showBadge
           actionOnPress={() => {
             navData.navigation.navigate('Min Sida');
@@ -53,13 +54,15 @@ export const mainPageOptionsWithUser = (navData) => {
   return {
     headerTitle: '',
     headerRight: () => (
-      <UserAvatar
-        style={{ marginTop: 0, marginRight: 10 }}
-        showBadge
-        actionOnPress={() => {
-          navData.navigation.navigate('Min Sida');
-        }}
-      />
+      <View>
+        <UserAvatar
+          style={{ marginTop: 15, marginRight: 10 }}
+          showBadge
+          actionOnPress={() => {
+            navData.navigation.navigate('Min Sida');
+          }}
+        />
+      </View>
     ),
   };
 };
