@@ -560,7 +560,7 @@ const ProductButtonLogic = (props) => {
                     {!sellerAgreed && hasEditPermission ? (
                       <ButtonAction
                         style={{ marginRight: 10 }}
-                        title={`Godkänn föreslagen tid`}
+                        title={`Godkänn förslag`}
                         onSelect={() => {
                           approveSuggestedDateTime(suggestedDate);
                         }}
@@ -578,7 +578,7 @@ const ProductButtonLogic = (props) => {
                     {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
                       <ButtonAction
                         style={{ marginRight: 10 }}
-                        title={`Godkänn föreslagen tid`}
+                        title={`Godkänn förslag`}
                         onSelect={() => {
                           approveSuggestedDateTime(suggestedDate);
                         }}
