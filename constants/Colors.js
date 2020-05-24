@@ -6,7 +6,7 @@ export default {
   accent: '#ffc107',
 
   subtleRed: '#b04040',
-  darkRed: '#461919',
+  darkRed: '#800022',
 
   //Buttons
   approved: '#3d9891',

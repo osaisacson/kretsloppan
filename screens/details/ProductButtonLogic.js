@@ -549,15 +549,6 @@ const ProductButtonLogic = (props) => {
               <Divider style={{ marginTop: 10 }} />
 
               <View style={styles.actionButtons}>
-                {collectingDate && hasEditPermission ? (
-                  <ButtonAction
-                    disabled={isPickedUp}
-                    buttonColor={Colors.completed}
-                    buttonLabelStyle={{ color: '#fff' }}
-                    title="Byt till hämtad"
-                    onSelect={collectHandler.bind(this)}
-                  />
-                ) : null}
                 {suggestedDate ? (
                   <>
                     {hasEditPermission || isReservedUser || isOrganisedUser ? (
@@ -620,14 +611,26 @@ const ProductButtonLogic = (props) => {
                   text={`Plats: ${address}`}
                 />
               </View>
-              <ButtonAction
-                buttonColor={Colors.darkRed}
-                style={{ marginVertical: 10 }}
-                title={`Ändra tid`}
-                onSelect={() => {
-                  resetSuggestedDT();
-                }}
-              />
+              <Divider style={{ marginTop: 10 }} />
+
+              <View style={styles.actionButtons}>
+                <ButtonAction
+                  buttonColor={Colors.darkRed}
+                  title={`Ändra tid`}
+                  onSelect={() => {
+                    resetSuggestedDT();
+                  }}
+                />
+                {hasEditPermission ? (
+                  <ButtonAction
+                    disabled={isPickedUp}
+                    buttonColor={Colors.approved}
+                    buttonLabelStyle={{ color: '#fff' }}
+                    title="Byt till hämtad"
+                    onSelect={collectHandler.bind(this)}
+                  />
+                ) : null}
+              </View>
               <Divider />
             </>
           ) : null}
