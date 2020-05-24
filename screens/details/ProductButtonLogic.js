@@ -471,9 +471,14 @@ const ProductButtonLogic = (props) => {
                         ? 'md-information-circle'
                         : 'ios-information-circle'
                     }
-                    backgroundColor={Colors.darkPrimary}
+                    backgroundColor={Colors.subtlePurple}
                   />
-                  <View style={styles.box}>
+                  <View
+                    style={[
+                      styles.box,
+                      { backgroundColor: Colors.subtlePurple },
+                    ]}
+                  >
                     <HeaderThree
                       style={styles.boxText}
                       text={`Föreslagen tid av ${
@@ -601,7 +606,9 @@ const ProductButtonLogic = (props) => {
           (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
               <Divider style={{ marginBottom: 10 }} />
-              <View style={styles.box}>
+              <View
+                style={[styles.box, { backgroundColor: Colors.subtleBlue }]}
+              >
                 <HeaderThree
                   style={styles.boxText}
                   text={`Överenskommen tid: ${moment(collectingDate)
@@ -721,7 +728,6 @@ const styles = StyleSheet.create({
   box: {
     padding: 6,
     alignSelf: 'center',
-    backgroundColor: Colors.darkPrimary,
   },
   boxText: {
     fontSize: 16,

@@ -11,7 +11,7 @@ import {
 import Card from './Card';
 import { Ionicons } from '@expo/vector-icons';
 import CachedImage from '../../components/UI/CachedImage';
-import Moment from 'moment/min/moment-with-locales';
+import moment from 'moment/min/moment-with-locales';
 import StatusBadge from '../../components/UI/StatusBadge';
 
 //Constants
@@ -25,10 +25,6 @@ const ProductItem = (props) => {
     //Set TouchableCmp to instead be TouchableNativeFeedback
   }
 
-  const shorterDate = Moment(props.itemData.reservedUntil)
-    .locale('sv')
-    .calendar();
-
   return (
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
@@ -36,23 +32,7 @@ const ProductItem = (props) => {
       <Card
         style={props.isHorizontal ? styles.horizontalProduct : styles.product}
       >
-        {props.itemData.status === 'ordnad' ? (
-          <Ionicons
-            style={{
-              ...styles.icon,
-              backgroundColor: Colors.neutral,
-              color: '#fff',
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 5,
-              fontSize: 15,
-            }}
-            name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
-            size={23}
-            color={props.itemData.color}
-          />
-        ) : null}
-        {props.itemData.status === 'reserverad' && (
+        {props.itemData.collectingDate ? (
           <StatusBadge
             style={{
               padding: 0,
@@ -65,12 +45,59 @@ const ProductItem = (props) => {
               fontSize: 10,
               padding: 4,
               color: '#fff',
-              backgroundColor: Colors.primary,
             }}
-            text={shorterDate}
+            text={moment(props.itemData.collectingDate).locale('sv').calendar()}
             icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-            backgroundColor={Colors.primary}
+            backgroundColor={Colors.subtleBlue}
           />
+        ) : null}
+        {props.itemData.status === 'reserverad' && (
+          <>
+            {props.itemData.suggestedDate ? (
+              <StatusBadge
+                style={{
+                  padding: 0,
+                  marginTop: 0,
+                  position: 'absolute',
+                  zIndex: 100,
+                }}
+                textStyle={{
+                  textTransform: 'uppercase',
+                  fontSize: 10,
+                  padding: 4,
+                  color: '#fff',
+                }}
+                text={`Förslag: ${moment(props.itemData.suggestedDate)
+                  .locale('sv')
+                  .calendar()}`}
+                icon={
+                  Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'
+                }
+                backgroundColor={Colors.subtlePurple}
+              />
+            ) : null}
+            <StatusBadge
+              style={{
+                padding: 0,
+                marginTop: props.itemData.suggestedDate ? 23 : 0,
+                position: 'absolute',
+                zIndex: 100,
+              }}
+              textStyle={{
+                textTransform: 'uppercase',
+                fontSize: 10,
+                padding: 4,
+                color: '#fff',
+              }}
+              text={moment(props.itemData.reservedUntil)
+                .locale('sv')
+                .calendar()}
+              icon={
+                Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'
+              }
+              backgroundColor={Colors.primary}
+            />
+          </>
         )}
 
         {props.itemData.status === 'hämtad' && (

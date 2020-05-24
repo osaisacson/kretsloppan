@@ -42,7 +42,7 @@ const ProductStatusLogic = (props) => {
       .locale('sv')
       .calendar()}`;
     statusIcon = 'star';
-    statusColor = Colors.neutral;
+    statusColor = Colors.subtleBlue;
   }
 
   if (isPickedUp) {

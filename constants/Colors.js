@@ -5,7 +5,9 @@ export default {
   darkPrimary: '#9c0065',
   accent: '#ffc107',
 
+  subtlePurple: '#7c5295',
   subtleRed: '#b04040',
+  subtleBlue: '#357a9e',
   darkRed: '#800022',
 
   //Buttons
