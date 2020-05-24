@@ -5,24 +5,33 @@ import { Avatar, Badge } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
 const UserAvatar = (props) => {
-  //Get logged in userId from state and all reserved products
+  //Get logged in userId from state, and products
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   const availableProducts = useSelector((state) => state.products.availableProducts);
 
   const userProducts = useSelector((state) => state.products.userProducts);
 
-  const reservedProducts = availableProducts.filter(
-    (product) => product.status === 'reserverad' && product.reservedUserId === loggedInUserId
-  );
+  //Get all products which are reserved by or from the logged in user
+  const reservedBy = availableProducts.filter(
+    (prod) =>
+      prod.status === 'reserverad' && prod.reservedUserId === loggedInUserId
+  ).length;
 
-  const userReservedProductsNr =
-    reservedProducts && reservedProducts.length > 0 ? reservedProducts.length : 0;
+  const reservedFrom = userProducts.filter(
+    (prod) => prod.status === 'reserverad'
+  ).length;
 
-  const otherProducts = userProducts.filter((product) => product.status === 'reserverad');
+  //Get all products which have a time for collection set, and are pending collection by or for the user
+  const collectionBy = availableProducts.filter(
+    (prod) =>
+      prod.status === 'ordnad' && prod.collectingUserId === loggedInUserId
+  ).length;
 
-  const othersReservedProductsNr =
-    otherProducts && otherProducts.length > 0 ? otherProducts.length : 0;
+  const collectionFrom = userProducts.filter((prod) => prod.status === 'ordnad')
+    .length;
+
+  const badgeNumber = reservedBy + reservedFrom + collectionBy + collectionFrom;
 
   //If we are passing a userId, use this as the current user, else use the currently logged in user
   const currentUser = useSelector((state) =>
@@ -65,15 +74,15 @@ const UserAvatar = (props) => {
           }
           size={40}
         />
-        {props.showBadge ? (
+        {props.showBadge && badgeNumber > 0 ? (
           <Badge
             style={{
               fontWeight: 'bold',
               position: 'relative',
               bottom: 20,
-            }}>
-            {/* NOTE: This is the number that should also be in the push notifications */}
-            {userReservedProductsNr + othersReservedProductsNr}
+            }}
+          >
+            {badgeNumber}
           </Badge>
         ) : null}
       </View>

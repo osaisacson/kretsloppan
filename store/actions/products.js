@@ -4,6 +4,7 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
+export const CHANGE_PRODUCT_AGREEMENT = 'CHANGE_PRODUCT_AGREEMENT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 import { convertImage } from '../helpers';
@@ -22,9 +23,12 @@ export function unReserveProduct(id) {
         readyDate: new Date().toISOString(), //Current date
         reservedDate: '',
         reservedUntil: '',
+        suggestedDate: '',
         collectingDate: '',
         collectedDate: '',
         projectId: '',
+        sellerAgreed: '',
+        buyerAgreed: '',
       };
 
       console.log('updatedProduct to be sent to API: ', updatedProduct);
@@ -56,9 +60,12 @@ export function unReserveProduct(id) {
           readyDate: updatedData.readyDate,
           reservedDate: updatedData.reservedDate,
           reservedUntil: updatedData.reservedUntil,
+          suggestedDate: updatedData.suggestedDate,
           collectingDate: updatedData.collectingDate,
           collectedDate: updatedData.collectedDate,
           projectId: updatedData.projectId,
+          sellerAgreed: updatedData.sellerAgreed,
+          buyerAgreed: updatedData.buyerAgreed,
         },
       });
       console.log('----------actions/products/unReserveProduct--------END');
@@ -142,10 +149,13 @@ export function fetchProducts() {
               updatedResult.readyDate,
               updatedResult.reservedDate,
               updatedResult.reservedUntil,
+              updatedResult.suggestedDate,
               updatedResult.collectingDate,
               updatedResult.collectedDate,
               updatedResult.projectId,
-              updatedResult.internalComments
+              updatedResult.internalComments,
+              updatedResult.sellerAgreed,
+              updatedResult.buyerAgreed
             )
           );
         }
@@ -177,10 +187,13 @@ export function fetchProducts() {
             resData[key].readyDate,
             resData[key].reservedDate,
             resData[key].reservedUntil,
+            resData[key].suggestedDate,
             resData[key].collectingDate,
             resData[key].collectedDate,
             resData[key].projectId,
-            resData[key].internalComments
+            resData[key].internalComments,
+            resData[key].sellerAgreed,
+            resData[key].buyerAgreed
           )
         );
       }
@@ -274,10 +287,13 @@ export function createProduct(
         readyDate: currentDate,
         reservedDate: '',
         reservedUntil: '',
+        suggestedDate: '',
         collectingDate: '',
         collectedDate: '',
         projectId: '000',
         internalComments,
+        sellerAgreed: '',
+        buyerAgreed: '',
       };
 
       // Perform the API call - create the product, passing the productData object above
@@ -319,10 +335,13 @@ export function createProduct(
           readyDate: currentDate,
           reservedDate: '',
           reservedUntil: '',
+          suggestedDate: '',
           collectingDate: '',
           collectedDate: '',
           projectId: '000',
           internalComments,
+          sellerAgreed: '',
+          buyerAgreed: '',
         },
       });
       console.log('----------actions/products/createProduct--------END');
@@ -440,8 +459,8 @@ export const changeProductStatus = (
   id,
   status,
   projectId,
-  collectingUserId = '',
-  collectingDate = ''
+  idRelatedToStatus,
+  dateRelatedToStatus
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -450,6 +469,8 @@ export const changeProductStatus = (
 
     const isReady = status === 'redo';
     const isReserved = status === 'reserverad';
+    const isSuggested = status === 'ordnas';
+    const isOrganised = status === 'ordnad';
     const isCollected = status === 'hämtad';
 
     //Getting a date one week from now, to use for updated reservedUntil if status is 'reserved'
@@ -458,31 +479,89 @@ export const changeProductStatus = (
       today.getTime() + 24 * 60 * 60 * 1000
     ).toISOString();
 
-    //If we are updating the status to reserved, change the reserved fields to match the current user and date.
-    let updatedReservedUserId = isReserved ? currentUserId : '';
-    let updatedReservedDate = isReserved ? currentDate : '';
-    let updatedReservedUntil = isReserved ? oneDayFromNow : '';
-    let updatedProjectId = projectId ? projectId : '000';
+    let productDataToUpdate;
 
-    //If we are updating the status to collected, set the new owner if and the date it was collected.
-    let updatedNewOwnerId = isCollected ? currentUserId : '';
-    let updatedCollectedDate = isCollected ? currentDate : '';
+    if (isReady) {
+      productDataToUpdate = {
+        reservedUserId: '',
+        collectingUserId: '',
+        newOwnerId: '',
+        status: 'redo',
+        readyDate: currentDate,
+        reservedDate: '',
+        reservedUntil: '',
+        suggestedDate: '',
+        collectingDate: '',
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+        sellerAgreed: '',
+        buyerAgreed: '',
+      };
+    }
 
-    //If we are updating the status to ready, set the date when the product was made available again to today.
-    let updatedReadyDate = isReady ? currentDate : '';
+    if (isReserved) {
+      productDataToUpdate = {
+        reservedUserId: idRelatedToStatus ? idRelatedToStatus : currentUserId,
+        collectingUserId: '',
+        newOwnerId: '',
+        status: 'reserverad',
+        readyDate: '',
+        reservedDate: currentDate,
+        reservedUntil: oneDayFromNow,
+        suggestedDate: '',
+        collectingDate: '',
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+      };
+    }
 
-    const productDataToUpdate = {
-      reservedUserId: updatedReservedUserId,
-      collectingUserId,
-      newOwnerId: updatedNewOwnerId,
-      status,
-      readyDate: updatedReadyDate,
-      reservedDate: updatedReservedDate,
-      reservedUntil: updatedReservedUntil,
-      collectingDate,
-      collectedDate: updatedCollectedDate,
-      projectId: updatedProjectId,
-    };
+    if (isSuggested) {
+      productDataToUpdate = {
+        reservedUserId: idRelatedToStatus,
+        collectingUserId: '',
+        newOwnerId: '',
+        status: 'reserverad', //sätt tillbaka status till reserverad
+        readyDate: '',
+        reservedDate: currentDate,
+        reservedUntil: oneDayFromNow,
+        suggestedDate: dateRelatedToStatus,
+        collectingDate: '',
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+      };
+    }
+
+    if (isOrganised) {
+      productDataToUpdate = {
+        reservedUserId: '',
+        collectingUserId: idRelatedToStatus,
+        newOwnerId: '',
+        status: 'ordnad',
+        readyDate: '',
+        reservedDate: '',
+        reservedUntil: '',
+        suggestedDate: '',
+        collectingDate: dateRelatedToStatus,
+        collectedDate: '',
+        projectId: projectId ? projectId : '000',
+      };
+    }
+
+    if (isCollected) {
+      productDataToUpdate = {
+        reservedUserId: '',
+        collectingUserId: '',
+        newOwnerId: idRelatedToStatus,
+        status: 'hämtad',
+        readyDate: '',
+        reservedDate: '',
+        reservedUntil: '',
+        suggestedDate: '',
+        collectingDate: '',
+        collectedDate: currentDate,
+        projectId: projectId ? projectId : '000',
+      };
+    }
 
     try {
       await fetch(
@@ -500,6 +579,40 @@ export const changeProductStatus = (
         type: CHANGE_PRODUCT_STATUS,
         pid: id,
         productData: productDataToUpdate,
+      });
+    } catch (error) {
+      // Rethrow so returned Promise is rejected
+      throw error;
+    }
+  };
+};
+
+export const changeProductAgreement = (id, sellerAgreed, buyerAgreed) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    try {
+      await fetch(
+        `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sellerAgreed: sellerAgreed,
+            buyerAgreed: buyerAgreed,
+          }),
+        }
+      );
+
+      dispatch({
+        type: CHANGE_PRODUCT_AGREEMENT,
+        pid: id,
+        productData: {
+          sellerAgreed: sellerAgreed,
+          buyerAgreed: buyerAgreed,
+        },
       });
     } catch (error) {
       // Rethrow so returned Promise is rejected

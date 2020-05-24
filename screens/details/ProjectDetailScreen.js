@@ -2,7 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 //Components
-import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  FlatList,
+  ScrollView,
+} from 'react-native';
+import { Divider } from 'react-native-paper';
 import { Paragraph } from 'react-native-paper';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import CachedImage from '../../components/UI/CachedImage';
@@ -82,6 +90,14 @@ const ProjectDetailScreen = (props) => {
         {selectedProject.location ? (
           <Text style={styles.subTitle}>{selectedProject.location}</Text>
         ) : null}
+        <Divider style={{ marginBottom: 8 }} />
+        <ContactDetails
+          hideButton={true}
+          profileId={ownerId}
+          projectId={selectedProject.id}
+          buttonText={'kontaktdetaljer'}
+        />
+
         <CachedImage
           style={styles.image}
           uri={selectedProject.image ? selectedProject.image : ''}
@@ -111,17 +127,12 @@ const ProjectDetailScreen = (props) => {
       </SectionCard>
       {selectedProject.description ? (
         <SectionCard>
-          <Paragraph>{selectedProject.description}</Paragraph>
+          <Paragraph style={{ padding: 5 }}>
+            {selectedProject.description}
+          </Paragraph>
         </SectionCard>
       ) : null}
-      <SectionCard>
-        <ContactDetails
-          hideButton={hasEditPermission}
-          profileId={ownerId}
-          projectId={selectedProject.id}
-          buttonText={'kontaktdetaljer'}
-        />
-      </SectionCard>
+
       {associatedProducts.length ? (
         <View style={{ marginVertical: 10 }}>
           {/* Information about the project */}
@@ -143,34 +154,36 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
-      {associatedProposals.length ? (
-        <HorizontalScroll
-          textItem={true}
-          detailPath="ProposalDetail"
-          scrollData={associatedProposals}
-          navigation={props.navigation}
+      <ScrollView>
+        <FlatList
+          initialNumToRender={8}
+          horizontal={false}
+          numColumns={3}
+          data={associatedProducts}
+          keyExtractor={(item) => item.id}
+          ListHeaderComponent={projectHeader}
+          renderItem={(itemData) => (
+            <ProductItem
+              itemData={itemData.item}
+              onSelect={() => {
+                selectItemHandler(
+                  itemData.item.id,
+                  itemData.item.ownerId,
+                  itemData.item.title
+                );
+              }}
+            />
+          )}
         />
-      ) : null}
-      <FlatList
-        initialNumToRender={8}
-        horizontal={false}
-        numColumns={3}
-        data={associatedProducts}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={projectHeader}
-        renderItem={(itemData) => (
-          <ProductItem
-            itemData={itemData.item}
-            onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title
-              );
-            }}
+        {associatedProposals.length ? (
+          <HorizontalScroll
+            textItem={true}
+            detailPath="ProposalDetail"
+            scrollData={associatedProposals}
+            navigation={props.navigation}
           />
-        )}
-      />
+        ) : null}
+      </ScrollView>
     </SaferArea>
   );
 };
