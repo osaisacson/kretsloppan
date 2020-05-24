@@ -38,10 +38,10 @@ const SpotlightProductsScreen = (props) => {
     <SaferArea>
       <Introduction
         pic={
-          'https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80'
+          'https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80'
         }
         text={
-          'Välkommen! Se en översikt av nya projekt, återbruk och efterlysningar nedan. Lägg upp eget material genom att gå till din profil. Notera att denna version av appen är en betaversion som fortfarande håller på att testas.'
+          'Mer återbruk åt folket! Här nere kan du se tillgängligt material, aktuella efterlysningar och projekt som håller på att byggas med återbruk. Lägg upp och hantera återbruk via din profilsida. Välkommen! Version: 1.0-beta2'
         }
       />
       <ScrollView nestedScrollEnabled={true}>
