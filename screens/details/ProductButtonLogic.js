@@ -430,6 +430,8 @@ const ProductButtonLogic = (props) => {
               </View>
             ) : null}
           </View>
+          <Divider style={{ marginBottom: 10 }} />
+
           {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
           {isReserved &&
           (hasEditPermission || isReservedUser || isOrganisedUser) ? (
@@ -671,13 +673,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    height: 110,
+    height: 80,
   },
   receivingOptions: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-end',
-    height: 120,
+    height: 80,
   },
   oneLineRight: {
     flex: 1,
