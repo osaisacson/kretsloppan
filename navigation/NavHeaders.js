@@ -37,7 +37,7 @@ export const defaultMainPageOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: () => (
-      <View style={{ marginTop: 20, marginRight: 10 }}>
+      <View style={{ marginTop: 0, marginRight: 10 }}>
         <UserAvatar
           showBadge
           actionOnPress={() => {
@@ -54,7 +54,7 @@ export const mainPageOptionsWithUser = (navData) => {
     headerTitle: '',
     headerRight: () => (
       <UserAvatar
-        style={{ marginTop: 20, marginRight: 10 }}
+        style={{ marginTop: 0, marginRight: 10 }}
         showBadge
         actionOnPress={() => {
           navData.navigation.navigate('Min Sida');
