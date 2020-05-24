@@ -195,6 +195,7 @@ const ProductButtonLogic = (props) => {
             setSuggestedDateLocal('');
             setSuggestedDT('');
             setShowUserProjects(false);
+            props.navigation.navigate('Min sida');
           },
         },
       ]
@@ -370,7 +371,7 @@ const ProductButtonLogic = (props) => {
               />
             </View>
           ) : null}
-          {!isReserved && !isPickedUp && !isOrganised ? (
+          {!hasEditPermission && !isReserved && !isPickedUp && !isOrganised ? (
             <ButtonAction
               disabled={isReserved}
               onSelect={toggleReserveButton}
