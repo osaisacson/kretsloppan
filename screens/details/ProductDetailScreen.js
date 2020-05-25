@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 //Components
 import Moment from 'moment/min/moment-with-locales';
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Alert, Text } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import CachedImage from '../../components/UI/CachedImage';
 import FilterLine from '../../components/UI/FilterLine';
-import Loader from '../../components/UI/Loader';
 import SectionCard from '../../components/UI/SectionCard';
 import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWrapper';
 //Constants
@@ -39,7 +38,6 @@ const ProductDetailScreen = (props) => {
   const {
     category,
     color,
-    // collectingUserId,
     condition,
     date,
     description,
@@ -49,21 +47,13 @@ const ProductDetailScreen = (props) => {
     internalComments,
     length,
     material,
-    // newOwnerId,
     price,
-    projectId,
+    priceText,
     status,
     style,
     title,
-    // reservedUserId,
     width,
   } = selectedProduct;
-
-  //Get all projects from state, and then return the ones that matches the id of the current product
-  const userProjects = useSelector((state) => state.projects.userProjects);
-  const projectForProductSelection = userProjects.filter((proj) => proj.id === projectId);
-
-  // const projectForProduct = projectForProductSelection[0];
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
@@ -93,10 +83,6 @@ const ProductDetailScreen = (props) => {
       ]
     );
   };
-
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
 
   return (
     <DetailWrapper>
@@ -133,8 +119,8 @@ const ProductDetailScreen = (props) => {
               </View>
             </>
           ) : null}
-          {/* Internal listing information. Only show if user is owner */}
-          {hasEditPermission && internalComments ? (
+          {/* Internal listing information.*/}
+          {internalComments ? (
             <View style={detailStyles.spaceBetweenRow}>
               <Paragraph>Intern listning:</Paragraph>
               <Paragraph>{internalComments}</Paragraph>
@@ -180,9 +166,14 @@ const ProductDetailScreen = (props) => {
           ) : null}
 
           {/* Price */}
-          <Paragraph style={{ textAlign: 'right', padding: 20 }}>
-            {price ? `${price} kr` : 'Gratis'}
-          </Paragraph>
+          {price ? (
+            <Paragraph style={{ textAlign: 'right', padding: 20 }}>
+              {price ? `${price} kr` : 'Gratis'}
+            </Paragraph>
+          ) : null}
+          {priceText ? (
+            <Paragraph style={{ textAlign: 'right', padding: 20 }}>{priceText}</Paragraph>
+          ) : null}
         </SectionCard>
       </View>
     </DetailWrapper>

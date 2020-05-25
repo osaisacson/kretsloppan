@@ -22,7 +22,6 @@ export const PART = [
   new Filter('p18', 'Värme', '#d1d1e0'),
   new Filter('p19', 'Dekoration', '#d1d1e0'),
   new Filter('p20', 'Redskap', '#d1d1e0'),
-  new Filter('p21', 'Annat', '#d1d1e0'),
 ];
 
 export const CONDITION = [
@@ -54,7 +53,6 @@ export const MATERIAL = [
   new Filter('m9', 'Keramik', '#f0e6ff'),
   new Filter('m10', 'Betong', '#f0e6ff'),
   new Filter('m11', 'Blandat', '#f0e6ff'),
-  new Filter('m12', 'Annat', '#f0e6ff'),
 ];
 
 export const COLOR = [

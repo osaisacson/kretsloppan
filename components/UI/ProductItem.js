@@ -1,5 +1,7 @@
-import React from 'react';
 //Components
+import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment/min/moment-with-locales';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,14 +10,13 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import Card from './Card';
-import { Ionicons } from '@expo/vector-icons';
+
 import CachedImage from '../../components/UI/CachedImage';
-import moment from 'moment/min/moment-with-locales';
 import StatusBadge from '../../components/UI/StatusBadge';
 
 //Constants
 import Colors from './../../constants/Colors';
+import Card from './Card';
 
 const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -118,7 +119,7 @@ const ProductItem = (props) => {
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.title}>
+      <Text numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
         {props.itemData.title}
       </Text>
     </View>

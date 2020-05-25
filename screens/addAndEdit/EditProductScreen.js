@@ -214,13 +214,14 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Lägg in ett pris (det kan vara 0)"
-        subLabel="Notera att betalning hanteras utanför appen">
+        highlightedSubLabel="Notera att betalning hanteras utanför appen. "
+        subLabel="Kan anges antingen i formatet direkt pris, 'förhandlingsbart' eller 'ett tjog ägg', om man så vill. För företag: ange pris inklusive moms">
         <TextInput
-          placeholder="Styckpris - För företag: ange pris inklusive moms"
+          placeholder="Styckpris"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
-          keyboardType="number-pad"
+          keyboardType="default"
           returnKeyType="next"
         />
       </FormFieldWrapper>
