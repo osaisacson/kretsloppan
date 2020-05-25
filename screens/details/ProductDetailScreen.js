@@ -38,6 +38,7 @@ const ProductDetailScreen = (props) => {
     condition,
     date,
     description,
+    background,
     height,
     id,
     image,
@@ -126,7 +127,12 @@ const ProductDetailScreen = (props) => {
           {/* General description */}
           <Title>{title}</Title>
           <Paragraph>{description}</Paragraph>
-
+          {background ? (
+            <View>
+              <Paragraph>Kuriosa/Historik</Paragraph>
+              <Paragraph>{background}</Paragraph>
+            </View>
+          ) : null}
           {length || height || width ? <Divider style={{ marginVertical: 10 }} /> : null}
           {length ? (
             <View style={detailStyles.spaceBetweenRow}>

@@ -17,6 +17,7 @@ class Product {
     address,
     phone,
     description,
+    background,
     length,
     height,
     width,
@@ -50,6 +51,7 @@ class Product {
     this.address = address;
     this.phone = phone;
     this.description = description;
+    this.background = background;
     this.length = length;
     this.height = height;
     this.width = width;

@@ -131,6 +131,7 @@ export function fetchProducts() {
               updatedResult.address,
               updatedResult.phone,
               updatedResult.description,
+              updatedResult.background,
               updatedResult.length,
               updatedResult.height,
               updatedResult.width,
@@ -170,6 +171,7 @@ export function fetchProducts() {
             resData[key].address,
             resData[key].phone,
             resData[key].description,
+            resData[key].background,
             resData[key].length,
             resData[key].height,
             resData[key].width,
@@ -238,6 +240,7 @@ export function createProduct(
   address,
   phone,
   description,
+  background,
   length,
   height,
   width,
@@ -272,6 +275,7 @@ export function createProduct(
         address,
         phone,
         description,
+        background,
         length,
         height,
         width,
@@ -321,6 +325,7 @@ export function createProduct(
           address,
           phone,
           description,
+          background,
           length,
           height,
           width,
@@ -362,6 +367,7 @@ export function updateProduct(
   address,
   phone,
   description,
+  background,
   length,
   height,
   width,
@@ -384,6 +390,7 @@ export function updateProduct(
       address,
       phone,
       description,
+      background,
       length,
       height,
       width,
@@ -412,6 +419,7 @@ export function updateProduct(
           address,
           phone,
           description,
+          background,
           length,
           height,
           width,
@@ -444,7 +452,7 @@ export function updateProduct(
       console.log('----------actions/products/updateProduct--------END');
     } catch (error) {
       console.log(error);
-      ('----------actions/products/updateProduct--------END');
+      console.log('----------actions/products/updateProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }
