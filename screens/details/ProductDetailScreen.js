@@ -27,9 +27,6 @@ const ProductDetailScreen = (props) => {
   const ownerId = props.route.params.ownerId;
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
-  //Set up state hooks
-  // const [isLoading, setIsLoading] = useState(false);
-
   //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((prod) => prod.id === productId)
