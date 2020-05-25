@@ -2,7 +2,7 @@
 
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { View, Alert, Text, StyleSheet } from 'react-native';
+import { View, Alert, Text, StyleSheet, Platform } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Button, Divider } from 'react-native-paper';
@@ -17,10 +17,7 @@ import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import StatusBadge from '../../components/UI/StatusBadge';
 import UserAvatar from '../../components/UI/UserAvatar';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
-
-//Constants
 import Colors from '../../constants/Colors';
-//Actions
 import * as productsActions from '../../store/actions/products';
 
 const ProductButtonLogic = (props) => {
@@ -47,7 +44,6 @@ const ProductButtonLogic = (props) => {
     reservedUserId,
     collectingUserId,
     newOwnerId,
-    reservedUntil,
     suggestedDate,
     collectingDate,
     phone,
@@ -63,6 +59,10 @@ const ProductButtonLogic = (props) => {
   const isReservedUser = reservedUserId === loggedInUserId;
   const isOrganisedUser = collectingUserId === loggedInUserId;
   const hasEditPermission = props.hasEditPermission;
+
+  const viewerIsSeller = loggedInUserId === ownerId;
+  const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
+  const waitingForYou = (viewerIsBuyer && !buyerAgreed) || (viewerIsSeller && !sellerAgreed);
 
   //Will change based on where we are in the reservation process
   let receivingId;
@@ -306,24 +306,24 @@ const ProductButtonLogic = (props) => {
             position: 'absolute',
             right: 0,
           }}>
-          {projectForProduct ? (
-            <View style={styles.textAndBadge}>
-              <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
-                <Text style={styles.smallText}>Projekt</Text>
-              </View>
-              <SmallRoundItem
-                detailPath="ProjectDetail"
-                item={projectForProduct}
-                navigation={props.navigation}
-              />
-            </View>
-          ) : null}
           {receivingProfile ? (
             <View style={styles.textAndBadge}>
               <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
                 <Text style={styles.smallText}>Av</Text>
               </View>
               <HeaderAvatar profileId={receivingId} navigation={props.navigation} />
+              {projectForProduct ? (
+                <>
+                  <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
+                    <Text style={styles.smallText}>Till</Text>
+                  </View>
+                  <SmallRoundItem
+                    detailPath="ProjectDetail"
+                    item={projectForProduct}
+                    navigation={props.navigation}
+                  />
+                </>
+              ) : null}
             </View>
           ) : null}
           {!hasEditPermission && !isReserved && !isPickedUp && !isOrganised ? (
@@ -400,45 +400,33 @@ const ProductButtonLogic = (props) => {
           {isReserved && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
               <Divider style={{ marginBottom: 10 }} />
-              <HeaderThree
-                style={{ textAlign: 'center', marginBottom: 10 }}
-                text={`Reservationen går ut ${moment(reservedUntil)
-                  .locale('sv')
-                  .endOf('day')
-                  .fromNow()}`}
-              />
+
               {!collectingDate && suggestedDate ? (
                 <>
-                  <StatusBadge
-                    style={{
-                      marginTop: 8,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                    }}
-                    textStyle={{
-                      textTransform: 'uppercase',
-                      fontSize: 10,
-                      padding: 4,
-                      color: '#fff',
-                    }}
-                    text={`Väntar på godkännande ${
-                      !buyerAgreed && (isReservedUser || isOrganisedUser) ? 'av dig' : 'av motpart'
-                    }`}
-                    icon={
-                      Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'
-                    }
-                    backgroundColor={Colors.subtlePurple}
-                  />
                   <View style={[styles.box, { backgroundColor: Colors.subtlePurple }]}>
                     <HeaderThree
                       style={styles.boxText}
-                      text={`Föreslagen tid av ${
-                        !hasEditPermission && buyerAgreed ? 'dig' : 'motpart'
-                      }: ${moment(suggestedDate).locale('sv').format('D MMMM, HH:mm')}`}
+                      text={`Föreslagen tid av ${waitingForYou ? 'motpart' : 'dig'}: ${moment(
+                        suggestedDate
+                      )
+                        .locale('sv')
+                        .format('D MMMM, HH:mm')}`}
                     />
                     <HeaderThree style={styles.boxText} text={`Plats: ${address}`} />
                   </View>
                 </>
+              ) : null}
+              {suggestedDate ? (
+                <StatusBadge
+                  style={{ alignSelf: 'center', marginTop: 10 }}
+                  text={`Tid föreslagen, ${
+                    waitingForYou ? 'väntar på ditt godkännande ' : 'väntar på motparts godkännande'
+                  }`}
+                  icon={
+                    Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'
+                  }
+                  backgroundColor={Colors.subtlePurple}
+                />
               ) : null}
               {!suggestedDate ? (
                 <>
