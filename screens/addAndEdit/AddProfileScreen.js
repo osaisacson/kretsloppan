@@ -7,7 +7,6 @@ import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
 

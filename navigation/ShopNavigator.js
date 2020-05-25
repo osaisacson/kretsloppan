@@ -27,6 +27,8 @@ import { TabNavigator } from './TabNavigator';
 
 const ShopDrawerNavigator = createDrawerNavigator();
 
+let isInitialRender = true;
+
 export const ShopNavigator = (props) => {
   console.log('Calling ShopNavigator');
 
@@ -151,6 +153,12 @@ export const ShopNavigator = (props) => {
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (isInitialRender) {
+    isInitialRender = false;
+
+    return null;
   }
 
   return (
