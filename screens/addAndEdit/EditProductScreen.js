@@ -71,6 +71,7 @@ const EditProductScreen = (props) => {
       height: editedProduct ? editedProduct.height : '',
       width: editedProduct ? editedProduct.width : '',
       price: editedProduct ? editedProduct.price : '',
+      priceText: editedProduct ? editedProduct.priceText : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
       image: editedProduct ? editedProduct.image : '',
@@ -87,15 +88,16 @@ const EditProductScreen = (props) => {
       length: true,
       height: true,
       width: true,
-      price: !!editedProduct,
+      price: true,
+      priceText: true,
       address: true,
       phone: true,
       image: !!editedProduct,
-      category: !!editedProduct,
-      condition: !!editedProduct,
-      style: !!editedProduct,
-      material: !!editedProduct,
-      color: !!editedProduct,
+      category: true,
+      condition: true,
+      style: true,
+      material: true,
+      color: true,
     },
     formIsValid: !!editedProduct,
   });
@@ -132,10 +134,12 @@ const EditProductScreen = (props) => {
             formState.inputValues.address,
             +formState.inputValues.phone,
             formState.inputValues.description,
+            formState.inputValues.background,
             formState.inputValues.length,
             formState.inputValues.height,
             formState.inputValues.width,
             +formState.inputValues.price,
+            formState.inputValues.priceText,
             formState.inputValues.internalComments
           )
         );
@@ -152,10 +156,12 @@ const EditProductScreen = (props) => {
             formState.inputValues.address,
             +formState.inputValues.phone,
             formState.inputValues.description,
+            formState.inputValues.background,
             formState.inputValues.length,
             formState.inputValues.height,
             formState.inputValues.width,
             +formState.inputValues.price,
+            formState.inputValues.priceText,
             formState.inputValues.internalComments
           )
         );
@@ -215,13 +221,23 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Lägg in ett pris (det kan vara 0)"
-        highlightedSubLabel="Notera att betalning hanteras utanför appen. "
-        subLabel="Kan anges antingen i formatet direkt pris, 'förhandlingsbart' eller 'ett tjog ägg', om man så vill. För företag: ange pris inklusive moms">
+        highlightedSubLabel="Notera att betalning hanteras utanför appen."
+        subLabel="Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Ange då detta i fältet 'Kommentarer till pris' nedan.">
         <TextInput
-          placeholder="Styckpris"
+          placeholder="Styckpris. För företag: ange pris inklusive moms"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
+          keyboardType="number-pad"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Lägg in en kommentar till pris">
+        <TextInput
+          placeholder="Kommentarer till pris (valfritt)"
+          style={formStyles.input}
+          value={formState.inputValues.priceText}
+          onChangeText={textChangeHandler.bind(this, 'priceText')}
           keyboardType="default"
           returnKeyType="next"
         />
@@ -234,6 +250,17 @@ const EditProductScreen = (props) => {
           multiline
           numberOfLines={4}
           onChangeText={textChangeHandler.bind(this, 'description')}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in historik eller annan kuriosa om återbruket">
+        <TextInput
+          placeholder="Kuriosa/Historik"
+          style={formStyles.multilineInput}
+          value={formState.inputValues.background}
+          multiline
+          numberOfLines={4}
+          onChangeText={textChangeHandler.bind(this, 'background')}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -256,21 +283,21 @@ const EditProductScreen = (props) => {
             justifyContent: 'space-between',
           }}>
           <TextInput
-            placeholder="Längd"
+            placeholder="Längd (mm)"
             style={formStyles.input}
             value={formState.inputValues.length}
             onChangeText={textChangeHandler.bind(this, 'length')}
             returnKeyType="next"
           />
           <TextInput
-            placeholder="Höjd"
+            placeholder="Höjd (mm)"
             style={formStyles.input}
             value={formState.inputValues.height}
             onChangeText={textChangeHandler.bind(this, 'height')}
             returnKeyType="next"
           />
           <TextInput
-            placeholder="Bredd"
+            placeholder="Bredd (mm)"
             style={formStyles.input}
             value={formState.inputValues.width}
             onChangeText={textChangeHandler.bind(this, 'width')}

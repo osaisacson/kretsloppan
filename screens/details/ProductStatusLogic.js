@@ -1,18 +1,18 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-//Imports
-import { View } from 'react-native';
 import Moment from 'moment/min/moment-with-locales';
-import StatusBadge from '../../components/UI/StatusBadge';
+import React from 'react';
+import { View, Platform } from 'react-native';
 
-//Constants
+//Imports
+import StatusBadge from '../../components/UI/StatusBadge';
 import Colors from '../../constants/Colors';
 
 const ProductStatusLogic = (props) => {
-  //Get product and owner id from navigation params (from parent screen) and current user id from state
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const {
+    status,
 
-  const { status, reservedUserId, reservedUntil, collectingDate } = props.selectedProduct;
+    reservedUntil,
+    collectingDate,
+  } = props.selectedProduct;
 
   //These will change based on where we are in the reservation process
   let statusText;

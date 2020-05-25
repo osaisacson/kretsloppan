@@ -17,10 +17,12 @@ class Product {
     address,
     phone,
     description,
+    background,
     length,
     height,
     width,
     price,
+    priceText,
     date,
     status,
     readyDate,
@@ -49,10 +51,12 @@ class Product {
     this.address = address;
     this.phone = phone;
     this.description = description;
+    this.background = background;
     this.length = length;
     this.height = height;
     this.width = width;
     this.price = price;
+    this.priceText = priceText;
     this.date = date;
     this.status = status;
     this.readyDate = readyDate;

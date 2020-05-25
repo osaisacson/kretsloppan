@@ -131,10 +131,12 @@ export function fetchProducts() {
               updatedResult.address,
               updatedResult.phone,
               updatedResult.description,
+              updatedResult.background,
               updatedResult.length,
               updatedResult.height,
               updatedResult.width,
               updatedResult.price,
+              updatedResult.priceText,
               updatedResult.date,
               updatedResult.status,
               updatedResult.readyDate,
@@ -169,10 +171,12 @@ export function fetchProducts() {
             resData[key].address,
             resData[key].phone,
             resData[key].description,
+            resData[key].background,
             resData[key].length,
             resData[key].height,
             resData[key].width,
             resData[key].price,
+            resData[key].priceText,
             resData[key].date,
             resData[key].status,
             resData[key].readyDate,
@@ -236,10 +240,12 @@ export function createProduct(
   address,
   phone,
   description,
+  background,
   length,
   height,
   width,
   price,
+  priceText,
   internalComments
 ) {
   return async (dispatch, getState) => {
@@ -269,10 +275,12 @@ export function createProduct(
         address,
         phone,
         description,
+        background,
         length,
         height,
         width,
         price,
+        priceText,
         date: currentDate,
         status: 'redo',
         readyDate: currentDate,
@@ -317,10 +325,12 @@ export function createProduct(
           address,
           phone,
           description,
+          background,
           length,
           height,
           width,
           price,
+          priceText,
           date: currentDate,
           status: 'redo',
           readyDate: currentDate,
@@ -357,10 +367,12 @@ export function updateProduct(
   address,
   phone,
   description,
+  background,
   length,
   height,
   width,
   price,
+  priceText,
   internalComments
 ) {
   return async (dispatch, getState) => {
@@ -378,10 +390,12 @@ export function updateProduct(
       address,
       phone,
       description,
+      background,
       length,
       height,
       width,
       price,
+      priceText,
       internalComments,
     };
 
@@ -405,10 +419,12 @@ export function updateProduct(
           address,
           phone,
           description,
+          background,
           length,
           height,
           width,
           price,
+          priceText,
           internalComments,
         };
       }
@@ -436,7 +452,7 @@ export function updateProduct(
       console.log('----------actions/products/updateProduct--------END');
     } catch (error) {
       console.log(error);
-      ('----------actions/products/updateProduct--------END');
+      console.log('----------actions/products/updateProduct--------END');
       // Rethrow so returned Promise is rejected
       throw error;
     }

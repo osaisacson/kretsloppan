@@ -1,5 +1,4 @@
-import { getIndex, updateCollection } from '../helpers';
-
+import Product from '../../models/product';
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
@@ -8,7 +7,7 @@ import {
   SET_PRODUCTS,
   CHANGE_PRODUCT_AGREEMENT,
 } from '../actions/products';
-import Product from '../../models/product';
+import { getIndex, updateCollection } from '../helpers';
 
 const initialState = {
   availableProducts: [],
@@ -41,10 +40,12 @@ export default (state = initialState, action) => {
         action.productData.address,
         action.productData.phone,
         action.productData.description,
+        action.productData.background,
         action.productData.length,
         action.productData.height,
         action.productData.width,
         action.productData.price,
+        action.productData.priceText,
         action.productData.date,
         action.productData.status,
         action.productData.readyDate,
@@ -58,10 +59,7 @@ export default (state = initialState, action) => {
         action.productData.sellerAgreed,
         action.productData.buyerAgreed
       );
-      console.log(
-        'store/reducers/products/CREATE_PRODUCT, new product: ',
-        newProduct
-      );
+      console.log('store/reducers/products/CREATE_PRODUCT, new product: ', newProduct);
       return {
         ...state,
         availableProducts: state.availableProducts.concat(newProduct),
@@ -85,10 +83,12 @@ export default (state = initialState, action) => {
         action.productData.address,
         action.productData.phone,
         action.productData.description,
+        action.productData.background,
         action.productData.length,
         action.productData.height,
         action.productData.width,
         action.productData.price,
+        action.productData.priceText,
         action.productData.date,
         state.userProducts[userProductIndex].status,
         state.userProducts[userProductIndex].readyDate,
@@ -102,10 +102,7 @@ export default (state = initialState, action) => {
         state.userProducts[userProductIndex].sellerAgreed,
         state.userProducts[userProductIndex].buyerAgreed
       );
-      console.log(
-        'store/reducers/products/UPDATE_PRODUCT, updated product: ',
-        updatedUserProduct
-      );
+      console.log('store/reducers/products/UPDATE_PRODUCT, updated product: ', updatedUserProduct);
 
       //Update state
       const updatedAvailableProducts = updateCollection(
@@ -125,10 +122,7 @@ export default (state = initialState, action) => {
         userProducts: updatedUserProducts,
       };
     case CHANGE_PRODUCT_STATUS:
-      const availableProductsIndexCPS = getIndex(
-        state.availableProducts,
-        action.pid
-      );
+      const availableProductsIndexCPS = getIndex(state.availableProducts, action.pid);
 
       const updatedProductCPS = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
@@ -146,10 +140,12 @@ export default (state = initialState, action) => {
         state.availableProducts[availableProductsIndexCPS].address,
         state.availableProducts[availableProductsIndexCPS].phone,
         state.availableProducts[availableProductsIndexCPS].description,
+        state.availableProducts[availableProductsIndexCPS].background,
         state.availableProducts[availableProductsIndexCPS].length,
         state.availableProducts[availableProductsIndexCPS].height,
         state.availableProducts[availableProductsIndexCPS].width,
         state.availableProducts[availableProductsIndexCPS].price,
+        state.availableProducts[availableProductsIndexCPS].priceText,
         state.availableProducts[availableProductsIndexCPS].date,
         action.productData.status,
         action.productData.readyDate,
@@ -204,10 +200,12 @@ export default (state = initialState, action) => {
         state.availableProducts[productIndexAg].address,
         state.availableProducts[productIndexAg].phone,
         state.availableProducts[productIndexAg].description,
+        state.availableProducts[productIndexAg].background,
         state.availableProducts[productIndexAg].length,
         state.availableProducts[productIndexAg].height,
         state.availableProducts[productIndexAg].width,
         state.availableProducts[productIndexAg].price,
+        state.availableProducts[productIndexAg].priceText,
         state.availableProducts[productIndexAg].date,
         state.availableProducts[productIndexAg].status,
         state.availableProducts[productIndexAg].readyDate,
@@ -246,12 +244,8 @@ export default (state = initialState, action) => {
     case DELETE_PRODUCT:
       return {
         ...state,
-        availableProducts: state.availableProducts.filter(
-          (product) => product.id !== action.pid
-        ),
-        userProducts: state.userProducts.filter(
-          (product) => product.id !== action.pid
-        ),
+        availableProducts: state.availableProducts.filter((product) => product.id !== action.pid),
+        userProducts: state.userProducts.filter((product) => product.id !== action.pid),
       };
   }
   return state;

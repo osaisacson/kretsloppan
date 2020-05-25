@@ -1,4 +1,3 @@
-//Imports
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
 import React from 'react';
@@ -10,15 +9,23 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import CachedImage from '../../components/UI/CachedImage';
 import StatusBadge from '../../components/UI/StatusBadge';
-
-//Constants
 import Colors from './../../constants/Colors';
 import Card from './Card';
 
 const ProductItem = (props) => {
+  const loggedInUserId = useSelector((state) => state.auth.userId);
+
+  const viewerIsSeller = loggedInUserId === props.itemData.ownerId;
+  const viewerIsBuyer =
+    loggedInUserId === (props.itemData.reservedUserId || props.itemData.collectingUserId);
+  const waitingForYou =
+    (viewerIsBuyer && !props.itemData.buyerAgreed) ||
+    (viewerIsSeller && !props.itemData.sellerAgreed);
+
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -66,7 +73,11 @@ const ProductItem = (props) => {
                   padding: 4,
                   color: '#fff',
                 }}
-                text={`Förslag: ${moment(props.itemData.suggestedDate).locale('sv').calendar()}`}
+                text={
+                  props.itemData.suggestedDate && waitingForYou
+                    ? 'Väntar på ditt godkännande'
+                    : 'Ange tidsförslag'
+                }
                 icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
                 backgroundColor={Colors.subtlePurple}
               />
