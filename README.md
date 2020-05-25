@@ -1,4 +1,4 @@
-# egnahemsfabriken
+# kretsloppan
 
 ## Workflow
 
@@ -6,7 +6,7 @@ open xCode
 
 open androidStudio and launch the simulator from configure > AVD manager > click right hand play button
 
-`cd egnahemsfabriken`
+`cd kretsloppan`
 
 `npm start` (this opens an expo page in the browser)
 
