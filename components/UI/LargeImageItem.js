@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import {
   View,
   Text,

@@ -16,7 +16,7 @@ import * as productsActions from './../store/actions/products';
 import * as profilesActions from './../store/actions/profiles';
 import * as projectsActions from './../store/actions/projects';
 import * as proposalsActions from './../store/actions/proposals';
-//Components
+//Imports
 //Navigators
 import { ProfilesNavigator } from './ProfilesNavigator';
 import { TabNavigator } from './TabNavigator';

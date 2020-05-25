@@ -17,7 +17,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Avatar, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-//Components
+//Imports
 
 import Card from '../../components/UI/Card';
 import Input from '../../components/UI/Input';

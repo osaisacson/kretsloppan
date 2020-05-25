@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import { Platform, StyleSheet, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 

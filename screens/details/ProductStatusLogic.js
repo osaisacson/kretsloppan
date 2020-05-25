@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-//Components
+//Imports
 import { View } from 'react-native';
 import Moment from 'moment/min/moment-with-locales';
 import StatusBadge from '../../components/UI/StatusBadge';
@@ -12,12 +12,7 @@ const ProductStatusLogic = (props) => {
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
-  const {
-    status,
-    reservedUserId,
-    reservedUntil,
-    collectingDate,
-  } = props.selectedProduct;
+  const { status, reservedUserId, reservedUntil, collectingDate } = props.selectedProduct;
 
   //These will change based on where we are in the reservation process
   let statusText;
@@ -30,17 +25,13 @@ const ProductStatusLogic = (props) => {
   const isPickedUp = status === 'hämtad';
 
   if (isReserved) {
-    statusText = `Reserverad tills ${Moment(reservedUntil)
-      .locale('sv')
-      .calendar()}`;
+    statusText = `Reserverad tills ${Moment(reservedUntil).locale('sv').calendar()}`;
     statusIcon = 'clock';
     statusColor = Colors.primary;
   }
 
   if (isOrganised) {
-    statusText = `Upphämtning satt till ${Moment(collectingDate)
-      .locale('sv')
-      .calendar()}`;
+    statusText = `Upphämtning satt till ${Moment(collectingDate).locale('sv').calendar()}`;
     statusIcon = 'star';
     statusColor = Colors.subtleBlue;
   }
@@ -57,9 +48,7 @@ const ProductStatusLogic = (props) => {
       <StatusBadge
         style={{ alignSelf: 'flex-end' }}
         text={statusText}
-        icon={
-          Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`
-        }
+        icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
         backgroundColor={statusColor}
       />
     </View>

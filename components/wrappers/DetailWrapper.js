@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-//Components
+//Imports
 import ScrollViewToTop from './ScrollViewToTop';
 import SaferArea from '../UI/SaferArea';
 //Constants

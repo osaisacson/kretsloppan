@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+
 import HeaderThree from '../../components/UI/HeaderThree';
 //Constants
 import Colors from '../../constants/Colors';
@@ -7,8 +8,9 @@ import Colors from '../../constants/Colors';
 export const FormFieldWrapper = (props) => {
   return (
     <View style={formStyles.formControl}>
-      {props.label ? (
-        <HeaderThree text={props.label} style={formStyles.sectionLabel} />
+      {props.label ? <HeaderThree text={props.label} style={formStyles.sectionLabel} /> : null}
+      {props.highlightedSubLabel ? (
+        <HeaderThree style={{ fontFamily: 'roboto-bold' }} text={props.highlightedSubLabel} />
       ) : null}
       {props.subLabel ? <HeaderThree text={props.subLabel} /> : null}
       {props.children}

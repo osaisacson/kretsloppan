@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-//Components
+//Imports
 import FormErrorText from './FormErrorText';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
@@ -76,9 +76,7 @@ const Input = (props) => {
         onChangeText={textChangeHandler}
         onBlur={lostFocusHandler}
       />
-      {!inputState.isValid && inputState.touched && (
-        <FormErrorText errorText={props.errorText} />
-      )}
+      {!inputState.isValid && inputState.touched && <FormErrorText errorText={props.errorText} />}
     </View>
   );
 };

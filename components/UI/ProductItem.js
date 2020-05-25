@@ -1,5 +1,7 @@
+//Imports
+import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment/min/moment-with-locales';
 import React from 'react';
-//Components
 import {
   View,
   Text,
@@ -8,14 +10,13 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import Card from './Card';
-import { Ionicons } from '@expo/vector-icons';
+
 import CachedImage from '../../components/UI/CachedImage';
-import moment from 'moment/min/moment-with-locales';
 import StatusBadge from '../../components/UI/StatusBadge';
 
 //Constants
 import Colors from './../../constants/Colors';
+import Card from './Card';
 
 const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -113,12 +114,20 @@ const ProductItem = (props) => {
               <View style={styles.imageContainer}>
                 <CachedImage style={styles.image} uri={props.itemData.image} />
               </View>
-              <Text style={styles.price}>{props.itemData.price ? props.itemData.price : 0} kr</Text>
+              {props.itemData.priceText ? (
+                <Text style={styles.price}>{props.itemData.priceText}</Text>
+              ) : null}
+
+              {props.itemData.price ? (
+                <Text style={styles.price}>
+                  {props.itemData.price ? props.itemData.price : 0} kr
+                </Text>
+              ) : null}
             </View>
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.title}>
+      <Text numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
         {props.itemData.title}
       </Text>
     </View>

@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import {
   View,
   Text,
@@ -34,14 +34,9 @@ const SmallRoundItem = (props) => {
       <View style={styles.touchable}>
         <TouchableCmp
           onPress={() => {
-            selectItemHandler(
-              props.item.id,
-              props.item.ownerId,
-              props.item.title
-            );
+            selectItemHandler(props.item.id, props.item.ownerId, props.item.title);
           }}
-          useForeground
-        >
+          useForeground>
           <View style={styles.imageContainer}>
             <CachedImage style={styles.image} uri={props.item.image} />
           </View>
@@ -54,8 +49,7 @@ const SmallRoundItem = (props) => {
             textAlign: 'left',
             fontFamily: 'roboto-regular',
             fontSize: 14,
-          }}
-        >
+          }}>
           {props.item.title}
         </Text>
       ) : null}

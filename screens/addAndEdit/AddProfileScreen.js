@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-//Components
+//Imports
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
 import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';

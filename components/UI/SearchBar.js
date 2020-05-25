@@ -1,14 +1,15 @@
 import React from 'react';
 
-//Components
+//Imports
 import { StyleSheet, TextInput } from 'react-native';
 
 //Constants
 import Colors from '../../constants/Colors';
 
-const SearchBar = props => {
+const SearchBar = (props) => {
   return (
     <TextInput
+      clearTextOnFocus
       style={styles.textInputStyle}
       onChangeText={props.actionOnChangeText}
       value={props.searchQuery}
@@ -20,7 +21,7 @@ const SearchBar = props => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    padding: 10
+    padding: 10,
   },
   textInputStyle: {
     textAlign: 'center',
@@ -28,8 +29,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 10,
     borderColor: Colors.neutral,
-    backgroundColor: '#FFFFFF'
-  }
+    backgroundColor: '#FFFFFF',
+  },
 });
 
 export default SearchBar;

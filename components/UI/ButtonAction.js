@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import { Platform, TouchableOpacity, TouchableNativeFeedback, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
