@@ -17,16 +17,11 @@ const SpotlightProductsScreen = (props) => {
   //Filters all products with the tag 'redo'
   const recentProductsRaw = allProducts.filter((product) => product.status === 'redo');
 
-  const recentProducts = recentProductsRaw.sort(function (a, b) {
+  const recentProductsSorted = recentProductsRaw.sort(function (a, b) {
     return new Date(b.readyDate) - new Date(a.readyDate);
   });
 
-  //Filters all booked products
-  const bookedProductsRaw = allProducts.filter((product) => product.status === 'reserverad');
-
-  const bookedProducts = bookedProductsRaw.sort(function (a, b) {
-    return new Date(b.reservedDate) - new Date(a.reservedDate);
-  });
+  const recentProducts = recentProductsSorted.slice(-3);
 
   return (
     <SaferArea>
@@ -56,21 +51,12 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
-          title="nya tillskott"
+          title="Senaste"
           subTitle="Senast uppladdade återbruket"
           isNavigationButton
           buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Återbruk')}
           scrollData={recentProducts}
-          navigation={props.navigation}
-        />
-        <HorizontalScroll
-          title="Reservationer som snart går ut"
-          subTitle="Reserverat återbruk blir tillgängligt igen om logistik med upphämtning inte hanteras inom 24 timmar. Här är det återbruk som snart blir ledigt."
-          isNavigationButton
-          buttonText="Se alla"
-          buttonOnPress={() => props.navigation.navigate('Återbruk')}
-          scrollData={bookedProducts}
           navigation={props.navigation}
         />
         <HorizontalScroll
