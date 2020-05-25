@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-//Components
+//Imports
 import { View, Text, StyleSheet, Alert, FlatList, ScrollView } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';

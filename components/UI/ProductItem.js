@@ -1,4 +1,4 @@
-//Components
+//Imports
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
 import React from 'react';
@@ -114,7 +114,15 @@ const ProductItem = (props) => {
               <View style={styles.imageContainer}>
                 <CachedImage style={styles.image} uri={props.itemData.image} />
               </View>
-              <Text style={styles.price}>{props.itemData.price ? props.itemData.price : 0} kr</Text>
+              {props.itemData.priceText ? (
+                <Text style={styles.price}>{props.itemData.priceText}</Text>
+              ) : null}
+
+              {props.itemData.price ? (
+                <Text style={styles.price}>
+                  {props.itemData.price ? props.itemData.price : 0} kr
+                </Text>
+              ) : null}
             </View>
           </TouchableCmp>
         </View>

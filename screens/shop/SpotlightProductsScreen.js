@@ -3,7 +3,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 
-//Components
+//Imports
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/UI/SaferArea';

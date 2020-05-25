@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import { ScrollView, View } from 'react-native';
 import HeaderTwo from './HeaderTwo';
 
@@ -23,8 +23,7 @@ const HorizontalScrollContainer = (props) => {
         style={{
           height: scrollHeight,
           marginTop: 20,
-        }}
-      >
+        }}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {props.children}
         </ScrollView>

@@ -4,7 +4,7 @@ import { View, Text, FlatList } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
-//Components
+//Imports
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import HeaderTwo from '../../components/UI/HeaderTwo';
@@ -12,8 +12,6 @@ import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
 import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
-
-//Actions
 import * as profilesActions from '../../store/actions/profiles';
 
 const AllProfilesScreen = (props) => {

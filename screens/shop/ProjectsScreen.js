@@ -1,6 +1,6 @@
 import { Entypo } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-//Components
+//Imports
 import { FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, TouchableOpacity, TouchableNativeFeedback, StyleSheet } from 'react-native';
-//Components
+//Imports
 import { IconButton, Badge } from 'react-native-paper';
 
 const ButtonIcon = (props) => {

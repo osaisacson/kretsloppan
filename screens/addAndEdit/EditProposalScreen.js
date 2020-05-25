@@ -1,19 +1,16 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
-//Components
+//Imports
 import { Alert, TextInput } from 'react-native';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import {
-  FormFieldWrapper,
-  formStyles,
-} from '../../components/wrappers/FormFieldWrapper';
-import { detailStyles } from '../../components/wrappers/DetailWrapper';
+import { useSelector, useDispatch } from 'react-redux';
 
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
+import { detailStyles } from '../../components/wrappers/DetailWrapper';
+import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 
 //Actions
 import * as proposalsActions from '../../store/actions/proposals';
@@ -67,12 +64,12 @@ const EditProposalScreen = (props) => {
       projectId: editedProposal ? editedProposal.projectId : '',
     },
     inputValidities: {
-      title: editedProposal ? true : false,
-      description: editedProposal ? true : false,
-      price: editedProposal ? true : false,
+      title: !!editedProposal,
+      description: !!editedProposal,
+      price: !!editedProposal,
       projectId: true,
     },
-    formIsValid: editedProposal ? true : false,
+    formIsValid: !!editedProposal,
   });
 
   useEffect(() => {
@@ -137,7 +134,7 @@ const EditProposalScreen = (props) => {
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
       value: text,
-      isValid: isValid,
+      isValid,
       input: inputIdentifier,
     });
   };
@@ -150,8 +147,7 @@ const EditProposalScreen = (props) => {
     <FormWrapper
       submitButtonText="Spara Efterlysning"
       handlerForButtonSubmit={submitHandler}
-      isLoading={isLoading}
-    >
+      isLoading={isLoading}>
       <FormFieldWrapper prompt="Skriv in titeln på din efterlysning">
         <TextInput
           placeholder="Jag efterlyser..."
@@ -188,7 +184,7 @@ const EditProposalScreen = (props) => {
 
       <>
         <HeaderThree
-          text={'Relaterar efterlysningen till ett projekt?'}
+          text="Relaterar efterlysningen till ett projekt?"
           style={detailStyles.centeredHeader}
         />
 
@@ -198,8 +194,8 @@ const EditProposalScreen = (props) => {
               image: './../../assets/avatar-placeholder-image.png',
               title: 'Inget projekt',
             }}
-            key={'000'}
-            isHorizontal={true}
+            key="000"
+            isHorizontal
             isSelected={formState.inputValues.projectId === '000'}
             onSelect={textChangeHandler.bind(this, 'projectId', '000')}
           />
@@ -207,7 +203,7 @@ const EditProposalScreen = (props) => {
             <RoundItem
               itemData={item}
               key={item.id}
-              isHorizontal={true}
+              isHorizontal
               isSelected={formState.inputValues.projectId === item.id}
               onSelect={textChangeHandler.bind(this, 'projectId', item.id)}
             />
@@ -221,9 +217,7 @@ const EditProposalScreen = (props) => {
 export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.detailId
-      ? 'Redigera efterlysning'
-      : 'Lägg till ny efterlysning',
+    headerTitle: routeParams.detailId ? 'Redigera efterlysning' : 'Lägg till ny efterlysning',
   };
 };
 

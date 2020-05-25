@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-//Components
+//Imports
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Alert, Text } from 'react-native';

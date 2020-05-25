@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
-//Components
+//Imports
 import { View, Text, Alert, Platform } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';

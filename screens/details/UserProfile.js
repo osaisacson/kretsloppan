@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import { View, StyleSheet } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';

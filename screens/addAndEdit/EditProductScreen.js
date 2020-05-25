@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import ImagePicker from '../../components/UI/ImgPicker';
-//Components
+//Imports
 import Loader from '../../components/UI/Loader';
 import PickerItem from '../../components/UI/PickerItem';
 import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
@@ -203,7 +203,8 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in en titel">
         <TextInput
-          placeholder="Titel"
+          placeholder="Titel (max 30 bokstäver)"
+          maxLength={30}
           style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}

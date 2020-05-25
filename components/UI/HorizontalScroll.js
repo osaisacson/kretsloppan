@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import { Divider } from 'react-native-paper';
 import { ScrollView, View } from 'react-native';
 import ProductItem from '../../components/UI/ProductItem';
@@ -54,8 +54,7 @@ const HorizontalScroll = (props) => {
         scrollEventThrottle={16}
         style={{
           backgroundColor: props.bgColor ? props.bgColor : 'transparent',
-        }}
-      >
+        }}>
         {props.title ? (
           <HeaderTwo
             title={props.title}
@@ -75,20 +74,15 @@ const HorizontalScroll = (props) => {
           style={{
             flex: 1,
             height: scrollHeight,
-          }}
-        >
+          }}>
           {/* If dataset passed is not empty  */}
           {scrollData.length ? (
             <View
               style={{
                 height: scrollHeight,
                 marginTop: 20,
-              }}
-            >
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
+              }}>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {scrollData.map((item) => (
                   <RenderedItem
                     itemData={item}
@@ -98,14 +92,9 @@ const HorizontalScroll = (props) => {
                       props.customHandler
                         ? props.customHandler
                         : () => {
-                            selectItemHandler(
-                              item.id,
-                              item.ownerId,
-                              item.title
-                            );
+                            selectItemHandler(item.id, item.ownerId, item.title);
                           }
-                    }
-                  ></RenderedItem>
+                    }></RenderedItem>
                 ))}
               </ScrollView>
             </View>

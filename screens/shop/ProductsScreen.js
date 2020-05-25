@@ -1,11 +1,12 @@
-import React, { useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-//Components
-import { FlatList, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import HeaderTwo from '../../components/UI/HeaderTwo';
+import React, { useState, useCallback } from 'react';
+import { FlatList, View } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+
+//Imports
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
 import SearchBar from '../../components/UI/SearchBar';
@@ -52,7 +53,7 @@ const ProductsScreen = (props) => {
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
       detailId: id,
-      ownerId: ownerId,
+      ownerId,
       detailTitle: title,
     });
   };
@@ -87,28 +88,18 @@ const ProductsScreen = (props) => {
           <ProductItem
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title
-              );
+              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
             }}
           />
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title={'Allt återbruk'}
+            title="Allt återbruk"
             buttonIcon="plus"
-            buttonText={'Återbruk'}
+            buttonText="Återbruk"
             buttonOnPress={() => props.navigation.navigate('EditProduct')}
-            subTitle={'Upplagda av alla'}
-            icon={
-              <FontAwesome5
-                name="recycle"
-                size={20}
-                style={{ marginRight: 5 }}
-              />
-            }
+            subTitle="Upplagda av alla"
+            icon={<FontAwesome5 name="recycle" size={20} style={{ marginRight: 5 }} />}
             indicator={renderedProducts.length ? renderedProducts.length : 0}
           />
         }

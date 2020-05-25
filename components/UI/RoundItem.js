@@ -1,5 +1,5 @@
 import React from 'react';
-//Components
+//Imports
 import {
   View,
   Text,
@@ -24,9 +24,7 @@ const RoundItem = (props) => {
     //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.project}>
-      <View
-        style={props.isSelected ? styles.selectedTouchable : styles.touchable}
-      >
+      <View style={props.isSelected ? styles.selectedTouchable : styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View style={styles.imageContainer}>
             <CachedImage style={styles.image} uri={props.itemData.image} />

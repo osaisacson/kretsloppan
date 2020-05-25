@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-//Components
+//Imports
 import {
   Platform,
   StyleSheet,

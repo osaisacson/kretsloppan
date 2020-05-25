@@ -1,4 +1,4 @@
-//Components
+//Imports
 
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';

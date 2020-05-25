@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-//Components
+//Imports
 import { detailStyles } from '../wrappers/DetailWrapper';
 import ButtonAction from './ButtonAction';
 import UserAvatar from './UserAvatar';
