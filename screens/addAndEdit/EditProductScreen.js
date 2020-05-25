@@ -71,6 +71,7 @@ const EditProductScreen = (props) => {
       height: editedProduct ? editedProduct.height : '',
       width: editedProduct ? editedProduct.width : '',
       price: editedProduct ? editedProduct.price : '',
+      priceText: editedProduct ? editedProduct.priceText : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
       image: editedProduct ? editedProduct.image : '',
@@ -87,15 +88,16 @@ const EditProductScreen = (props) => {
       length: true,
       height: true,
       width: true,
-      price: !!editedProduct,
+      price: true,
+      priceText: true,
       address: true,
       phone: true,
       image: !!editedProduct,
-      category: !!editedProduct,
-      condition: !!editedProduct,
-      style: !!editedProduct,
-      material: !!editedProduct,
-      color: !!editedProduct,
+      category: true,
+      condition: true,
+      style: true,
+      material: true,
+      color: true,
     },
     formIsValid: !!editedProduct,
   });
@@ -136,6 +138,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.height,
             formState.inputValues.width,
             +formState.inputValues.price,
+            formState.inputValues.priceText,
             formState.inputValues.internalComments
           )
         );
@@ -156,6 +159,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.height,
             formState.inputValues.width,
             +formState.inputValues.price,
+            formState.inputValues.priceText,
             formState.inputValues.internalComments
           )
         );
@@ -215,13 +219,23 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Lägg in ett pris (det kan vara 0)"
-        highlightedSubLabel="Notera att betalning hanteras utanför appen. "
-        subLabel="Kan anges antingen i formatet direkt pris, 'förhandlingsbart' eller 'ett tjog ägg', om man så vill. För företag: ange pris inklusive moms">
+        highlightedSubLabel="Notera att betalning hanteras utanför appen."
+        subLabel="Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Ange då detta i fältet 'Kommentarer till pris' nedan.">
         <TextInput
-          placeholder="Styckpris"
+          placeholder="Styckpris. För företag: ange pris inklusive moms"
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
+          keyboardType="number-pad"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Lägg in en kommentar till pris">
+        <TextInput
+          placeholder="Kommentarer till pris (valfritt)"
+          style={formStyles.input}
+          value={formState.inputValues.priceText}
+          onChangeText={textChangeHandler.bind(this, 'priceText')}
           keyboardType="default"
           returnKeyType="next"
         />

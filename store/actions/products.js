@@ -135,6 +135,7 @@ export function fetchProducts() {
               updatedResult.height,
               updatedResult.width,
               updatedResult.price,
+              updatedResult.priceText,
               updatedResult.date,
               updatedResult.status,
               updatedResult.readyDate,
@@ -173,6 +174,7 @@ export function fetchProducts() {
             resData[key].height,
             resData[key].width,
             resData[key].price,
+            resData[key].priceText,
             resData[key].date,
             resData[key].status,
             resData[key].readyDate,
@@ -240,6 +242,7 @@ export function createProduct(
   height,
   width,
   price,
+  priceText,
   internalComments
 ) {
   return async (dispatch, getState) => {
@@ -273,6 +276,7 @@ export function createProduct(
         height,
         width,
         price,
+        priceText,
         date: currentDate,
         status: 'redo',
         readyDate: currentDate,
@@ -321,6 +325,7 @@ export function createProduct(
           height,
           width,
           price,
+          priceText,
           date: currentDate,
           status: 'redo',
           readyDate: currentDate,
@@ -361,6 +366,7 @@ export function updateProduct(
   height,
   width,
   price,
+  priceText,
   internalComments
 ) {
   return async (dispatch, getState) => {
@@ -382,6 +388,7 @@ export function updateProduct(
       height,
       width,
       price,
+      priceText,
       internalComments,
     };
 
@@ -409,6 +416,7 @@ export function updateProduct(
           height,
           width,
           price,
+          priceText,
           internalComments,
         };
       }

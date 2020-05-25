@@ -21,6 +21,7 @@ class Product {
     height,
     width,
     price,
+    priceText,
     date,
     status,
     readyDate,
@@ -53,6 +54,7 @@ class Product {
     this.height = height;
     this.width = width;
     this.price = price;
+    this.priceText = priceText;
     this.date = date;
     this.status = status;
     this.readyDate = readyDate;
