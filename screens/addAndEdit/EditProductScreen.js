@@ -253,6 +253,17 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in historik eller annan kuriosa om återbruket">
+        <TextInput
+          placeholder="Kuriosa/Historik"
+          style={formStyles.multilineInput}
+          value={formState.inputValues.background}
+          multiline
+          numberOfLines={4}
+          onChangeText={textChangeHandler.bind(this, 'background')}
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in interna kommentarer, som ID -nummer ">
         <TextInput
           placeholder="Intern listning (om tillämpligt)"
@@ -272,21 +283,21 @@ const EditProductScreen = (props) => {
             justifyContent: 'space-between',
           }}>
           <TextInput
-            placeholder="Längd"
+            placeholder="Längd (mm)"
             style={formStyles.input}
             value={formState.inputValues.length}
             onChangeText={textChangeHandler.bind(this, 'length')}
             returnKeyType="next"
           />
           <TextInput
-            placeholder="Höjd"
+            placeholder="Höjd (mm)"
             style={formStyles.input}
             value={formState.inputValues.height}
             onChangeText={textChangeHandler.bind(this, 'height')}
             returnKeyType="next"
           />
           <TextInput
-            placeholder="Bredd"
+            placeholder="Bredd (mm)"
             style={formStyles.input}
             value={formState.inputValues.width}
             onChangeText={textChangeHandler.bind(this, 'width')}

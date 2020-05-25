@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { Badge, Button, Divider } from 'react-native-paper';
+import { Button, Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonAction from '../../components/UI/ButtonAction';
@@ -309,7 +309,7 @@ const ProductButtonLogic = (props) => {
           {projectForProduct ? (
             <View style={styles.textAndBadge}>
               <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
-                <Text style={styles.smallText}>För</Text>
+                <Text style={styles.smallText}>Projekt</Text>
               </View>
               <SmallRoundItem
                 detailPath="ProjectDetail"

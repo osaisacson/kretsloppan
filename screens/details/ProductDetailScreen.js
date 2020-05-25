@@ -1,19 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-//Imports
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Alert, Text } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
+//Imports
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import CachedImage from '../../components/UI/CachedImage';
 import FilterLine from '../../components/UI/FilterLine';
+import HeaderThree from '../../components/UI/HeaderThree';
 import SectionCard from '../../components/UI/SectionCard';
 import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWrapper';
-//Constants
 import Colors from '../../constants/Colors';
-//Actions
 import * as productsActions from '../../store/actions/products';
 import ProductButtonLogic from './ProductButtonLogic';
 import ProductStatusLogic from './ProductStatusLogic';
@@ -117,39 +116,56 @@ const ProductDetailScreen = (props) => {
               </View>
             </>
           ) : null}
-          {/* Internal listing information.*/}
-          {internalComments ? (
-            <View style={detailStyles.spaceBetweenRow}>
-              <Paragraph>Intern listning:</Paragraph>
-              <Paragraph>{internalComments}</Paragraph>
-            </View>
-          ) : null}
+
           {/* General description */}
           <Title>{title}</Title>
-          <Paragraph>{description}</Paragraph>
-          {background ? (
-            <View>
-              <Paragraph>Kuriosa/Historik</Paragraph>
-              <Paragraph>{background}</Paragraph>
-            </View>
+          {description ? (
+            <>
+              <Divider style={{ marginVertical: 10 }} />
+              <Paragraph>{description}</Paragraph>
+            </>
           ) : null}
-          {length || height || width ? <Divider style={{ marginVertical: 10 }} /> : null}
+          {/* Internal listing information.*/}
+          {internalComments ? (
+            <>
+              <Divider style={{ marginVertical: 10 }} />
+              <View style={detailStyles.spaceBetweenRow}>
+                <Paragraph>Intern listning:</Paragraph>
+                <Paragraph>{internalComments}</Paragraph>
+              </View>
+            </>
+          ) : null}
+          {background ? (
+            <>
+              <Divider style={{ marginBottom: 10 }} />
+              <View>
+                <HeaderThree text="Kuriosa/Historik" />
+                <Paragraph>{background}</Paragraph>
+              </View>
+            </>
+          ) : null}
+          {length || height || width ? (
+            <>
+              <Divider style={{ marginTop: 10 }} />
+              <HeaderThree style={{ marginVertical: 10 }} text="Mått" />
+            </>
+          ) : null}
           {length ? (
             <View style={detailStyles.spaceBetweenRow}>
               <Paragraph>Längd:</Paragraph>
-              <Paragraph>{length}</Paragraph>
+              <Paragraph>{length}mm</Paragraph>
             </View>
           ) : null}
           {height ? (
             <View style={detailStyles.spaceBetweenRow}>
               <Paragraph>Höjd:</Paragraph>
-              <Paragraph>{height}</Paragraph>
+              <Paragraph>{height}mm</Paragraph>
             </View>
           ) : null}
           {width ? (
             <View style={detailStyles.spaceBetweenRow}>
               <Paragraph>Bredd:</Paragraph>
-              <Paragraph>{width}</Paragraph>
+              <Paragraph>{width}mm</Paragraph>
             </View>
           ) : null}
           <Divider style={{ marginTop: 10 }} />
@@ -169,13 +185,13 @@ const ProductDetailScreen = (props) => {
           ) : null}
 
           {/* Price */}
-          {price ? (
-            <Paragraph style={{ textAlign: 'right', padding: 20 }}>
-              {price ? `${price} kr` : 'Gratis'}
-            </Paragraph>
-          ) : null}
-          {priceText ? (
-            <Paragraph style={{ textAlign: 'right', padding: 20 }}>{priceText}</Paragraph>
+          {price || priceText ? (
+            <View style={detailStyles.spaceBetweenRow}>
+              <Title>Pris:</Title>
+              <Paragraph style={{ textAlign: 'right', padding: 20 }}>
+                {price ? `${price} kr` : priceText}
+              </Paragraph>
+            </View>
           ) : null}
         </SectionCard>
       </View>
