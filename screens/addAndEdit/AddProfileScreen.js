@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Alert, TextInput } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
 //Components
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import {
-  FormFieldWrapper,
-  formStyles,
-} from '../../components/wrappers/FormFieldWrapper';
 import ImagePicker from '../../components/UI/ImgPicker';
 import Loader from '../../components/UI/Loader';
-
+import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../../components/wrappers/FormWrapper';
 //Actions
 import * as profilesActions from '../../store/actions/profiles';
 
@@ -45,9 +41,9 @@ const AddProfileScreen = (props) => {
 
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector((state) => state.auth.userId);
-  const profilesArray = useSelector(
-    (state) => state.profiles.allProfiles
-  ).filter((profile) => profile.profileId === loggedInUserId);
+  const profilesArray = useSelector((state) => state.profiles.allProfiles).filter(
+    (profile) => profile.profileId === loggedInUserId
+  );
 
   //Currently edited profile
   const currentProfile = profilesArray[0];
@@ -77,9 +73,7 @@ const AddProfileScreen = (props) => {
   //Handlers
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert('Något är felskrivet!', 'Kolla så du fyllt i alla fält.', [
-        { text: 'Ok' },
-      ]);
+      Alert.alert('Något är felskrivet!', 'Kolla så du fyllt i alla fält.', [{ text: 'Ok' }]);
       return;
     }
     setError(null);
@@ -116,7 +110,7 @@ const AddProfileScreen = (props) => {
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
       value: text,
-      isValid: isValid,
+      isValid,
       input: inputIdentifier,
     });
   };
@@ -136,8 +130,7 @@ const AddProfileScreen = (props) => {
     <FormWrapper
       submitButtonText="Spara Profil"
       handlerForButtonSubmit={submitHandler}
-      isLoading={isLoading}
-    >
+      isLoading={isLoading}>
       <FormFieldWrapper prompt="Välj en profilbild">
         <ImagePicker
           onImageTaken={textChangeHandler.bind(this, 'image')}
