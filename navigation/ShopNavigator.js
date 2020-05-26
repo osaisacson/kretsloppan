@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SafeAreaView, View, Platform } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 //Actions
 import Error from '../components/UI/Error';
@@ -16,7 +16,7 @@ import * as productsActions from './../store/actions/products';
 import * as profilesActions from './../store/actions/profiles';
 import * as projectsActions from './../store/actions/projects';
 import * as proposalsActions from './../store/actions/proposals';
-//Imports
+//Components
 //Navigators
 import { ProfilesNavigator } from './ProfilesNavigator';
 import { TabNavigator } from './TabNavigator';
@@ -27,8 +27,6 @@ import { TabNavigator } from './TabNavigator';
 
 const ShopDrawerNavigator = createDrawerNavigator();
 
-let isInitialRender = true;
-
 export const ShopNavigator = (props) => {
   console.log('Calling ShopNavigator');
 
@@ -37,7 +35,6 @@ export const ShopNavigator = (props) => {
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const products = useSelector((state) => state.products.availableProducts);
 
   //Load profiles
   const loadProfiles = useCallback(async () => {
@@ -57,17 +54,6 @@ export const ShopNavigator = (props) => {
       dispatch(productsActions.fetchProducts());
     } catch (err) {
       console.log('Error in loadProducts from ShopNavigator', err.message);
-      setError(err.message);
-    }
-  }, [dispatch]);
-
-  //Check products, and update products if expiry has passed
-  const checkProducts = useCallback(async () => {
-    setError(null);
-    try {
-      dispatch(productsActions.checkExpiryOnProducts(products));
-    } catch (err) {
-      console.log('Error in checkProducts from ShopNavigator', err.message);
       setError(err.message);
     }
   }, [dispatch]);
@@ -132,9 +118,6 @@ export const ShopNavigator = (props) => {
           loadProducts();
         })
         .then(() => {
-          checkProducts();
-        })
-        .then(() => {
           loadProjects();
         })
         .then(() => {
@@ -164,12 +147,6 @@ export const ShopNavigator = (props) => {
 
   if (isLoading) {
     return <Loader />;
-  }
-
-  if (isInitialRender) {
-    isInitialRender = false;
-
-    return null;
   }
 
   return (

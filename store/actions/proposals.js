@@ -9,13 +9,10 @@ export const CHANGE_PROPOSAL_STATUS = 'CHANGE_PROPOSAL_STATUS';
 export function fetchProposals() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
-    ('START----------actions/proposals/fetchProposals--------');
 
-    // Perform the API call - fetching all proposals
     try {
-      const response = await fetch(
-        'https://egnahemsfabriken.firebaseio.com/proposals.json'
-      );
+      console.log('Fetching proposals...');
+      const response = await fetch('https://egnahemsfabriken.firebaseio.com/proposals.json');
       const resData = await response.json();
       const loadedProposals = [];
       for (const key in resData) {
@@ -32,21 +29,15 @@ export function fetchProposals() {
           )
         );
       }
-      console.log('Dispatch SET_PROPOSALS, passing it loadedProposals');
       // Set our proposals in the reducer
       dispatch({
         type: SET_PROPOSALS,
         proposals: loadedProposals,
-        userProposals: loadedProposals.filter(
-          (proposal) => proposal.ownerId === userId
-        ),
+        userProposals: loadedProposals.filter((proposal) => proposal.ownerId === userId),
       });
-
-      ('----------actions/proposals/fetchProposals--------END');
+      console.log('...proposals fetched!');
     } catch (error) {
-      console.log(error);
-      ('----------actions/proposals/fetchProposals--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/projects/fetchProposals: ', error);
       throw error;
     }
   };
@@ -65,7 +56,7 @@ export const deleteProposal = (proposalId) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      let message = errorId;
+      const message = errorId;
       throw new Error(message);
     }
     dispatch({ type: DELETE_PROPOSAL, pid: proposalId });
@@ -79,8 +70,6 @@ export function createProposal(title, description, price, projectId) {
     const currentDate = new Date().toISOString();
 
     try {
-      console.log('START----------actions/proposals/createProposal--------');
-
       const proposalData = {
         ownerId: userId,
         projectId,
@@ -150,10 +139,7 @@ export function updateProposal(id, title, description, price, projectId) {
       );
       const returnedProposalData = await response.json();
 
-      console.log(
-        'returnedProposalData from updating proposal, after patch',
-        returnedProposalData
-      );
+      console.log('returnedProposalData from updating proposal, after patch', returnedProposalData);
 
       console.log('dispatching UPDATE_PROPOSAL');
 
@@ -193,7 +179,7 @@ export const changeProposalStatus = (id, status) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      let message = errorId;
+      const message = errorId;
       throw new Error(message);
     }
 

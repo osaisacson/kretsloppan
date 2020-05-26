@@ -60,46 +60,39 @@ export function fetchProducts() {
           )
         );
       }
-      dispatch({
+      await dispatch({
         type: SET_PRODUCTS,
         products: loadedProducts,
         userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
       });
-      console.log(`...${loadedProducts.length} products fetched!`);
-    } catch (error) {
-      console.log('Error in actions/products/fetchProducts: ', error);
-      throw error;
-    }
-  };
-}
+      const reservedItems = loadedProducts.filter((prod) => prod.status === 'reserverad');
+      console.log(
+        `${reservedItems.length} reserved products found. Checking if any of them are expired...`
+      );
 
-export function checkExpiryOnProducts(products) {
-  return async (dispatch, getState) => {
-    try {
-      console.log('Checking if any of the product reservation dates have expired... ');
-      for (const key in products) {
+      for (const key in reservedItems) {
         //Is the product reservation expired?
-        const reservationExpiryDate = new Date(products[key].reservedUntil);
-        const isPickedUp = products[key].status === 'hämtad';
-        const collectionIsNotAgreed = !products[key].collectingDate;
+        const reservationExpiryDate = new Date(reservedItems[key].reservedUntil);
+        const isPickedUp = reservedItems[key].status === 'hämtad';
+        const collectionIsNotAgreed = !reservedItems[key].collectingDate;
         const shouldBeReset =
           !isPickedUp &&
           collectionIsNotAgreed &&
           reservationExpiryDate instanceof Date &&
           reservationExpiryDate <= new Date();
 
-        //If the product has expired, call a function which passes correct new fields and then push the updated product to the loadedProducts array
+        //If the product has expired, call a function which passes correct new fields and then push the updated product to the reservedItems array
         if (shouldBeReset) {
           console.log('...found expired product, calling unReserveProduct to update it. ------>');
-          const updatedResult = await dispatch(unReserveProduct(key));
-
-          console.log('updatedResult: ', updatedResult);
+          dispatch(unReserveProduct(key));
           console.log(`${key} product was expired, but is now updated.`);
+        } else {
+          console.log(`...${key} still has a valid reservation date, and stays reserved.`);
         }
+        console.log(`...${reservedItems.length} products checked.`);
       }
-      console.log(`...${products.length} products checked, no expired products found!`);
     } catch (error) {
-      console.log('Error in actions/products/checkExpiryOnProducts: ', error);
+      console.log('Error in actions/products/fetchProducts: ', error);
       throw error;
     }
   };
@@ -161,12 +154,9 @@ export function unReserveProduct(id) {
           buyerAgreed: updatedData.buyerAgreed,
         },
       });
-      console.log('----------actions/products/unReserveProduct--------END');
-      return updatedData;
+      console.log('product updated to: ', updatedData);
     } catch (error) {
-      console.log(error);
-      console.log('----------actions/products/unReserveProduct--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/products/unReserveProduct: ', error);
       throw error;
     }
   };
@@ -175,20 +165,25 @@ export function unReserveProduct(id) {
 export const deleteProduct = (productId) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/products/${productId}.json?auth=${token}`,
-      {
-        method: 'DELETE',
-      }
-    );
+    try {
+      const response = await fetch(
+        `https://egnahemsfabriken.firebaseio.com/products/${productId}.json?auth=${token}`,
+        {
+          method: 'DELETE',
+        }
+      );
 
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      const message = errorId;
-      throw new Error(message);
+      if (!response.ok) {
+        const errorResData = await response.json();
+        const errorId = errorResData.error.message;
+        const message = errorId;
+        throw new Error(message);
+      }
+      dispatch({ type: DELETE_PRODUCT, pid: productId });
+    } catch (error) {
+      console.log('Error in actions/products/deleteProduct: ', error);
+      throw error;
     }
-    dispatch({ type: DELETE_PRODUCT, pid: productId });
   };
 };
 
@@ -217,7 +212,7 @@ export function createProduct(
     const currentDate = new Date().toISOString();
 
     try {
-      console.log('START----------actions/products/createProduct--------');
+      console.log('Creating product...');
 
       //First convert the base64 image to a firebase url...
       const convertedImage = await dispatch(convertImage(image));
@@ -268,8 +263,6 @@ export function createProduct(
       );
       const returnedProductData = await response.json();
 
-      console.log('dispatching CREATE_PRODUCT');
-
       dispatch({
         type: CREATE_PRODUCT,
         productData: {
@@ -308,11 +301,9 @@ export function createProduct(
           buyerAgreed: '',
         },
       });
-      console.log('----------actions/products/createProduct--------END');
+      console.log('...product created!');
     } catch (error) {
-      console.log(error);
-      console.log('----------actions/products/createProduct--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/products/createProduct: ', error);
       throw error;
     }
   };
@@ -363,7 +354,7 @@ export function updateProduct(
     };
 
     try {
-      console.log('START----------actions/products/updateProduct--------');
+      console.log('Attempting to update product with data: ', dataToUpdate);
 
       //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
       if (image.length > 1000) {
@@ -411,12 +402,9 @@ export function updateProduct(
         pid: id,
         productData: dataToUpdate,
       });
-
-      console.log('----------actions/products/updateProduct--------END');
+      console.log('...product updated!');
     } catch (error) {
-      console.log(error);
-      console.log('----------actions/products/updateProduct--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/products/updateProduct: ', error);
       throw error;
     }
   };
@@ -529,6 +517,8 @@ export const changeProductStatus = (
     }
 
     try {
+      console.log('Attempting to change product status, and set data to: ', productDataToUpdate);
+
       await fetch(`https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`, {
         method: 'PATCH',
         headers: {
@@ -542,8 +532,9 @@ export const changeProductStatus = (
         pid: id,
         productData: productDataToUpdate,
       });
+      console.log('Product status changed!');
     } catch (error) {
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/products/changeProductStatus: ', error);
       throw error;
     }
   };
@@ -554,6 +545,10 @@ export const changeProductAgreement = (id, sellerAgreed, buyerAgreed) => {
     const token = getState().auth.token;
 
     try {
+      console.log('Attempting to change product agreement:');
+      console.log('sellerAgreed:', sellerAgreed);
+      console.log('buyerAgreed: ', buyerAgreed);
+
       await fetch(`https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`, {
         method: 'PATCH',
         headers: {
@@ -573,8 +568,9 @@ export const changeProductAgreement = (id, sellerAgreed, buyerAgreed) => {
           buyerAgreed,
         },
       });
+      console.log('Product agreement changed!');
     } catch (error) {
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/products/changeProductAgreement: ', error);
       throw error;
     }
   };

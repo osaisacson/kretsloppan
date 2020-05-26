@@ -10,10 +10,9 @@ export function fetchProjects() {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
 
-    console.log('START----------actions/projects/fetchProjects--------');
-
     // Perform the API call - fetching all projects
     try {
+      console.log('Fetching projects...');
       const response = await fetch('https://egnahemsfabriken.firebaseio.com/projects.json');
       const resData = await response.json();
       const loadedProjects = [];
@@ -32,18 +31,16 @@ export function fetchProjects() {
           )
         );
       }
-      console.log('Dispatch SET_PROJECTS, passing it loadedProjects');
+      console.log('Fetching projects...');
       // Set our projects in the reducer
       dispatch({
         type: SET_PROJECTS,
         projects: loadedProjects,
         userProjects: loadedProjects.filter((proj) => proj.ownerId === userId),
       });
-      console.log('----------actions/projects/fetchProjects--------END');
+      console.log('...projects fetched!');
     } catch (error) {
-      console.log(error);
-      console.log('----------actions/projects/fetchProjects--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/projects/fetchProjects: ', error);
       throw error;
     }
   };
