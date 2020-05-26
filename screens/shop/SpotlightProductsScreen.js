@@ -21,7 +21,7 @@ const SpotlightProductsScreen = (props) => {
     return new Date(b.readyDate) - new Date(a.readyDate);
   });
 
-  const recentProducts = recentProductsSorted.slice(-3);
+  const recentProducts = recentProductsSorted.slice(5);
 
   return (
     <SaferArea>

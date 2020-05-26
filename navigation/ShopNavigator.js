@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SafeAreaView, View, Platform } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Actions
 import Error from '../components/UI/Error';
@@ -37,12 +37,12 @@ export const ShopNavigator = (props) => {
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const products = useSelector((state) => state.products.availableProducts);
 
   //Load profiles
   const loadProfiles = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching profiles...');
       dispatch(profilesActions.fetchProfiles());
     } catch (err) {
       console.log('Error in loadProfiles from ShopNavigator ', err.message);
@@ -54,10 +54,20 @@ export const ShopNavigator = (props) => {
   const loadProducts = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching products...');
       dispatch(productsActions.fetchProducts());
     } catch (err) {
       console.log('Error in loadProducts from ShopNavigator', err.message);
+      setError(err.message);
+    }
+  }, [dispatch]);
+
+  //Check products, and update products if expiry has passed
+  const checkProducts = useCallback(async () => {
+    setError(null);
+    try {
+      dispatch(productsActions.checkExpiryOnProducts(products));
+    } catch (err) {
+      console.log('Error in checkProducts from ShopNavigator', err.message);
       setError(err.message);
     }
   }, [dispatch]);
@@ -66,7 +76,6 @@ export const ShopNavigator = (props) => {
   const loadProjects = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching projects...');
       dispatch(projectsActions.fetchProjects());
     } catch (err) {
       console.log('Error in loadProjects from ShopNavigator', err.message);
@@ -78,7 +87,6 @@ export const ShopNavigator = (props) => {
   const loadProposals = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching proposals...');
       dispatch(proposalsActions.fetchProposals());
     } catch (err) {
       console.log('Error in loadProposals from ShopNavigator ', err.message);
@@ -122,6 +130,9 @@ export const ShopNavigator = (props) => {
       loadProfiles()
         .then(() => {
           loadProducts();
+        })
+        .then(() => {
+          checkProducts();
         })
         .then(() => {
           loadProjects();
