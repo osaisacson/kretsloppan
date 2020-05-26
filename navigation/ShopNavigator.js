@@ -179,6 +179,7 @@ export const ShopNavigator = (props) => {
                     android: {
                       paddingTop: 20,
                       paddingLeft: 10,
+                      paddingBottom: 10,
                     },
                   })}>
                   <UserAvatar

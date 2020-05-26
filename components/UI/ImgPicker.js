@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, Image, Text, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import React, { useState } from 'react';
+import { View, Image, Text, StyleSheet, Alert } from 'react-native';
+
 import ButtonAction from '../../components/UI/ButtonAction';
 
 const ImgPicker = (props) => {
@@ -9,19 +10,12 @@ const ImgPicker = (props) => {
   const [pickedImage, setPickedImage] = useState(props.passedImage); //Set state to be a previously taken picture if we have one. Passed from wherever we use this component.
 
   const verifyPermissions = async () => {
-    const permissionGallery = await Permissions.askAsync(
-      Permissions.CAMERA_ROLL
-    );
+    const permissionGallery = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     const permissionPhoto = await Permissions.askAsync(Permissions.CAMERA);
-    if (
-      permissionGallery.status !== 'granted' ||
-      permissionPhoto.status !== 'granted'
-    ) {
-      Alert.alert(
-        'Å Nej!',
-        'Du måste tillåta att använda kameran för att kunna välja ett kort.',
-        [{ text: 'Ok' }]
-      );
+    if (permissionGallery.status !== 'granted' || permissionPhoto.status !== 'granted') {
+      Alert.alert('Å Nej!', 'Du måste tillåta att använda kameran för att kunna välja ett kort.', [
+        { text: 'Ok' },
+      ]);
       return false;
     }
     return true;
@@ -33,7 +27,7 @@ const ImgPicker = (props) => {
     if (!hasPermission) {
       return;
     }
-    let pickerResult = await ImagePicker.launchCameraAsync({
+    const pickerResult = await ImagePicker.launchCameraAsync({
       base64: true, //lets us get and use the base64 encoded image to pass to storage
       allowsEditing: true,
       aspect: [4, 3],
@@ -48,7 +42,7 @@ const ImgPicker = (props) => {
     if (!hasPermission) {
       return;
     }
-    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
       base64: true, //lets us get and use the base64 encoded image to pass to storage
       allowsEditing: true,
       aspect: [4, 3],

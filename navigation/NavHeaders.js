@@ -39,7 +39,7 @@ export const defaultMainPageOptions = (navData) => {
     headerRight: () => (
       <View
         style={Platform.select({
-          android: styles.userAvatar,
+          android: styles.avatarContainer,
         })}>
         <UserAvatar
           style={Platform.select({ ios: styles.userAvatar })}
@@ -59,7 +59,7 @@ export const mainPageOptionsWithUser = (navData) => {
     headerRight: () => (
       <View
         style={Platform.select({
-          android: styles.userAvatar,
+          android: styles.avatarContainer,
         })}>
         <UserAvatar
           style={Platform.select({ ios: styles.userAvatar })}
@@ -99,5 +99,6 @@ export const emptyHeader = (navData) => {
 };
 
 const styles = StyleSheet.create({
+  avatarContainer: { marginRight: 5 },
   userAvatar: { marginTop: 15, marginRight: 10 },
 });

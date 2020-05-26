@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
         availableProducts: action.products,
         userProducts: action.userProducts,
       };
-    case CREATE_PRODUCT:
+    case CREATE_PRODUCT: {
       const newProduct = new Product(
         action.productData.id,
         action.productData.ownerId,
@@ -65,7 +65,8 @@ export default (state = initialState, action) => {
         availableProducts: state.availableProducts.concat(newProduct),
         userProducts: state.userProducts.concat(newProduct),
       };
-    case UPDATE_PRODUCT:
+    }
+    case UPDATE_PRODUCT: {
       const userProductIndex = getIndex(state.userProducts, action.pid);
       const updatedUserProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
@@ -121,7 +122,8 @@ export default (state = initialState, action) => {
         availableProducts: updatedAvailableProducts,
         userProducts: updatedUserProducts,
       };
-    case CHANGE_PRODUCT_STATUS:
+    }
+    case CHANGE_PRODUCT_STATUS: {
       const availableProductsIndexCPS = getIndex(state.availableProducts, action.pid);
 
       const updatedProductCPS = new Product( //Whenever we do a new product we have to pass the full params to match model
@@ -181,7 +183,8 @@ export default (state = initialState, action) => {
         availableProducts: updatedAvailableProductsCPS,
         userProducts: updatedUserProductsCPS,
       };
-    case CHANGE_PRODUCT_AGREEMENT:
+    }
+    case CHANGE_PRODUCT_AGREEMENT: {
       const productIndexAg = getIndex(state.availableProducts, action.pid);
 
       const updatedProductAgreement = new Product( //Whenever we do a new product we have to pass the full params to match model
@@ -241,6 +244,7 @@ export default (state = initialState, action) => {
         availableProducts: updatedAvailableProductsAgreement,
         userProducts: updatedUserProductsAgreement,
       };
+    }
     case DELETE_PRODUCT:
       return {
         ...state,
