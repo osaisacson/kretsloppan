@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -15,13 +16,19 @@ const SpotlightProductsScreen = (props) => {
   const allProposals = useSelector((state) => state.proposals.availableProposals);
 
   //Filters all products with the tag 'redo'
-  const recentProductsRaw = allProducts.filter((product) => product.status === 'redo');
+  const recentProductsRaw = allProducts.filter(
+    (product) => product.status === 'redo' || product.status === ''
+  );
 
   const recentProductsSorted = recentProductsRaw.sort(function (a, b) {
-    return new Date(b.readyDate) - new Date(a.readyDate);
+    a = new Date(a.readyDate);
+    b = new Date(b.readyDate);
+    return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const recentProducts = recentProductsSorted.slice(5);
+  const recentProducts = recentProductsSorted.slice(0, 5);
+
+  console.log('recentProducts: ', recentProducts);
 
   return (
     <SaferArea>

@@ -519,16 +519,16 @@ const ProductButtonLogic = (props) => {
                         }}
                       />
                     ) : null}
-                    {isReservedUser ? (
-                      <ButtonAction
-                        disabled={isPickedUp}
-                        buttonColor={Colors.subtleRed}
-                        buttonLabelStyle={{ color: '#fff' }}
-                        onSelect={unReserveHandler}
-                        title="avreservera"
-                      />
-                    ) : null}
                   </>
+                ) : null}
+                {isReservedUser ? (
+                  <ButtonAction
+                    disabled={isPickedUp}
+                    buttonColor={Colors.subtleRed}
+                    buttonLabelStyle={{ color: '#fff' }}
+                    onSelect={unReserveHandler}
+                    title="avreservera"
+                  />
                 ) : null}
               </View>
             </>

@@ -20,11 +20,18 @@ const ProductItem = (props) => {
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   const viewerIsSeller = loggedInUserId === props.itemData.ownerId;
+  console.log('viewerIsSeller', viewerIsSeller);
   const viewerIsBuyer =
     loggedInUserId === (props.itemData.reservedUserId || props.itemData.collectingUserId);
-  const waitingForYou =
-    (viewerIsBuyer && !props.itemData.buyerAgreed) ||
-    (viewerIsSeller && !props.itemData.sellerAgreed);
+  console.log('viewerIsBuyer', viewerIsBuyer);
+
+  const youHaveNotAgreed = viewerIsBuyer
+    ? !props.itemData.buyerAgreed
+    : viewerIsSeller
+    ? !props.itemData.sellerAgreed
+    : null;
+
+  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
 
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
@@ -59,29 +66,10 @@ const ProductItem = (props) => {
         ) : null}
         {props.itemData.status === 'reserverad' && (
           <>
-            {props.itemData.suggestedDate ? (
-              <StatusBadge
-                style={{
-                  padding: 0,
-                  marginTop: 0,
-                  position: 'absolute',
-                  zIndex: 100,
-                }}
-                textStyle={{
-                  textTransform: 'uppercase',
-                  fontSize: 10,
-                  padding: 4,
-                  color: '#fff',
-                }}
-                text={waitingForYou ? 'Väntar på ditt godkännande' : 'Ange tidsförslag'}
-                icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
-                backgroundColor={Colors.subtlePurple}
-              />
-            ) : null}
             <StatusBadge
               style={{
                 padding: 0,
-                marginTop: props.itemData.suggestedDate ? 22 : 0,
+                marginTop: 0,
                 position: 'absolute',
                 zIndex: 100,
               }}
@@ -91,7 +79,34 @@ const ProductItem = (props) => {
                 padding: 4,
                 color: '#fff',
               }}
-              text={moment(props.itemData.reservedUntil).locale('sv').calendar()}
+              text={
+                !props.itemData.suggestedDate
+                  ? 'Väntar på tidsförslag'
+                  : waitingForYou
+                  ? 'Väntar på ditt godkännande'
+                  : 'Väntar på motpart'
+              }
+              icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
+              backgroundColor={Colors.subtlePurple}
+            />
+
+            <StatusBadge
+              style={{
+                padding: 0,
+                marginTop: 22,
+                position: 'absolute',
+                zIndex: 100,
+              }}
+              textStyle={{
+                textTransform: 'uppercase',
+                fontSize: 10,
+                padding: 4,
+                color: '#fff',
+              }}
+              text={`Går ut ${moment(props.itemData.reservedUntil)
+                .locale('sv')
+                .endOf('day')
+                .fromNow()}`}
               icon={Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'}
               backgroundColor={Colors.primary}
             />
