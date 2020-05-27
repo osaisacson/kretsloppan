@@ -147,6 +147,7 @@ const ProjectDetailScreen = (props) => {
           ListHeaderComponent={projectHeader}
           renderItem={(itemData) => (
             <ProductItem
+              isSearchView
               itemData={itemData.item}
               onSelect={() => {
                 selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
