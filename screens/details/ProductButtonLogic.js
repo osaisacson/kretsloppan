@@ -14,7 +14,6 @@ import HorizontalScrollContainer from '../../components/UI/HorizontalScrollConta
 import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
 import SmallRoundItem from '../../components/UI/SmallRoundItem';
-import StatusBadge from '../../components/UI/StatusBadge';
 import UserAvatar from '../../components/UI/UserAvatar';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import Colors from '../../constants/Colors';
@@ -62,7 +61,10 @@ const ProductButtonLogic = (props) => {
 
   const viewerIsSeller = loggedInUserId === ownerId;
   const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
-  const waitingForYou = (viewerIsBuyer && !buyerAgreed) || (viewerIsSeller && !sellerAgreed);
+
+  const youHaveNotAgreed = viewerIsBuyer ? !buyerAgreed : viewerIsSeller ? !sellerAgreed : null;
+
+  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
 
   //Will change based on where we are in the reservation process
   let receivingId;
@@ -75,7 +77,7 @@ const ProductButtonLogic = (props) => {
 
   if (isOrganised) {
     receivingId = collectingUserId;
-    statusColor = Colors.neutral;
+    statusColor = Colors.subtleBlue;
   }
 
   if (isPickedUp) {
@@ -164,6 +166,7 @@ const ProductButtonLogic = (props) => {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
+            setIsLoading(true);
             dispatch(
               productsActions.changeProductStatus(
                 id,
@@ -171,7 +174,7 @@ const ProductButtonLogic = (props) => {
                 checkedProjectId,
                 prevReservedUser
               ) //by default resets the date to expire in 24 hours, since the status is 'reserved'
-            );
+            ).then(setIsLoading(false));
             setSuggestedDateLocal('');
             setShowUserProjects(false);
             props.navigation.goBack();
@@ -403,7 +406,7 @@ const ProductButtonLogic = (props) => {
 
               {!collectingDate && suggestedDate ? (
                 <>
-                  <View style={[styles.box, { backgroundColor: Colors.subtlePurple }]}>
+                  <View style={styles.box}>
                     <HeaderThree
                       style={styles.boxText}
                       text={`Föreslagen tid av ${waitingForYou ? 'motpart' : 'dig'}: ${moment(
@@ -416,18 +419,7 @@ const ProductButtonLogic = (props) => {
                   </View>
                 </>
               ) : null}
-              {suggestedDate ? (
-                <StatusBadge
-                  style={{ alignSelf: 'center', marginTop: 10 }}
-                  text={`Tid föreslagen, ${
-                    waitingForYou ? 'väntar på ditt godkännande ' : 'väntar på motparts godkännande'
-                  }`}
-                  icon={
-                    Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'
-                  }
-                  backgroundColor={Colors.subtlePurple}
-                />
-              ) : null}
+
               {!suggestedDate ? (
                 <>
                   <HeaderThree
@@ -519,16 +511,16 @@ const ProductButtonLogic = (props) => {
                         }}
                       />
                     ) : null}
-                    {isReservedUser ? (
-                      <ButtonAction
-                        disabled={isPickedUp}
-                        buttonColor={Colors.subtleRed}
-                        buttonLabelStyle={{ color: '#fff' }}
-                        onSelect={unReserveHandler}
-                        title="avreservera"
-                      />
-                    ) : null}
                   </>
+                ) : null}
+                {isReservedUser ? (
+                  <ButtonAction
+                    disabled={isPickedUp}
+                    buttonColor={Colors.subtleRed}
+                    buttonLabelStyle={{ color: '#fff' }}
+                    onSelect={unReserveHandler}
+                    title="avreservera"
+                  />
                 ) : null}
               </View>
             </>
@@ -537,7 +529,7 @@ const ProductButtonLogic = (props) => {
           {collectingDate && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
               <Divider style={{ marginBottom: 10 }} />
-              <View style={[styles.box, { backgroundColor: Colors.subtleBlue }]}>
+              <View style={styles.box}>
                 <HeaderThree
                   style={styles.boxText}
                   text={`Överenskommen tid: ${moment(collectingDate)
@@ -652,12 +644,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   box: {
-    padding: 6,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     alignSelf: 'center',
+    backgroundColor: Colors.subtleGrey,
   },
   boxText: {
+    fontFamily: 'roboto-bold',
     fontSize: 16,
-    fontWeight: '500',
     color: '#fff',
     textAlign: 'center',
   },

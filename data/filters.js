@@ -56,7 +56,7 @@ export const MATERIAL = [
 ];
 
 export const COLOR = [
-  new Filter('Ingen', 'Ingen', 'transparent'),
+  new Filter('Ingen/flera', 'Ingen/flera', 'transparent'),
   new Filter('Vit', '', '#fff'),
   new Filter('Gul', '', '#ffbb00'),
   new Filter('Orange', '', '#f56f02'),

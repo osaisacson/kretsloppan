@@ -16,7 +16,7 @@ import * as productsActions from './../store/actions/products';
 import * as profilesActions from './../store/actions/profiles';
 import * as projectsActions from './../store/actions/projects';
 import * as proposalsActions from './../store/actions/proposals';
-//Imports
+//Components
 //Navigators
 import { ProfilesNavigator } from './ProfilesNavigator';
 import { TabNavigator } from './TabNavigator';
@@ -26,8 +26,6 @@ import { TabNavigator } from './TabNavigator';
 //Constants
 
 const ShopDrawerNavigator = createDrawerNavigator();
-
-let isInitialRender = true;
 
 export const ShopNavigator = (props) => {
   console.log('Calling ShopNavigator');
@@ -42,7 +40,6 @@ export const ShopNavigator = (props) => {
   const loadProfiles = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching profiles...');
       dispatch(profilesActions.fetchProfiles());
     } catch (err) {
       console.log('Error in loadProfiles from ShopNavigator ', err.message);
@@ -54,7 +51,6 @@ export const ShopNavigator = (props) => {
   const loadProducts = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching products...');
       dispatch(productsActions.fetchProducts());
     } catch (err) {
       console.log('Error in loadProducts from ShopNavigator', err.message);
@@ -66,7 +62,6 @@ export const ShopNavigator = (props) => {
   const loadProjects = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching projects...');
       dispatch(projectsActions.fetchProjects());
     } catch (err) {
       console.log('Error in loadProjects from ShopNavigator', err.message);
@@ -78,7 +73,6 @@ export const ShopNavigator = (props) => {
   const loadProposals = useCallback(async () => {
     setError(null);
     try {
-      console.log('ShopNavigator: fetching proposals...');
       dispatch(proposalsActions.fetchProposals());
     } catch (err) {
       console.log('Error in loadProposals from ShopNavigator ', err.message);
@@ -155,12 +149,6 @@ export const ShopNavigator = (props) => {
     return <Loader />;
   }
 
-  if (isInitialRender) {
-    isInitialRender = false;
-
-    return null;
-  }
-
   return (
     <ShopDrawerNavigator.Navigator
       drawerContent={(props) => {
@@ -199,7 +187,7 @@ export const ShopNavigator = (props) => {
                   marginTop: 35
                 }}
               >
-                Ge igen
+                Kretsloppan
               </Text> */}
               <Divider style={{ backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
@@ -232,7 +220,7 @@ export const ShopNavigator = (props) => {
         activeTintColor: Colors.primary,
       }}>
       <ShopDrawerNavigator.Screen
-        name="Ge Igen"
+        name="Kretsloppan"
         component={TabNavigator}
         options={{
           drawerIcon: (props) => <MaterialIcons name="home" size={23} color={props.color} />,

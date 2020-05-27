@@ -92,7 +92,7 @@ const AddProfileScreen = (props) => {
     } catch (err) {
       setError(err.message);
     }
-    props.navigation.navigate('Ge Igen');
+    props.navigation.navigate('Kretsloppan');
     setIsLoading(false);
   }, [dispatch, currentProfile, formState]);
 

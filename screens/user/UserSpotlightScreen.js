@@ -78,7 +78,11 @@ const UserSpotlightScreen = (props) => {
   });
 
   //READY: Gets all products where the ownerId matches the id of our currently logged in user
-  const uploadedByUser = userProducts.sort(function (a, b) {
+  const uploadedByUserRaw = userProducts.filter(
+    (product) => product.status === 'redo' || product.status === ''
+  );
+
+  const uploadedByUser = uploadedByUserRaw.sort(function (a, b) {
     return new Date(b.readyDate) - new Date(a.readyDate);
   });
 
@@ -97,6 +101,7 @@ const UserSpotlightScreen = (props) => {
   //Sets indicator numbers
   const added = userProducts.length;
   const collected = collectedByUser.length;
+  const sold = givenByUser.length;
   const nrOfProjects = userProjects.length;
 
   //Navigate to the edit screen and forward the product id
@@ -135,7 +140,11 @@ const UserSpotlightScreen = (props) => {
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={userProfileStyles.paragraph}>{collected ? collected : 0}</Paragraph>
-            <Caption>Hämtade</Caption>
+            <Caption>Köpta</Caption>
+          </View>
+          <View style={userProfileStyles.section}>
+            <Paragraph style={userProfileStyles.paragraph}>{sold ? sold : 0}</Paragraph>
+            <Caption>Sålda</Caption>
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={userProfileStyles.paragraph}>
@@ -174,9 +183,9 @@ const UserSpotlightScreen = (props) => {
       {/* Product, project and propsal sections */}
       {reservedProducts.length ? (
         <HorizontalScroll
-          title="Reservationer - att kontaktas"
-          subTitle="Väntar på att ni kontaktar varandra för organisering av upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar."
-          extraSubTitle="Nästa steg: kontakta intressenten/uppläggaren för att ordna logistik runt återbrukets upphämtning eller avlämning"
+          title="Reservationer under diskussion"
+          subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar."
+          extraSubTitle="Nästa steg: förslå tid eller godkänn givet förslag. Om behov kontakta varandra för att diskutera fler detaljer."
           bgColor={Colors.lightPrimary}
           scrollData={reservedProducts}
           showNotificationBadge
@@ -185,8 +194,8 @@ const UserSpotlightScreen = (props) => {
       ) : null}
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
-          title="Överenskommet - att hämtas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att hämtas av dig."
+          title="Överenskommet - att köpas"
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på köpas och hämtas av dig."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedByUser}
           showNotificationBadge
@@ -195,8 +204,8 @@ const UserSpotlightScreen = (props) => {
       ) : null}
       {toBeCollectedFromUser.length ? (
         <HorizontalScroll
-          title="Överenskommet - att lämnas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att lämnas till dig."
+          title="Överenskommet - att säljas"
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på att säljas och lämnas till dig."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedFromUser}
           showNotificationBadge
@@ -204,8 +213,8 @@ const UserSpotlightScreen = (props) => {
         />
       ) : null}
       <HorizontalScroll
-        title="Upplagt av mig"
-        subTitle="Återbruk upplagt av mig"
+        title="Mitt tillgängliga återbruk"
+        subTitle="Återbruk upplagt av mig som är redo att reserveras"
         isNavigationButton
         buttonText=" Se allt"
         buttonOnPress={() => props.navigation.navigate('Mitt upplagda återbruk')}
@@ -229,22 +238,6 @@ const UserSpotlightScreen = (props) => {
         scrollData={userProjects}
         navigation={props.navigation}
       />
-      {collectedByUser.length ? (
-        <HorizontalScroll
-          title="Hämtat"
-          subTitle="Återbruk använt av mig"
-          scrollData={collectedByUser}
-          navigation={props.navigation}
-        />
-      ) : null}
-      {givenByUser.length ? (
-        <HorizontalScroll
-          title="Gett Igen"
-          subTitle="Återbruk jag gett till andra"
-          scrollData={givenByUser}
-          navigation={props.navigation}
-        />
-      ) : null}
     </ScrollViewToTop>
   );
 };

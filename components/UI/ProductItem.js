@@ -22,9 +22,48 @@ const ProductItem = (props) => {
   const viewerIsSeller = loggedInUserId === props.itemData.ownerId;
   const viewerIsBuyer =
     loggedInUserId === (props.itemData.reservedUserId || props.itemData.collectingUserId);
-  const waitingForYou =
-    (viewerIsBuyer && !props.itemData.buyerAgreed) ||
-    (viewerIsSeller && !props.itemData.sellerAgreed);
+
+  const youHaveNotAgreed = viewerIsBuyer
+    ? !props.itemData.buyerAgreed
+    : viewerIsSeller
+    ? !props.itemData.sellerAgreed
+    : null;
+
+  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
+
+  const isReserved = props.itemData.status === 'reserverad';
+  const isOrganised = props.itemData.status === 'ordnad';
+  const isPickedUp = props.itemData.status === 'hämtad';
+
+  let icon;
+  let bgColor;
+
+  let userBadgeIcon;
+  let badgeText;
+
+  if (isReserved) {
+    icon = 'bookmark';
+    bgColor = Colors.primary;
+    userBadgeIcon = 'return-left';
+    badgeText = `Går ut ${moment(props.itemData.reservedUntil)
+      .locale('sv')
+      .endOf('day')
+      .fromNow()}`;
+  }
+
+  if (isOrganised) {
+    icon = 'star';
+    bgColor = Colors.subtleBlue;
+    userBadgeIcon = 'clock';
+    badgeText = moment(props.itemData.collectingDate).locale('sv').calendar();
+  }
+
+  if (isPickedUp) {
+    icon = 'checkmark';
+    bgColor = Colors.completed;
+    userBadgeIcon = 'checkmark';
+    badgeText = `Ordnat ${moment(props.itemData.collectedDate).locale('sv').calendar()}`;
+  }
 
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
@@ -38,86 +77,58 @@ const ProductItem = (props) => {
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.container}>
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
-        {props.itemData.collectingDate ? (
-          <StatusBadge
+        {props.isSearchView ? (
+          <Ionicons
             style={{
-              padding: 0,
-              margin: 0,
               position: 'absolute',
+              alignSelf: 'flex-start',
+              textAlign: 'center',
               zIndex: 100,
-            }}
-            textStyle={{
-              textTransform: 'uppercase',
-              fontSize: 10,
-              padding: 4,
+              backgroundColor: bgColor,
               color: '#fff',
+              width: 30,
             }}
-            text={moment(props.itemData.collectingDate).locale('sv').calendar()}
-            icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-            backgroundColor={Colors.subtleBlue}
+            name={icon ? (Platform.OS === 'android' ? `md-${icon}` : `ios-${icon}`) : null}
+            size={23}
           />
-        ) : null}
-        {props.itemData.status === 'reserverad' && (
+        ) : (
           <>
-            {props.itemData.suggestedDate ? (
+            <StatusBadge
+              style={styles.statusBadge}
+              textStyle={styles.statusText}
+              text={badgeText}
+              icon={
+                userBadgeIcon
+                  ? Platform.OS === 'android'
+                    ? `md-${userBadgeIcon}`
+                    : `ios-${userBadgeIcon}`
+                  : null
+              }
+              backgroundColor={bgColor}
+            />
+            {isReserved ? (
               <StatusBadge
                 style={{
                   padding: 0,
-                  marginTop: 0,
+                  top: 20,
                   position: 'absolute',
                   zIndex: 100,
                 }}
-                textStyle={{
-                  textTransform: 'uppercase',
-                  fontSize: 10,
-                  padding: 4,
-                  color: '#fff',
-                }}
+                textStyle={styles.statusText}
                 text={
-                  props.itemData.suggestedDate && waitingForYou
+                  !props.itemData.suggestedDate
+                    ? 'Ange tidsförslag'
+                    : waitingForYou
                     ? 'Väntar på ditt godkännande'
-                    : 'Ange tidsförslag'
+                    : 'Väntar på motpart'
                 }
                 icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
                 backgroundColor={Colors.subtlePurple}
               />
             ) : null}
-            <StatusBadge
-              style={{
-                padding: 0,
-                marginTop: props.itemData.suggestedDate ? 22 : 0,
-                position: 'absolute',
-                zIndex: 100,
-              }}
-              textStyle={{
-                textTransform: 'uppercase',
-                fontSize: 10,
-                padding: 4,
-                color: '#fff',
-              }}
-              text={moment(props.itemData.reservedUntil).locale('sv').calendar()}
-              icon={Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'}
-              backgroundColor={Colors.primary}
-            />
           </>
         )}
 
-        {props.itemData.status === 'hämtad' && (
-          <Ionicons
-            style={{
-              ...styles.icon,
-              backgroundColor: Colors.completed,
-              color: '#fff',
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 0,
-              fontSize: 25,
-            }}
-            name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-            size={23}
-            color={props.itemData.color}
-          />
-        )}
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
             {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
@@ -149,19 +160,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   product: {
-    height: 150,
+    height: 220,
     width: '93%',
     margin: '1.5%',
     borderWidth: 0.5,
     borderColor: '#ddd',
     marginTop: 15,
   },
+  statusBadge: {
+    padding: 0,
+    margin: 0,
+    top: 0,
+    position: 'absolute',
+    zIndex: 100,
+  },
+  statusText: {
+    textTransform: 'uppercase',
+    fontSize: 10,
+    padding: 4,
+    color: '#fff',
+  },
   horizontalProduct: {
-    height: 150,
-    width: 185,
+    height: 220,
+    width: 220,
     marginLeft: 10,
     borderWidth: 0.5,
     borderColor: '#ddd',

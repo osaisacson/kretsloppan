@@ -32,13 +32,6 @@ const UserProfile = (props) => {
     return new Date(b.date) - new Date(a.date);
   });
 
-  //Reserved: Gets all collected products from user products
-  const reservedUserProductsRaw = userProducts.filter((product) => product.status === 'reserverad');
-
-  const reservedUserProducts = reservedUserProductsRaw.sort(function (a, b) {
-    return new Date(b.reservedDate) - new Date(a.reservedDate);
-  });
-
   //COLLECTED: Gets all collected products from all products
   const collectedItemsRawAll = availableProducts.filter((product) => product.status === 'hämtad');
 
@@ -62,7 +55,9 @@ const UserProfile = (props) => {
   const givenByUser = collectedItemsUser.filter((product) => product.newOwnerId !== visitedUserId);
 
   //AVAILABLE: Gets all products which are not booked or organised
-  const availableUserProductsRaw = userProducts.filter((product) => product.status === 'redo');
+  const availableUserProductsRaw = userProducts.filter(
+    (product) => product.status === 'redo' || product.status === ''
+  );
 
   const availableUserProducts = availableUserProductsRaw.sort(function (a, b) {
     return new Date(b.readyDate) - new Date(a.readyDate);
@@ -76,6 +71,7 @@ const UserProfile = (props) => {
   //Sets indicator numbers
   const added = userProducts.length;
   const collected = collectedByUser.length;
+  const collectedFromUser = collectedItemsUser.length;
   const nrOfProjects = userProjects.length;
 
   return (
@@ -110,9 +106,15 @@ const UserProfile = (props) => {
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>
+              {collectedFromUser ? collectedFromUser : 0}
+            </Paragraph>
+            <Caption style={userProfileStyles.caption}>Sålda</Caption>
+          </View>
+          <View style={userProfileStyles.section}>
+            <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>
               {collected ? collected : 0}
             </Paragraph>
-            <Caption style={userProfileStyles.caption}>Hämtade</Caption>
+            <Caption style={userProfileStyles.caption}>Köpta</Caption>
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>
@@ -133,19 +135,13 @@ const UserProfile = (props) => {
 
       {/* Product, project and proposal sections */}
       <HorizontalScroll
-        title="Tillgängligt förråd"
-        subTitle="Återbruk upplagt av användaren"
-        scrollData={availableUserProducts}
+        largeImageItem
+        detailPath="ProjectDetail"
+        title="Projekt"
+        subTitle="Projekt användaren bygger med återbruk"
+        scrollData={userProjects}
         navigation={props.navigation}
       />
-      {reservedUserProducts.length ? (
-        <HorizontalScroll
-          title="Reserverat"
-          subTitle="Återbruk upplagt av användaren, reserverat"
-          scrollData={reservedUserProducts}
-          navigation={props.navigation}
-        />
-      ) : null}
       <HorizontalScroll
         textItem
         detailPath="ProposalDetail"
@@ -155,21 +151,11 @@ const UserProfile = (props) => {
         navigation={props.navigation}
       />
       <HorizontalScroll
-        largeImageItem
-        detailPath="ProjectDetail"
-        title="Projekt"
-        subTitle="Projekt användaren bygger med återbruk"
-        scrollData={userProjects}
+        title="Tillgängligt förråd"
+        subTitle="Återbruk av användaren som är tillgängligt att reservera"
+        scrollData={availableUserProducts}
         navigation={props.navigation}
       />
-      {collectedByUser.length ? (
-        <HorizontalScroll
-          title="Hämtat"
-          subTitle="Återbruk använt av användaren"
-          scrollData={collectedByUser}
-          navigation={props.navigation}
-        />
-      ) : null}
       {givenByUser.length ? (
         <HorizontalScroll
           title="Gett Igen"

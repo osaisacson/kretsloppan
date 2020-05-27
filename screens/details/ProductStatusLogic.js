@@ -1,6 +1,7 @@
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Platform } from 'react-native';
+import { useSelector } from 'react-redux';
 
 //Imports
 import StatusBadge from '../../components/UI/StatusBadge';
@@ -9,15 +10,21 @@ import Colors from '../../constants/Colors';
 const ProductStatusLogic = (props) => {
   const {
     status,
-
     reservedUntil,
     collectingDate,
+    ownerId,
+    reservedUserId,
+    collectingUserId,
+    buyerAgreed,
+    sellerAgreed,
+    suggestedDate,
   } = props.selectedProduct;
 
   //These will change based on where we are in the reservation process
   let statusText;
   let statusIcon;
   let statusColor;
+  let promptText;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -26,7 +33,7 @@ const ProductStatusLogic = (props) => {
 
   if (isReserved) {
     statusText = `Reserverad tills ${Moment(reservedUntil).locale('sv').calendar()}`;
-    statusIcon = 'clock';
+    statusIcon = 'bookmark';
     statusColor = Colors.primary;
   }
 
@@ -42,6 +49,23 @@ const ProductStatusLogic = (props) => {
     statusColor = Colors.completed;
   }
 
+  if (suggestedDate) {
+    promptText = `Tid föreslagen, ${
+      waitingForYou ? 'väntar på godkännande ' : 'väntar på motparts godkännande'
+    }`;
+  }
+
+  if (!suggestedDate) {
+    promptText = "Inget tidsförslag än, föreslå ett via 'logistik' nedan";
+  }
+
+  const loggedInUserId = useSelector((state) => state.auth.userId);
+
+  const viewerIsSeller = loggedInUserId === ownerId;
+  const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
+  const youHaveNotAgreed = viewerIsBuyer ? !buyerAgreed : viewerIsSeller ? !sellerAgreed : null;
+  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
+
   return (
     <View style={{ marginTop: 20 }}>
       {/* If we have a status of the product, show a badge with conditional copy */}
@@ -50,6 +74,15 @@ const ProductStatusLogic = (props) => {
         text={statusText}
         icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
         backgroundColor={statusColor}
+      />
+      <StatusBadge
+        style={{ alignSelf: 'flex-end' }}
+        textStyle={{
+          textAlign: 'right',
+        }}
+        text={promptText}
+        icon={Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'}
+        backgroundColor={Colors.subtlePurple}
       />
     </View>
   );
