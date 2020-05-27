@@ -186,7 +186,7 @@ export const ShopNavigator = (props) => {
                   marginTop: 35
                 }}
               >
-                Ge igen
+                Kretsloppan
               </Text> */}
               <Divider style={{ backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
@@ -219,7 +219,7 @@ export const ShopNavigator = (props) => {
         activeTintColor: Colors.primary,
       }}>
       <ShopDrawerNavigator.Screen
-        name="Ge Igen"
+        name="Kretsloppan"
         component={TabNavigator}
         options={{
           drawerIcon: (props) => <MaterialIcons name="home" size={23} color={props.color} />,

@@ -16,14 +16,14 @@ const TabStackNavigator = createMaterialBottomTabNavigator();
 export const TabNavigator = () => {
   return (
     <TabStackNavigator.Navigator
-      initialRouteName="Ge Igen"
+      initialRouteName="Kretsloppan"
       labeled
       shifting
       activeColor={Colors.lightPrimary}
       inactiveColor={Colors.lightPrimary}
       barStyle={{ backgroundColor: Colors.darkPrimary }}>
       <TabStackNavigator.Screen
-        name="Ge Igen"
+        name="Kretsloppan"
         component={SpotlightNavigator}
         options={{
           tabBarIcon: ({ color }) => <MaterialIcons name="home" color={color} size={23} />,

@@ -44,7 +44,7 @@ export const SpotlightNavigator = () => {
   return (
     <SpotlightStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <SpotlightStackNavigator.Screen
-        name="Ge Igen"
+        name="Kretsloppan"
         component={SpotlightProductsScreen}
         options={defaultMainPageOptions}
       />

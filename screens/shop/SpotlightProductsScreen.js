@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -57,13 +57,22 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
-          title="Senaste"
-          subTitle="Senast uppladdade återbruket"
+          title="Senaste Återbruket"
+          subTitle="Senast tillgängliga återbruket"
           isNavigationButton
           buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Återbruk')}
           scrollData={recentProducts}
           navigation={props.navigation}
+          icon={
+            <FontAwesome5
+              name="recycle"
+              size={21}
+              style={{
+                marginRight: 5,
+              }}
+            />
+          }
         />
         <HorizontalScroll
           textItem
