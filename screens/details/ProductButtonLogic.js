@@ -62,7 +62,10 @@ const ProductButtonLogic = (props) => {
 
   const viewerIsSeller = loggedInUserId === ownerId;
   const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
-  const waitingForYou = (viewerIsBuyer && !buyerAgreed) || (viewerIsSeller && !sellerAgreed);
+
+  const youHaveNotAgreed = viewerIsBuyer ? !buyerAgreed : viewerIsSeller ? !sellerAgreed : null;
+
+  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
 
   //Will change based on where we are in the reservation process
   let receivingId;
@@ -416,18 +419,7 @@ const ProductButtonLogic = (props) => {
                   </View>
                 </>
               ) : null}
-              {suggestedDate ? (
-                <StatusBadge
-                  style={{ alignSelf: 'center', marginTop: 10 }}
-                  text={`Tid föreslagen, ${
-                    waitingForYou ? 'väntar på ditt godkännande ' : 'väntar på motparts godkännande'
-                  }`}
-                  icon={
-                    Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'
-                  }
-                  backgroundColor={Colors.subtlePurple}
-                />
-              ) : null}
+
               {!suggestedDate ? (
                 <>
                   <HeaderThree

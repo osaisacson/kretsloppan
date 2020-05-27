@@ -86,6 +86,7 @@ const ProductsScreen = (props) => {
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProductItem
+            isSearchView
             itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);

@@ -20,10 +20,8 @@ const ProductItem = (props) => {
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   const viewerIsSeller = loggedInUserId === props.itemData.ownerId;
-  console.log('viewerIsSeller', viewerIsSeller);
   const viewerIsBuyer =
     loggedInUserId === (props.itemData.reservedUserId || props.itemData.collectingUserId);
-  console.log('viewerIsBuyer', viewerIsBuyer);
 
   const youHaveNotAgreed = viewerIsBuyer
     ? !props.itemData.buyerAgreed
@@ -32,6 +30,40 @@ const ProductItem = (props) => {
     : null;
 
   const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
+
+  const isReserved = props.itemData.status === 'reserverad';
+  const isOrganised = props.itemData.status === 'ordnad';
+  const isPickedUp = props.itemData.status === 'hämtad';
+
+  let icon;
+  let bgColor;
+
+  let userBadgeIcon;
+  let badgeText;
+
+  if (isReserved) {
+    icon = 'bookmark';
+    bgColor = Colors.primary;
+    userBadgeIcon = 'return-left';
+    badgeText = `Går ut ${moment(props.itemData.reservedUntil)
+      .locale('sv')
+      .endOf('day')
+      .fromNow()}`;
+  }
+
+  if (isOrganised) {
+    icon = 'star';
+    bgColor = Colors.subtleBlue;
+    userBadgeIcon = 'clock';
+    badgeText = moment(props.itemData.collectingDate).locale('sv').calendar();
+  }
+
+  if (isPickedUp) {
+    icon = 'checkmark';
+    bgColor = Colors.completed;
+    userBadgeIcon = 'checkmark';
+    badgeText = `Hämtat ${moment(props.itemData.collectedDate).locale('sv').calendar()}`;
+  }
 
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
   //If platform is android and the version is the one which supports the ripple effect
@@ -45,90 +77,58 @@ const ProductItem = (props) => {
     //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.container}>
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
-        {props.itemData.collectingDate ? (
-          <StatusBadge
+        {props.isSearchView ? (
+          <Ionicons
             style={{
-              padding: 0,
-              margin: 0,
               position: 'absolute',
+              alignSelf: 'flex-start',
+              textAlign: 'center',
               zIndex: 100,
-            }}
-            textStyle={{
-              textTransform: 'uppercase',
-              fontSize: 10,
-              padding: 4,
+              backgroundColor: bgColor,
               color: '#fff',
+              width: 30,
             }}
-            text={moment(props.itemData.collectingDate).locale('sv').calendar()}
-            icon={Platform.OS === 'android' ? 'md-clock' : 'ios-clock'}
-            backgroundColor={Colors.subtleBlue}
+            name={icon ? (Platform.OS === 'android' ? `md-${icon}` : `ios-${icon}`) : null}
+            size={23}
           />
-        ) : null}
-        {props.itemData.status === 'reserverad' && (
+        ) : (
           <>
             <StatusBadge
-              style={{
-                padding: 0,
-                marginTop: 0,
-                position: 'absolute',
-                zIndex: 100,
-              }}
-              textStyle={{
-                textTransform: 'uppercase',
-                fontSize: 10,
-                padding: 4,
-                color: '#fff',
-              }}
-              text={
-                !props.itemData.suggestedDate
-                  ? 'Väntar på tidsförslag'
-                  : waitingForYou
-                  ? 'Väntar på ditt godkännande'
-                  : 'Väntar på motpart'
+              style={styles.statusBadge}
+              textStyle={styles.statusText}
+              text={badgeText}
+              icon={
+                userBadgeIcon
+                  ? Platform.OS === 'android'
+                    ? `md-${userBadgeIcon}`
+                    : `ios-${userBadgeIcon}`
+                  : null
               }
-              icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
-              backgroundColor={Colors.subtlePurple}
+              backgroundColor={bgColor}
             />
-
-            <StatusBadge
-              style={{
-                padding: 0,
-                marginTop: 22,
-                position: 'absolute',
-                zIndex: 100,
-              }}
-              textStyle={{
-                textTransform: 'uppercase',
-                fontSize: 10,
-                padding: 4,
-                color: '#fff',
-              }}
-              text={`Går ut ${moment(props.itemData.reservedUntil)
-                .locale('sv')
-                .endOf('day')
-                .fromNow()}`}
-              icon={Platform.OS === 'android' ? 'md-return-left' : 'ios-return-left'}
-              backgroundColor={Colors.primary}
-            />
+            {isReserved ? (
+              <StatusBadge
+                style={{
+                  padding: 0,
+                  top: 20,
+                  position: 'absolute',
+                  zIndex: 100,
+                }}
+                textStyle={styles.statusText}
+                text={
+                  !props.itemData.suggestedDate
+                    ? 'Ange tidsförslag'
+                    : waitingForYou
+                    ? 'Väntar på ditt godkännande'
+                    : 'Väntar på motpart'
+                }
+                icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
+                backgroundColor={Colors.subtlePurple}
+              />
+            ) : null}
           </>
         )}
 
-        {props.itemData.status === 'hämtad' && (
-          <Ionicons
-            style={{
-              ...styles.icon,
-              backgroundColor: Colors.completed,
-              color: '#fff',
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingBottom: 0,
-              fontSize: 25,
-            }}
-            name={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-            size={23}
-            color={props.itemData.color}
-          />
-        )}
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
             {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   product: {
     height: 150,
@@ -169,6 +169,19 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#ddd',
     marginTop: 15,
+  },
+  statusBadge: {
+    padding: 0,
+    margin: 0,
+    top: 0,
+    position: 'absolute',
+    zIndex: 100,
+  },
+  statusText: {
+    textTransform: 'uppercase',
+    fontSize: 10,
+    padding: 4,
+    color: '#fff',
   },
   horizontalProduct: {
     height: 150,

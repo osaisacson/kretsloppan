@@ -1,8 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 
 //Imports
 import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 const StatusBadge = (props) => {
   return (
@@ -15,6 +15,7 @@ const StatusBadge = (props) => {
         color: '#fff',
         marginBottom: 10,
         paddingHorizontal: 5,
+        alignItems: 'center',
         backgroundColor: props.backgroundColor,
       }}>
       <Ionicons
@@ -23,19 +24,18 @@ const StatusBadge = (props) => {
           paddingRight: 4,
         }}
         name={props.icon}
-        size={20}
+        size={16}
       />
       <Text
-        style={
-          props.textStyle
-            ? { ...props.textStyle }
-            : {
-                textTransform: 'uppercase',
-                fontSize: 12,
-                padding: 4,
-                color: '#fff',
-              }
-        }>
+        style={[
+          props.textStyle,
+          {
+            textTransform: 'uppercase',
+            fontSize: 12,
+            padding: 4,
+            color: '#fff',
+          },
+        ]}>
         {props.text}
       </Text>
     </View>

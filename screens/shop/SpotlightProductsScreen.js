@@ -1,5 +1,4 @@
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
