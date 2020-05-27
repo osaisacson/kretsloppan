@@ -31,7 +31,7 @@ const StatusBadge = (props) => {
           props.textStyle,
           {
             textTransform: 'uppercase',
-            fontSize: 12,
+            fontSize: 11,
             padding: 4,
             color: '#fff',
           },

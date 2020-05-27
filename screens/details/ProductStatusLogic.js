@@ -24,6 +24,7 @@ const ProductStatusLogic = (props) => {
   let statusText;
   let statusIcon;
   let statusColor;
+  let promptText;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -48,6 +49,16 @@ const ProductStatusLogic = (props) => {
     statusColor = Colors.completed;
   }
 
+  if (suggestedDate) {
+    promptText = `Tid föreslagen, ${
+      waitingForYou ? 'väntar på godkännande ' : 'väntar på motparts godkännande'
+    }`;
+  }
+
+  if (!suggestedDate) {
+    promptText = "Inget tidsförslag än, föreslå ett via 'logistik' nedan";
+  }
+
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   const viewerIsSeller = loggedInUserId === ownerId;
@@ -64,19 +75,15 @@ const ProductStatusLogic = (props) => {
         icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
         backgroundColor={statusColor}
       />
-      {suggestedDate ? (
-        <StatusBadge
-          style={{ alignSelf: 'flex-end' }}
-          textStyle={{
-            textAlign: 'right',
-          }}
-          text={`Tid föreslagen, ${
-            waitingForYou ? 'väntar på godkännande ' : 'väntar på motparts godkännande'
-          }`}
-          icon={Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'}
-          backgroundColor={Colors.subtlePurple}
-        />
-      ) : null}
+      <StatusBadge
+        style={{ alignSelf: 'flex-end' }}
+        textStyle={{
+          textAlign: 'right',
+        }}
+        text={promptText}
+        icon={Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'}
+        backgroundColor={Colors.subtlePurple}
+      />
     </View>
   );
 };

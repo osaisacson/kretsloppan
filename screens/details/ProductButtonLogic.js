@@ -406,7 +406,7 @@ const ProductButtonLogic = (props) => {
 
               {!collectingDate && suggestedDate ? (
                 <>
-                  <View style={[styles.box, { backgroundColor: Colors.subtlePurple }]}>
+                  <View style={styles.box}>
                     <HeaderThree
                       style={styles.boxText}
                       text={`Föreslagen tid av ${waitingForYou ? 'motpart' : 'dig'}: ${moment(
@@ -529,7 +529,7 @@ const ProductButtonLogic = (props) => {
           {collectingDate && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
               <Divider style={{ marginBottom: 10 }} />
-              <View style={[styles.box, { backgroundColor: Colors.subtleBlue }]}>
+              <View style={styles.box}>
                 <HeaderThree
                   style={styles.boxText}
                   text={`Överenskommen tid: ${moment(collectingDate)
@@ -644,12 +644,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   box: {
-    padding: 6,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     alignSelf: 'center',
+    backgroundColor: Colors.subtleGrey,
   },
   boxText: {
+    fontFamily: 'roboto-bold',
     fontSize: 16,
-    fontWeight: '500',
     color: '#fff',
     textAlign: 'center',
   },
