@@ -19,7 +19,7 @@ const HorizontalScroll = (props) => {
   //Check if we instead should render the RoundItem
   if (props.roundItem) {
     RenderedItem = RoundItem;
-    scrollHeight = props.scrollHeight ? props.scrollHeight : 180;
+    scrollHeight = props.scrollHeight ? props.scrollHeight : 220;
   }
 
   //Check if we instead should render the TextItem

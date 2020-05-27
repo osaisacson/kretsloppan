@@ -14,7 +14,6 @@ import HorizontalScrollContainer from '../../components/UI/HorizontalScrollConta
 import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
 import SmallRoundItem from '../../components/UI/SmallRoundItem';
-import StatusBadge from '../../components/UI/StatusBadge';
 import UserAvatar from '../../components/UI/UserAvatar';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import Colors from '../../constants/Colors';
@@ -78,7 +77,7 @@ const ProductButtonLogic = (props) => {
 
   if (isOrganised) {
     receivingId = collectingUserId;
-    statusColor = Colors.neutral;
+    statusColor = Colors.subtleBlue;
   }
 
   if (isPickedUp) {
@@ -167,6 +166,7 @@ const ProductButtonLogic = (props) => {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
+            setIsLoading(true);
             dispatch(
               productsActions.changeProductStatus(
                 id,
@@ -174,7 +174,7 @@ const ProductButtonLogic = (props) => {
                 checkedProjectId,
                 prevReservedUser
               ) //by default resets the date to expire in 24 hours, since the status is 'reserved'
-            );
+            ).then(setIsLoading(false));
             setSuggestedDateLocal('');
             setShowUserProjects(false);
             props.navigation.goBack();

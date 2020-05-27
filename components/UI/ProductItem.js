@@ -62,7 +62,7 @@ const ProductItem = (props) => {
     icon = 'checkmark';
     bgColor = Colors.completed;
     userBadgeIcon = 'checkmark';
-    badgeText = `Hämtat ${moment(props.itemData.collectedDate).locale('sv').calendar()}`;
+    badgeText = `Ordnat ${moment(props.itemData.collectedDate).locale('sv').calendar()}`;
   }
 
   let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   product: {
-    height: 150,
+    height: 220,
     width: '93%',
     margin: '1.5%',
     borderWidth: 0.5,
@@ -184,8 +184,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   horizontalProduct: {
-    height: 150,
-    width: 185,
+    height: 220,
+    width: 220,
     marginLeft: 10,
     borderWidth: 0.5,
     borderColor: '#ddd',
