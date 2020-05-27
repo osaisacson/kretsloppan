@@ -73,11 +73,7 @@ const ProductItem = (props) => {
                   padding: 4,
                   color: '#fff',
                 }}
-                text={
-                  props.itemData.suggestedDate && waitingForYou
-                    ? 'Väntar på ditt godkännande'
-                    : 'Ange tidsförslag'
-                }
+                text={waitingForYou ? 'Väntar på ditt godkännande' : 'Ange tidsförslag'}
                 icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
                 backgroundColor={Colors.subtlePurple}
               />

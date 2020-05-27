@@ -65,31 +65,42 @@ export function fetchProducts() {
         products: loadedProducts,
         userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
       });
-      const reservedItems = loadedProducts.filter((prod) => prod.status === 'reserverad');
       console.log(
-        `${reservedItems.length} reserved products found. Checking if any of them are expired...`
+        `${loadedProducts.length} products found and loaded. Checking if any of them are reserved...`
       );
+      const reservedItems = loadedProducts.filter((prod) => prod.status === 'reserverad');
+      if (reservedItems.length) {
+        console.log(
+          `...${reservedItems.length} reserved products found. Checking if any of them are expired...`
+        );
 
-      for (const key in reservedItems) {
-        //Is the product reservation expired?
-        const reservationExpiryDate = new Date(reservedItems[key].reservedUntil);
-        const isPickedUp = reservedItems[key].status === 'hämtad';
-        const collectionIsNotAgreed = !reservedItems[key].collectingDate;
-        const shouldBeReset =
-          !isPickedUp &&
-          collectionIsNotAgreed &&
-          reservationExpiryDate instanceof Date &&
-          reservationExpiryDate <= new Date();
+        for (const key in reservedItems) {
+          //Is the product reservation expired?
+          const reservationExpiryDate = new Date(reservedItems[key].reservedUntil);
+          const isPickedUp = reservedItems[key].status === 'hämtad';
+          const collectionIsNotAgreed = !reservedItems[key].collectingDate;
+          const shouldBeReset =
+            !isPickedUp &&
+            collectionIsNotAgreed &&
+            reservationExpiryDate instanceof Date &&
+            reservationExpiryDate <= new Date();
 
-        //If the product has expired, call a function which passes correct new fields and then push the updated product to the reservedItems array
-        if (shouldBeReset) {
-          console.log('...found expired product, calling unReserveProduct to update it. ------>');
-          dispatch(unReserveProduct(key));
-          console.log(`${key} product was expired, but is now updated.`);
-        } else {
-          console.log(`...${key} still has a valid reservation date, and stays reserved.`);
+          //If the product has expired, call a function which passes correct new fields and then push the updated product to the reservedItems array
+          if (shouldBeReset) {
+            console.log('...found expired product, calling unReserveProduct to update it. ------>');
+            dispatch(unReserveProduct(key));
+            console.log(`${reservedItems[key].id} product was expired, but is now updated.`);
+          } else {
+            console.log(
+              `...${reservedItems[key].id} still has a valid reservation date, and stays reserved.`
+            );
+          }
+          console.log(`...${reservedItems.length} products checked.`);
         }
-        console.log(`...${reservedItems.length} products checked.`);
+      } else {
+        console.log(
+          `...${reservedItems.length} reserved products found. Moving on with our lives.`
+        );
       }
     } catch (error) {
       console.log('Error in actions/products/fetchProducts: ', error);
