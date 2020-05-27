@@ -27,8 +27,6 @@ const SpotlightProductsScreen = (props) => {
 
   const recentProducts = recentProductsSorted.slice(0, 5);
 
-  console.log('recentProducts: ', recentProducts);
-
   return (
     <SaferArea>
       <Introduction
