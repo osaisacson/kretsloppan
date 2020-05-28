@@ -184,8 +184,7 @@ const UserSpotlightScreen = (props) => {
       {reservedProducts.length ? (
         <HorizontalScroll
           title="Reservationer under diskussion"
-          subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar."
-          extraSubTitle="Nästa steg: förslå tid eller godkänn givet förslag. Om behov kontakta varandra för att diskutera fler detaljer."
+          subTitle="Föreslå tid eller godkänn givet tidsförslag innan reservationen går ut. Om behov kontakta varandra för att diskutera fler detaljer."
           bgColor={Colors.lightPrimary}
           scrollData={reservedProducts}
           showNotificationBadge
