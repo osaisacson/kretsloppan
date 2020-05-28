@@ -1,5 +1,4 @@
-import { getIndex, updateCollection } from '../helpers';
-
+import Proposal from '../../models/proposal';
 import {
   DELETE_PROPOSAL,
   CREATE_PROPOSAL,
@@ -7,7 +6,7 @@ import {
   SET_PROPOSALS,
   CHANGE_PROPOSAL_STATUS,
 } from '../actions/proposals';
-import Proposal from '../../models/proposal';
+import { getIndex, updateCollection } from '../helpers';
 
 const initialState = {
   availableProposals: [],
@@ -32,10 +31,7 @@ export default (state = initialState, action) => {
         action.proposalData.date,
         action.proposalData.status
       );
-      console.log(
-        'store/reducers/proposals/CREATE_PROPOSAL, new proposal: ',
-        newProposal
-      );
+      console.log('store/reducers/proposals/CREATE_PROPOSAL, new proposal: ', newProposal);
       return {
         ...state,
         availableProposals: state.availableProposals.concat(newProposal),
@@ -77,10 +73,7 @@ export default (state = initialState, action) => {
         userProposals: updatedUserProposals,
       };
     case CHANGE_PROPOSAL_STATUS:
-      const availableProposalsIndexCPS = getIndex(
-        state.availableProposals,
-        action.pid
-      );
+      const availableProposalsIndexCPS = getIndex(state.availableProposals, action.pid);
 
       console.log(
         'store/reducers/proposals/CHANGE_PROPOSAL_STATUS, original proposal: ',
@@ -122,9 +115,7 @@ export default (state = initialState, action) => {
     case DELETE_PROPOSAL:
       return {
         ...state,
-        userProposals: state.userProposals.filter(
-          (proposal) => proposal.id !== action.pid
-        ),
+        userProposals: state.userProposals.filter((proposal) => proposal.id !== action.pid),
         availableProposals: state.availableProposals.filter(
           (proposal) => proposal.id !== action.pid
         ),

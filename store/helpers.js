@@ -36,7 +36,6 @@ export function convertImage(image) {
       return firebaseImageUrl;
     } catch (error) {
       console.log('----------actions/images/convertImage--------END');
-      // Rethrow so returned Promise is rejected
       throw error;
     }
   };

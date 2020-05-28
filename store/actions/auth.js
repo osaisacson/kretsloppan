@@ -27,7 +27,7 @@ export const signup = (
   profileDescription,
   phone,
   address,
-  defaultPickupDetails = '',
+  defaultPickupDetails,
   image
 ) => {
   return async (dispatch) => {

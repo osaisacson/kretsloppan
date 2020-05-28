@@ -119,11 +119,7 @@ const EditProposalScreen = (props) => {
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
-    console.log('inputIdentifier: ', inputIdentifier);
-    console.log('text: ', text);
-
     //inputIdentifier and text will act as key:value in the form reducer
-
     let isValid = true;
 
     //If we haven't entered any value (its empty) set form validity to false

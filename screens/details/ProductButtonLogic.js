@@ -51,6 +51,7 @@ const ProductButtonLogic = (props) => {
     address,
     sellerAgreed,
     buyerAgreed,
+    pickupDetails,
   } = props.selectedProduct;
 
   //Check status of product and privileges of user
@@ -384,6 +385,12 @@ const ProductButtonLogic = (props) => {
               <Text>{ownerProfile.profileName}</Text>
               <Text>{phone ? phone : 'Ingen telefon angiven'}</Text>
               {address ? <Text>{address ? address : 'Ingen address angiven'}</Text> : null}
+              {pickupDetails ? (
+                <View style={styles.pickupDetails}>
+                  <HeaderThree text="Upphämtningsdetaljer: " />
+                  <Text>{pickupDetails}</Text>
+                </View>
+              ) : null}
             </View>
 
             {receivingProfile ? (
@@ -599,19 +606,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    height: 80,
+  },
+  pickupDetails: {
+    paddingVertical: 8,
   },
   receivingOptions: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-end',
-    height: 80,
+    paddingBottom: 5,
   },
   oneLineRight: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    textAlign: 'right',
     right: 0,
   },
   leftTextAndBadge: {

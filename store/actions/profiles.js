@@ -133,7 +133,7 @@ export function updateProfile(
         image,
       };
 
-      console.log('Attempting to update profile...');
+      console.log('Attempting to update profile...', dataToUpdate);
 
       if (image.length > 1000) {
         const convertedImage = await dispatch(convertImage(image));

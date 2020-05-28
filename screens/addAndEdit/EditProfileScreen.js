@@ -218,7 +218,7 @@ const EditProfileScreen = (props) => {
           placeholder="Generella upphämtningsdetaljer (valfritt)"
           style={formStyles.input}
           value={formState.inputValues.defaultPickupDetails}
-          onChangeText={textChangeHandler.bind(this, 'defaultPickupDetails')}
+          onChangeText={textChangeHandler('defaultPickupDetails')}
           keyboardType="default"
           autoCapitalize="none"
           returnKeyType="done"
