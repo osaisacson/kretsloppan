@@ -98,7 +98,7 @@ const UserProductsScreen = (props) => {
       <FlatList
         initialNumToRender={8}
         horizontal={false}
-        numColumns={3}
+        numColumns={2}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
         data={productsSorted}
