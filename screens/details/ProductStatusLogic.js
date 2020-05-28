@@ -25,7 +25,7 @@ const ProductStatusLogic = (props) => {
   let statusIcon;
   let statusColor;
   let promptText;
-  let bgColor;
+  let bgColor = Colors.subtlePurple;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';

@@ -1,22 +1,19 @@
 import Profile from '../../models/profile';
+import { convertImage } from '../helpers';
 
 export const SET_PROFILES = 'SET_PROFILES';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 
-import { convertImage } from '../helpers';
-
 export const fetchProfiles = () => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        'https://egnahemsfabriken.firebaseio.com/profiles.json'
-      );
+      const response = await fetch('https://egnahemsfabriken.firebaseio.com/profiles.json');
 
       if (!response.ok) {
         const errorResData = await response.json();
         const errorId = errorResData.error.message;
-        let message = errorId;
+        const message = errorId;
         throw new Error(message);
       }
 
@@ -33,6 +30,7 @@ export const fetchProfiles = () => {
             resData[key].email,
             resData[key].phone,
             resData[key].address,
+            resData[key].defaultPickupDetails,
             resData[key].image,
             resData[key].expoTokens
           )
@@ -56,6 +54,7 @@ export function createProfile(
   email,
   phone,
   address,
+  defaultPickupDetails,
   image
 ) {
   return async (dispatch, getState) => {
@@ -63,8 +62,6 @@ export function createProfile(
     const userId = getState().auth.userId;
 
     try {
-      console.log('START----------actions/profiles/createProfile--------');
-
       const convertedImage = await dispatch(convertImage(image));
       const profileData = {
         profileId: userId, //Set profileId to be the userId of the logged in user: we get this from auth
@@ -73,9 +70,11 @@ export function createProfile(
         email,
         phone,
         address,
+        defaultPickupDetails,
         image: convertedImage.image, //This is how we link to the image we store above
       };
 
+      console.log('Attempting to create a profile...');
       // Perform the API call - create the profile, passing the profileData object above
       const response = await fetch(
         `https://egnahemsfabriken.firebaseio.com/profiles.json?auth=${token}`,
@@ -86,7 +85,7 @@ export function createProfile(
       );
       const returnedProfileData = await response.json();
 
-      console.log('dispatching CREATE_PROFILE');
+      console.log('...profile created:', returnedProfileData);
 
       dispatch({
         type: CREATE_PROFILE,
@@ -98,14 +97,12 @@ export function createProfile(
           email,
           phone,
           address,
+          defaultPickupDetails,
           image: convertedImage.image,
         },
       });
-      console.log('----------actions/profiles/createProfile--------END');
     } catch (error) {
-      console.log(error);
-      ('----------actions/profiles/createProfile--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/profiles/createProfile', error);
       throw error;
     }
   };
@@ -118,6 +115,7 @@ export function updateProfile(
   email,
   phone,
   address,
+  defaultPickupDetails,
   image
 ) {
   return async (dispatch, getState) => {
@@ -125,16 +123,17 @@ export function updateProfile(
     const userId = getState().auth.userId;
 
     try {
-      console.log('START----------actions/profiles/updateProfile--------');
-
       let dataToUpdate = {
         profileName,
         profileDescription,
         email,
         phone,
         address,
+        defaultPickupDetails,
         image,
       };
+
+      console.log('Attempting to update profile...');
 
       if (image.length > 1000) {
         const convertedImage = await dispatch(convertImage(image));
@@ -145,10 +144,9 @@ export function updateProfile(
           email,
           phone,
           address,
+          defaultPickupDetails,
           image: convertedImage.image,
         };
-
-        console.log('----------actions/profiles/updateProfile--------END');
       }
 
       // Perform the API call - create the profile, passing the profileData object above
@@ -164,12 +162,7 @@ export function updateProfile(
       );
       const returnedProfileData = await response.json();
 
-      console.log(
-        'returnedProfileData from updating profile, after patch',
-        returnedProfileData
-      );
-
-      console.log('dispatching UPDATE_PROFILE');
+      console.log('...updated profile: ', returnedProfileData);
 
       dispatch({
         type: UPDATE_PROFILE,
@@ -177,13 +170,8 @@ export function updateProfile(
         fid: firebaseId,
         profileData: dataToUpdate,
       });
-
-      console.log('----------actions/profiles/updateProfile--------END');
     } catch (error) {
-      console.log(error);
-
-      ('----------actions/profiles/updateProfile--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/profiles/updateProfile', error);
       throw error;
     }
   };

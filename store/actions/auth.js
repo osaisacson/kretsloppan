@@ -20,7 +20,16 @@ export const authenticate = (userId, token, expiryTime) => {
   };
 };
 
-export const signup = (email, password, profileName, profileDescription, phone, address, image) => {
+export const signup = (
+  email,
+  password,
+  profileName,
+  profileDescription,
+  phone,
+  address,
+  defaultPickupDetails = '',
+  image
+) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -70,9 +79,11 @@ export const signup = (email, password, profileName, profileDescription, phone, 
       console.log('email: ', email);
       console.log('phone: ', phone);
       console.log('address: ', address);
+      console.log('defaultPickupDetails: ', defaultPickupDetails);
       console.log('image.length: ', image.length);
 
       try {
+        console.log('Attempting to create profile');
         dispatch(
           profilesActions.createProfile(
             profileName,
@@ -80,6 +91,7 @@ export const signup = (email, password, profileName, profileDescription, phone, 
             email,
             phone,
             address,
+            defaultPickupDetails,
             image
           )
         );
@@ -89,9 +101,9 @@ export const signup = (email, password, profileName, profileDescription, phone, 
           err
         );
       }
-      console.log('store/actions/auth: Success! Created profile');
+      console.log('...created profile!');
     } catch (error) {
-      console.log('ERROR: ', error);
+      console.log('Error in store/actions/auth: ', error);
       // Rethrow so returned Promise is rejected
       throw error;
     }

@@ -7,6 +7,7 @@ class Profile {
     email,
     phone,
     address,
+    defaultPickupDetails,
     image,
     expoTokens = []
   ) {
@@ -17,6 +18,7 @@ class Profile {
     this.email = email;
     this.phone = phone;
     this.address = address;
+    this.defaultPickupDetails = defaultPickupDetails;
     this.image = image;
     this.expoTokens = expoTokens;
   }

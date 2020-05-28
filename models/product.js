@@ -15,6 +15,7 @@ class Product {
     title,
     image,
     address,
+    pickupDetails,
     phone,
     description,
     background,
@@ -49,6 +50,7 @@ class Product {
     this.title = title;
     this.image = image;
     this.address = address;
+    this.pickupDetails = pickupDetails;
     this.phone = phone;
     this.description = description;
     this.background = background;

@@ -37,6 +37,7 @@ export function fetchProducts() {
             resData[key].title,
             resData[key].image,
             resData[key].address,
+            resData[key].pickupDetails,
             resData[key].phone,
             resData[key].description,
             resData[key].background,
@@ -207,6 +208,7 @@ export function createProduct(
   title,
   image,
   address,
+  pickupDetails,
   phone,
   description,
   background,
@@ -242,6 +244,7 @@ export function createProduct(
         title,
         image: convertedImage.image, //This is how we link to the image we create through the convertImage function
         address,
+        pickupDetails,
         phone,
         description,
         background,
@@ -290,6 +293,7 @@ export function createProduct(
           title,
           image: convertedImage.image,
           address,
+          pickupDetails,
           phone,
           description,
           background,
@@ -330,6 +334,7 @@ export function updateProduct(
   title,
   image,
   address,
+  pickupDetails,
   phone,
   description,
   background,
@@ -353,6 +358,7 @@ export function updateProduct(
       title,
       image,
       address,
+      pickupDetails,
       phone,
       description,
       background,
@@ -382,6 +388,7 @@ export function updateProduct(
           title,
           image: convertedImage.image,
           address,
+          pickupDetails,
           phone,
           description,
           background,
@@ -405,8 +412,6 @@ export function updateProduct(
       const returnedProductData = await response.json();
 
       console.log('returnedProductData from updating product, after patch', returnedProductData);
-
-      console.log('dispatching UPDATE_PRODUCT');
 
       dispatch({
         type: UPDATE_PRODUCT,
