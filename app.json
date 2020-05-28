@@ -21,7 +21,11 @@
     "ios": {
       "bundleIdentifier": "com.egnahemsfabriken.kretsloppan",
       "buildNumber": "1.0.0",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Enable Kretsloppan to access your camera so that you capture product, project or your profile photo.",
+        "NSPhotoLibraryUsageDescription": "Enable Kretsloppan to access your gallery so that you can upload photos."
+      }
     },
     "android": {
       "package": "com.egnahemsfabriken.kretsloppan",
