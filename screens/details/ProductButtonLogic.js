@@ -2,7 +2,8 @@
 
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { View, Alert, Text, StyleSheet, Platform } from 'react-native';
+import { View, Alert, Text, StyleSheet } from 'react-native';
+import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Button, Divider } from 'react-native-paper';
@@ -21,6 +22,7 @@ import * as productsActions from '../../store/actions/products';
 
 const ProductButtonLogic = (props) => {
   const dispatch = useDispatch();
+  const colorScheme = useColorScheme();
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const loggedInUserId = useSelector((state) => state.auth.userId);
@@ -34,6 +36,8 @@ const ProductButtonLogic = (props) => {
 
   //Get all projects from state, and then return the ones that matches the id of the current product
   const userProjects = useSelector((state) => state.projects.userProjects);
+
+  colorScheme === 'light' ? 'dark-content' : 'light-content';
 
   const {
     id,
@@ -449,7 +453,7 @@ const ProductButtonLogic = (props) => {
                     />
                     <DateTimePickerModal
                       date={new Date(suggestedDateLocal)}
-                      isDarkModeEnabled={false}
+                      isDarkModeEnabled={colorScheme === 'dark'}
                       cancelTextIOS="Avbryt"
                       confirmTextIOS="Klar!"
                       headerTextIOS={`Valt datum ${moment(suggestedDateLocal)

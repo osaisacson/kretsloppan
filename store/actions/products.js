@@ -95,8 +95,8 @@ export function fetchProducts() {
               `...${reservedItems[key].id} still has a valid reservation date, and stays reserved.`
             );
           }
-          console.log(`...${reservedItems.length} products checked.`);
         }
+        console.log(`...${reservedItems.length} products checked.`);
       } else {
         console.log(
           `...${reservedItems.length} reserved products found. Moving on with our lives.`

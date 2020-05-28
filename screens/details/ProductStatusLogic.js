@@ -31,6 +31,13 @@ const ProductStatusLogic = (props) => {
   const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
 
+  const loggedInUserId = useSelector((state) => state.auth.userId);
+
+  const viewerIsSeller = loggedInUserId === ownerId;
+  const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
+  const youHaveNotAgreed = viewerIsBuyer ? !buyerAgreed : viewerIsSeller ? !sellerAgreed : null;
+  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
+
   if (isReserved) {
     statusText = `Reserverad tills ${Moment(reservedUntil).locale('sv').calendar()}`;
     statusIcon = 'bookmark';
@@ -51,20 +58,13 @@ const ProductStatusLogic = (props) => {
 
   if (suggestedDate) {
     promptText = `Tid föreslagen, ${
-      waitingForYou ? 'väntar på godkännande ' : 'väntar på motparts godkännande'
+      waitingForYou ? 'väntar på ditt godkännande ' : 'väntar på motparts godkännande'
     }`;
   }
 
   if (!suggestedDate) {
-    promptText = "Inget tidsförslag än, föreslå ett via 'logistik' nedan";
+    promptText = "Inget förslag än, föreslå en tid via 'logistik' nedan";
   }
-
-  const loggedInUserId = useSelector((state) => state.auth.userId);
-
-  const viewerIsSeller = loggedInUserId === ownerId;
-  const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
-  const youHaveNotAgreed = viewerIsBuyer ? !buyerAgreed : viewerIsSeller ? !sellerAgreed : null;
-  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
 
   return (
     <View style={{ marginTop: 20 }}>
@@ -75,7 +75,7 @@ const ProductStatusLogic = (props) => {
         icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
         backgroundColor={statusColor}
       />
-      {!isPickedUp ? (
+      {!isPickedUp && !isOrganised ? (
         <StatusBadge
           style={{ alignSelf: 'flex-end' }}
           textStyle={{
