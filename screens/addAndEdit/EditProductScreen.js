@@ -294,6 +294,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.length}
             onChangeText={textChangeHandler.bind(this, 'length')}
+            keyboardType="number-pad"
             returnKeyType="next"
           />
           <TextInput
@@ -301,6 +302,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.height}
             onChangeText={textChangeHandler.bind(this, 'height')}
+            keyboardType="number-pad"
             returnKeyType="next"
           />
           <TextInput
@@ -308,6 +310,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.width}
             onChangeText={textChangeHandler.bind(this, 'width')}
+            keyboardType="number-pad"
             returnKeyType="next"
           />
         </View>

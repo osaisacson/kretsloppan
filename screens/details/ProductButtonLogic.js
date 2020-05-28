@@ -113,7 +113,7 @@ const ProductButtonLogic = (props) => {
 
     Alert.alert(
       'Kom ihåg',
-      'Denna reservation gäller i ett dygn. Nästa steg är att föreslå en upphämtningstid och om det behövs kontakta säljaren för att diskutera detaljer. Du hittar alltid reservationen under din profil.',
+      'Denna reservation gäller i fyra dagar. Nästa steg är att föreslå en upphämtningstid och om det behövs kontakta säljaren för att diskutera detaljer. Du hittar alltid reservationen under din profil.',
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -176,7 +176,7 @@ const ProductButtonLogic = (props) => {
                 'reserverad',
                 checkedProjectId,
                 prevReservedUser
-              ) //by default resets the date to expire in 24 hours, since the status is 'reserved'
+              ) //by default resets the date to expire in four days, since the status is 'reserved'
             ).then(setIsLoading(false));
             setSuggestedDateLocal('');
             setShowUserProjects(false);
@@ -333,11 +333,7 @@ const ProductButtonLogic = (props) => {
             </View>
           ) : null}
           {!hasEditPermission && !isReserved && !isPickedUp && !isOrganised ? (
-            <ButtonAction
-              disabled={isReserved}
-              onSelect={toggleReserveButton}
-              title="reservera i 24h"
-            />
+            <ButtonAction disabled={isReserved} onSelect={toggleReserveButton} title="reservera" />
           ) : null}
         </View>
       </View>

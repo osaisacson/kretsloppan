@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-
-//Imports
 import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,8 +9,6 @@ import RoundItem from '../../components/UI/RoundItem';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-
-//Actions
 import * as proposalsActions from '../../store/actions/proposals';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';

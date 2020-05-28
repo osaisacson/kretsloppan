@@ -446,7 +446,7 @@ export const changeProductStatus = (
 
     //Getting a date one week from now, to use for updated reservedUntil if status is 'reserved'
     var today = new Date();
-    const oneDayFromNow = new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString();
+    const oneDayFromNow = new Date(today.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString();
 
     let productDataToUpdate;
 
