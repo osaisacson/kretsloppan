@@ -1,13 +1,13 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
 
 //Navigators
-import { ShopNavigator } from './ShopNavigator';
+import StartupScreen from '../screens/StartupScreen';
 import { AuthNavigator } from './AuthNavigator';
+import { ShopNavigator } from './ShopNavigator';
 
 //Screens
-import StartupScreen from '../screens/StartupScreen';
 
 const AppNavigator = (props) => {
   const isAuth = useSelector((state) => !!state.auth.token);

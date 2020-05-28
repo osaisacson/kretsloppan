@@ -1,10 +1,5 @@
 import Profile from '../../models/profile';
-
-import {
-  SET_PROFILES,
-  CREATE_PROFILE,
-  UPDATE_PROFILE,
-} from '../actions/profiles';
+import { SET_PROFILES, CREATE_PROFILE, UPDATE_PROFILE } from '../actions/profiles';
 
 const initialState = {
   allProfiles: [],
@@ -25,11 +20,8 @@ export default (state = initialState, action) => {
         action.profileData.email,
         action.profileData.phone,
         action.profileData.address,
+        action.profileData.defaultPickupDetails,
         action.profileData.image
-      );
-      console.log(
-        'store/reducers/profiles/CREATE_PROFILE, new profile: ',
-        newProfile
       );
 
       return {
@@ -49,13 +41,11 @@ export default (state = initialState, action) => {
         action.profileData.email,
         action.profileData.phone,
         action.profileData.address,
+        action.profileData.defaultPickupDetails,
         action.profileData.image,
         action.profileData.expoTokens
       );
-      console.log(
-        'store/reducers/profiles/UPDATE_PROFILE, updated profile: ',
-        updatedProfile
-      );
+      console.log('store/reducers/profiles/UPDATE_PROFILE, updated profile: ', updatedProfile);
       const updatedProfiles = [...state.allProfiles];
       updatedProfiles[profileIndex] = updatedProfile;
 

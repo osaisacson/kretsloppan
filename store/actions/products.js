@@ -37,6 +37,7 @@ export function fetchProducts() {
             resData[key].title,
             resData[key].image,
             resData[key].address,
+            resData[key].pickupDetails,
             resData[key].phone,
             resData[key].description,
             resData[key].background,
@@ -95,8 +96,8 @@ export function fetchProducts() {
               `...${reservedItems[key].id} still has a valid reservation date, and stays reserved.`
             );
           }
-          console.log(`...${reservedItems.length} products checked.`);
         }
+        console.log(`...${reservedItems.length} products checked.`);
       } else {
         console.log(
           `...${reservedItems.length} reserved products found. Moving on with our lives.`
@@ -207,6 +208,7 @@ export function createProduct(
   title,
   image,
   address,
+  pickupDetails,
   phone,
   description,
   background,
@@ -242,6 +244,7 @@ export function createProduct(
         title,
         image: convertedImage.image, //This is how we link to the image we create through the convertImage function
         address,
+        pickupDetails,
         phone,
         description,
         background,
@@ -290,6 +293,7 @@ export function createProduct(
           title,
           image: convertedImage.image,
           address,
+          pickupDetails,
           phone,
           description,
           background,
@@ -330,6 +334,7 @@ export function updateProduct(
   title,
   image,
   address,
+  pickupDetails,
   phone,
   description,
   background,
@@ -353,6 +358,7 @@ export function updateProduct(
       title,
       image,
       address,
+      pickupDetails,
       phone,
       description,
       background,
@@ -382,6 +388,7 @@ export function updateProduct(
           title,
           image: convertedImage.image,
           address,
+          pickupDetails,
           phone,
           description,
           background,
@@ -405,8 +412,6 @@ export function updateProduct(
       const returnedProductData = await response.json();
 
       console.log('returnedProductData from updating product, after patch', returnedProductData);
-
-      console.log('dispatching UPDATE_PRODUCT');
 
       dispatch({
         type: UPDATE_PRODUCT,
@@ -441,7 +446,7 @@ export const changeProductStatus = (
 
     //Getting a date one week from now, to use for updated reservedUntil if status is 'reserved'
     var today = new Date();
-    const oneDayFromNow = new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString();
+    const oneDayFromNow = new Date(today.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString();
 
     let productDataToUpdate;
 

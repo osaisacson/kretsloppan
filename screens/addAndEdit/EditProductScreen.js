@@ -61,6 +61,9 @@ const EditProductScreen = (props) => {
 
   const defaultAddress = currentUser.address ? currentUser.address : '';
   const defaultPhone = currentUser.phone ? currentUser.phone : '';
+  const defaultPickupDetails = currentUser.defaultPickupDetails
+    ? currentUser.defaultPickupDetails
+    : '';
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -73,6 +76,7 @@ const EditProductScreen = (props) => {
       price: editedProduct ? editedProduct.price : '',
       priceText: editedProduct ? editedProduct.priceText : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
+      pickupDetails: editedProduct ? editedProduct.pickupDetails : defaultPickupDetails, //set picku details the user entered in their profile as default if they have them
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
       image: editedProduct ? editedProduct.image : '',
       category: editedProduct ? editedProduct.category : 'Ingen',
@@ -91,6 +95,7 @@ const EditProductScreen = (props) => {
       price: true,
       priceText: true,
       address: true,
+      pickupDetails: true,
       phone: true,
       image: !!editedProduct,
       category: true,
@@ -132,6 +137,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
+            formState.inputValues.pickupDetails,
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
@@ -154,6 +160,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
+            formState.inputValues.pickupDetails,
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
@@ -266,7 +273,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in interna kommentarer, som ID -nummer ">
         <TextInput
-          placeholder="Intern listning (om tillämpligt)"
+          placeholder="Intern referens (om tillämpligt)"
           style={formStyles.input}
           value={formState.inputValues.internalComments}
           onChangeText={textChangeHandler.bind(this, 'internalComments')}
@@ -287,6 +294,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.length}
             onChangeText={textChangeHandler.bind(this, 'length')}
+            keyboardType="number-pad"
             returnKeyType="next"
           />
           <TextInput
@@ -294,6 +302,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.height}
             onChangeText={textChangeHandler.bind(this, 'height')}
+            keyboardType="number-pad"
             returnKeyType="next"
           />
           <TextInput
@@ -301,16 +310,27 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.width}
             onChangeText={textChangeHandler.bind(this, 'width')}
+            keyboardType="number-pad"
             returnKeyType="next"
           />
         </View>
       </FormFieldWrapper>
-      <FormFieldWrapper label="Upphämtningsdetaljer" prompt="Den address återbruket kan hämtas på">
+      <FormFieldWrapper label="Upphämtningsaddress" prompt="Den address återbruket kan hämtas på">
         <TextInput
           placeholder="Address"
           style={formStyles.input}
           value={formState.inputValues.address}
           onChangeText={textChangeHandler.bind(this, 'address')}
+          keyboardType="default"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper label="Upphämtningsdetaljer" prompt="Detaljer om upphämtning">
+        <TextInput
+          placeholder="Detaljer runt upphämtning"
+          style={formStyles.input}
+          value={formState.inputValues.pickupDetails}
+          onChangeText={textChangeHandler.bind(this, 'pickupDetails')}
           keyboardType="default"
           returnKeyType="next"
         />

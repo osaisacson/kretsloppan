@@ -47,15 +47,15 @@ const ProposalDetailScreen = (props) => {
   const deleteHandler = (proposalId) => {
     Alert.alert(
       'Är du säker?',
-      'Vill du verkligen radera den här eftelrysningen? Det går inte att gå ändra sig när det väl är gjort.',
+      'Vill du verkligen radera den här efterlysningen? Det går inte att gå ändra sig när det väl är gjort.',
       [
         { text: 'Nej', style: 'default' },
         {
           text: 'Ja, radera',
           style: 'destructive',
           onPress: () => {
-            dispatch(proposalsActions.deleteProposal(proposalId));
             navigation.goBack();
+            dispatch(proposalsActions.deleteProposal(proposalId));
           },
         },
       ]

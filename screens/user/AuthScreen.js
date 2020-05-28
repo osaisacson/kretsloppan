@@ -100,6 +100,7 @@ const AuthScreen = (props) => {
       profileDescription: '',
       phone: '',
       address: '',
+      defaultPickupDetails: '',
       image: '',
     },
     inputValidities: {
@@ -109,6 +110,7 @@ const AuthScreen = (props) => {
       profileDescription: true,
       phone: !isSignup,
       address: !isSignup,
+      defaultPickupDetails: true,
       image: !!(!isSignup && selectedImage),
     },
     formIsValid: false,
@@ -136,6 +138,7 @@ const AuthScreen = (props) => {
         formState.inputValues.profileDescription,
         formState.inputValues.phone,
         formState.inputValues.address,
+        formState.inputValues.defaultPickupDetails,
         selectedImage
       );
       setIsLoading(true);
@@ -265,6 +268,15 @@ const AuthScreen = (props) => {
                     required
                     autoCapitalize="none"
                     errorText="Skriv in addressen återbruket vanligtvis kan hämtas på"
+                    onInputChange={inputChangeHandler}
+                    initialValue=""
+                  />
+                  <Input
+                    id="defaultPickupDetails"
+                    placeholder="Generella upphämtningsdetaljer (valfritt)"
+                    keyboardType="default"
+                    autoCapitalize="none"
+                    errorText="Generella detaljer som öppetider...                  (inte obligatoriskt)"
                     onInputChange={inputChangeHandler}
                     initialValue=""
                   />

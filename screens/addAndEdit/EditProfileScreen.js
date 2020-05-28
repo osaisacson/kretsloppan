@@ -59,6 +59,7 @@ const EditProfileScreen = (props) => {
       email: currentProfile ? currentProfile.email : '',
       phone: currentProfile ? currentProfile.phone : '',
       address: currentProfile ? currentProfile.address : '',
+      defaultPickupDetails: currentProfile ? currentProfile.defaultPickupDetails : '',
       image: currentProfile ? currentProfile.image : '',
     },
     inputValidities: {
@@ -67,6 +68,7 @@ const EditProfileScreen = (props) => {
       email: !!currentProfile,
       phone: !!currentProfile,
       address: !!currentProfile,
+      defaultPickupDetails: true,
       image: !!currentProfile,
     },
     formIsValid: !!currentProfile,
@@ -90,6 +92,7 @@ const EditProfileScreen = (props) => {
             formState.inputValues.email,
             formState.inputValues.phone,
             formState.inputValues.address,
+            formState.inputValues.defaultPickupDetails,
             formState.inputValues.image
           )
         );
@@ -101,6 +104,7 @@ const EditProfileScreen = (props) => {
             formState.inputValues.email,
             formState.inputValues.phone,
             formState.inputValues.address,
+            formState.inputValues.defaultPickupDetails,
             formState.inputValues.image
           )
         );
@@ -206,6 +210,17 @@ const EditProfileScreen = (props) => {
           onChangeText={textChangeHandler('address')}
           keyboardType="default"
           autoCapitalize="none"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in eventuella generella upphämtningsdetaljer">
+        <TextInput
+          placeholder="Generella upphämtningsdetaljer (valfritt)"
+          style={formStyles.input}
+          value={formState.inputValues.defaultPickupDetails}
+          onChangeText={textChangeHandler('defaultPickupDetails')}
+          keyboardType="default"
+          autoCapitalize="none"
           returnKeyType="done"
         />
       </FormFieldWrapper>
@@ -216,9 +231,7 @@ const EditProfileScreen = (props) => {
 export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    // headerLeft: routeParams.detailId ? null : '',
     headerTitle: routeParams.detailId ? 'Redigera profil' : 'Skapa profil',
-    // headerRight: routeParams.detailId ? 'X' : ''
   };
 };
 

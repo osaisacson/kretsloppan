@@ -130,7 +130,7 @@ const ProductDetailScreen = (props) => {
             <>
               <Divider style={{ marginVertical: 10 }} />
               <View style={detailStyles.spaceBetweenRow}>
-                <Paragraph>Intern listning:</Paragraph>
+                <Paragraph>Intern referens:</Paragraph>
                 <Paragraph>{internalComments}</Paragraph>
               </View>
             </>

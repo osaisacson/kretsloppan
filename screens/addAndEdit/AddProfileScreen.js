@@ -57,6 +57,7 @@ const AddProfileScreen = (props) => {
       email: '',
       phone: '',
       address: '',
+      defaultPickupDetails: '',
       image: '',
     },
     inputValidities: {
@@ -65,6 +66,7 @@ const AddProfileScreen = (props) => {
       email: false,
       phone: false,
       address: false,
+      defaultPickupDetails: false,
       image: false,
     },
     formIsValid: false,
@@ -86,6 +88,7 @@ const AddProfileScreen = (props) => {
           formState.inputValues.email,
           formState.inputValues.phone,
           formState.inputValues.address,
+          formState.inputValues.defaultPickupDetails,
           formState.inputValues.image
         )
       );
@@ -188,6 +191,17 @@ const AddProfileScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.address}
           onChangeText={textChangeHandler.bind(this, 'address')}
+          keyboardType="default"
+          autoCapitalize="none"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in eventuella generella upphämtningsdetaljer">
+        <TextInput
+          placeholder="Generella upphämtningsdetaljer (valfritt)"
+          style={formStyles.input}
+          value={formState.inputValues.defaultPickupDetails}
+          onChangeText={textChangeHandler.bind(this, 'defaultPickupDetails')}
           keyboardType="default"
           autoCapitalize="none"
           returnKeyType="done"

@@ -22,7 +22,7 @@ const ProductsScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
 
   //Prepare for changing the rendered products on search
-  const [renderedProducts, setRenderedProducts] = useState(products);
+  const [renderedProducts, setRenderedProducts] = useState();
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const ProductsScreen = (props) => {
   }, [dispatch, setIsLoading, setError]);
 
   const searchHandler = (text) => {
-    const newData = renderedProducts.filter((item) => {
+    const newData = products.filter((item) => {
       const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
@@ -70,6 +70,8 @@ const ProductsScreen = (props) => {
     return <EmptyState text="Inga produkter hittade." />;
   }
 
+  const productsToShow = renderedProducts ? renderedProducts : products;
+
   return (
     <View>
       <SearchBar
@@ -82,7 +84,7 @@ const ProductsScreen = (props) => {
         initialNumToRender={12}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
-        data={renderedProducts}
+        data={productsToShow}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProductItem
@@ -101,7 +103,7 @@ const ProductsScreen = (props) => {
             buttonOnPress={() => props.navigation.navigate('EditProduct')}
             subTitle="Upplagda av alla"
             icon={<FontAwesome5 name="recycle" size={20} style={{ marginRight: 5 }} />}
-            indicator={renderedProducts.length ? renderedProducts.length : 0}
+            indicator={productsToShow.length ? productsToShow.length : 0}
           />
         }
       />

@@ -58,14 +58,14 @@ const UserSpotlightScreen = (props) => {
   const reservedProductsRaw = reservedAllProductsRaw.concat(reservedByOthersRaw);
 
   const reservedProducts = reservedProductsRaw.sort(function (a, b) {
-    return new Date(b.reservedDate) - new Date(a.reservedDate);
+    return new Date(a.reservedDate) - new Date(b.reservedDate);
   });
 
   //TO BE COLLECTED FROM: Gets all products from the user marked as ready to be collected
   const toBeCollectedFromUserRaw = userProducts.filter((product) => product.status === 'ordnad');
 
   const toBeCollectedFromUser = toBeCollectedFromUserRaw.sort(function (a, b) {
-    return new Date(b.collectingDate) - new Date(a.collectingDate);
+    return new Date(a.collectingDate) - new Date(b.collectingDate);
   });
 
   //TO BE COLLECTED BY: Gets all products marked as ready to be collected by the user
@@ -74,7 +74,7 @@ const UserSpotlightScreen = (props) => {
   );
 
   const toBeCollectedByUser = toBeCollectedByUserRaw.sort(function (a, b) {
-    return new Date(b.collectingDate) - new Date(a.collectingDate);
+    return new Date(a.collectingDate) - new Date(b.collectingDate);
   });
 
   //READY: Gets all products where the ownerId matches the id of our currently logged in user
@@ -83,7 +83,7 @@ const UserSpotlightScreen = (props) => {
   );
 
   const uploadedByUser = uploadedByUserRaw.sort(function (a, b) {
-    return new Date(b.readyDate) - new Date(a.readyDate);
+    return new Date(a.readyDate) - new Date(b.readyDate);
   });
 
   //Get all projects, return only the ones which matches the logged in id
@@ -184,18 +184,18 @@ const UserSpotlightScreen = (props) => {
       {reservedProducts.length ? (
         <HorizontalScroll
           title="Reservationer under diskussion"
-          subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning. Notera: reservationer upphör gälla efter 24 timmar."
-          extraSubTitle="Nästa steg: förslå tid eller godkänn givet förslag. Om behov kontakta varandra för att diskutera fler detaljer."
+          subTitle="Föreslå tid eller godkänn givet tidsförslag innan reservationen går ut. Om behov kontakta varandra för att diskutera fler detaljer."
           bgColor={Colors.lightPrimary}
           scrollData={reservedProducts}
           showNotificationBadge
           navigation={props.navigation}
         />
       ) : null}
+
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att köpas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på köpas och hämtas av dig."
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på att köpas och hämtas av dig på angiven tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedByUser}
           showNotificationBadge
@@ -205,7 +205,7 @@ const UserSpotlightScreen = (props) => {
       {toBeCollectedFromUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att säljas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att säljas och lämnas till dig."
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på att säljas och lämnas av dig på angiven tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedFromUser}
           showNotificationBadge

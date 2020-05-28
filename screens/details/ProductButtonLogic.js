@@ -2,7 +2,8 @@
 
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { View, Alert, Text, StyleSheet, Platform } from 'react-native';
+import { View, Alert, Text, StyleSheet } from 'react-native';
+import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Button, Divider } from 'react-native-paper';
@@ -21,6 +22,7 @@ import * as productsActions from '../../store/actions/products';
 
 const ProductButtonLogic = (props) => {
   const dispatch = useDispatch();
+  const colorScheme = useColorScheme();
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const loggedInUserId = useSelector((state) => state.auth.userId);
@@ -49,6 +51,7 @@ const ProductButtonLogic = (props) => {
     address,
     sellerAgreed,
     buyerAgreed,
+    pickupDetails,
   } = props.selectedProduct;
 
   //Check status of product and privileges of user
@@ -110,7 +113,7 @@ const ProductButtonLogic = (props) => {
 
     Alert.alert(
       'Kom ihåg',
-      'Denna reservation gäller i ett dygn. Nästa steg är att föreslå en upphämtningstid och om det behövs kontakta säljaren för att diskutera detaljer. Du hittar alltid reservationen under din profil.',
+      'Denna reservation gäller i fyra dagar. Nästa steg är att föreslå en upphämtningstid och om det behövs kontakta säljaren för att diskutera detaljer. Du hittar alltid reservationen under din profil.',
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -173,7 +176,7 @@ const ProductButtonLogic = (props) => {
                 'reserverad',
                 checkedProjectId,
                 prevReservedUser
-              ) //by default resets the date to expire in 24 hours, since the status is 'reserved'
+              ) //by default resets the date to expire in four days, since the status is 'reserved'
             ).then(setIsLoading(false));
             setSuggestedDateLocal('');
             setShowUserProjects(false);
@@ -330,11 +333,7 @@ const ProductButtonLogic = (props) => {
             </View>
           ) : null}
           {!hasEditPermission && !isReserved && !isPickedUp && !isOrganised ? (
-            <ButtonAction
-              disabled={isReserved}
-              onSelect={toggleReserveButton}
-              title="reservera i 24h"
-            />
+            <ButtonAction disabled={isReserved} onSelect={toggleReserveButton} title="reservera" />
           ) : null}
         </View>
       </View>
@@ -382,6 +381,12 @@ const ProductButtonLogic = (props) => {
               <Text>{ownerProfile.profileName}</Text>
               <Text>{phone ? phone : 'Ingen telefon angiven'}</Text>
               {address ? <Text>{address ? address : 'Ingen address angiven'}</Text> : null}
+              {pickupDetails ? (
+                <View style={styles.pickupDetails}>
+                  <HeaderThree text="Upphämtningsdetaljer: " />
+                  <Text>{pickupDetails}</Text>
+                </View>
+              ) : null}
             </View>
 
             {receivingProfile ? (
@@ -449,7 +454,7 @@ const ProductButtonLogic = (props) => {
                     />
                     <DateTimePickerModal
                       date={new Date(suggestedDateLocal)}
-                      isDarkModeEnabled={false}
+                      isDarkModeEnabled={colorScheme === 'dark'}
                       cancelTextIOS="Avbryt"
                       confirmTextIOS="Klar!"
                       headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
@@ -597,19 +602,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    height: 80,
+  },
+  pickupDetails: {
+    paddingVertical: 8,
   },
   receivingOptions: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-end',
-    height: 80,
+    paddingBottom: 5,
   },
   oneLineRight: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    textAlign: 'right',
     right: 0,
   },
   leftTextAndBadge: {

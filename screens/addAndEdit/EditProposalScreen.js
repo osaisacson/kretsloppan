@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-
-//Imports
 import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,8 +9,6 @@ import RoundItem from '../../components/UI/RoundItem';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-
-//Actions
 import * as proposalsActions from '../../store/actions/proposals';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -119,11 +115,7 @@ const EditProposalScreen = (props) => {
 
   //Manages validation of title input
   const textChangeHandler = (inputIdentifier, text) => {
-    console.log('inputIdentifier: ', inputIdentifier);
-    console.log('text: ', text);
-
     //inputIdentifier and text will act as key:value in the form reducer
-
     let isValid = true;
 
     //If we haven't entered any value (its empty) set form validity to false

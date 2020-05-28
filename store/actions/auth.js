@@ -15,12 +15,21 @@ export const setDidTryAutoLogin = () => {
 
 export const authenticate = (userId, token, expiryTime) => {
   return (dispatch) => {
-    // dispatch(setLogoutTimer(expiryTime));
+    dispatch(setLogoutTimer(expiryTime));
     dispatch({ type: AUTHENTICATE, userId, token });
   };
 };
 
-export const signup = (email, password, profileName, profileDescription, phone, address, image) => {
+export const signup = (
+  email,
+  password,
+  profileName,
+  profileDescription,
+  phone,
+  address,
+  defaultPickupDetails,
+  image
+) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -70,9 +79,11 @@ export const signup = (email, password, profileName, profileDescription, phone, 
       console.log('email: ', email);
       console.log('phone: ', phone);
       console.log('address: ', address);
+      console.log('defaultPickupDetails: ', defaultPickupDetails);
       console.log('image.length: ', image.length);
 
       try {
+        console.log('Attempting to create profile');
         dispatch(
           profilesActions.createProfile(
             profileName,
@@ -80,6 +91,7 @@ export const signup = (email, password, profileName, profileDescription, phone, 
             email,
             phone,
             address,
+            defaultPickupDetails,
             image
           )
         );
@@ -89,9 +101,9 @@ export const signup = (email, password, profileName, profileDescription, phone, 
           err
         );
       }
-      console.log('store/actions/auth: Success! Created profile');
+      console.log('...created profile!');
     } catch (error) {
-      console.log('ERROR: ', error);
+      console.log('Error in store/actions/auth: ', error);
       // Rethrow so returned Promise is rejected
       throw error;
     }
@@ -142,27 +154,30 @@ export const login = (email, password) => {
       const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
 
       updateExpoTokens(resData.localId);
-
       dispatch(authenticate(resData.localId, resData.idToken, parseInt(resData.expiresIn) * 1000));
-
       saveDataToStorage(resData.idToken, resData.localId, expirationDate);
     } catch (error) {
       console.log('Error when trying to login: ', error);
-
-      // Rethrow so returned Promise is rejected
       throw error;
     }
   };
 };
 
-export const logout = async () => {
-  clearLogoutTimer();
-  const userData = await AsyncStorage.getItem('userData').then((data) =>
-    data ? JSON.parse(data) : {}
-  );
-  updateExpoTokens(userData.userId, true);
-  AsyncStorage.removeItem('userData'); //Remove data from our local storage
-  return { type: LOGOUT };
+export const logout = () => {
+  return async (dispatch) => {
+    try {
+      clearLogoutTimer();
+      const userData = await AsyncStorage.getItem('userData').then((data) =>
+        data ? JSON.parse(data) : {}
+      );
+      updateExpoTokens(userData.userId, true);
+      AsyncStorage.removeItem('userData'); //Remove data from our local storage
+      dispatch({ type: LOGOUT });
+    } catch (error) {
+      console.log('Error in store/actions/auth/saveDataToStorage: ', error);
+      throw error;
+    }
+  };
 };
 
 const clearLogoutTimer = () => {
@@ -190,8 +205,7 @@ const saveDataToStorage = (token, userId, expirationDate) => {
       })
     );
   } catch (error) {
-    console.log('ERROR: ', error);
-    // Rethrow so returned Promise is rejected
+    console.log('Error in store/actions/auth/saveDataToStorage: ', error);
     throw error;
   }
 };

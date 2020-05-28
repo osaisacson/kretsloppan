@@ -22,9 +22,7 @@ const storage = new Storage({
 exports.storeImage = functions.https.onRequest((request, response) => {
   return cors(request, response, () => {
     const body = JSON.parse(request.body);
-    console.log('request from cloud function storeImage in index.js', request);
-    console.log('request.body from cloud function storeImage in index.js', request.body);
-    console.log('JSON.parse(request.body) from cloud function storeImage in index.js', body);
+
     fs.writeFileSync('/tmp/uploaded-image.jpg', body.image, 'base64', (err) => {
       console.log(err);
       return response.status(500).json({ error: err });
