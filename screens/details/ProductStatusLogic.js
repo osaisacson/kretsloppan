@@ -25,6 +25,7 @@ const ProductStatusLogic = (props) => {
   let statusIcon;
   let statusColor;
   let promptText;
+  let bgColor;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -60,10 +61,12 @@ const ProductStatusLogic = (props) => {
     promptText = `Tid föreslagen, ${
       waitingForYou ? 'väntar på ditt godkännande ' : 'väntar på motparts godkännande'
     }`;
+    bgColor = waitingForYou ? Colors.darkPrimary : Colors.subtlePurple;
   }
 
   if (!suggestedDate) {
     promptText = "Inget förslag än, föreslå en tid via 'logistik' nedan";
+    bgColor = Colors.darkPrimary;
   }
 
   return (
@@ -83,7 +86,7 @@ const ProductStatusLogic = (props) => {
           }}
           text={promptText}
           icon={Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'}
-          backgroundColor={Colors.subtlePurple}
+          backgroundColor={bgColor}
         />
       ) : null}
     </View>

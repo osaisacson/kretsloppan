@@ -58,14 +58,14 @@ const UserSpotlightScreen = (props) => {
   const reservedProductsRaw = reservedAllProductsRaw.concat(reservedByOthersRaw);
 
   const reservedProducts = reservedProductsRaw.sort(function (a, b) {
-    return new Date(b.reservedDate) - new Date(a.reservedDate);
+    return new Date(a.reservedDate) - new Date(b.reservedDate);
   });
 
   //TO BE COLLECTED FROM: Gets all products from the user marked as ready to be collected
   const toBeCollectedFromUserRaw = userProducts.filter((product) => product.status === 'ordnad');
 
   const toBeCollectedFromUser = toBeCollectedFromUserRaw.sort(function (a, b) {
-    return new Date(b.collectingDate) - new Date(a.collectingDate);
+    return new Date(a.collectingDate) - new Date(b.collectingDate);
   });
 
   //TO BE COLLECTED BY: Gets all products marked as ready to be collected by the user
@@ -74,7 +74,7 @@ const UserSpotlightScreen = (props) => {
   );
 
   const toBeCollectedByUser = toBeCollectedByUserRaw.sort(function (a, b) {
-    return new Date(b.collectingDate) - new Date(a.collectingDate);
+    return new Date(a.collectingDate) - new Date(b.collectingDate);
   });
 
   //READY: Gets all products where the ownerId matches the id of our currently logged in user
@@ -83,7 +83,7 @@ const UserSpotlightScreen = (props) => {
   );
 
   const uploadedByUser = uploadedByUserRaw.sort(function (a, b) {
-    return new Date(b.readyDate) - new Date(a.readyDate);
+    return new Date(a.readyDate) - new Date(b.readyDate);
   });
 
   //Get all projects, return only the ones which matches the logged in id
@@ -191,6 +191,7 @@ const UserSpotlightScreen = (props) => {
           navigation={props.navigation}
         />
       ) : null}
+
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att köpas"

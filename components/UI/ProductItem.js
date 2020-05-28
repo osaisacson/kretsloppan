@@ -123,7 +123,13 @@ const ProductItem = (props) => {
                     : 'Väntar på motpart'
                 }
                 icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
-                backgroundColor={Colors.subtlePurple}
+                backgroundColor={
+                  !props.itemData.suggestedDate
+                    ? Colors.darkPrimary
+                    : waitingForYou
+                    ? Colors.darkPrimary
+                    : Colors.subtlePurple
+                }
               />
             ) : null}
           </>
