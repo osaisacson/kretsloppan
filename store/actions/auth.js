@@ -167,14 +167,21 @@ export const login = (email, password) => {
   };
 };
 
-export const logout = async () => {
-  clearLogoutTimer();
-  const userData = await AsyncStorage.getItem('userData').then((data) =>
-    data ? JSON.parse(data) : {}
-  );
-  updateExpoTokens(userData.userId, true);
-  AsyncStorage.removeItem('userData'); //Remove data from our local storage
-  return { type: LOGOUT };
+export const logout = () => {
+  return async (dispatch) => {
+    try {
+      clearLogoutTimer();
+      const userData = await AsyncStorage.getItem('userData').then((data) =>
+        data ? JSON.parse(data) : {}
+      );
+      updateExpoTokens(userData.userId, true);
+      AsyncStorage.removeItem('userData'); //Remove data from our local storage
+      dispatch({ type: LOGOUT });
+    } catch (error) {
+      console.log('Error in store/actions/auth/saveDataToStorage: ', error);
+      throw error;
+    }
+  };
 };
 
 const clearLogoutTimer = () => {
@@ -202,8 +209,7 @@ const saveDataToStorage = (token, userId, expirationDate) => {
       })
     );
   } catch (error) {
-    console.log('ERROR: ', error);
-    // Rethrow so returned Promise is rejected
+    console.log('Error in store/actions/auth/saveDataToStorage: ', error);
     throw error;
   }
 };
