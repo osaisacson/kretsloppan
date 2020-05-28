@@ -194,7 +194,7 @@ const UserSpotlightScreen = (props) => {
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att köpas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på köpas och hämtas av dig."
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på att köpas och hämtas av dig på angiven tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedByUser}
           showNotificationBadge
@@ -204,7 +204,7 @@ const UserSpotlightScreen = (props) => {
       {toBeCollectedFromUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att säljas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att säljas och lämnas till dig."
+          subTitle="Återbruk där ni kommit överens om logistik - väntar på att säljas och lämnas av dig på angiven tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedFromUser}
           showNotificationBadge
