@@ -75,15 +75,17 @@ const ProductStatusLogic = (props) => {
         icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
         backgroundColor={statusColor}
       />
-      <StatusBadge
-        style={{ alignSelf: 'flex-end' }}
-        textStyle={{
-          textAlign: 'right',
-        }}
-        text={promptText}
-        icon={Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'}
-        backgroundColor={Colors.subtlePurple}
-      />
+      {!isPickedUp ? (
+        <StatusBadge
+          style={{ alignSelf: 'flex-end' }}
+          textStyle={{
+            textAlign: 'right',
+          }}
+          text={promptText}
+          icon={Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'}
+          backgroundColor={Colors.subtlePurple}
+        />
+      ) : null}
     </View>
   );
 };
