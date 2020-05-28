@@ -154,14 +154,10 @@ export const login = (email, password) => {
       const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
 
       updateExpoTokens(resData.localId);
-
       dispatch(authenticate(resData.localId, resData.idToken, parseInt(resData.expiresIn) * 1000));
-
       saveDataToStorage(resData.idToken, resData.localId, expirationDate);
     } catch (error) {
       console.log('Error when trying to login: ', error);
-
-      // Rethrow so returned Promise is rejected
       throw error;
     }
   };

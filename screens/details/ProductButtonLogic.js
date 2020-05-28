@@ -37,8 +37,6 @@ const ProductButtonLogic = (props) => {
   //Get all projects from state, and then return the ones that matches the id of the current product
   const userProjects = useSelector((state) => state.projects.userProjects);
 
-  colorScheme === 'light' ? 'dark-content' : 'light-content';
-
   const {
     id,
     projectId,
