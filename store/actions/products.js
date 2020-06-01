@@ -89,7 +89,7 @@ export function fetchProducts() {
           //If the product has expired, call a function which passes correct new fields and then push the updated product to the reservedItems array
           if (shouldBeReset) {
             console.log('...found expired product, calling unReserveProduct to update it. ------>');
-            dispatch(unReserveProduct(key));
+            dispatch(unReserveProduct(reservedItems[key].id));
             console.log(`${reservedItems[key].id} product was expired, but is now updated.`);
           } else {
             console.log(
