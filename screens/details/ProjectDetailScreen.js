@@ -137,7 +137,7 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <FlatList
           initialNumToRender={8}
           horizontal={false}

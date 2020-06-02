@@ -1,28 +1,25 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Linking, Image } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Linking, Image, SafeAreaView, ScrollView } from 'react-native';
 import { Paragraph } from 'react-native-paper';
 
-import HeaderTwo from '../components/UI/HeaderTwo';
+import SectionCard from '../components/UI/SectionCard';
 import Colors from '../constants/Colors';
 
 const AboutScreen = (props) => {
-  const [firstIsOpen, setFirstIsOpen] = useState(false);
-  const [secondIsOpen, setSecondIsOpen] = useState(false);
-
   return (
-    <View style={styles.screen}>
-      <View style={styles.headerContainer} onPress={() => setFirstIsOpen(!!firstIsOpen)}>
-        <Text style={styles.header}>Orust kretsloppsakademi</Text>
-        <Text>{firstIsOpen ? 'close' : 'open'}</Text>
-      </View>
-      {firstIsOpen && (
-        <View trigger={firstIsOpen}>
-          <View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <Text style={styles.largeHeader}>Partners</Text>
+        <SectionCard>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Orust kretsloppsakademi</Text>
             <Image
               resizeMode="contain"
-              style={styles.logo}
-              source={require('./../assets/orustkretsloppsakademi.png')}
+              style={styles.logoLarge}
+              source={require('./../assets/orustkretsloppsakademi.jpg')}
             />
+          </View>
+          <View>
             <Paragraph style={styles.paragraph}>
               Orust Kretsloppsakademi (grundat 2012) bidrar till Sveriges åtagande med de 16
               miljömålen genom att stödja Orust som en föregångare mot ett sunt och hållbart
@@ -48,32 +45,76 @@ const AboutScreen = (props) => {
               </Text>
             </Paragraph>
           </View>
-        </View>
-      )}
-    </View>
+        </SectionCard>
+        <SectionCard style={styles.sectionContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Egnahemsfabriken</Text>
+            <Image
+              resizeMode="contain"
+              style={styles.logoSmall}
+              source={require('./../assets/icon.png')}
+            />
+          </View>
+          <View>
+            <Paragraph style={styles.paragraph}>
+              Egnahemsfabriken Tjörn (Grundat 2018) är ett innovationsprojekt och en stödstruktur
+              för dig som vill bygga ditt eget hus eller hjälpa andra att bygga sina egna hus.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              Målet är att öppna fler vägar till egna hem åt fler och att etablera en
+              gränsöverskridande mötesplats runt byggande och design på Tjörn.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              Projektet har initierats av civilsamhället med stöd av Tjörns kommun och byggs upp av
+              oss som bor här, tillsammans. Egnahemsfabriken är öppen för alla och tillhör alla. En
+              möjlighet att hjälpa andra eller att hjälpa sig själv till en bostad.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              <Text
+                style={styles.link}
+                onPress={() => Linking.openURL('https://www.egnahemsfabriken.se/')}>
+                egnahemsfabriken.se
+              </Text>
+            </Paragraph>
+          </View>
+        </SectionCard>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
+    marginTop: 50,
   },
-  headerContainer: {
-    padding: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  scrollView: {
+    marginHorizontal: 15,
+  },
+  sectionContainer: { marginTop: 100 },
+  largeHeader: {
+    marginHorizontal: 15,
+    fontFamily: 'bebas-neue-bold',
+    fontSize: 35,
+    marginVertical: 15,
   },
   header: {
     fontFamily: 'bebas-neue-bold',
-    fontSize: 25,
+    fontSize: 22,
+  },
+  headerContainer: {
+    marginHorizontal: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   paragraph: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    marginHorizontal: 15,
+    marginVertical: 10,
   },
   link: { color: Colors.primary, fontFamily: 'roboto-bold' },
-  logo: { position: 'absolute', bottom: 25, right: 15, width: 180, overflow: 'visible' },
+  logoLarge: { width: 80, height: 100 },
+  logoSmall: { width: 80, height: 100 },
 });
 
 export default AboutScreen;

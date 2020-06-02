@@ -1,10 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-//Imports
-import ScrollViewToTop from './ScrollViewToTop';
+
 import SaferArea from '../UI/SaferArea';
-//Constants
-import Colors from '../../constants/Colors';
+import ScrollViewToTop from './ScrollViewToTop';
 
 export const DetailWrapper = (props) => {
   return (
