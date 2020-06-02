@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 //Imports
-import { View, Text, StyleSheet, Alert, FlatList, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -137,33 +137,33 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
-      <ScrollView>
-        <FlatList
-          initialNumToRender={8}
-          horizontal={false}
-          numColumns={3}
-          data={associatedProducts}
-          keyExtractor={(item) => item.id}
-          ListHeaderComponent={projectHeader}
-          renderItem={(itemData) => (
-            <ProductItem
-              isSearchView
-              itemData={itemData.item}
-              onSelect={() => {
-                selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
-              }}
+      <FlatList
+        initialNumToRender={8}
+        horizontal={false}
+        numColumns={3}
+        data={associatedProducts}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={projectHeader}
+        ListFooterComponent={
+          associatedProposals.length ? (
+            <HorizontalScroll
+              textItem
+              detailPath="ProposalDetail"
+              scrollData={associatedProposals}
+              navigation={props.navigation}
             />
-          )}
-        />
-        {associatedProposals.length ? (
-          <HorizontalScroll
-            textItem
-            detailPath="ProposalDetail"
-            scrollData={associatedProposals}
-            navigation={props.navigation}
+          ) : null
+        }
+        renderItem={(itemData) => (
+          <ProductItem
+            isSearchView
+            itemData={itemData.item}
+            onSelect={() => {
+              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+            }}
           />
-        ) : null}
-      </ScrollView>
+        )}
+      />
     </SaferArea>
   );
 };
