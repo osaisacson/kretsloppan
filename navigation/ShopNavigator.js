@@ -10,12 +10,12 @@ import Error from '../components/UI/Error';
 import Loader from '../components/UI/Loader';
 import UserAvatar from '../components/UI/UserAvatar';
 import Colors from '../constants/Colors';
-import AboutScreen from '../screens/AboutScreen';
 import * as authActions from '../store/actions/auth';
 import * as productsActions from './../store/actions/products';
 import * as profilesActions from './../store/actions/profiles';
 import * as projectsActions from './../store/actions/projects';
 import * as proposalsActions from './../store/actions/proposals';
+import { AboutNavigator } from './AboutNavigator';
 import { ProfilesNavigator } from './ProfilesNavigator';
 import { TabNavigator } from './TabNavigator';
 
@@ -173,16 +173,6 @@ export const ShopNavigator = (props) => {
                   />
                 </View>
               </View>
-              {/* <Text
-                style={{
-                  fontFamily: 'bebas-neue-bold',
-                  fontSize: 25,
-                  marginLeft: 10,
-                  marginTop: 35
-                }}
-              >
-                Kretsloppan
-              </Text> */}
               <Divider style={{ backgroundColor: 'grey' }} />
               <DrawerItemList {...props} />
               <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
@@ -229,9 +219,11 @@ export const ShopNavigator = (props) => {
       />
       <ShopDrawerNavigator.Screen
         name="Om oss"
-        component={AboutScreen}
+        component={AboutNavigator}
         options={{
-          drawerIcon: (props) => <FontAwesome name="question" size={23} color={props.color} />,
+          drawerIcon: (props) => (
+            <FontAwesome name="question-circle" size={26} color={props.color} />
+          ),
         }}
       />
     </ShopDrawerNavigator.Navigator>

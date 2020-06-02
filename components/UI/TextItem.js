@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 
 import ResolvedBadge from '../../components/UI/ResolvedBadge';
 import Colors from '../../constants/Colors';
@@ -18,8 +18,7 @@ const TextItem = (props) => {
   );
 
   return (
-    <>
-      <Divider />
+    <Card style={{ height: 120, margin: 4 }}>
       <View style={styles.container}>
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
@@ -35,7 +34,7 @@ const TextItem = (props) => {
           </TouchableCmp>
         </View>
       </View>
-    </>
+    </Card>
   );
 };
 

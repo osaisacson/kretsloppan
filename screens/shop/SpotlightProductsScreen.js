@@ -35,26 +35,6 @@ const SpotlightProductsScreen = (props) => {
       />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
-          roundItem
-          detailPath="ProjectDetail"
-          title="Projekt"
-          subTitle="Projekt som håller på att byggas med återbruk"
-          isNavigationButton
-          buttonText="Se alla"
-          buttonOnPress={() => props.navigation.navigate('Projekt')}
-          scrollData={allProjects}
-          navigation={props.navigation}
-          icon={
-            <Entypo
-              name="tools"
-              size={21}
-              style={{
-                marginRight: 5,
-              }}
-            />
-          }
-        />
-        <HorizontalScroll
           title="Senaste Återbruket"
           subTitle="Senast tillgängliga återbruket"
           isNavigationButton
@@ -73,10 +53,31 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
+          roundItem
+          detailPath="ProjectDetail"
+          title="Projekt"
+          subTitle="Projekt som byggs med återbruk"
+          isNavigationButton
+          buttonText="Se alla"
+          buttonOnPress={() => props.navigation.navigate('Projekt')}
+          scrollData={allProjects}
+          navigation={props.navigation}
+          icon={
+            <Entypo
+              name="tools"
+              size={21}
+              style={{
+                marginRight: 5,
+              }}
+            />
+          }
+        />
+
+        <HorizontalScroll
           textItem
           detailPath="ProposalDetail"
           title="efterlysningar"
-          subTitle="Kreti och pleti. Kontakta efterlysaren om du sitter på svaret."
+          subTitle="Kontakta efterlysaren om du sitter på svaret"
           isNavigationButton
           buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Efterlysningar')}
