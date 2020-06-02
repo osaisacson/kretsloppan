@@ -1,14 +1,10 @@
 import React from 'react';
-//Imports
-import { Platform, TouchableOpacity, TouchableNativeFeedback, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-const ButtonAction = (props) => {
-  let TouchableCmp = TouchableOpacity;
+import TouchableCmp from './TouchableCmp';
 
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
+const ButtonAction = (props) => {
   return (
     <TouchableCmp style={{ ...styles.container, ...props.style }}>
       <Button
