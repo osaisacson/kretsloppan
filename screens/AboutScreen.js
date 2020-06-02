@@ -1,13 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import { View, Text, StyleSheet, Linking, Image, Dimensions } from 'react-native';
 import { Paragraph } from 'react-native-paper';
 
 import HeaderTwo from '../components/UI/HeaderTwo';
 import Colors from '../constants/Colors';
 
+const { width } = Dimensions.get('window');
+
 const AboutScreen = (props) => {
   return (
     <View style={styles.screen}>
+      <Image
+        resizeMode="contain"
+        style={styles.logo}
+        source={require('./../assets/orustkretsloppsakademi.png')}
+      />
+
       <HeaderTwo title="Orust kretsloppsakademi" />
       <Paragraph style={styles.paragraph}>
         Orust Kretsloppsakademi (grundat 2012) bidrar till Sveriges åtagande med de 16 miljömålen
@@ -40,12 +48,12 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    textAlign: 'left',
   },
   paragraph: {
     padding: 15,
   },
   link: { color: Colors.primary, fontFamily: 'roboto-bold' },
+  logo: { position: 'absolute', bottom: 15, right: 15, width: 180, overflow: 'visible' },
 });
 
 export default AboutScreen;
