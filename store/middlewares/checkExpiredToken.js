@@ -10,10 +10,8 @@ const checkExpiredToken = (store) => (next) => async (action) => {
   if (userData) {
     const tokenExpiry = new Date(userData.expiryDate).getTime();
     const now = new Date().getTime();
-
     if (tokenExpiry <= now) {
       logout(next);
-      return;
     }
   }
 
