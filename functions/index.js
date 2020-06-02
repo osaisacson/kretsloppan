@@ -102,12 +102,11 @@ exports.sendPushNotifications = functions.database
     const beforeCollectingDate = beforeVal.collectingDate;
     const afterCollectingDate = afterVal.collectingDate;
     const ownerId = afterVal.ownerId;
+    const productName = afterVal.title;
 
     //Sends a push notification when your product gets reserved
     if (!beforeReservedDate && afterReservedDate) {
       const reservedUserId = afterVal.reservedUserId;
-      const ownerId = afterVal.ownerId;
-      const productName = afterVal.title;
 
       try {
         const [reservedBy, productOwner] = await Promise.all([
@@ -137,7 +136,6 @@ exports.sendPushNotifications = functions.database
     //Sends a push notification when a proposed collection date is set for your product
     if (!beforeCollectingDate && afterCollectingDate) {
       const collectingUserId = afterVal.collectingUserId;
-      const productName = afterVal.title;
 
       try {
         const [suggestedBy, productOwner] = await Promise.all([
