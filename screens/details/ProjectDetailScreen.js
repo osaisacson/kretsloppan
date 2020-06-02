@@ -86,7 +86,6 @@ const ProjectDetailScreen = (props) => {
           projectId={selectedProject.id}
           buttonText="kontaktdetaljer"
         />
-
         <CachedImage
           style={styles.image}
           uri={selectedProject.image ? selectedProject.image : ''}

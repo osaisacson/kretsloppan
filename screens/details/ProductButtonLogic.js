@@ -162,7 +162,7 @@ const ProductButtonLogic = (props) => {
 
     Alert.alert(
       'Ändra tid',
-      'Genom att klicka här ställer du in den föreslagna tiden. Ni får då igen 24h på er att komma överens om tid.',
+      'Genom att klicka här ställer du in den föreslagna tiden. Ni får då igen fyra dagar på er att komma överens om en tid.',
       [
         { text: 'Avbryt', style: 'default' },
         {
