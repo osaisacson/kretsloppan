@@ -52,6 +52,7 @@ const HorizontalScroll = (props) => {
     <>
       <Divider />
       <ScrollView
+        showsHorizontalScrollIndicator={false}
         scrollEventThrottle={16}
         style={{
           backgroundColor: props.bgColor ? props.bgColor : 'transparent',

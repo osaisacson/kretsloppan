@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-//Imports
+//Components
 import { detailStyles } from '../wrappers/DetailWrapper';
 import ButtonAction from './ButtonAction';
 import UserAvatar from './UserAvatar';
@@ -56,7 +56,6 @@ const ContactDetails = (props) => {
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <UserAvatar
               userId={props.profileId}
-              style={{ marginRight: 10 }}
               showBadge={false}
               actionOnPress={() => {
                 navigation.navigate('Användare', {
@@ -66,6 +65,7 @@ const ContactDetails = (props) => {
             />
             <Text
               style={{
+                marginLeft: 10,
                 textAlign: 'left',
                 fontFamily: 'roboto-regular',
                 fontSize: 14,

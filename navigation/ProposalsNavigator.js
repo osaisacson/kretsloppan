@@ -1,18 +1,6 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
-//Headers
-import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';
-
-//Tab screens
-import ProposalsScreen from '../screens/shop/ProposalsScreen';
-
-//Details
-import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
-
-//Edit screens
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
@@ -22,6 +10,11 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
+import ProposalDetailScreen, {
+  screenOptions as proposalDetailScreenOptions,
+} from '../screens/details/ProposalDetailScreen';
+import ProposalsScreen from '../screens/shop/ProposalsScreen';
+import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';
 
 const ProposalsStackNavigator = createStackNavigator();
 

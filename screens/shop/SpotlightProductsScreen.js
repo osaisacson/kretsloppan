@@ -33,27 +33,7 @@ const SpotlightProductsScreen = (props) => {
         pic="https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80"
         text="Mer återbruk åt folket! Här nere kan du se tillgängligt material, aktuella efterlysningar och projekt som håller på att byggas med återbruk. Lägg upp och hantera återbruk via din profilsida. Version: 1.0-beta2"
       />
-      <ScrollView nestedScrollEnabled>
-        <HorizontalScroll
-          roundItem
-          detailPath="ProjectDetail"
-          title="Projekt"
-          subTitle="Projekt som håller på att byggas med återbruk"
-          isNavigationButton
-          buttonText="Se alla"
-          buttonOnPress={() => props.navigation.navigate('Projekt')}
-          scrollData={allProjects}
-          navigation={props.navigation}
-          icon={
-            <Entypo
-              name="tools"
-              size={21}
-              style={{
-                marginRight: 5,
-              }}
-            />
-          }
-        />
+      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
           title="Senaste Återbruket"
           subTitle="Senast tillgängliga återbruket"
@@ -73,10 +53,31 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
+          roundItem
+          detailPath="ProjectDetail"
+          title="Projekt"
+          subTitle="Projekt som byggs med återbruk"
+          isNavigationButton
+          buttonText="Se alla"
+          buttonOnPress={() => props.navigation.navigate('Projekt')}
+          scrollData={allProjects}
+          navigation={props.navigation}
+          icon={
+            <Entypo
+              name="tools"
+              size={21}
+              style={{
+                marginRight: 5,
+              }}
+            />
+          }
+        />
+
+        <HorizontalScroll
           textItem
           detailPath="ProposalDetail"
           title="efterlysningar"
-          subTitle="Kreti och pleti. Kontakta efterlysaren om du sitter på svaret."
+          subTitle="Kontakta efterlysaren om du sitter på svaret"
           isNavigationButton
           buttonText="Se alla"
           buttonOnPress={() => props.navigation.navigate('Efterlysningar')}

@@ -1,13 +1,10 @@
-import { FontAwesome } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
-//Imports
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
-import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
 import SaferArea from '../../components/UI/SaferArea';
@@ -112,16 +109,6 @@ const AllProfilesScreen = (props) => {
             <Divider />
           </View>
         )}
-        ListHeaderComponent={
-          <HeaderTwo
-            title="Användare"
-            subTitle="Alla som har skapat sig en profil"
-            icon={
-              <FontAwesome name="users" size={18} style={{ marginRight: 5, paddingBottom: 2 }} />
-            }
-            indicator={profilesSorted.length ? profilesSorted.length : 0}
-          />
-        }
       />
     </SaferArea>
   );

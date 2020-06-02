@@ -1,9 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-//Headers
-
-//Details
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions,
 } from '../screens/details/ProductDetailScreen';
@@ -14,7 +11,6 @@ import ProposalDetailScreen, {
   screenOptions as proposalDetailScreenOptions,
 } from '../screens/details/ProposalDetailScreen';
 import UserProfile from '../screens/details/UserProfile';
-//Add screens
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
 import { defaultNavOptions, defaultMainPageOptions, mainPageOptionsWithUser } from './NavHeaders';
 
