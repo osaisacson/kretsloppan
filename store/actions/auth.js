@@ -7,15 +7,12 @@ export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
 
-let timer;
-
 export const setDidTryAutoLogin = () => {
   return { type: SET_DID_TRY_AUTO_LOGIN };
 };
 
 export const authenticate = (userId, token, expiryTime) => {
   return (dispatch) => {
-    dispatch(setLogoutTimer(expiryTime));
     dispatch({ type: AUTHENTICATE, userId, token });
   };
 };
@@ -166,7 +163,6 @@ export const login = (email, password) => {
 export const logout = () => {
   return async (dispatch) => {
     try {
-      clearLogoutTimer();
       const userData = await AsyncStorage.getItem('userData').then((data) =>
         data ? JSON.parse(data) : {}
       );
@@ -177,20 +173,6 @@ export const logout = () => {
       console.log('Error in store/actions/auth/saveDataToStorage: ', error);
       throw error;
     }
-  };
-};
-
-const clearLogoutTimer = () => {
-  if (timer) {
-    clearTimeout(timer);
-  }
-};
-
-const setLogoutTimer = (expirationTime) => {
-  return (dispatch) => {
-    timer = setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime);
   };
 };
 

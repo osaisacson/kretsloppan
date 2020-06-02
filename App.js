@@ -15,6 +15,7 @@ import 'firebase/database';
 import env from './env';
 //Reducers
 import AppNavigator from './navigation/AppNavigator';
+import checkExpiredToken from './store/middlewares/checkExpiredToken';
 import authReducer from './store/reducers/auth';
 import productsReducer from './store/reducers/products';
 import profilesReducer from './store/reducers/profiles';
@@ -38,7 +39,10 @@ if (!firebase.apps.length) {
 
 Notifications.addListener(() => Vibration.vibrate());
 //NOTE: remove composeWithDevTools before deploying the app. It is only used for React Native Debugger.
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(ReduxThunk, checkExpiredToken))
+);
 
 // const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); //Redux, manages our state.
 
