@@ -91,7 +91,7 @@ function getUserProfileById(profileId) {
   });
 }
 
-exports.sendPushNotificationsOnReserve = functions.database
+exports.sendPushNotifications = functions.database
   .ref('/products/{productId}')
   .onUpdate(async ({ before, after }) => {
     const beforeVal = before.val();
