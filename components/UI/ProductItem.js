@@ -1,20 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import CachedImage from '../../components/UI/CachedImage';
 import StatusBadge from '../../components/UI/StatusBadge';
 import Colors from './../../constants/Colors';
 import Card from './Card';
+import TouchableCmp from './TouchableCmp';
 
 const ProductItem = (props) => {
   const loggedInUserId = useSelector((state) => state.auth.userId);
@@ -65,16 +59,7 @@ const ProductItem = (props) => {
     badgeText = `Ordnat ${moment(props.itemData.collectedDate).locale('sv').calendar()}`;
   }
 
-  let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
-  //If platform is android and the version is the one which supports the ripple effect
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-    //Set TouchableCmp to instead be TouchableNativeFeedback
-  }
-
   return (
-    //TouchableOpacity lets us press the whole item to trigger an action. The buttons still work independently.
-    //'useForeground' has no effect on iOS but on Android it lets the ripple effect on touch spread throughout the whole element instead of just part of it
     <View style={styles.container}>
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         {props.isSearchView ? (
@@ -137,21 +122,16 @@ const ProductItem = (props) => {
 
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
-            {/* This extra View is needed to make sure it fulfills the criteria of child nesting on Android */}
-            <View>
-              <View style={styles.imageContainer}>
-                <CachedImage style={styles.image} uri={props.itemData.image} />
-              </View>
-              {props.itemData.priceText ? (
-                <Text style={styles.price}>{props.itemData.priceText}</Text>
-              ) : null}
-
-              {props.itemData.price ? (
-                <Text style={styles.price}>
-                  {props.itemData.price ? props.itemData.price : 0} kr
-                </Text>
-              ) : null}
+            <View style={styles.imageContainer}>
+              <CachedImage style={styles.image} uri={props.itemData.image} />
             </View>
+            {props.itemData.priceText ? (
+              <Text style={styles.price}>{props.itemData.priceText}</Text>
+            ) : null}
+
+            {props.itemData.price ? (
+              <Text style={styles.price}>{props.itemData.price ? props.itemData.price : 0} kr</Text>
+            ) : null}
           </TouchableCmp>
         </View>
       </Card>

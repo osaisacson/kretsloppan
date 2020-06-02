@@ -1,8 +1,9 @@
 import React from 'react';
-//Imports
-import { Platform, TouchableOpacity, TouchableNativeFeedback, View } from 'react-native';
+import { View } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
 import { useSelector } from 'react-redux';
+
+import TouchableCmp from './TouchableCmp';
 
 const UserAvatar = (props) => {
   //Get logged in userId from state, and products
@@ -35,13 +36,6 @@ const UserAvatar = (props) => {
     )
   );
 
-  let TouchableCmp = TouchableOpacity; //By default sets the wrapping component to be TouchableOpacity
-  //If platform is android and the version is the one which supports the ripple effect
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-    //Set TouchableCmp to instead be TouchableNativeFeedback
-  }
-
   return (
     <TouchableCmp
       activeOpacity={0.5}
@@ -54,32 +48,30 @@ const UserAvatar = (props) => {
               marginTop: 40,
             }
       }>
-      <View>
-        <Avatar.Image
+      <Avatar.Image
+        style={{
+          color: '#fff',
+          backgroundColor: '#fff',
+          borderWidth: 0.3,
+          borderColor: '#000',
+        }}
+        source={
+          currentUser && currentUser.image
+            ? { uri: currentUser.image }
+            : require('./../../assets/avatar-placeholder-image.png')
+        }
+        size={40}
+      />
+      {props.showBadge && badgeNumber > 0 ? (
+        <Badge
           style={{
-            color: '#fff',
-            backgroundColor: '#fff',
-            borderWidth: 0.3,
-            borderColor: '#000',
-          }}
-          source={
-            currentUser && currentUser.image
-              ? { uri: currentUser.image }
-              : require('./../../assets/avatar-placeholder-image.png')
-          }
-          size={40}
-        />
-        {props.showBadge && badgeNumber > 0 ? (
-          <Badge
-            style={{
-              fontWeight: 'bold',
-              position: 'relative',
-              bottom: 20,
-            }}>
-            {badgeNumber}
-          </Badge>
-        ) : null}
-      </View>
+            fontWeight: 'bold',
+            position: 'relative',
+            bottom: 20,
+          }}>
+          {badgeNumber}
+        </Badge>
+      ) : null}
     </TouchableCmp>
   );
 };

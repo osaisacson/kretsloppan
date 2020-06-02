@@ -1,15 +1,10 @@
 import React from 'react';
-import { Platform, TouchableOpacity, TouchableNativeFeedback, StyleSheet } from 'react-native';
-//Imports
+import { StyleSheet } from 'react-native';
 import { IconButton, Badge } from 'react-native-paper';
 
+import TouchableCmp from './TouchableCmp';
+
 const ButtonIcon = (props) => {
-  let TouchableCmp = TouchableOpacity;
-
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
-
   return (
     <TouchableCmp style={{ ...styles.container, ...props.style }}>
       <>

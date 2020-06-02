@@ -6,24 +6,18 @@ import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
-//Actions
 import Error from '../components/UI/Error';
 import Loader from '../components/UI/Loader';
 import UserAvatar from '../components/UI/UserAvatar';
 import Colors from '../constants/Colors';
+import AboutScreen from '../screens/AboutScreen';
 import * as authActions from '../store/actions/auth';
 import * as productsActions from './../store/actions/products';
 import * as profilesActions from './../store/actions/profiles';
 import * as projectsActions from './../store/actions/projects';
 import * as proposalsActions from './../store/actions/proposals';
-//Components
-//Navigators
 import { ProfilesNavigator } from './ProfilesNavigator';
 import { TabNavigator } from './TabNavigator';
-
-//Actions
-
-//Constants
 
 const ShopDrawerNavigator = createDrawerNavigator();
 
@@ -231,6 +225,13 @@ export const ShopNavigator = (props) => {
         component={ProfilesNavigator}
         options={{
           drawerIcon: (props) => <FontAwesome name="users" size={23} color={props.color} />,
+        }}
+      />
+      <ShopDrawerNavigator.Screen
+        name="Om oss"
+        component={AboutScreen}
+        options={{
+          drawerIcon: (props) => <FontAwesome name="question" size={23} color={props.color} />,
         }}
       />
     </ShopDrawerNavigator.Navigator>
