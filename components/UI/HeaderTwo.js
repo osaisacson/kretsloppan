@@ -38,7 +38,6 @@ const HeaderTwo = (props) => {
             <ButtonIcon
               icon="dots-horizontal"
               onSelect={buttonOnPress}
-              size={18}
               color={Colors.darkPrimary}
             />
           </View>
