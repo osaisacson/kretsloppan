@@ -35,23 +35,6 @@ const SpotlightProductsScreen = (props) => {
       />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
-          title="Senaste Återbruket"
-          subTitle="Senast tillgängliga återbruket"
-          isNavigationButton
-          buttonOnPress={() => props.navigation.navigate('Återbruk')}
-          scrollData={recentProducts}
-          navigation={props.navigation}
-          icon={
-            <FontAwesome5
-              name="recycle"
-              size={21}
-              style={{
-                marginRight: 5,
-              }}
-            />
-          }
-        />
-        <HorizontalScroll
           largeImageItem
           detailPath="ProjectDetail"
           title="Projekt"
@@ -70,7 +53,23 @@ const SpotlightProductsScreen = (props) => {
             />
           }
         />
-
+        <HorizontalScroll
+          title="Senaste Återbruket"
+          subTitle="Senast tillgängliga återbruket"
+          isNavigationButton
+          buttonOnPress={() => props.navigation.navigate('Återbruk')}
+          scrollData={recentProducts}
+          navigation={props.navigation}
+          icon={
+            <FontAwesome5
+              name="recycle"
+              size={21}
+              style={{
+                marginRight: 5,
+              }}
+            />
+          }
+        />
         <HorizontalScroll
           textItem
           detailPath="ProposalDetail"

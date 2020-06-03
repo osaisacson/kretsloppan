@@ -109,19 +109,19 @@ const UserSpotlightScreen = (props) => {
 
   return (
     <ScrollViewToTop>
-      <Image
-        source={require('./../../assets/userBackground.png')}
-        style={{
-          flex: 1,
-          resizeMode: 'cover',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          width: '100%',
-          height: '18%',
-        }}
-      />
       <View style={userProfileStyles.userInfoSection}>
+        <Image
+          source={require('./../../assets/userBackground.png')}
+          style={{
+            flex: 1,
+            resizeMode: 'cover',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '100%',
+            height: '105%',
+          }}
+        />
         <Avatar.Image
           style={{
             color: '#fff',
@@ -186,7 +186,30 @@ const UserSpotlightScreen = (props) => {
           />
         </View>
       </View>
-      {/* Product, project and propsal sections */}
+      {/* Product, project and proposal sections */}
+      <HorizontalScroll
+        largeImageItem
+        detailPath="ProjectDetail"
+        title="Mina projekt"
+        subTitle="Projekt jag bygger med återbruk"
+        scrollData={userProjects}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        title="Mitt tillgängliga återbruk"
+        isNavigationButton
+        buttonOnPress={() => props.navigation.navigate('Mitt upplagda återbruk')}
+        scrollData={uploadedByUser}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        textItem
+        detailPath="ProposalDetail"
+        title="Mina Efterlysningar"
+        subTitle="Mina upplagda efterlysningar"
+        scrollData={userProposals}
+        navigation={props.navigation}
+      />
       {reservedProducts.length ? (
         <HorizontalScroll
           title="Reservationer"
@@ -218,29 +241,6 @@ const UserSpotlightScreen = (props) => {
           navigation={props.navigation}
         />
       ) : null}
-      <HorizontalScroll
-        title="Mitt tillgängliga återbruk"
-        isNavigationButton
-        buttonOnPress={() => props.navigation.navigate('Mitt upplagda återbruk')}
-        scrollData={uploadedByUser}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        largeImageItem
-        detailPath="ProjectDetail"
-        title="Mina projekt"
-        subTitle="Projekt jag bygger med återbruk"
-        scrollData={userProjects}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        textItem
-        detailPath="ProposalDetail"
-        title="Mina Efterlysningar"
-        subTitle="Mina upplagda efterlysningar"
-        scrollData={userProposals}
-        navigation={props.navigation}
-      />
     </ScrollViewToTop>
   );
 };
