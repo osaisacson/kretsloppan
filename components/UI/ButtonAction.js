@@ -12,7 +12,7 @@ const ButtonAction = (props) => {
         disabled={props.disabled ? props.disabled : false}
         mode="contained"
         compact={!props.isLarge}
-        style={styles.button}
+        style={{ ...styles.button, ...props.style }}
         labelStyle={[styles.label, props.buttonLabelStyle]}
         onPress={props.onSelect}
         icon={props.icon}>

@@ -38,7 +38,7 @@ const SpotlightProductsScreen = (props) => {
           title="Senaste Återbruket"
           subTitle="Senast tillgängliga återbruket"
           isNavigationButton
-          buttonText="Se alla"
+          buttonIcon="arrow-expand-right"
           buttonOnPress={() => props.navigation.navigate('Återbruk')}
           scrollData={recentProducts}
           navigation={props.navigation}
@@ -58,7 +58,7 @@ const SpotlightProductsScreen = (props) => {
           title="Projekt"
           subTitle="Projekt som byggs med återbruk"
           isNavigationButton
-          buttonText="Se alla"
+          buttonIcon="arrow-expand-right"
           buttonOnPress={() => props.navigation.navigate('Projekt')}
           scrollData={allProjects}
           navigation={props.navigation}
@@ -79,7 +79,7 @@ const SpotlightProductsScreen = (props) => {
           title="efterlysningar"
           subTitle="Kontakta efterlysaren om du sitter på svaret"
           isNavigationButton
-          buttonText="Se alla"
+          buttonIcon="arrow-expand-right"
           buttonOnPress={() => props.navigation.navigate('Efterlysningar')}
           scrollData={allProposals}
           navigation={props.navigation}

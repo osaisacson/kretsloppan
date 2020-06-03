@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   product: {
-    height: 220,
+    height: 160,
     width: '93%',
     margin: '1.5%',
     borderWidth: 0.5,
@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   horizontalProduct: {
-    height: 220,
-    width: 220,
+    height: 160,
+    width: 160,
     marginLeft: 10,
     borderWidth: 0.5,
     borderColor: '#ddd',
