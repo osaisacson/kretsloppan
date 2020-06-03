@@ -118,7 +118,7 @@ const UserSpotlightScreen = (props) => {
           top: 0,
           right: 0,
           width: '100%',
-          height: '15%',
+          height: '18%',
         }}
       />
       <View style={userProfileStyles.userInfoSection}>
@@ -143,7 +143,7 @@ const UserSpotlightScreen = (props) => {
           {currentProfile.profileName}
         </Title>
         {currentProfile.profileDescription ? (
-          <Title style={{ color: '#fff', ...userProfileStyles.subTitle }}>
+          <Title style={{ color: '#fff', ...userProfileStyles.subtitle }}>
             {currentProfile.profileDescription}
           </Title>
         ) : null}
