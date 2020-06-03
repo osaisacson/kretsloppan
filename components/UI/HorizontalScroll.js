@@ -13,13 +13,13 @@ import HeaderTwo from './HeaderTwo';
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
   let RenderedItem = ProductItem;
-  let scrollHeight = props.scrollHeight ? props.scrollHeight : 280;
+  let scrollHeight = props.scrollHeight ? props.scrollHeight : 220;
   const detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
   //Check if we instead should render the RoundItem
   if (props.roundItem) {
     RenderedItem = RoundItem;
-    scrollHeight = props.scrollHeight ? props.scrollHeight : 220;
+    scrollHeight = props.scrollHeight ? props.scrollHeight : 190;
   }
 
   //Check if we instead should render the TextItem
@@ -31,7 +31,7 @@ const HorizontalScroll = (props) => {
   //Check if we instead should render the LargeImageItem
   if (props.largeImageItem) {
     RenderedItem = LargeImageItem;
-    scrollHeight = 350;
+    scrollHeight = 300;
   }
 
   const scrollData = props.scrollData;
@@ -66,7 +66,6 @@ const HorizontalScroll = (props) => {
             buttonIcon={props.buttonIcon}
             buttonOnPress={props.buttonOnPress}
             buttonText={props.buttonText}
-            questionText={props.questionText}
             icon={props.icon}
             indicator={scrollData.length ? scrollData.length : 0}
             showNotificationBadge={props.showNotificationBadge}

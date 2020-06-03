@@ -80,7 +80,7 @@ const ProductButtonLogic = (props) => {
 
   if (isOrganised) {
     receivingId = collectingUserId;
-    statusColor = Colors.subtleBlue;
+    statusColor = Colors.subtleGreen;
   }
 
   if (isPickedUp) {

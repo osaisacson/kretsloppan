@@ -3,40 +3,60 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Badge, Button } from 'react-native-paper';
 
 import Colors from './../../constants/Colors';
+import ButtonIcon from './ButtonIcon';
 
 const HeaderTwo = (props) => {
-  const extraStyle = props.buttonText ? { maxWidth: '80%' } : { maxWidth: '99%' };
+  const {
+    icon,
+    title,
+    subTitle,
+    extraSubTitle,
+    indicator,
+    buttonText,
+    buttonIcon,
+    buttonOnPress,
+    showNotificationBadge,
+    isNavigationButton,
+  } = props;
+  const extraStyle = buttonText ? { maxWidth: '80%' } : { maxWidth: '99%' };
   return (
     <View style={styles.headerContainer}>
       <View style={[styles.textSection, extraStyle]}>
         <View style={styles.textAndBadge}>
-          {props.icon ? props.icon : null}
-          <Text style={styles.contentHeader}>{props.title}</Text>
-          {props.showNotificationBadge ? (
-            <Badge style={{ marginBottom: 5, fontWeight: 'bold' }}>{props.indicator}</Badge>
+          {icon ? icon : null}
+          <Text style={styles.contentHeader}>{title}</Text>
+          {showNotificationBadge ? (
+            <Badge style={{ fontWeight: 'bold', marginBottom: 5 }}>{indicator}</Badge>
           ) : null}
         </View>
-        <Text style={styles.subTitle}>{props.subTitle}</Text>
-        {props.extraSubTitle ? (
-          <Text style={styles.extraSubTitle}>{props.extraSubTitle}</Text>
-        ) : null}
+        <Text style={styles.subTitle}>{subTitle}</Text>
+        {extraSubTitle ? <Text style={styles.extraSubTitle}>{extraSubTitle}</Text> : null}
       </View>
       <View style={styles.indicatorSection}>
-        {props.buttonText ? (
+        {!buttonText && buttonIcon && (
+          <View style={{ alignSelf: 'flex-end' }}>
+            <ButtonIcon
+              icon="dots-horizontal"
+              onSelect={buttonOnPress}
+              color={Colors.darkPrimary}
+            />
+          </View>
+        )}
+        {buttonText ? (
           <Button
-            color={props.isNavigationButton ? Colors.darkPrimary : null}
+            color={isNavigationButton ? Colors.darkPrimary : null}
             style={{ marginRight: 5, paddingHorizontal: 0 }}
             labelStyle={{
               marginLeft: 4,
-              marginRight: props.buttonIcon ? 11 : 4,
+              marginRight: buttonIcon ? 11 : 4,
               paddingLeft: 0,
               paddingRight: 0,
               fontSize: 10,
             }}
-            icon={props.buttonIcon}
+            icon={buttonIcon}
             mode="contained"
-            onPress={props.buttonOnPress}>
-            {props.buttonText}
+            onPress={buttonOnPress}>
+            {buttonText}
           </Button>
         ) : null}
       </View>
@@ -64,7 +84,7 @@ const styles = StyleSheet.create({
   },
   textAndBadge: {
     flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'center',
   },
   contentHeader: {
     fontFamily: 'bebas-neue-bold',

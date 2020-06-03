@@ -23,7 +23,7 @@ const AboutScreen = (props) => {
             <Image
               resizeMode="contain"
               style={styles.logoSmall}
-              source={require('./../assets/icon.png')}
+              source={require('./../assets/egnahemsfabriken.png')}
             />
           </View>
           <View>

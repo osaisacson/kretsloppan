@@ -1,4 +1,4 @@
-import { Entypo, MaterialIcons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import React from 'react';
 
@@ -26,7 +26,9 @@ export const TabNavigator = () => {
         name="Kretsloppan"
         component={SpotlightNavigator}
         options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="home" color={color} size={23} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="ladybug" color={color} size={23} />
+          ),
         }}
       />
       <TabStackNavigator.Screen

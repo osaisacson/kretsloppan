@@ -7,21 +7,19 @@ import TouchableCmp from './TouchableCmp';
 const ButtonIcon = (props) => {
   return (
     <TouchableCmp style={{ ...styles.container, ...props.style }}>
-      <>
-        {props.badge ? <Badge style={styles.badge}>{props.badge}</Badge> : null}
-        <IconButton
-          icon={props.icon}
-          size={props.size ? props.size : 20}
-          animated
-          color="#fff"
-          style={{
-            borderColor: props.borderColor ? props.borderColor : '#fff',
-            borderWidth: 0.5,
-            backgroundColor: props.color,
-          }}
-          onPress={props.onSelect}
-        />
-      </>
+      {props.badge ? <Badge style={styles.badge}>{props.badge}</Badge> : null}
+      <IconButton
+        icon={props.icon}
+        size={props.size ? props.size : 20}
+        animated
+        color="#fff"
+        style={{
+          borderColor: props.borderColor ? props.borderColor : '#fff',
+          borderWidth: 0.5,
+          backgroundColor: props.color,
+        }}
+        onPress={props.onSelect}
+      />
     </TouchableCmp>
   );
 };

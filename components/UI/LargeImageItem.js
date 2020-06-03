@@ -22,8 +22,8 @@ const LargeImageItem = (props) => {
 
 const styles = StyleSheet.create({
   largeProject: {
-    height: 250,
-    width: 370,
+    height: 230,
+    width: 350,
     marginLeft: 10,
     borderWidth: 0.5,
     borderRadius: 5,
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   largeTouchable: {
-    height: 250,
-    width: 370,
+    height: 230,
+    width: 350,
     borderRadius: 5,
     overflow: 'hidden',
   },

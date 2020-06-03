@@ -1,15 +1,13 @@
 import React from 'react';
-//Imports
-import { View } from 'react-native';
-import { Avatar, Title, Caption, Paragraph, Button } from 'react-native-paper';
+import { View, Image } from 'react-native';
+import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
-// import AddButton from '../../components/UI/AddButton';
+import ButtonAdd from '../../components/UI/ButtonAdd';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Colors from '../../constants/Colors';
 import { userProfileStyles } from '../details/UserProfile';
-//Constants
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
 
 const UserSpotlightScreen = (props) => {
@@ -111,6 +109,18 @@ const UserSpotlightScreen = (props) => {
 
   return (
     <ScrollViewToTop>
+      <Image
+        source={require('./../../assets/userBackground.png')}
+        style={{
+          flex: 1,
+          resizeMode: 'cover',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '100%',
+          height: '15%',
+        }}
+      />
       <View style={userProfileStyles.userInfoSection}>
         <Avatar.Image
           style={{
@@ -129,62 +139,58 @@ const UserSpotlightScreen = (props) => {
         <ButtonIcon icon="settings" color={Colors.neutral} onSelect={editProfileHandler} />
 
         {/* <AddButton navigation={props.navigation} /> */}
-        <Title style={userProfileStyles.title}>{currentProfile.profileName}</Title>
+        <Title style={{ color: '#fff', ...userProfileStyles.title }}>
+          {currentProfile.profileName}
+        </Title>
         {currentProfile.profileDescription ? (
-          <Title style={userProfileStyles.subtitle}>{currentProfile.profileDescription}</Title>
+          <Title style={{ color: '#fff', ...userProfileStyles.subTitle }}>
+            {currentProfile.profileDescription}
+          </Title>
         ) : null}
         <View style={userProfileStyles.row}>
           <View style={userProfileStyles.section}>
-            <Paragraph style={userProfileStyles.paragraph}>{added ? added : 0}</Paragraph>
-            <Caption>Upplagda</Caption>
+            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
+              {added ? added : 0}
+            </Paragraph>
+            <Caption style={{ color: '#fff' }}>Upplagda</Caption>
           </View>
           <View style={userProfileStyles.section}>
-            <Paragraph style={userProfileStyles.paragraph}>{collected ? collected : 0}</Paragraph>
-            <Caption>Köpta</Caption>
+            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
+              {collected ? collected : 0}
+            </Paragraph>
+            <Caption style={{ color: '#fff' }}>Köpta</Caption>
           </View>
           <View style={userProfileStyles.section}>
-            <Paragraph style={userProfileStyles.paragraph}>{sold ? sold : 0}</Paragraph>
-            <Caption>Sålda</Caption>
+            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
+              {sold ? sold : 0}
+            </Paragraph>
+            <Caption style={{ color: '#fff' }}>Sålda</Caption>
           </View>
           <View style={userProfileStyles.section}>
-            <Paragraph style={userProfileStyles.paragraph}>
+            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
               {nrOfProjects ? nrOfProjects : 0}
             </Paragraph>
-            <Caption>Projekt</Caption>
+            <Caption style={{ color: '#fff' }}>Projekt</Caption>
           </View>
         </View>
         <View style={userProfileStyles.row}>
-          <Button
-            style={{ marginRight: 5 }}
-            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
-            icon="plus"
-            mode="contained"
-            onPress={() => props.navigation.navigate('EditProduct')}>
-            Återbruk
-          </Button>
-          <Button
-            style={{ marginRight: 5 }}
-            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
-            icon="plus"
-            mode="contained"
-            onPress={() => props.navigation.navigate('EditProject')}>
-            Projekt
-          </Button>
-          <Button
-            labelStyle={{ marginLeft: 4, paddingRight: 0, fontSize: 10 }}
-            icon="plus"
-            mode="contained"
-            onPress={() => props.navigation.navigate('EditProposal')}>
-            Efterlysning
-          </Button>
+          <ButtonAdd title="Återbruk" onPress={() => props.navigation.navigate('EditProduct')} />
+          <ButtonAdd
+            title="Projekt"
+            style={{ marginHorizontal: 4, paddingRight: 5 }}
+            onPress={() => props.navigation.navigate('EditProject')}
+          />
+          <ButtonAdd
+            title="Efterlysning"
+            onPress={() => props.navigation.navigate('EditProposal')}
+          />
         </View>
       </View>
-
       {/* Product, project and propsal sections */}
       {reservedProducts.length ? (
         <HorizontalScroll
-          title="Reservationer under diskussion"
-          subTitle="Föreslå tid eller godkänn givet tidsförslag innan reservationen går ut. Om behov kontakta varandra för att diskutera fler detaljer."
+          title="Reservationer"
+          subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning"
           bgColor={Colors.lightPrimary}
           scrollData={reservedProducts}
           showNotificationBadge
@@ -195,7 +201,7 @@ const UserSpotlightScreen = (props) => {
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att köpas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att köpas och hämtas av dig på angiven tid."
+          subTitle="Väntar på att köpas och hämtas av dig på överenskommen tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedByUser}
           showNotificationBadge
@@ -205,7 +211,7 @@ const UserSpotlightScreen = (props) => {
       {toBeCollectedFromUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att säljas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att säljas och lämnas av dig på angiven tid."
+          subTitle="Väntar på att säljas och lämnas av dig på överenskommen tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedFromUser}
           showNotificationBadge
@@ -225,7 +231,7 @@ const UserSpotlightScreen = (props) => {
       <HorizontalScroll
         textItem
         detailPath="ProposalDetail"
-        title="Efterlysningar"
+        title="Mina Efterlysningar"
         subTitle="Mina upplagda efterlysningar"
         scrollData={userProposals}
         navigation={props.navigation}

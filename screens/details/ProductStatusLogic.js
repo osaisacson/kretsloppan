@@ -25,7 +25,7 @@ const ProductStatusLogic = (props) => {
   let statusIcon;
   let statusColor;
   let promptText;
-  let bgColor = Colors.subtlePurple;
+  let bgColor;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -48,7 +48,7 @@ const ProductStatusLogic = (props) => {
   if (isOrganised) {
     statusText = `Upphämtning satt till ${Moment(collectingDate).locale('sv').calendar()}`;
     statusIcon = 'star';
-    statusColor = Colors.subtleBlue;
+    statusColor = Colors.subtleGreen;
   }
 
   if (isPickedUp) {
@@ -58,10 +58,12 @@ const ProductStatusLogic = (props) => {
   }
 
   if (suggestedDate) {
-    promptText = `Tid föreslagen, ${
-      waitingForYou ? 'väntar på ditt godkännande ' : 'väntar på motparts godkännande'
+    promptText = `Tid föreslagen ${
+      waitingForYou
+        ? ', väntar på ditt godkännande '
+        : `av dig, väntar på ${sellerAgreed ? 'köparens' : 'säljarens'} godkännande`
     }`;
-    bgColor = waitingForYou ? Colors.darkPrimary : Colors.subtlePurple;
+    bgColor = waitingForYou ? Colors.darkPrimary : Colors.subtleBlue;
   }
 
   if (!suggestedDate) {
