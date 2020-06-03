@@ -113,7 +113,7 @@ const ProductItem = (props) => {
                     ? Colors.darkPrimary
                     : waitingForYou
                     ? Colors.darkPrimary
-                    : Colors.subtlePurple
+                    : Colors.subtleGreen
                 }
               />
             ) : null}
