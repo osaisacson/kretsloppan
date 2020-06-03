@@ -143,17 +143,17 @@ const UserProfile = (props) => {
         navigation={props.navigation}
       />
       <HorizontalScroll
+        title="Tillgängligt förråd"
+        subTitle="Återbruk av användaren som är tillgängligt att reservera"
+        scrollData={availableUserProducts}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
         textItem
         detailPath="ProposalDetail"
         title="Efterlysningar"
         subTitle="Återbruk, tjänster, tips..."
         scrollData={userProposals}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        title="Tillgängligt förråd"
-        subTitle="Återbruk av användaren som är tillgängligt att reservera"
-        scrollData={availableUserProducts}
         navigation={props.navigation}
       />
       {givenByUser.length ? (

@@ -225,21 +225,20 @@ const UserSpotlightScreen = (props) => {
         scrollData={uploadedByUser}
         navigation={props.navigation}
       />
-
-      <HorizontalScroll
-        textItem
-        detailPath="ProposalDetail"
-        title="Mina Efterlysningar"
-        subTitle="Mina upplagda efterlysningar"
-        scrollData={userProposals}
-        navigation={props.navigation}
-      />
       <HorizontalScroll
         largeImageItem
         detailPath="ProjectDetail"
         title="Mina projekt"
         subTitle="Projekt jag bygger med återbruk"
         scrollData={userProjects}
+        navigation={props.navigation}
+      />
+      <HorizontalScroll
+        textItem
+        detailPath="ProposalDetail"
+        title="Mina Efterlysningar"
+        subTitle="Mina upplagda efterlysningar"
+        scrollData={userProposals}
         navigation={props.navigation}
       />
     </ScrollViewToTop>
