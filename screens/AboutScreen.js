@@ -9,7 +9,46 @@ const AboutScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <Text style={styles.largeHeader}>Partners</Text>
+        <Paragraph style={styles.paragraph}>
+          Kretsloppan är skapad 2020 av Egnahemsfabriken och Orust Kretsloppsakademi med stöd av
+          Vinnova - Sveriges Innovationsmyndighet.
+        </Paragraph>
+        <Paragraph style={styles.paragraph}>
+          Målet är att synliggöra och främja användandet av återbruk, och att skapa en mötesplats
+          där vi som bygger hållbart lätt kan dela resurser.
+        </Paragraph>
+        <SectionCard style={styles.sectionContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Egnahemsfabriken</Text>
+            <Image
+              resizeMode="contain"
+              style={styles.logoSmall}
+              source={require('./../assets/icon.png')}
+            />
+          </View>
+          <View>
+            <Paragraph style={styles.paragraph}>
+              Egnahemsfabriken Tjörn (Grundat 2018) är ett innovationsprojekt och en stödstruktur
+              för dig som vill bygga ditt eget hus eller hjälpa andra att bygga sina egna hus.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              Målet är att öppna fler vägar till egna hem åt fler och att etablera en
+              gränsöverskridande mötesplats runt byggande och design på Tjörn.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              Projektet har initierats av civilsamhället med stöd av Tjörns kommun och byggs upp av
+              oss som bor här, tillsammans. Egnahemsfabriken är öppen för alla och tillhör alla. En
+              möjlighet att hjälpa andra eller att hjälpa sig själv till en bostad.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              <Text
+                style={styles.link}
+                onPress={() => Linking.openURL('https://www.egnahemsfabriken.se/')}>
+                egnahemsfabriken.se
+              </Text>
+            </Paragraph>
+          </View>
+        </SectionCard>
         <SectionCard>
           <View style={styles.headerContainer}>
             <Text style={styles.header}>Orust kretsloppsakademi</Text>
@@ -42,38 +81,6 @@ const AboutScreen = (props) => {
                 style={styles.link}
                 onPress={() => Linking.openURL('https://www.orustkretsloppsakademi.se/')}>
                 orustkretsloppsakademi.se
-              </Text>
-            </Paragraph>
-          </View>
-        </SectionCard>
-        <SectionCard style={styles.sectionContainer}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>Egnahemsfabriken</Text>
-            <Image
-              resizeMode="contain"
-              style={styles.logoSmall}
-              source={require('./../assets/icon.png')}
-            />
-          </View>
-          <View>
-            <Paragraph style={styles.paragraph}>
-              Egnahemsfabriken Tjörn (Grundat 2018) är ett innovationsprojekt och en stödstruktur
-              för dig som vill bygga ditt eget hus eller hjälpa andra att bygga sina egna hus.
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Målet är att öppna fler vägar till egna hem åt fler och att etablera en
-              gränsöverskridande mötesplats runt byggande och design på Tjörn.
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Projektet har initierats av civilsamhället med stöd av Tjörns kommun och byggs upp av
-              oss som bor här, tillsammans. Egnahemsfabriken är öppen för alla och tillhör alla. En
-              möjlighet att hjälpa andra eller att hjälpa sig själv till en bostad.
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              <Text
-                style={styles.link}
-                onPress={() => Linking.openURL('https://www.egnahemsfabriken.se/')}>
-                egnahemsfabriken.se
               </Text>
             </Paragraph>
           </View>

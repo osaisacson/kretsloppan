@@ -143,7 +143,9 @@ exports.sendPushNotifications = functions.database
           getUserProfileById(ownerId),
         ]);
 
-        if (suggestedBy && productOwner.expoTokens) {
+        const byThemselves = suggestedBy === productOwner;
+        //If the owner was not the one suggesting the time
+        if (!byThemselves && suggestedBy && productOwner.expoTokens) {
           const dateMessage = {
             to: productOwner.expoTokens,
             sound: 'default',
