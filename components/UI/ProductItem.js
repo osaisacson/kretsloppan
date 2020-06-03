@@ -47,7 +47,7 @@ const ProductItem = (props) => {
 
   if (isOrganised) {
     icon = 'star';
-    bgColor = Colors.subtleBlue;
+    bgColor = Colors.subtleGreen;
     userBadgeIcon = 'clock';
     badgeText = moment(props.itemData.collectingDate).locale('sv').calendar();
   }
@@ -113,7 +113,7 @@ const ProductItem = (props) => {
                     ? Colors.darkPrimary
                     : waitingForYou
                     ? Colors.darkPrimary
-                    : Colors.subtleGreen
+                    : Colors.subtleBlue
                 }
               />
             ) : null}
