@@ -10,7 +10,7 @@ import Colors from '../constants/Colors';
 
 export const defaultNavOptions = {
   headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
+    backgroundColor: Platform.OS === 'android' ? Colors.darkPrimary : '',
     height: 90,
   },
   headerTitleStyle: {
@@ -20,7 +20,7 @@ export const defaultNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'roboto-regular',
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.darkPrimary,
 };
 
 export const defaultMainPageOptions = (navData) => {
@@ -82,8 +82,8 @@ export const mainPageOptionsNoUser = () => {
     //     badge={2} //TBD: In-app messaging - should show nr of unanswered messages
     //     style={{ marginRight: 30, marginTop: 5 }}
     //     icon="email"
-    //     color={Colors.primary}
-    //     borderColor={Colors.primary}
+    //     color={Colors.darkPrimary}
+    //     borderColor={Colors.darkPrimary}
     //     size={24}
     //   />
     // ),

@@ -31,14 +31,17 @@ const ProductItem = (props) => {
 
   let icon;
   let bgColor;
-
+  let textColor;
   let userBadgeIcon;
   let badgeText;
+  let noCorners;
 
   if (isReserved) {
     icon = 'bookmark';
-    bgColor = Colors.primary;
+    bgColor = Colors.lightPrimary;
+    textColor = '#000';
     userBadgeIcon = 'return-left';
+    noCorners = true;
     badgeText = `Går ut ${moment(props.itemData.reservedUntil)
       .locale('sv')
       .endOf('day')
@@ -79,8 +82,8 @@ const ProductItem = (props) => {
         ) : (
           <>
             <StatusBadge
+              noCorners={noCorners}
               style={styles.statusBadge}
-              textStyle={styles.statusText}
               text={badgeText}
               icon={
                 userBadgeIcon
@@ -90,6 +93,7 @@ const ProductItem = (props) => {
                   : null
               }
               backgroundColor={bgColor}
+              textColor={textColor}
             />
             {isReserved ? (
               <StatusBadge
@@ -98,8 +102,8 @@ const ProductItem = (props) => {
                   top: 20,
                   position: 'absolute',
                   zIndex: 100,
+                  width: '100%',
                 }}
-                textStyle={styles.statusText}
                 text={
                   !props.itemData.suggestedDate
                     ? 'Ange tidsförslag'
@@ -149,7 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   product: {
-    height: 160,
+    height: 180,
     width: '93%',
     margin: '1.5%',
     borderWidth: 0.5,
@@ -161,17 +165,12 @@ const styles = StyleSheet.create({
     margin: 0,
     top: 0,
     position: 'absolute',
+    width: '100%',
     zIndex: 100,
   },
-  statusText: {
-    textTransform: 'uppercase',
-    fontSize: 10,
-    padding: 4,
-    color: '#fff',
-  },
   horizontalProduct: {
-    height: 160,
-    width: 160,
+    height: 180,
+    width: 180,
     marginLeft: 10,
     borderWidth: 0.5,
     borderColor: '#ddd',
@@ -208,7 +207,7 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingLeft: 4,
-    width: '90%',
+    width: 180,
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
     marginLeft: 8,

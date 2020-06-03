@@ -96,9 +96,7 @@ const ProposalsScreen = (props) => {
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title="Efterlysningar"
-            subTitle="Från självbyggare"
-            buttonIcon="plus"
+            title="Alla Efterlysningar"
             buttonText="Efterlysning"
             buttonOnPress={() => props.navigation.navigate('EditProposal')}
             icon={

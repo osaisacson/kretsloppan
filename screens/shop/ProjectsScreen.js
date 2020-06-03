@@ -96,9 +96,7 @@ const ProjectsScreen = (props) => {
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title="Projekt"
-            subTitle="Projekt byggda med återbruk"
-            buttonIcon="plus"
+            title="Alla Projekt"
             buttonText="Projekt"
             buttonOnPress={() => props.navigation.navigate('EditProject')}
             icon={

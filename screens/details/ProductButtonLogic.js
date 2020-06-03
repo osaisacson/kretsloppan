@@ -300,7 +300,7 @@ const ProductButtonLogic = (props) => {
             labelStyle={{ fontSize: 10 }}
             color={Colors.darkPrimary}
             style={{ position: 'absolute', left: '36%' }}
-            mode="outlined"
+            mode="contained"
             onPress={toggleShowOptions}>
             Logistik
           </Button>
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 14,
     alignSelf: 'center',
-    backgroundColor: Colors.subtleGrey,
+    backgroundColor: Colors.darkPrimary,
   },
   boxText: {
     fontFamily: 'roboto-bold',

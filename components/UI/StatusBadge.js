@@ -1,7 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-
-//Imports
 import { View, Text } from 'react-native';
 
 const StatusBadge = (props) => {
@@ -9,10 +7,9 @@ const StatusBadge = (props) => {
     <View
       style={{
         ...props.style,
-        borderRadius: 5,
+        borderRadius: props.noCorners ? 0 : 5,
         flex: 1,
         flexDirection: 'row',
-        color: '#fff',
         marginBottom: 10,
         paddingHorizontal: 5,
         alignItems: 'center',
@@ -20,7 +17,7 @@ const StatusBadge = (props) => {
       }}>
       <Ionicons
         style={{
-          color: '#fff',
+          color: props.textColor ? props.textColor : '#fff',
           paddingRight: 4,
         }}
         name={props.icon}
@@ -31,9 +28,9 @@ const StatusBadge = (props) => {
           props.textStyle,
           {
             textTransform: 'uppercase',
-            fontSize: 11,
+            fontSize: 10,
             padding: 4,
-            color: '#fff',
+            color: props.textColor ? props.textColor : '#fff',
           },
         ]}>
         {props.text}

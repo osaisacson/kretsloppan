@@ -1,6 +1,4 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-//Imports
 import { FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,7 +9,6 @@ import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
 import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
-//Actions
 import * as productsActions from '../../store/actions/products';
 
 const UserProductsScreen = (props) => {
@@ -44,13 +41,6 @@ const UserProductsScreen = (props) => {
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
-
-  // useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener('focus', loadProducts);
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [loadProducts]);
 
   const searchHandler = (text) => {
     const newData = renderedProducts.filter((item) => {
@@ -90,9 +80,8 @@ const UserProductsScreen = (props) => {
         placeholder="Leta bland ditt återbruk"
       />
       <HeaderTwo
-        title="Ditt upplagda återbruk"
-        subTitle="Allt som är redo att hämtas, väntar på eller har blivit hämtat."
-        icon={<MaterialIcons name="file-upload" size={20} style={{ marginRight: 5 }} />}
+        title="Allt mitt upplagda återbruk"
+        subTitle="Allt du själv har lagt upp eller hämtat."
         indicator={productsSorted.length ? productsSorted.length : 0}
       />
       <FlatList

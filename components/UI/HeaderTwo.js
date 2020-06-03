@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Badge, Button } from 'react-native-paper';
+import { Badge } from 'react-native-paper';
 
 import Colors from './../../constants/Colors';
+import ButtonAdd from './ButtonAdd';
 import ButtonIcon from './ButtonIcon';
 
 const HeaderTwo = (props) => {
@@ -13,10 +14,9 @@ const HeaderTwo = (props) => {
     extraSubTitle,
     indicator,
     buttonText,
-    buttonIcon,
     buttonOnPress,
-    showNotificationBadge,
     isNavigationButton,
+    showNotificationBadge,
   } = props;
   const extraStyle = buttonText ? { maxWidth: '80%' } : { maxWidth: '99%' };
   return (
@@ -33,7 +33,7 @@ const HeaderTwo = (props) => {
         {extraSubTitle ? <Text style={styles.extraSubTitle}>{extraSubTitle}</Text> : null}
       </View>
       <View style={styles.indicatorSection}>
-        {!buttonText && buttonIcon && (
+        {isNavigationButton && (
           <View style={{ alignSelf: 'flex-end' }}>
             <ButtonIcon
               icon="dots-horizontal"
@@ -42,23 +42,7 @@ const HeaderTwo = (props) => {
             />
           </View>
         )}
-        {buttonText ? (
-          <Button
-            color={isNavigationButton ? Colors.darkPrimary : null}
-            style={{ marginRight: 5, paddingHorizontal: 0 }}
-            labelStyle={{
-              marginLeft: 4,
-              marginRight: buttonIcon ? 11 : 4,
-              paddingLeft: 0,
-              paddingRight: 0,
-              fontSize: 10,
-            }}
-            icon={buttonIcon}
-            mode="contained"
-            onPress={buttonOnPress}>
-            {buttonText}
-          </Button>
-        ) : null}
+        {buttonText && <ButtonAdd title={buttonText} onPress={buttonOnPress} />}
       </View>
     </View>
   );

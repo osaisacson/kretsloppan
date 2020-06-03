@@ -98,10 +98,8 @@ const ProductsScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title="Allt återbruk"
-            buttonIcon="plus"
             buttonText="Återbruk"
             buttonOnPress={() => props.navigation.navigate('EditProduct')}
-            subTitle="Upplagda av alla"
             icon={<FontAwesome5 name="recycle" size={20} style={{ marginRight: 5 }} />}
             indicator={productsToShow.length ? productsToShow.length : 0}
           />
