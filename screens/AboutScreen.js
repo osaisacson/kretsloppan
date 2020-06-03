@@ -28,7 +28,7 @@ const AboutScreen = (props) => {
           </View>
           <View>
             <Paragraph style={styles.paragraph}>
-              Egnahemsfabriken Tjörn (Grundat 2018) är ett innovationsprojekt och en stödstruktur
+              Egnahemsfabriken Tjörn (grundat 2018) är ett innovationsprojekt och en stödstruktur
               för dig som vill bygga ditt eget hus eller hjälpa andra att bygga sina egna hus.
             </Paragraph>
             <Paragraph style={styles.paragraph}>
