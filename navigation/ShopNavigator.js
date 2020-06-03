@@ -1,4 +1,4 @@
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SafeAreaView, View, Platform } from 'react-native';
@@ -149,52 +149,30 @@ export const ShopNavigator = (props) => {
         return (
           <View style={{ flex: 1 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: 30,
-                }}>
-                <View
-                  style={Platform.select({
-                    default: { paddingTop: 20 },
-                    android: {
-                      paddingTop: 20,
-                      paddingLeft: 10,
-                      paddingBottom: 10,
-                    },
-                  })}>
-                  <UserAvatar
-                    showBadge
-                    actionOnPress={() => {
-                      props.navigation.navigate('Min Sida');
-                      props.navigation.closeDrawer();
-                    }}
-                  />
-                </View>
+              <View style={{ marginTop: 30 }}>
+                <Divider style={{ backgroundColor: 'grey' }} />
+                <DrawerItemList {...props} />
+                <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
+                <Button
+                  color="#666"
+                  mode="contained"
+                  style={{
+                    marginTop: 200,
+                    width: '60%',
+                    alignSelf: 'center',
+                  }}
+                  labelStyle={{
+                    paddingTop: 2,
+                    fontFamily: 'bebas-neue-bold',
+                    fontSize: 14,
+                  }}
+                  compact
+                  onPress={() => {
+                    dispatch(authActions.logout());
+                  }}>
+                  Logga ut
+                </Button>
               </View>
-              <Divider style={{ backgroundColor: 'grey' }} />
-              <DrawerItemList {...props} />
-              <Divider style={{ marginTop: 10, backgroundColor: 'grey' }} />
-              <Button
-                color="#666"
-                mode="contained"
-                style={{
-                  marginTop: 200,
-                  width: '60%',
-                  alignSelf: 'center',
-                }}
-                labelStyle={{
-                  paddingTop: 2,
-                  fontFamily: 'bebas-neue-bold',
-                  fontSize: 14,
-                }}
-                compact
-                onPress={() => {
-                  dispatch(authActions.logout());
-                }}>
-                Logga ut
-              </Button>
             </SafeAreaView>
           </View>
         );
@@ -207,7 +185,9 @@ export const ShopNavigator = (props) => {
         name="Kretsloppan"
         component={TabNavigator}
         options={{
-          drawerIcon: (props) => <MaterialIcons name="home" size={23} color={props.color} />,
+          drawerIcon: (props) => (
+            <MaterialCommunityIcons name="ladybug" size={23} color={props.color} />
+          ),
         }}
       />
       <ShopDrawerNavigator.Screen
