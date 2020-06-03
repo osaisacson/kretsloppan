@@ -91,18 +91,22 @@ function getUserProfileById(profileId) {
   });
 }
 
-exports.sendPushNotificationsOnReserve = functions.database
+exports.sendPushNotifications = functions.database
   .ref('/products/{productId}')
   .onUpdate(async ({ before, after }) => {
     const beforeVal = before.val();
     const afterVal = after.val();
+
     const beforeReservedDate = beforeVal.reservedDate;
     const afterReservedDate = afterVal.reservedDate;
+    const beforeCollectingDate = beforeVal.collectingDate;
+    const afterCollectingDate = afterVal.collectingDate;
+    const ownerId = afterVal.ownerId;
+    const productName = afterVal.title;
 
+    //Sends a push notification when your product gets reserved
     if (!beforeReservedDate && afterReservedDate) {
       const reservedUserId = afterVal.reservedUserId;
-      const ownerId = afterVal.ownerId;
-      const productName = afterVal.title;
 
       try {
         const [reservedBy, productOwner] = await Promise.all([
@@ -111,7 +115,7 @@ exports.sendPushNotificationsOnReserve = functions.database
         ]);
 
         if (reservedBy && productOwner.expoTokens) {
-          const message = {
+          const reservedMessage = {
             to: productOwner.expoTokens,
             sound: 'default',
             title: 'Produkt Reserverad',
@@ -120,9 +124,38 @@ exports.sendPushNotificationsOnReserve = functions.database
           };
 
           return expo
-            .sendPushNotificationsAsync([message])
+            .sendPushNotificationsAsync([reservedMessage])
             .then(() => console.info('Product notification sent!'))
             .catch((e) => console.error('Product notification failed!', e.message));
+        }
+      } catch (error) {
+        return console.error(error.message);
+      }
+    }
+
+    //Sends a push notification when a proposed collection date is set for your product
+    if (!beforeCollectingDate && afterCollectingDate) {
+      const collectingUserId = afterVal.collectingUserId;
+
+      try {
+        const [suggestedBy, productOwner] = await Promise.all([
+          getUserProfileById(collectingUserId),
+          getUserProfileById(ownerId),
+        ]);
+
+        if (suggestedBy && productOwner.expoTokens) {
+          const dateMessage = {
+            to: productOwner.expoTokens,
+            sound: 'default',
+            title: 'Förslag på tid angivet',
+            body: `${suggestedBy.profileName} föreslog precis en upphämtningstid för ditt återbruk: "${productName}"`,
+            _displayInForeground: true,
+          };
+
+          return expo
+            .sendPushNotificationsAsync([dateMessage])
+            .then(() => console.info('Product date notification sent!'))
+            .catch((e) => console.error('Product date notification failed!', e.message));
         }
       } catch (error) {
         return console.error(error.message);
