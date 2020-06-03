@@ -53,7 +53,7 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
-          roundItem
+          largeImageItem
           detailPath="ProjectDetail"
           title="Projekt"
           subTitle="Projekt som byggs med återbruk"
