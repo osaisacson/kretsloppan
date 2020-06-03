@@ -13,7 +13,7 @@ const HeaderTwo = (props) => {
           {props.icon ? props.icon : null}
           <Text style={styles.contentHeader}>{props.title}</Text>
           {props.showNotificationBadge ? (
-            <Badge style={{ marginBottom: 5, fontWeight: 'bold' }}>{props.indicator}</Badge>
+            <Badge style={{ fontWeight: 'bold', marginBottom: 5 }}>{props.indicator}</Badge>
           ) : null}
         </View>
         <Text style={styles.subTitle}>{props.subTitle}</Text>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   textAndBadge: {
     flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'center',
   },
   contentHeader: {
     fontFamily: 'bebas-neue-bold',

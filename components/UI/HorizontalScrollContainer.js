@@ -15,7 +15,6 @@ const HorizontalScrollContainer = (props) => {
           title={props.title}
           subTitle={props.subTitle}
           extraSubTitle={props.extraSubTitle}
-          questionText={props.questionText}
           icon={props.icon}
           showNotificationBadge={props.showNotificationBadge}
         />

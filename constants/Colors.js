@@ -8,7 +8,7 @@ export default {
   subtlePurple: '#7c5295',
   subtleRed: '#b04040',
   subtleBlue: '#357a9e',
-  subtleGreen: '#56a996',
+  subtleGreen: '#3d9891',
   subtleGrey: '#525862',
 
   darkRed: '#800022',

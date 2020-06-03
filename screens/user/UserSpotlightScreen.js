@@ -183,8 +183,8 @@ const UserSpotlightScreen = (props) => {
       {/* Product, project and propsal sections */}
       {reservedProducts.length ? (
         <HorizontalScroll
-          title="Reservationer under diskussion"
-          subTitle="Föreslå tid eller godkänn givet tidsförslag innan reservationen går ut. Om behov kontakta varandra för att diskutera fler detaljer."
+          title="Reservationer"
+          subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning"
           bgColor={Colors.lightPrimary}
           scrollData={reservedProducts}
           showNotificationBadge
@@ -195,7 +195,7 @@ const UserSpotlightScreen = (props) => {
       {toBeCollectedByUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att köpas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att köpas och hämtas av dig på angiven tid."
+          subTitle="Väntar på att köpas och hämtas av dig på överenskommen tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedByUser}
           showNotificationBadge
@@ -205,7 +205,7 @@ const UserSpotlightScreen = (props) => {
       {toBeCollectedFromUser.length ? (
         <HorizontalScroll
           title="Överenskommet - att säljas"
-          subTitle="Återbruk där ni kommit överens om logistik - väntar på att säljas och lämnas av dig på angiven tid."
+          subTitle="Väntar på att säljas och lämnas av dig på överenskommen tid."
           bgColor={Colors.mediumPrimary}
           scrollData={toBeCollectedFromUser}
           showNotificationBadge
@@ -225,7 +225,7 @@ const UserSpotlightScreen = (props) => {
       <HorizontalScroll
         textItem
         detailPath="ProposalDetail"
-        title="Efterlysningar"
+        title="Mina Efterlysningar"
         subTitle="Mina upplagda efterlysningar"
         scrollData={userProposals}
         navigation={props.navigation}

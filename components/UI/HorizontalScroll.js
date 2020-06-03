@@ -66,7 +66,6 @@ const HorizontalScroll = (props) => {
             buttonIcon={props.buttonIcon}
             buttonOnPress={props.buttonOnPress}
             buttonText={props.buttonText}
-            questionText={props.questionText}
             icon={props.icon}
             indicator={scrollData.length ? scrollData.length : 0}
             showNotificationBadge={props.showNotificationBadge}
