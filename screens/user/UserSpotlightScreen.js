@@ -26,16 +26,18 @@ const UserSpotlightScreen = (props) => {
 
   //COLLECTED: Gets all collected products from all products
   const collectedItemsRawAll = availableProducts.filter((product) => product.status === 'hämtad');
-
   const collectedItemsAll = collectedItemsRawAll.sort(function (a, b) {
-    return new Date(b.collectedDate) - new Date(a.collectedDate);
+    a = new Date(a.collectedDate);
+    b = new Date(b.collectedDate);
+    return a > b ? -1 : a < b ? 1 : 0;
   });
 
   //COLLECTED: Gets all collected products from user products
   const collectedItemsRawUser = userProducts.filter((product) => product.status === 'hämtad');
-
   const collectedItemsUser = collectedItemsRawUser.sort(function (a, b) {
-    return new Date(b.collectedDate) - new Date(a.collectedDate);
+    a = new Date(a.collectedDate);
+    b = new Date(b.collectedDate);
+    return a > b ? -1 : a < b ? 1 : 0;
   });
 
   //BY USER
@@ -50,38 +52,40 @@ const UserSpotlightScreen = (props) => {
   const reservedAllProductsRaw = availableProducts.filter(
     (product) => product.status === 'reserverad' && product.reservedUserId === loggedInUserId
   );
-
   const reservedByOthersRaw = userProducts.filter((product) => product.status === 'reserverad');
-
   const reservedProductsRaw = reservedAllProductsRaw.concat(reservedByOthersRaw);
-
   const reservedProducts = reservedProductsRaw.sort(function (a, b) {
-    return new Date(a.reservedDate) - new Date(b.reservedDate);
+    a = new Date(a.reservedDate);
+    b = new Date(b.reservedDate);
+    return b > a ? -1 : b < a ? 1 : 0;
   });
 
   //TO BE COLLECTED FROM: Gets all products from the user marked as ready to be collected
   const toBeCollectedFromUserRaw = userProducts.filter((product) => product.status === 'ordnad');
-
   const toBeCollectedFromUser = toBeCollectedFromUserRaw.sort(function (a, b) {
-    return new Date(a.collectingDate) - new Date(b.collectingDate);
+    a = new Date(a.collectingDate);
+    b = new Date(b.collectingDate);
+    return b > a ? -1 : b < a ? 1 : 0;
   });
 
   //TO BE COLLECTED BY: Gets all products marked as ready to be collected by the user
   const toBeCollectedByUserRaw = availableProducts.filter(
     (product) => product.status === 'ordnad' && product.collectingUserId === loggedInUserId
   );
-
   const toBeCollectedByUser = toBeCollectedByUserRaw.sort(function (a, b) {
-    return new Date(a.collectingDate) - new Date(b.collectingDate);
+    a = new Date(a.collectingDate);
+    b = new Date(b.collectingDate);
+    return b > a ? -1 : b < a ? 1 : 0;
   });
 
   //READY: Gets all products where the ownerId matches the id of our currently logged in user
   const uploadedByUserRaw = userProducts.filter(
     (product) => product.status === 'redo' || product.status === ''
   );
-
   const uploadedByUser = uploadedByUserRaw.sort(function (a, b) {
-    return new Date(a.readyDate) - new Date(b.readyDate);
+    a = new Date(a.readyDate);
+    b = new Date(b.readyDate);
+    return a > b ? -1 : a < b ? 1 : 0;
   });
 
   //Get all projects, return only the ones which matches the logged in id
@@ -91,9 +95,10 @@ const UserSpotlightScreen = (props) => {
 
   //Get user proposals
   const userProposalsRaw = useSelector((state) => state.proposals.userProposals);
-
   const userProposals = userProposalsRaw.sort(function (a, b) {
-    return new Date(b.date) - new Date(a.date);
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
   });
 
   //Sets indicator numbers
