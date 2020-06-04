@@ -149,7 +149,6 @@ const ProductButtonLogic = (props) => {
           onPress: () => {
             setIsLoading(true);
             dispatch(productsActions.unReserveProduct(id)).then(setIsLoading(false));
-            props.navigation.goBack();
           },
         },
       ]
@@ -180,7 +179,6 @@ const ProductButtonLogic = (props) => {
             ).then(setIsLoading(false));
             setSuggestedDateLocal('');
             setShowUserProjects(false);
-            props.navigation.goBack();
           },
         },
       ]
@@ -245,7 +243,6 @@ const ProductButtonLogic = (props) => {
               )
             );
             setShowUserProjects(false);
-            props.navigation.navigate('Min Sida');
           },
         },
       ]
