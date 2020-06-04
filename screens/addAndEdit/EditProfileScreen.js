@@ -112,7 +112,7 @@ const EditProfileScreen = (props) => {
     } catch (err) {
       setError(err.message);
     }
-    props.navigation.goBack();
+    props.navigation.navigate('Min Sida');
     setIsLoading(false);
   }, [dispatch, currentProfile, formState]);
 
