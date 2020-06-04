@@ -109,7 +109,7 @@ const EditProposalScreen = (props) => {
     } catch (err) {
       setError(err.message);
     }
-    props.navigation.goBack();
+    props.navigation.navigate('ProposalDetail', { detailId: proposalId });
     setIsLoading(false);
   }, [dispatch, proposalId, formState]);
 

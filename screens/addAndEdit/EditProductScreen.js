@@ -176,7 +176,7 @@ const EditProductScreen = (props) => {
     } catch (err) {
       setError(err.message);
     }
-    props.navigation.navigate('Min Sida');
+    props.navigation.navigate('ProductDetail', { detailId: prodId });
     setIsLoading(false);
   }, [dispatch, prodId, formState]);
 

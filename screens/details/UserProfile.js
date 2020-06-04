@@ -16,51 +16,27 @@ const UserProfile = (props) => {
   );
   const currentProfile = profilesArray[0];
 
-  //Gets all products for the user we are currently visiting
-  const availableProducts = useSelector((state) => state.products.availableProducts);
-
-  const userProducts = availableProducts.filter((product) => product.ownerId === visitedUserId);
-
-  //Gets all proposals for the user we are currently visiting
-  const availableProposals = useSelector((state) => state.proposals.availableProposals);
-
-  const userProposalsRaw = availableProposals.filter(
-    (proposal) => proposal.ownerId === visitedUserId
-  );
-
-  const userProposals = userProposalsRaw.sort(function (a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
-
-  //COLLECTED: Gets all collected products from all products
-  const collectedItemsRawAll = availableProducts.filter((product) => product.status === 'hämtad');
-
-  const collectedItemsAll = collectedItemsRawAll.sort(function (a, b) {
-    return new Date(b.collectedDate) - new Date(a.collectedDate);
-  });
-
-  //COLLECTED: Gets all collected products from user products
-  const collectedItemsRawUser = userProducts.filter((product) => product.status === 'hämtad');
-
-  const collectedItemsUser = collectedItemsRawUser.sort(function (a, b) {
-    return new Date(b.collectedDate) - new Date(a.collectedDate);
-  });
-
-  //BY USER
-  const collectedByUser = collectedItemsAll.filter(
-    (product) => product.newOwnerId === visitedUserId
-  );
-
-  //FROM USER
-  const givenByUser = collectedItemsUser.filter((product) => product.newOwnerId !== visitedUserId);
-
-  //AVAILABLE: Gets all products which are not booked or organised
+  //Gets all products which are not booked or organised for the user we are currently visiting
+  const allProducts = useSelector((state) => state.products.availableProducts);
+  const userProducts = allProducts.filter((product) => product.ownerId === visitedUserId);
   const availableUserProductsRaw = userProducts.filter(
     (product) => product.status === 'redo' || product.status === ''
   );
-
   const availableUserProducts = availableUserProductsRaw.sort(function (a, b) {
-    return new Date(b.readyDate) - new Date(a.readyDate);
+    a = new Date(a.readyDate);
+    b = new Date(b.readyDate);
+    return b > a ? -1 : b < a ? 1 : 0;
+  });
+
+  //Gets all proposals for the user we are currently visiting
+  const availableProposals = useSelector((state) => state.proposals.availableProposals);
+  const userProposalsRaw = availableProposals.filter(
+    (proposal) => proposal.ownerId === visitedUserId
+  );
+  const userProposals = userProposalsRaw.sort(function (a, b) {
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
   });
 
   //Get all projects, return only the ones which matches the logged in id
@@ -68,10 +44,21 @@ const UserProfile = (props) => {
     (proj) => proj.ownerId === visitedUserId
   );
 
+  //COLLECTED: Gets all collected products from all products
+  const collectedItemsRawAll = userProducts.filter((product) => product.status === 'hämtad');
+  const collectedByUser = collectedItemsRawAll.filter(
+    (product) => product.newOwnerId === visitedUserId
+  );
+
+  //COLLECTED: Gets all collected products from user products
+  const collectedFromUser = collectedItemsRawAll.filter(
+    (product) => product.newOwnerId !== visitedUserId
+  );
+
   //Sets indicator numbers
   const added = userProducts.length;
   const collected = collectedByUser.length;
-  const collectedFromUser = collectedItemsUser.length;
+  const given = collectedFromUser.length;
   const nrOfProjects = userProjects.length;
 
   return (
@@ -106,7 +93,7 @@ const UserProfile = (props) => {
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>
-              {collectedFromUser ? collectedFromUser : 0}
+              {given ? given : 0}
             </Paragraph>
             <Caption style={userProfileStyles.caption}>Sålda</Caption>
           </View>
@@ -156,11 +143,11 @@ const UserProfile = (props) => {
         scrollData={userProposals}
         navigation={props.navigation}
       />
-      {givenByUser.length ? (
+      {collectedFromUser.length ? (
         <HorizontalScroll
           title="Gett Igen"
           subTitle="Återbruk användaren har gett till andra"
-          scrollData={givenByUser}
+          scrollData={collectedFromUser}
           navigation={props.navigation}
         />
       ) : null}
