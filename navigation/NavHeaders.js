@@ -1,17 +1,14 @@
 import React from 'react';
-//Imports
 import { Platform, StyleSheet, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import HeaderButton from '../components/UI/HeaderButton';
 import UserAvatar from '../components/UI/UserAvatar';
-//Constants
 import Colors from '../constants/Colors';
 
 export const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.darkPrimary : '',
-    height: 90,
   },
   headerTitleStyle: {
     fontFamily: 'bebas-neue-bold',

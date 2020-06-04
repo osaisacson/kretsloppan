@@ -9,6 +9,11 @@ const AboutScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <Image
+          resizeMode="contain"
+          style={styles.logoLarge}
+          source={require('./../assets/icon.png')}
+        />
         <Paragraph style={styles.paragraph}>
           Kretsloppan är skapad 2020 av Egnahemsfabriken och Orust Kretsloppsakademi med stöd av
           Vinnova - Sveriges Innovationsmyndighet.
@@ -54,7 +59,7 @@ const AboutScreen = (props) => {
             <Text style={styles.header}>Orust kretsloppsakademi</Text>
             <Image
               resizeMode="contain"
-              style={styles.logoLarge}
+              style={styles.logoSmall}
               source={require('./../assets/orustkretsloppsakademi.jpg')}
             />
           </View>
@@ -85,6 +90,37 @@ const AboutScreen = (props) => {
             </Paragraph>
           </View>
         </SectionCard>
+        <SectionCard>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Vinnova</Text>
+            <Image
+              resizeMode="contain"
+              style={styles.logoSmall}
+              source={require('./../assets/vinnova.png')}
+            />
+          </View>
+          <View>
+            <Paragraph style={styles.paragraph}>
+              Vinnova är Sveriges innovationsmyndighet med uppdraget är att stärka Sveriges
+              innovationsförmåga och bidra till hållbar tillväxt. De arbetar för att Sverige ska
+              vara en innovativ kraft i en hållbar värld, baserat på de mål för hållbar utveckling
+              som FN antagit i Agenda 2030.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              Kretsloppan är ett resultat av Vinnovas arbete med att identifiera utvecklingsområden
+              där deras satsning gör skillnad och skapar samarbeten där kunskap och kompetens från
+              olika håll möts, och där organisationer lär av varandra och arbetar tillsammans för
+              att möta viktiga samhällsutmaningar.
+            </Paragraph>
+            <Paragraph style={styles.paragraph}>
+              <Text
+                style={styles.link}
+                onPress={() => Linking.openURL('https://www.orustkretsloppsakademi.se/')}>
+                orustkretsloppsakademi.se
+              </Text>
+            </Paragraph>
+          </View>
+        </SectionCard>
       </ScrollView>
     </SafeAreaView>
   );
@@ -93,12 +129,11 @@ const AboutScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
   },
   scrollView: {
     marginHorizontal: 15,
   },
-  sectionContainer: { marginTop: 100 },
+  sectionContainer: { marginTop: 80 },
   largeHeader: {
     marginHorizontal: 15,
     fontFamily: 'bebas-neue-bold',
@@ -120,7 +155,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   link: { color: Colors.primary, fontFamily: 'roboto-bold' },
-  logoLarge: { width: 80, height: 100 },
+  logoLarge: { width: 200, height: 130, alignSelf: 'center' },
   logoSmall: { width: 80, height: 100 },
 });
 
