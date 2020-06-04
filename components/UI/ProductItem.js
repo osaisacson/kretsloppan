@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   product: {
-    height: 180,
+    height: 200,
     width: '93%',
     margin: '1.5%',
     borderWidth: 0.5,
@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   horizontalProduct: {
-    height: 180,
-    width: 180,
+    height: 200,
+    width: 200,
     marginLeft: 10,
     borderWidth: 0.5,
     borderColor: '#ddd',
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingLeft: 4,
-    width: 180,
+    width: 200,
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
     marginLeft: 8,

@@ -25,7 +25,20 @@ const SpotlightProductsScreen = (props) => {
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
+  const recentProjectsSorted = allProjects.sort(function (a, b) {
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
+  });
+
+  const recentProposalsSorted = allProposals.sort(function (a, b) {
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
+  });
   const recentProducts = recentProductsSorted.slice(0, 5);
+  const recentProjects = recentProjectsSorted.slice(0, 5);
+  const recentProposals = recentProposalsSorted.slice(0, 5);
 
   return (
     <SaferArea>
@@ -41,7 +54,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Projekt som byggs med återbruk"
           isNavigationButton
           buttonOnPress={() => props.navigation.navigate('Projekt')}
-          scrollData={allProjects}
+          scrollData={recentProjects}
           navigation={props.navigation}
           icon={
             <Entypo
@@ -77,7 +90,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Kontakta efterlysaren om du sitter på svaret"
           isNavigationButton
           buttonOnPress={() => props.navigation.navigate('Efterlysningar')}
-          scrollData={allProposals}
+          scrollData={recentProposals}
           navigation={props.navigation}
           icon={
             <MaterialCommunityIcons
