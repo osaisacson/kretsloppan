@@ -29,6 +29,10 @@ const ProjectDetailScreen = (props) => {
     state.projects.availableProjects.find((proj) => proj.id === projectId)
   ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
+  if (!selectedProject) {
+    return null;
+  }
+
   const associatedProducts = useSelector((state) =>
     state.products.availableProducts.filter((prod) => prod.projectId === projectId)
   );
