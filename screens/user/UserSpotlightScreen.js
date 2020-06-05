@@ -199,6 +199,7 @@ const UserSpotlightScreen = (props) => {
       </View>
       {badgeNr && (
         <ActionLine
+          isActive={showUserActions}
           badgeNr={badgeNr}
           onPress={() => {
             setShowUserActions(!showUserActions);

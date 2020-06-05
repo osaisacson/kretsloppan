@@ -20,7 +20,7 @@ const ActionLine = (props) => {
           color: Colors.darkPrimary,
           fontSize: 16,
         }}>
-        Visa{' '}
+        {props.isActive ? 'Dölj' : 'Visa'}{' '}
       </Text>
       <View
         style={{
@@ -39,7 +39,7 @@ const ActionLine = (props) => {
           fontSize: 16,
         }}>
         {' '}
-        saker som väntar på din review
+        återbruk som väntar på din aktion
       </Text>
     </TouchableOpacity>
   );
