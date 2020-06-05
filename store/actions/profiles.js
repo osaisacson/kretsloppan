@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 import Profile from '../../models/profile';
 import { convertImage } from '../helpers';
 
@@ -58,13 +60,18 @@ export function createProfile(
   image
 ) {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const userId = getState().auth.userId;
-
+    // const token = getState().auth.token;
+    // const userId = getState().auth.userId;
+    const currentUser = firebase.auth().currentUser;
+    if (!currentUser) {
+      return;
+    }
     try {
+      const { uid } = currentUser;
+
       const convertedImage = await dispatch(convertImage(image));
       const profileData = {
-        profileId: userId, //Set profileId to be the userId of the logged in user: we get this from auth
+        profileId: uid, //Set profileId to be the userId of the logged in user: we get this from auth
         profileName,
         profileDescription,
         email,
@@ -76,22 +83,15 @@ export function createProfile(
 
       console.log('Attempting to create a profile...');
       // Perform the API call - create the profile, passing the profileData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/profiles.json?auth=${token}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(profileData),
-        }
-      );
-      const returnedProfileData = await response.json();
+      const profileRef = await firebase.database().ref('profiles').push(profileData);
 
-      console.log('...profile created:', returnedProfileData);
+      console.log('...profile created:', profileRef);
 
       dispatch({
         type: CREATE_PROFILE,
         profileData: {
-          firebaseId: returnedProfileData.name,
-          profileId: userId,
+          firebaseId: profileRef.key,
+          profileId: uid,
           profileName,
           profileDescription,
           email,
