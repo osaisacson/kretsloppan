@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
       return {
         allProfiles: action.allProfiles,
       };
-    case CREATE_PROFILE:
+    case CREATE_PROFILE: {
       const newProfile = new Profile(
         action.profileData.firebaseId,
         action.profileData.profileId,
@@ -28,8 +28,9 @@ export default (state = initialState, action) => {
         ...state,
         allProfiles: state.allProfiles.concat(newProfile),
       };
+    }
 
-    case UPDATE_PROFILE:
+    case UPDATE_PROFILE: {
       const profileIndex = state.allProfiles.findIndex(
         (profile) => profile.profileId === action.currUser //Find the index of the profile where the profileId is the same as the currently logged in userId
       );
@@ -53,6 +54,7 @@ export default (state = initialState, action) => {
         ...state,
         allProfiles: updatedProfiles,
       };
+    }
     default:
       return state;
   }

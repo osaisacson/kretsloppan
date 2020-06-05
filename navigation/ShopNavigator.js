@@ -1,14 +1,13 @@
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { SafeAreaView, View, Platform } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
 import Error from '../components/UI/Error';
 import Loader from '../components/UI/Loader';
-import UserAvatar from '../components/UI/UserAvatar';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
 import * as productsActions from './../store/actions/products';

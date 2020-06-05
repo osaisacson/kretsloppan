@@ -31,6 +31,10 @@ const ProductDetailScreen = (props) => {
     state.products.availableProducts.find((prod) => prod.id === productId)
   );
 
+  if (!selectedProduct) {
+    return null;
+  }
+
   const {
     category,
     color,

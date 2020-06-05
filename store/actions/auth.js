@@ -1,8 +1,10 @@
+import firebase from 'firebase';
 import { AsyncStorage } from 'react-native';
 
 import ENV from '../../env';
 import { updateExpoTokens } from '../helpers';
 import * as profilesActions from './profiles';
+
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AUTO_LOGIN = 'SET_DID_TRY_AUTO_LOGIN';
@@ -17,6 +19,8 @@ export const authenticate = (userId, token, expiryTime) => {
   };
 };
 
+const userCredentialsToJson = (credentials) => credentials.user.toJSON();
+
 export const signup = (
   email,
   password,
@@ -29,55 +33,27 @@ export const signup = (
 ) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${ENV.googleApiKey}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            returnSecureToken: true,
-          }),
-        }
-      );
+      const authData = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(userCredentialsToJson);
 
-      const resData = await response.json();
+      const uid = authData.uid;
+      const accessToken = authData.stsTokenManager.accessToken;
+      const expirationTime = authData.stsTokenManager.expirationTime;
 
-      if (resData.error) {
-        const errorId = resData.error.message;
-        let message = errorId;
-        if (errorId === 'EMAIL_EXISTS') {
-          alert('Den här emailen finns redan');
-          message = 'Den här emailen finns redan';
-        }
-        if (errorId === 'INVALID_EMAIL') {
-          message = 'Det verkar som emailen inte är en riktig email, prova igen';
-        }
-        if (errorId === 'MISSING_PASSWORD') {
-          message = 'Du verkar inte ha skrivit in något lösenord.';
-        }
-        alert(message);
-        console.log(resData.error);
-        return (process.exitCode = 1);
-      }
-      updateExpoTokens(resData.localId);
-      await dispatch(
-        authenticate(resData.localId, resData.idToken, parseInt(resData.expiresIn) * 1000)
-      );
-      const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
-      saveDataToStorage(resData.idToken, resData.localId, expirationDate);
+      await dispatch(authenticate(uid, accessToken, expirationTime));
+      saveDataToStorage(accessToken, uid, expirationTime);
+      updateExpoTokens(uid);
 
-      console.log('store/actions/auth: attempting to create a profile with this data:');
-      console.log('profileName: ', profileName);
-      console.log('profileDescription: ', profileDescription);
-      console.log('email: ', email);
-      console.log('phone: ', phone);
-      console.log('address: ', address);
-      console.log('defaultPickupDetails: ', defaultPickupDetails);
-      console.log('image.length: ', image.length);
+      console.log('store/actions/auth: attempting to create a profile with this data:', authData);
+      // console.log('profileName: ', profileName);
+      // console.log('profileDescription: ', profileDescription);
+      // console.log('email: ', email);
+      // console.log('phone: ', phone);
+      // console.log('address: ', address);
+      // console.log('defaultPickupDetails: ', defaultPickupDetails);
+      // console.log('image.length: ', image.length);
 
       try {
         console.log('Attempting to create profile');
@@ -100,9 +76,26 @@ export const signup = (
       }
       console.log('...created profile!');
     } catch (error) {
+      let message = error.message;
+
+      switch (message) {
+        case 'EMAIL_EXISTS':
+          alert('Den här emailen finns redan');
+          message = 'Den här emailen finns redan';
+          break;
+        case 'INVALID_EMAIL':
+          message = 'Det verkar som emailen inte är en riktig email, prova igen';
+          break;
+        case 'MISSING_PASSWORD':
+          message = 'Du verkar inte ha skrivit in något lösenord.';
+          break;
+        default:
+      }
+      alert(message);
+      console.log(error);
       console.log('Error in store/actions/auth: ', error);
+      return (process.exitCode = 1);
       // Rethrow so returned Promise is rejected
-      throw error;
     }
   };
 };
@@ -110,52 +103,40 @@ export const signup = (
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${ENV.googleApiKey}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            returnSecureToken: true,
-          }),
-        }
-      );
+      const authData = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(userCredentialsToJson);
 
-      const resData = await response.json();
+      const uid = authData.uid;
+      const accessToken = authData.stsTokenManager.accessToken;
+      const expirationTime = authData.stsTokenManager.expirationTime;
 
-      if (resData.error) {
-        const errorId = resData.error.message;
-        let message = errorId;
-        if (errorId === 'EMAIL_NOT_FOUND') {
+      dispatch(authenticate(uid, accessToken, expirationTime));
+      saveDataToStorage(accessToken, uid, expirationTime);
+      updateExpoTokens(uid);
+    } catch (error) {
+      let message = error.message;
+      switch (message) {
+        case 'EMAIL_NOT_FOUND':
           message =
             'Emailen kan inte hittas. Byt till att skapa konto om du aldrig loggat in innan, annars kolla stavningen.';
-        }
-        if (errorId === 'INVALID_EMAIL') {
+          break;
+        case 'INVALID_EMAIL':
           message = 'Det verkar som emailen inte är en riktig email, prova igen';
-        }
-        if (errorId === 'INVALID_PASSWORD') {
+          break;
+        case 'INVALID_PASSWORD':
           message = 'Lösenordet passar inte emailen, prova igen';
-        }
-        if (errorId === 'MISSING_PASSWORD') {
+          break;
+        case 'MISSING_PASSWORD':
           message = 'Du verkar inte ha skrivit in något lösenord.';
-        }
-        alert(message);
-        console.log(resData.error);
-        return (process.exitCode = 1);
+          break;
+        default:
       }
 
-      const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
-
-      updateExpoTokens(resData.localId);
-      dispatch(authenticate(resData.localId, resData.idToken, parseInt(resData.expiresIn) * 1000));
-      saveDataToStorage(resData.idToken, resData.localId, expirationDate);
-    } catch (error) {
-      console.log('Error when trying to login: ', error);
-      throw error;
+      alert(message);
+      console.log(error);
+      return (process.exitCode = 1);
     }
   };
 };
@@ -163,6 +144,7 @@ export const login = (email, password) => {
 export const logout = () => {
   return async (dispatch) => {
     try {
+      await firebase.auth().signOut();
       const userData = await AsyncStorage.getItem('userData').then((data) =>
         data ? JSON.parse(data) : {}
       );
@@ -183,7 +165,7 @@ const saveDataToStorage = (token, userId, expirationDate) => {
       JSON.stringify({
         token,
         userId,
-        expiryDate: expirationDate.toISOString(),
+        expiryDate: String(expirationDate),
       })
     );
   } catch (error) {
