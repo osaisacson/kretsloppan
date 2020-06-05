@@ -1,14 +1,14 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
+const { Storage } = require('@google-cloud/storage');
+const cors = require('cors')({ origin: true });
+const { Expo } = require('expo-server-sdk');
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 admin.initializeApp();
-const cors = require('cors')({ origin: true });
 const fs = require('fs');
 const UUID = require('uuid-v4');
 // Imports the Google Cloud client library
-const { Storage } = require('@google-cloud/storage');
-const { Expo } = require('expo-server-sdk');
 
 // Create a new Expo SDK client
 const expo = new Expo();
@@ -85,7 +85,7 @@ function getUserProfileById(profileId) {
         if (snapshot.exists) {
           resolve(denormalize(snapshot.val()));
         } else {
-          reject();
+          reject(new Error('Does not exist.'));
         }
       });
   });
