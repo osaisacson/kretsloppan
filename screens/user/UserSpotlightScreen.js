@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
+import ActionLine from '../../components/UI/ActionLine';
 import ButtonAdd from '../../components/UI/ButtonAdd';
 import ButtonIcon from '../../components/UI/ButtonIcon';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Colors from '../../constants/Colors';
 import { userProfileStyles } from '../details/UserProfile';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
+import UserActions from './UserActions';
+import UserItems from './UserItems';
 
 const UserSpotlightScreen = (props) => {
+  const [showUserActions, setShowUserActions] = useState(false);
+
   //Get profiles, return only the one which matches the logged in id
   const loggedInUserId = useSelector((state) => state.auth.userId);
   const profilesArray = useSelector((state) => state.profiles.allProfiles).filter(
@@ -48,41 +52,11 @@ const UserSpotlightScreen = (props) => {
   //FROM USER
   const givenByUser = collectedItemsUser.filter((product) => product.newOwnerId !== loggedInUserId);
 
-  //RESERVED: Gets all products reserved by the user or from the user
-  const reservedAllProductsRaw = availableProducts.filter(
-    (product) => product.status === 'reserverad' && product.reservedUserId === loggedInUserId
-  );
-  const reservedByOthersRaw = userProducts.filter((product) => product.status === 'reserverad');
-  const reservedProductsRaw = reservedAllProductsRaw.concat(reservedByOthersRaw);
-  const reservedProducts = reservedProductsRaw.sort(function (a, b) {
-    a = new Date(a.reservedDate);
-    b = new Date(b.reservedDate);
-    return b > a ? -1 : b < a ? 1 : 0;
-  });
-
-  //TO BE COLLECTED FROM: Gets all products from the user marked as ready to be collected
-  const toBeCollectedFromUserRaw = userProducts.filter((product) => product.status === 'ordnad');
-  const toBeCollectedFromUser = toBeCollectedFromUserRaw.sort(function (a, b) {
-    a = new Date(a.collectingDate);
-    b = new Date(b.collectingDate);
-    return b > a ? -1 : b < a ? 1 : 0;
-  });
-
-  //TO BE COLLECTED BY: Gets all products marked as ready to be collected by the user
-  const toBeCollectedByUserRaw = availableProducts.filter(
-    (product) => product.status === 'ordnad' && product.collectingUserId === loggedInUserId
-  );
-  const toBeCollectedByUser = toBeCollectedByUserRaw.sort(function (a, b) {
-    a = new Date(a.collectingDate);
-    b = new Date(b.collectingDate);
-    return b > a ? -1 : b < a ? 1 : 0;
-  });
-
   //READY: Gets all products where the ownerId matches the id of our currently logged in user
-  const uploadedByUserRaw = userProducts.filter(
+  const userUploadsRaw = userProducts.filter(
     (product) => product.status === 'redo' || product.status === ''
   );
-  const uploadedByUser = uploadedByUserRaw.sort(function (a, b) {
+  const userUploads = userUploadsRaw.sort(function (a, b) {
     a = new Date(a.readyDate);
     b = new Date(b.readyDate);
     return a > b ? -1 : a < b ? 1 : 0;
@@ -100,6 +74,38 @@ const UserSpotlightScreen = (props) => {
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
+
+  //RESERVED: Gets all products reserved by the user or from the user
+  const reservedAllProductsRaw = availableProducts.filter(
+    (product) => product.status === 'reserverad' && product.reservedUserId === loggedInUserId
+  );
+  const reservedByOthersRaw = userProducts.filter((product) => product.status === 'reserverad');
+  const reservedProductsRaw = reservedAllProductsRaw.concat(reservedByOthersRaw);
+  const reservedProducts = reservedProductsRaw.sort(function (a, b) {
+    a = new Date(a.reservedDate);
+    b = new Date(b.reservedDate);
+    return b > a ? -1 : b < a ? 1 : 0;
+  });
+
+  //TO BE COLLECTED FROM: Gets all products from the user marked as ready to be collected
+  const toBeSoldRaw = userProducts.filter((product) => product.status === 'ordnad');
+  const toBeSold = toBeSoldRaw.sort(function (a, b) {
+    a = new Date(a.collectingDate);
+    b = new Date(b.collectingDate);
+    return b > a ? -1 : b < a ? 1 : 0;
+  });
+
+  //TO BE COLLECTED BY: Gets all products marked as ready to be collected by the user
+  const toBeBoughtRaw = availableProducts.filter(
+    (product) => product.status === 'ordnad' && product.collectingUserId === loggedInUserId
+  );
+  const toBeBought = toBeBoughtRaw.sort(function (a, b) {
+    a = new Date(a.collectingDate);
+    b = new Date(b.collectingDate);
+    return b > a ? -1 : b < a ? 1 : 0;
+  });
+
+  const badgeNr = reservedProducts.length + toBeBought.length + toBeSold.length;
 
   //Sets indicator numbers
   const added = userProducts.length;
@@ -191,61 +197,30 @@ const UserSpotlightScreen = (props) => {
           />
         </View>
       </View>
-      {/* Product, project and proposal sections */}
-      <HorizontalScroll
-        largeImageItem
-        detailPath="ProjectDetail"
-        title="Mina projekt"
-        subTitle="Projekt jag bygger med återbruk"
-        scrollData={userProjects}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        title="Mitt tillgängliga återbruk"
-        isNavigationButton
-        buttonOnPress={() => props.navigation.navigate('Mitt upplagda återbruk')}
-        scrollData={uploadedByUser}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        textItem
-        detailPath="ProposalDetail"
-        title="Mina Efterlysningar"
-        subTitle="Mina upplagda efterlysningar"
-        scrollData={userProposals}
-        navigation={props.navigation}
-      />
-      {reservedProducts.length ? (
-        <HorizontalScroll
-          title="Reservationer"
-          subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning"
-          bgColor={Colors.lightPrimary}
-          scrollData={reservedProducts}
-          showNotificationBadge
-          navigation={props.navigation}
+      {badgeNr && (
+        <ActionLine
+          isActive={showUserActions}
+          badgeNr={badgeNr}
+          onPress={() => {
+            setShowUserActions(!showUserActions);
+          }}
         />
-      ) : null}
+      )}
 
-      {toBeCollectedByUser.length ? (
-        <HorizontalScroll
-          title="Överenskommet - att köpas"
-          subTitle="Väntar på att köpas och hämtas av dig på överenskommen tid."
-          bgColor={Colors.mediumPrimary}
-          scrollData={toBeCollectedByUser}
-          showNotificationBadge
+      {showUserActions ? (
+        <UserActions
+          reservedProducts={reservedProducts}
+          toBeBought={toBeBought}
+          toBeSold={toBeSold}
           navigation={props.navigation}
         />
       ) : null}
-      {toBeCollectedFromUser.length ? (
-        <HorizontalScroll
-          title="Överenskommet - att säljas"
-          subTitle="Väntar på att säljas och lämnas av dig på överenskommen tid."
-          bgColor={Colors.mediumPrimary}
-          scrollData={toBeCollectedFromUser}
-          showNotificationBadge
-          navigation={props.navigation}
-        />
-      ) : null}
+      <UserItems
+        userProjects={userProjects}
+        userProposals={userProposals}
+        userUploads={userUploads}
+        navigation={props.navigation}
+      />
     </ScrollViewToTop>
   );
 };

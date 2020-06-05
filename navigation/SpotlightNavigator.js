@@ -1,9 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-//Headers
-
-//Tab screens
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
@@ -19,7 +16,6 @@ import EditProposalScreen, {
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions,
 } from '../screens/details/ProductDetailScreen';
-//Details
 import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions,
 } from '../screens/details/ProjectDetailScreen';
@@ -30,7 +26,6 @@ import UserProfile from '../screens/details/UserProfile';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
-//Edit screens
 import {
   defaultNavOptions,
   defaultMainPageOptions,

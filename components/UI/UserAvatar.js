@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
