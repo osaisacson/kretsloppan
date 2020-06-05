@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 import Product from '../../models/product';
 import { convertImage } from '../helpers';
 
@@ -176,21 +178,9 @@ export function unReserveProduct(id) {
 
 export const deleteProduct = (productId) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
     try {
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/products/${productId}.json?auth=${token}`,
-        {
-          method: 'DELETE',
-        }
-      );
+      await firebase.database().ref(`products/${productId}`).remove();
 
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorId = errorResData.error.message;
-        const message = errorId;
-        throw new Error(message);
-      }
       dispatch({ type: DELETE_PRODUCT, pid: productId });
     } catch (error) {
       console.log('Error in actions/products/deleteProduct: ', error);
