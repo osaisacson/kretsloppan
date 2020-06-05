@@ -18,4 +18,7 @@ export default {
   completed: '#3cb371',
   warning: '#cc0000',
   neutral: '#8c8c8c',
+
+  //Badges
+  indicator: '#f60056',
 };

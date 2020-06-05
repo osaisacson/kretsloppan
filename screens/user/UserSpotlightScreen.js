@@ -3,6 +3,7 @@ import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
+import ActionLine from '../../components/UI/ActionLine';
 import ButtonAdd from '../../components/UI/ButtonAdd';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import Colors from '../../constants/Colors';
@@ -197,47 +198,12 @@ const UserSpotlightScreen = (props) => {
         </View>
       </View>
       {badgeNr && (
-        <TouchableOpacity
+        <ActionLine
+          badgeNr={badgeNr}
           onPress={() => {
             setShowUserActions(!showUserActions);
           }}
-          style={{
-            backgroundColor: Colors.lightPrimary,
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 50,
-          }}>
-          <Text
-            style={{
-              color: Colors.darkPrimary,
-              fontSize: 16,
-            }}>
-            Visa{' '}
-          </Text>
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.2)',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 30,
-              height: 30,
-              backgroundColor: Colors.primary,
-              borderRadius: 50,
-            }}>
-            <Text style={{ color: '#fff' }}>{badgeNr}</Text>
-          </View>
-          <Text
-            style={{
-              color: Colors.darkPrimary,
-              fontSize: 16,
-            }}>
-            {' '}
-            saker som väntar på din review{' '}
-          </Text>
-        </TouchableOpacity>
+        />
       )}
 
       {showUserActions ? (
