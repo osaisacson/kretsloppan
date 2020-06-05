@@ -1,7 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-//Tab screens
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
@@ -20,17 +19,12 @@ import ProjectDetailScreen, {
 import UserProfile from '../screens/details/UserProfile';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
-//Headers
 import {
   defaultNavOptions,
   defaultMainPageOptions,
   mainPageOptionsNoUser,
   mainPageOptionsWithUser,
 } from './NavHeaders';
-
-//Details
-
-//Edit screens
 
 const ProductsStackNavigator = createStackNavigator();
 
