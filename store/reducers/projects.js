@@ -3,6 +3,7 @@ import { DELETE_PROJECT, CREATE_PROJECT, UPDATE_PROJECT, SET_PROJECTS } from '..
 import { getIndex, updateCollection } from '../helpers';
 
 const initialState = {
+  lastProjectAdded: null,
   availableProjects: [],
   userProjects: [],
 };
@@ -29,6 +30,7 @@ export default (state = initialState, action) => {
       console.log('store/reducers/projects/CREATE_PROJECT, new project: ', newProject);
       return {
         ...state,
+        lastProjectAdded: newProject,
         availableProjects: state.availableProjects.concat(newProject),
         userProjects: state.userProjects.concat(newProject),
       };
