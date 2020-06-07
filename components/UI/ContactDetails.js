@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -14,7 +14,7 @@ const ContactDetails = (props) => {
 
   //Find the profile which matches the id we passed on clicking to the detail
   let profile = useSelector((state) =>
-    state.profiles.allProfiles.find((profile) => profile.profileId === props.profileId)
+    state.profiles.allProfiles.find(({ profileId }) => profileId === props.profileId)
   );
 
   if (!profile) {
