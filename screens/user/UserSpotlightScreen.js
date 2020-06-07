@@ -149,7 +149,6 @@ const UserSpotlightScreen = (props) => {
         />
         <ButtonIcon icon="settings" color={Colors.neutral} onSelect={editProfileHandler} />
 
-        {/* <AddButton navigation={props.navigation} /> */}
         <Title style={{ color: '#fff', ...userProfileStyles.title }}>
           {currentProfile.profileName}
         </Title>
@@ -197,7 +196,7 @@ const UserSpotlightScreen = (props) => {
           />
         </View>
       </View>
-      {badgeNr && (
+      {badgeNr ? (
         <ActionLine
           isActive={showUserActions}
           badgeNr={badgeNr}
@@ -205,7 +204,7 @@ const UserSpotlightScreen = (props) => {
             setShowUserActions(!showUserActions);
           }}
         />
-      )}
+      ) : null}
 
       {showUserActions ? (
         <UserActions
