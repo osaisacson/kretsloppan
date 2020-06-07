@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 import Project from '../../models/project';
 import { convertImage } from '../helpers';
 
@@ -8,37 +10,47 @@ export const SET_PROJECTS = 'SET_PROJECTS';
 
 export function fetchProjects() {
   return async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+    const uid = getState().auth.userId;
 
-    // Perform the API call - fetching all projects
     try {
       console.log('Fetching projects...');
-      const response = await fetch('https://egnahemsfabriken.firebaseio.com/projects.json');
-      const resData = await response.json();
-      const loadedProjects = [];
-      for (const key in resData) {
-        loadedProjects.push(
-          new Project(
+      const projectSnapshot = await firebase.database().ref('projects').once('value');
+
+      if (projectSnapshot.exists) {
+        console.log('...projects fetched!');
+
+        const normalizedProjectData = projectSnapshot.val();
+        const allProjects = [];
+        const userProjects = [];
+
+        for (const key in normalizedProjectData) {
+          const project = normalizedProjectData[key];
+          const newProject = new Project(
             key,
-            resData[key].ownerId,
-            resData[key].title,
-            resData[key].location,
-            resData[key].description,
-            resData[key].image,
-            resData[key].slogan,
-            resData[key].date,
-            resData[key].status
-          )
-        );
+            project.ownerId,
+            project.title,
+            project.location,
+            project.description,
+            project.image,
+            project.slogan,
+            project.date,
+            project.status
+          );
+
+          allProjects.push(newProject);
+
+          if (project.ownerId === uid) {
+            userProjects.push(newProject);
+          }
+        }
+
+        dispatch({
+          type: SET_PROJECTS,
+          projects: allProjects,
+          userProjects,
+        });
       }
-      console.log('Fetching projects...');
       // Set our projects in the reducer
-      dispatch({
-        type: SET_PROJECTS,
-        projects: loadedProjects,
-        userProjects: loadedProjects.filter((proj) => proj.ownerId === userId),
-      });
-      console.log('...projects fetched!');
     } catch (error) {
       console.log('Error in actions/projects/fetchProjects: ', error);
       throw error;
@@ -48,29 +60,20 @@ export function fetchProjects() {
 
 export const deleteProject = (projectId) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/projects/${projectId}.json?auth=${token}`,
-      {
-        method: 'DELETE',
-      }
-    );
+    try {
+      await firebase.database().ref(`projects/${projectId}`).remove();
 
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      const message = errorId;
-      throw new Error(message);
+      dispatch({ type: DELETE_PROJECT, pid: projectId });
+    } catch (error) {
+      throw new Error(error.message);
     }
-    dispatch({ type: DELETE_PROJECT, pid: projectId });
   };
 };
 
-export function createProject(title, location, description, slogan, image, status) {
+export function createProject(title, location, description, slogan, image, status = null) {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
+    const ownerId = getState().auth.userId;
 
     try {
       console.log('START----------actions/projects/createProject--------');
@@ -83,33 +86,24 @@ export function createProject(title, location, description, slogan, image, statu
         description,
         slogan,
         image: convertedImage.image, //This is how we link to the image we store above
-        ownerId: userId,
+        ownerId,
         date: currentDate,
         status,
       };
 
-      // Perform the API call - create the project, passing the projectData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/projects.json?auth=${token}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(projectData),
-        }
-      );
-      const returnedProjectData = await response.json();
-
-      console.log('dispatching CREATE_PRODUCT');
+      console.log('dispatching CREATE_PRODUCT', projectData);
+      const { key } = await firebase.database().ref('projects').push(projectData);
 
       dispatch({
         type: CREATE_PROJECT,
         projectData: {
-          id: returnedProjectData.name,
+          id: key,
           title,
           location,
           description,
           slogan,
           image: convertedImage.image,
-          ownerId: userId,
+          ownerId,
           date: currentDate,
           status,
         },
@@ -128,8 +122,6 @@ export function createProject(title, location, description, slogan, image, statu
 
 export function updateProject(id, title, location, description, slogan, image) {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-
     try {
       console.log('START----------actions/projects/updateProject--------');
 
@@ -153,15 +145,10 @@ export function updateProject(id, title, location, description, slogan, image) {
         };
       }
 
-      // Perform the API call - create the project, passing the projectData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/projects/${id}.json?auth=${token}`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify(dataToUpdate),
-        }
-      );
-      const returnedProjectData = await response.json();
+      const returnedProjectData = await firebase
+        .database()
+        .ref(`projects/${id}`)
+        .update(dataToUpdate);
 
       console.log('returnedProjectData from updating project, after patch', returnedProjectData);
 
