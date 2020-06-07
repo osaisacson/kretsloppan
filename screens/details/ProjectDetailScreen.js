@@ -85,7 +85,7 @@ const ProjectDetailScreen = (props) => {
         <Divider style={{ marginBottom: 8 }} />
         <ContactDetails
           hideButton
-          profileId={ownerId}
+          profileId={selectedProject.ownerId}
           projectId={selectedProject.id}
           buttonText="kontaktdetaljer"
         />
