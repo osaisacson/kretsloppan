@@ -107,7 +107,7 @@ const EditProjectScreen = (props) => {
   }, [dispatch, projId, formState]);
 
   //Manages validation of title input
-  const textChangeHandler = (inputIdentifier, text) => {
+  const textChangeHandler = (inputIdentifier) => (text) => {
     //inputIdentifier and text will act as key:value in the form reducer
 
     let isValid = true;
@@ -136,7 +136,7 @@ const EditProjectScreen = (props) => {
       isLoading={isLoading}>
       <FormFieldWrapper prompt="Välj en bild som representerar projektet">
         <ImagePicker
-          onImageTaken={textChangeHandler.bind(this, 'image')}
+          onImageTaken={textChangeHandler('image')}
           passedImage={formState.inputValues.image}
         />
       </FormFieldWrapper>
@@ -146,7 +146,7 @@ const EditProjectScreen = (props) => {
           placeholder="Titel"
           style={formStyles.input}
           value={formState.inputValues.title}
-          onChangeText={textChangeHandler.bind(this, 'title')}
+          onChangeText={textChangeHandler('title')}
           keyboardType="default"
           autoCapitalize="sentences"
           returnKeyType="next"
@@ -158,7 +158,7 @@ const EditProjectScreen = (props) => {
           placeholder="Slogan"
           style={formStyles.input}
           value={formState.inputValues.slogan}
-          onChangeText={textChangeHandler.bind(this, 'slogan')}
+          onChangeText={textChangeHandler('slogan')}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -167,7 +167,7 @@ const EditProjectScreen = (props) => {
           placeholder="Beskrivning"
           style={formStyles.input}
           value={formState.inputValues.description}
-          onChangeText={textChangeHandler.bind(this, 'description')}
+          onChangeText={textChangeHandler('description')}
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -176,7 +176,7 @@ const EditProjectScreen = (props) => {
           placeholder="Plats"
           style={formStyles.input}
           value={formState.inputValues.location}
-          onChangeText={textChangeHandler.bind(this, 'location')}
+          onChangeText={textChangeHandler('location')}
           returnKeyType="done"
         />
       </FormFieldWrapper>

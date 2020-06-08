@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 //Imports
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
@@ -25,13 +25,12 @@ const ProjectDetailScreen = (props) => {
 
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
-  const selectedProject = useSelector((state) =>
-    state.projects.availableProjects.find((proj) => proj.id === projectId)
-  ); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
-
-  if (!selectedProject) {
-    return null;
-  }
+  const selectedProject = useSelector((state) => {
+    console.log(state.projects);
+    return projectId
+      ? state.projects.availableProjects.find((proj) => proj.id === projectId)
+      : state.projects.lastProjectAdded;
+  }); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
   const associatedProducts = useSelector((state) =>
     state.products.availableProducts.filter((prod) => prod.projectId === projectId)
@@ -86,7 +85,7 @@ const ProjectDetailScreen = (props) => {
         <Divider style={{ marginBottom: 8 }} />
         <ContactDetails
           hideButton
-          profileId={ownerId}
+          profileId={selectedProject.ownerId}
           projectId={selectedProject.id}
           buttonText="kontaktdetaljer"
         />
@@ -137,6 +136,14 @@ const ProjectDetailScreen = (props) => {
       )}
     </View>
   ) : null;
+
+  useEffect(() => {
+    console.log('ProjectDetailsScreen', selectedProject, props);
+  }, [selectedProject]);
+
+  if (!selectedProject) {
+    return null;
+  }
 
   return (
     <SaferArea>

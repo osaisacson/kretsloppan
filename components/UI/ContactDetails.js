@@ -13,22 +13,23 @@ const ContactDetails = (props) => {
   const [toggleDetails, setToggleDetails] = useState(false);
 
   //Find the profile which matches the id we passed on clicking to the detail
-  const profilesArray = useSelector((state) => state.profiles.allProfiles).filter(
-    (profile) => profile.profileId === props.profileId
+  let profile = useSelector((state) =>
+    state.profiles.allProfiles.find(({ profileId }) => profileId === props.profileId)
   );
 
-  let objectForDetails = profilesArray[0];
+  if (!profile) {
+    return null;
+  }
 
-  const contactEmail =
-    objectForDetails && objectForDetails.email ? objectForDetails.email : 'Ingen email';
+  const contactEmail = profile && profile.email ? profile.email : 'Ingen email';
 
   //If we are looking at the details for a product, proposal or project, instead show the specific details for this
   if (props.productId) {
-    const productArray = useSelector((state) => state.products.availableProducts).filter(
-      (prod) => prod.id === props.productId
+    const productArray = useSelector((state) =>
+      state.products.availableProducts.filter((prod) => prod.id === props.productId)
     );
 
-    objectForDetails = productArray[0];
+    profile = productArray[0];
   }
 
   const toggleShowDetails = () => {
@@ -70,7 +71,7 @@ const ContactDetails = (props) => {
                 fontFamily: 'roboto-regular',
                 fontSize: 14,
               }}>
-              {objectForDetails.profileName}
+              {profile.profileName}
             </Text>
           </View>
           {props.hideButton ? null : (
@@ -105,13 +106,13 @@ const ContactDetails = (props) => {
             </View>
             <View style={detailStyles.textCard}>
               <Text style={detailStyles.oneLiner}>
-                {objectForDetails.phone ? objectForDetails.phone : 'Ingen telefon angiven'}
+                {profile.phone ? profile.phone : 'Ingen telefon angiven'}
               </Text>
             </View>
-            {objectForDetails.address ? (
+            {profile.address ? (
               <View style={detailStyles.textCard}>
                 <Text style={detailStyles.oneLiner}>
-                  {objectForDetails.address ? objectForDetails.address : 'Ingen address angiven'}
+                  {profile.address ? profile.address : 'Ingen address angiven'}
                 </Text>
               </View>
             ) : null}

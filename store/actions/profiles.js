@@ -60,15 +60,9 @@ export function createProfile(
   image
 ) {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token;
-    // const userId = getState().auth.userId;
-    const currentUser = firebase.auth().currentUser;
-    if (!currentUser) {
-      return;
-    }
-    try {
-      const { uid } = currentUser;
+    const uid = getState().auth.userId;
 
+    try {
       const convertedImage = await dispatch(convertImage(image));
       const profileData = {
         profileId: uid, //Set profileId to be the userId of the logged in user: we get this from auth

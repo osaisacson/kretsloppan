@@ -3,6 +3,7 @@ import { DELETE_PROJECT, CREATE_PROJECT, UPDATE_PROJECT, SET_PROJECTS } from '..
 import { getIndex, updateCollection } from '../helpers';
 
 const initialState = {
+  lastProjectAdded: null,
   availableProjects: [],
   userProjects: [],
 };
@@ -14,7 +15,7 @@ export default (state = initialState, action) => {
         availableProjects: action.projects,
         userProjects: action.userProjects,
       };
-    case CREATE_PROJECT:
+    case CREATE_PROJECT: {
       const newProject = new Project(
         action.projectData.id,
         action.projectData.ownerId,
@@ -29,10 +30,12 @@ export default (state = initialState, action) => {
       console.log('store/reducers/projects/CREATE_PROJECT, new project: ', newProject);
       return {
         ...state,
+        lastProjectAdded: newProject,
         availableProjects: state.availableProjects.concat(newProject),
         userProjects: state.userProjects.concat(newProject),
       };
-    case UPDATE_PROJECT:
+    }
+    case UPDATE_PROJECT: {
       const userProjectIndex = getIndex(state.userProjects, action.pid);
 
       const updatedUserProject = new Project( //Whenever we do a new project we have to pass the full params to match model
@@ -65,6 +68,7 @@ export default (state = initialState, action) => {
         availableProjects: updatedAvailableProjects,
         userProjects: updatedUserProjects,
       };
+    }
     case DELETE_PROJECT:
       return {
         ...state,
