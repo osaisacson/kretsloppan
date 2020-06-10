@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import React from 'react';
 //Imports
 import { ScrollView, View } from 'react-native';
@@ -87,7 +86,7 @@ const HorizontalScroll = (props) => {
                 {scrollData.map((item) => (
                   <RenderedItem
                     itemData={item}
-                    key={item.id || nanoid(10)}
+                    key={item.id}
                     isHorizontal
                     onSelect={
                       props.customHandler
