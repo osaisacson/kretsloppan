@@ -8,7 +8,7 @@ const UserActions = (props) => {
 
   return (
     <>
-      {reservedProducts.length && (
+      {reservedProducts.length ? (
         <HorizontalScroll
           title="Reservationer"
           subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning"
@@ -17,8 +17,8 @@ const UserActions = (props) => {
           showNotificationBadge
           navigation={navigation}
         />
-      )}
-      {toBeBought.length && (
+      ) : null}
+      {toBeBought.length ? (
         <HorizontalScroll
           title="Överenskommet - att köpas"
           subTitle="Väntar på att köpas och hämtas av dig på överenskommen tid."
@@ -27,8 +27,8 @@ const UserActions = (props) => {
           showNotificationBadge
           navigation={navigation}
         />
-      )}
-      {toBeSold.length && (
+      ) : null}
+      {toBeSold.length ? (
         <HorizontalScroll
           title="Överenskommet - att säljas"
           subTitle="Väntar på att säljas och lämnas av dig på överenskommen tid."
@@ -37,7 +37,7 @@ const UserActions = (props) => {
           showNotificationBadge
           navigation={navigation}
         />
-      )}
+      ) : null}
     </>
   );
 };

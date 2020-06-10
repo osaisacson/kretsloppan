@@ -33,7 +33,7 @@ const HeaderTwo = (props) => {
         {extraSubTitle ? <Text style={styles.extraSubTitle}>{extraSubTitle}</Text> : null}
       </View>
       <View style={styles.indicatorSection}>
-        {isNavigationButton && (
+        {isNavigationButton ? (
           <View style={{ alignSelf: 'flex-end' }}>
             <ButtonIcon
               icon="dots-horizontal"
@@ -41,7 +41,7 @@ const HeaderTwo = (props) => {
               color={Colors.darkPrimary}
             />
           </View>
-        )}
+        ) : null}
         {buttonText && <ButtonAdd title={buttonText} onPress={buttonOnPress} />}
       </View>
     </View>
