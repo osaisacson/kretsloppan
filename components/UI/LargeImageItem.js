@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import Styles from './../../constants/Styles';
 import CachedImage from './CachedImage';
 import TouchableCmp from './TouchableCmp';
 
@@ -22,7 +23,7 @@ const LargeImageItem = (props) => {
 
 const styles = StyleSheet.create({
   largeProject: {
-    height: 230,
+    height: Styles.largeImageItemHeight,
     width: 350,
     marginLeft: 10,
     borderWidth: 0.5,
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   largeTouchable: {
-    height: 230,
+    height: Styles.largeImageItemHeight,
     width: 350,
     borderRadius: 5,
     overflow: 'hidden',

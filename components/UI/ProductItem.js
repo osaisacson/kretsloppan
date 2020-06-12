@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import CachedImage from '../../components/UI/CachedImage';
 import StatusBadge from '../../components/UI/StatusBadge';
 import Colors from './../../constants/Colors';
+import Styles from './../../constants/Styles';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   product: {
-    height: 200,
+    height: Styles.productItemHeight,
     width: '93%',
     margin: '1.5%',
     borderWidth: 0.5,
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   horizontalProduct: {
-    height: 200,
+    height: Styles.productItemHeight,
     width: 200,
     marginLeft: 10,
     borderWidth: 0.5,

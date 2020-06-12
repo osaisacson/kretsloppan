@@ -52,8 +52,8 @@ const SpotlightProductsScreen = (props) => {
           detailPath="ProjectDetail"
           title="Projekt"
           subTitle="Projekt som byggs med återbruk"
-          isNavigationButton
-          buttonOnPress={() => props.navigation.navigate('Projekt')}
+          showAddLink={() => props.navigation.navigate('EditProject')}
+          showMoreLink={() => props.navigation.navigate('Projekt')}
           scrollData={recentProjects}
           navigation={props.navigation}
           icon={
@@ -69,8 +69,8 @@ const SpotlightProductsScreen = (props) => {
         <HorizontalScroll
           title="Senaste Återbruket"
           subTitle="Senast tillgängliga återbruket"
-          isNavigationButton
-          buttonOnPress={() => props.navigation.navigate('Återbruk')}
+          showAddLink={() => props.navigation.navigate('EditProduct')}
+          showMoreLink={() => props.navigation.navigate('Återbruk')}
           scrollData={recentProducts}
           navigation={props.navigation}
           icon={
@@ -88,8 +88,8 @@ const SpotlightProductsScreen = (props) => {
           detailPath="ProposalDetail"
           title="efterlysningar"
           subTitle="Kontakta efterlysaren om du sitter på svaret"
-          isNavigationButton
-          buttonOnPress={() => props.navigation.navigate('Efterlysningar')}
+          showAddLink={() => props.navigation.navigate('EditProposal')}
+          showMoreLink={() => props.navigation.navigate('Efterlysningar')}
           scrollData={recentProposals}
           navigation={props.navigation}
           icon={

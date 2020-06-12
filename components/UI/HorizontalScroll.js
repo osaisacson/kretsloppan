@@ -1,37 +1,39 @@
 import React from 'react';
-//Imports
 import { ScrollView, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Divider, Button } from 'react-native-paper';
 
-import EmptyState from '../../components/UI/EmptyState';
-import LargeImageItem from '../../components/UI/LargeImageItem';
-import ProductItem from '../../components/UI/ProductItem';
-import RoundItem from '../../components/UI/RoundItem';
-import TextItem from '../../components/UI/TextItem';
+import Colors from './../../constants/Colors';
+import Styles from './../../constants/Styles';
+import EmptyState from './EmptyState';
 import HeaderTwo from './HeaderTwo';
+import LargeImageItem from './LargeImageItem';
+import ProductItem from './ProductItem';
+import RoundItem from './RoundItem';
+import TextItem from './TextItem';
+import TouchableCmp from './TouchableCmp';
 
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
   let RenderedItem = ProductItem;
-  let scrollHeight = props.scrollHeight ? props.scrollHeight : 260;
+  let scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.productItemHeight;
   const detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
   //Check if we instead should render the RoundItem
   if (props.roundItem) {
     RenderedItem = RoundItem;
-    scrollHeight = props.scrollHeight ? props.scrollHeight : 190;
+    scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.roundItemHeight;
   }
 
   //Check if we instead should render the TextItem
   if (props.textItem) {
     RenderedItem = TextItem;
-    scrollHeight = 210;
+    scrollHeight = Styles.textItemHeight;
   }
 
   //Check if we instead should render the LargeImageItem
   if (props.largeImageItem) {
     RenderedItem = LargeImageItem;
-    scrollHeight = 300;
+    scrollHeight = Styles.largeImageItemHeight;
   }
 
   const scrollData = props.scrollData;
@@ -62,8 +64,8 @@ const HorizontalScroll = (props) => {
             title={props.title}
             subTitle={props.subTitle}
             extraSubTitle={props.extraSubTitle}
-            isNavigationButton={props.isNavigationButton}
             buttonOnPress={props.buttonOnPress}
+            showAddLink={props.showAddLink}
             buttonText={props.buttonText}
             icon={props.icon}
             indicator={scrollData.length ? scrollData.length : 0}
@@ -73,13 +75,13 @@ const HorizontalScroll = (props) => {
         <View
           style={{
             flex: 1,
-            height: scrollHeight,
+            height: scrollHeight + 70,
           }}>
           {/* If dataset passed is not empty  */}
           {scrollData.length ? (
             <View
               style={{
-                height: scrollHeight,
+                height: scrollHeight + 70,
                 marginTop: 20,
               }}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -97,6 +99,32 @@ const HorizontalScroll = (props) => {
                     }
                   />
                 ))}
+                {props.showMoreLink ? (
+                  <TouchableCmp
+                    onPress={props.showMoreLink}
+                    style={{
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: scrollHeight,
+                    }}>
+                    <Button
+                      animated
+                      icon="dots-horizontal"
+                      color="#fff"
+                      style={{
+                        width: 100,
+                        paddingTop: scrollHeight / 2 - 10,
+                        paddingLeft: 10,
+                        height: scrollHeight,
+                        borderColor: '#fff',
+                        borderWidth: 0.5,
+                        backgroundColor: Colors.darkPrimary,
+                      }}
+                      onPress={props.showMoreLink}
+                    />
+                  </TouchableCmp>
+                ) : null}
               </ScrollView>
             </View>
           ) : (

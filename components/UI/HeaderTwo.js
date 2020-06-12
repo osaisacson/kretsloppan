@@ -15,7 +15,7 @@ const HeaderTwo = (props) => {
     indicator,
     buttonText,
     buttonOnPress,
-    isNavigationButton,
+    showAddLink,
     showNotificationBadge,
   } = props;
   const extraStyle = buttonText ? { maxWidth: '80%' } : { maxWidth: '99%' };
@@ -33,13 +33,9 @@ const HeaderTwo = (props) => {
         {extraSubTitle ? <Text style={styles.extraSubTitle}>{extraSubTitle}</Text> : null}
       </View>
       <View style={styles.indicatorSection}>
-        {isNavigationButton ? (
+        {showAddLink ? (
           <View style={{ alignSelf: 'flex-end' }}>
-            <ButtonIcon
-              icon="dots-horizontal"
-              onSelect={buttonOnPress}
-              color={Colors.darkPrimary}
-            />
+            <ButtonIcon icon="plus" onSelect={showAddLink} color={Colors.darkPrimary} />
           </View>
         ) : null}
         {buttonText && <ButtonAdd title={buttonText} onPress={buttonOnPress} />}

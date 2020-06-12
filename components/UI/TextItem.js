@@ -4,6 +4,7 @@ import { Card } from 'react-native-paper';
 
 import ResolvedBadge from '../../components/UI/ResolvedBadge';
 import Colors from '../../constants/Colors';
+import Styles from './../../constants/Styles';
 import TouchableCmp from './TouchableCmp';
 
 const TextItem = (props) => {
@@ -18,7 +19,7 @@ const TextItem = (props) => {
   );
 
   return (
-    <Card style={{ height: 120, margin: 4 }}>
+    <Card style={{ height: Styles.textItemHeight }}>
       <View style={styles.container}>
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
@@ -47,10 +48,9 @@ const styles = StyleSheet.create({
   touchable: {
     overflow: 'hidden',
     marginRight: 25,
-    paddingBottom: 15,
-  },
-  spacer: {
-    height: 30,
+    flex: 1,
+    justifyContent: 'center',
+    padding: 15,
   },
   title: {
     color: Colors.primary,
