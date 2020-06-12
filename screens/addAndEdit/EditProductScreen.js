@@ -41,6 +41,7 @@ const formReducer = (state, action) => {
 
 const EditProductScreen = (props) => {
   const prodId = props.route.params ? props.route.params.detailId : null; //Get the id of the currently edited product, passed from previous screen
+
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   //Find the profile that matches the id of the currently logged in User
@@ -149,6 +150,8 @@ const EditProductScreen = (props) => {
             formState.inputValues.internalComments
           )
         );
+        props.navigation.navigate('ProductDetail', { detailId: prodId });
+        setIsLoading(false);
       } else {
         await dispatch(
           productsActions.createProduct(
@@ -172,12 +175,12 @@ const EditProductScreen = (props) => {
             formState.inputValues.internalComments
           )
         );
+        props.navigation.navigate('ProductDetail', { detailId: prodId });
+        setIsLoading(false);
       }
     } catch (err) {
       setError(err.message);
     }
-    props.navigation.navigate('ProductDetail', { detailId: prodId });
-    setIsLoading(false);
   }, [dispatch, prodId, formState]);
 
   //Manages validation of title input

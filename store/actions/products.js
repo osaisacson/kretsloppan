@@ -147,21 +147,7 @@ export function unReserveProduct(id) {
       dispatch({
         type: CHANGE_PRODUCT_STATUS,
         pid: id,
-        productData: {
-          reservedUserId: returnedProductData.reservedUserId,
-          collectingUserId: returnedProductData.collectingUserId,
-          newOwnerId: returnedProductData.newOwnerId,
-          status: returnedProductData.status,
-          readyDate: returnedProductData.readyDate,
-          reservedDate: returnedProductData.reservedDate,
-          reservedUntil: returnedProductData.reservedUntil,
-          suggestedDate: returnedProductData.suggestedDate,
-          collectingDate: returnedProductData.collectingDate,
-          collectedDate: returnedProductData.collectedDate,
-          projectId: returnedProductData.projectId,
-          sellerAgreed: returnedProductData.sellerAgreed,
-          buyerAgreed: returnedProductData.buyerAgreed,
-        },
+        productData: updatedProduct,
       });
     } catch (error) {
       console.log('Error in actions/products/unReserveProduct: ', error);
@@ -216,29 +202,6 @@ export function createProduct(
       const convertedImage = await dispatch(convertImage(image));
       const productData = {
         date: currentDate,
-        condition,
-        style,
-        material,
-        color,
-        title,
-        image: convertedImage.image, //This is how we link to the image we store above
-        address,
-        pickupDetails,
-        phone,
-        description,
-        background,
-        length,
-        height,
-        width,
-        price,
-        priceText,
-        internalComments,
-      };
-
-      const { key } = await firebase.database().ref('products').push(productData);
-
-      const newProductData = {
-        id: key,
         ownerId,
         reservedUserId: '',
         collectingUserId: '',
@@ -260,7 +223,6 @@ export function createProduct(
         width,
         price,
         priceText,
-        date: currentDate,
         status: 'redo',
         readyDate: currentDate,
         reservedDate: '',
@@ -272,6 +234,13 @@ export function createProduct(
         internalComments,
         sellerAgreed: '',
         buyerAgreed: '',
+      };
+
+      const { key } = await firebase.database().ref('products').push(productData);
+
+      const newProductData = {
+        ...productData,
+        id: key,
       };
 
       dispatch({
@@ -505,7 +474,7 @@ export const changeProductStatus = (
 };
 
 export const changeProductAgreement = (id, sellerAgreed, buyerAgreed) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       console.log('Attempting to change product agreement:');
       console.log('sellerAgreed:', sellerAgreed);

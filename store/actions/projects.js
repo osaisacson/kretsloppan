@@ -99,15 +99,8 @@ export function createProject(title, location, description, slogan, image, statu
       dispatch({
         type: CREATE_PROJECT,
         projectData: {
+          ...projectData,
           id: key,
-          title,
-          location,
-          description,
-          slogan,
-          image: convertedImage.image,
-          ownerId,
-          date: currentDate,
-          status,
         },
       });
 

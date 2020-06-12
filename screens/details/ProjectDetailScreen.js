@@ -26,7 +26,6 @@ const ProjectDetailScreen = (props) => {
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
   const selectedProject = useSelector((state) => {
-    console.log(state.projects);
     return projectId
       ? state.projects.availableProjects.find((proj) => proj.id === projectId)
       : state.projects.lastProjectAdded;
@@ -138,7 +137,7 @@ const ProjectDetailScreen = (props) => {
   ) : null;
 
   useEffect(() => {
-    console.log('ProjectDetailsScreen', selectedProject, props);
+    console.log('ProjectDetailScreen', selectedProject, props);
   }, [selectedProject]);
 
   if (!selectedProject) {

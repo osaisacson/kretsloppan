@@ -23,6 +23,7 @@ const ProductDetailScreen = (props) => {
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const productId = props.route.params.detailId;
+  console.log('PRODUCTID PASSED FROM ROUTE: ', productId);
   const ownerId = props.route.params.ownerId;
   const loggedInUserId = useSelector((state) => state.auth.userId);
 

@@ -187,7 +187,7 @@ const EditProjectScreen = (props) => {
 export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.projectId ? 'Redigera projekt' : 'Lägg till projekt',
+    headerTitle: routeParams.detailId ? 'Redigera projekt' : 'Lägg till projekt',
   };
 };
 
