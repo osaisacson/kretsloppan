@@ -18,7 +18,7 @@ export function fetchProfiles() {
       if (profilesSnapshot.exists) {
         const normalizedProfileData = profilesSnapshot.val();
         const allProfiles = [];
-        const userProfile = [];
+        let userProfile = {};
 
         for (const key in normalizedProfileData) {
           const profile = normalizedProfileData[key];
@@ -38,7 +38,8 @@ export function fetchProfiles() {
           allProfiles.push(newProfile);
 
           if (profile.profileId === uid) {
-            userProfile.push(newProfile);
+            console.log('HÄR ÄR PROFILEN: ', profile.profileName);
+            userProfile = JSON.stringify(newProfile, null, 2);
           }
         }
 
@@ -49,7 +50,7 @@ export function fetchProfiles() {
         });
         console.log(`Profiles:`);
         console.log(`...${allProfiles.length} total profiles found and loaded.`);
-        console.log(`...profile created by the user found and loaded: ${userProfile[0]}`);
+        console.log(`...profile created by the user found and loaded: ${userProfile}`);
       }
     } catch (error) {
       console.log('Error in actions/projects/fetchProfiles: ', error);
