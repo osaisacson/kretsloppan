@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Banner } from 'react-native-paper';
 
 import CachedImage from '../../components/UI/CachedImage';
+import Colors from '../../constants/Colors';
 
 const Introduction = (props) => {
   const [visibleBanner, setVisibleBanner] = useState(true);
@@ -15,6 +16,9 @@ const Introduction = (props) => {
         actions={[
           {
             label: 'Stäng',
+            style: { backgroundColor: Colors.darkPrimary, color: '#fff' },
+            labelStyle: { color: '#fff' },
+
             onPress: () => setVisibleBanner(false),
           },
         ]}>
