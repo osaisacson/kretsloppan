@@ -7,48 +7,56 @@ export const SET_PROFILES = 'SET_PROFILES';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 
-export const fetchProfiles = () => {
-  return async (dispatch) => {
+export function fetchProfiles() {
+  return async (dispatch, getState) => {
+    const uid = getState().auth.userId;
+
     try {
-      const response = await fetch('https://egnahemsfabriken.firebaseio.com/profiles.json');
+      console.log('Fetching profiles...');
+      const profilesSnapshot = await firebase.database().ref('profiles').once('value');
 
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorId = errorResData.error.message;
-        const message = errorId;
-        throw new Error(message);
-      }
+      if (profilesSnapshot.exists) {
+        const normalizedProfileData = profilesSnapshot.val();
+        const allProfiles = [];
+        const userProfile = [];
 
-      const resData = await response.json();
-      const loadedProfiles = [];
-
-      for (const key in resData) {
-        loadedProfiles.push(
-          new Profile(
+        for (const key in normalizedProfileData) {
+          const profile = normalizedProfileData[key];
+          const newProfile = new Profile(
             key,
-            resData[key].profileId,
-            resData[key].profileName,
-            resData[key].profileDescription,
-            resData[key].email,
-            resData[key].phone,
-            resData[key].address,
-            resData[key].defaultPickupDetails,
-            resData[key].image,
-            resData[key].expoTokens
-          )
-        );
+            profile.profileId,
+            profile.profileName,
+            profile.profileDescription,
+            profile.email,
+            profile.phone,
+            profile.address,
+            profile.defaultPickupDetails,
+            profile.image,
+            profile.expoTokens
+          );
+
+          allProfiles.push(newProfile);
+
+          if (profile.profileId === uid) {
+            userProfile.push(newProfile);
+          }
+        }
+
+        dispatch({
+          type: SET_PROFILES,
+          allProfiles,
+          userProfile,
+        });
+        console.log(`Profiles:`);
+        console.log(`...${allProfiles.length} total profiles found and loaded.`);
+        console.log(`...profile created by the user found and loaded: ${userProfile[0]}`);
       }
-      dispatch({
-        type: SET_PROFILES,
-        allProfiles: loadedProfiles,
-      });
     } catch (error) {
-      console.log(error);
-      // send to custom analytics server
+      console.log('Error in actions/projects/fetchProfiles: ', error);
       throw error;
     }
   };
-};
+}
 
 export function createProfile(
   profileName,
@@ -113,10 +121,11 @@ export function updateProfile(
   image
 ) {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const userId = getState().auth.userId;
+    const uid = getState().auth.userId;
 
     try {
+      console.log(`Attempting to update profile with id: ${firebaseId}...`);
+
       let dataToUpdate = {
         profileName,
         profileDescription,
@@ -127,11 +136,9 @@ export function updateProfile(
         image,
       };
 
-      console.log('Attempting to update profile...', dataToUpdate);
-
+      //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
       if (image.length > 1000) {
         const convertedImage = await dispatch(convertImage(image));
-
         dataToUpdate = {
           profileName,
           profileDescription,
@@ -139,33 +146,25 @@ export function updateProfile(
           phone,
           address,
           defaultPickupDetails,
-          image: convertedImage.image,
+          image: convertedImage.image, //This is how we link to the image we store above
         };
       }
 
-      // Perform the API call - create the profile, passing the profileData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/profiles/${firebaseId}.json?auth=${token}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dataToUpdate),
-        }
-      );
-      const returnedProfileData = await response.json();
+      const returnedProfileData = await firebase
+        .database()
+        .ref(`profiles/${firebaseId}`)
+        .update(dataToUpdate);
 
-      console.log('...updated profile: ', returnedProfileData);
+      console.log(`...updated profile with id ${firebaseId}:`, returnedProfileData);
 
       dispatch({
         type: UPDATE_PROFILE,
-        currUser: userId,
+        currUser: uid,
         fid: firebaseId,
         profileData: dataToUpdate,
       });
     } catch (error) {
-      console.log('Error in actions/profiles/updateProfile', error);
+      console.log('Error in actions/profiles/updateProfile: ', error);
       throw error;
     }
   };

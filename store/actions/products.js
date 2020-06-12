@@ -12,98 +12,99 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export function fetchProducts() {
   return async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+    const uid = getState().auth.userId;
 
-    console.log('Fetching products...');
-
-    // Perform the API call - fetching all products
     try {
-      const response = await fetch('https://egnahemsfabriken.firebaseio.com/products.json');
-      const resData = await response.json();
+      console.log('Fetching products...');
+      const productSnapshot = await firebase.database().ref('products').once('value');
 
-      const loadedProducts = [];
+      if (productSnapshot.exists) {
+        const normalizedProductData = productSnapshot.val();
+        const allProducts = [];
+        const userProducts = [];
+        const expiredProducts = [];
 
-      for (const key in resData) {
-        loadedProducts.push(
-          new Product(
+        for (const key in normalizedProductData) {
+          const product = normalizedProductData[key];
+          const newProduct = new Product(
             key,
-            resData[key].ownerId,
-            resData[key].reservedUserId,
-            resData[key].collectingUserId,
-            resData[key].newOwnerId,
-            resData[key].category,
-            resData[key].condition,
-            resData[key].style,
-            resData[key].material,
-            resData[key].color,
-            resData[key].title,
-            resData[key].image,
-            resData[key].address,
-            resData[key].pickupDetails,
-            resData[key].phone,
-            resData[key].description,
-            resData[key].background,
-            resData[key].length,
-            resData[key].height,
-            resData[key].width,
-            resData[key].price,
-            resData[key].priceText,
-            resData[key].date,
-            resData[key].status,
-            resData[key].readyDate,
-            resData[key].reservedDate,
-            resData[key].reservedUntil,
-            resData[key].suggestedDate,
-            resData[key].collectingDate,
-            resData[key].collectedDate,
-            resData[key].projectId,
-            resData[key].internalComments,
-            resData[key].sellerAgreed,
-            resData[key].buyerAgreed
-          )
-        );
-      }
-      await dispatch({
-        type: SET_PRODUCTS,
-        products: loadedProducts,
-        userProducts: loadedProducts.filter((prod) => prod.ownerId === userId),
-      });
-      console.log(
-        `${loadedProducts.length} products found and loaded. Checking if any of them are reserved...`
-      );
-      const reservedItems = loadedProducts.filter((prod) => prod.status === 'reserverad');
-      if (reservedItems.length) {
-        console.log(
-          `...${reservedItems.length} reserved products found. Checking if any of them are expired...`
-        );
+            product.ownerId,
+            product.reservedUserId,
+            product.collectingUserId,
+            product.newOwnerId,
+            product.category,
+            product.condition,
+            product.style,
+            product.material,
+            product.color,
+            product.title,
+            product.image,
+            product.address,
+            product.pickupDetails,
+            product.phone,
+            product.description,
+            product.background,
+            product.length,
+            product.height,
+            product.width,
+            product.price,
+            product.priceText,
+            product.date,
+            product.status,
+            product.readyDate,
+            product.reservedDate,
+            product.reservedUntil,
+            product.suggestedDate,
+            product.collectingDate,
+            product.collectedDate,
+            product.projectId,
+            product.internalComments,
+            product.sellerAgreed,
+            product.buyerAgreed
+          );
 
-        for (const key in reservedItems) {
+          allProducts.push(newProduct);
+
+          if (product.ownerId === uid) {
+            userProducts.push(newProduct);
+          }
+
           //Is the product reservation expired?
-          const reservationExpiryDate = new Date(reservedItems[key].reservedUntil);
-          const isPickedUp = reservedItems[key].status === 'hämtad';
-          const collectionIsNotAgreed = !reservedItems[key].collectingDate;
-          const shouldBeReset =
-            !isPickedUp &&
-            collectionIsNotAgreed &&
-            reservationExpiryDate instanceof Date &&
-            reservationExpiryDate <= new Date();
-
-          //If the product has expired, call a function which passes correct new fields and then push the updated product to the reservedItems array
-          if (shouldBeReset) {
-            console.log('...found expired product, calling unReserveProduct to update it. ------>');
-            dispatch(unReserveProduct(reservedItems[key].id));
-            console.log(`${reservedItems[key].id} product was expired, but is now updated.`);
-          } else {
+          if (
+            product.status === 'reserverad' &&
+            !product.collectingDate &&
+            new Date(product.reservedUntil) instanceof Date &&
+            new Date(product.reservedUntil) <= new Date()
+          ) {
             console.log(
-              `...${reservedItems[key].id} still has a valid reservation date, and stays reserved.`
+              `...product with the name '${product.title}' has an expired reservation date. Pushing it to expiredProducts array.`
             );
+            expiredProducts.push(newProduct);
           }
         }
-        console.log(`...${reservedItems.length} products checked.`);
-      } else {
+
+        await dispatch({
+          type: SET_PRODUCTS,
+          products: allProducts,
+          userProducts,
+        });
+        console.log(`Products:`);
+        console.log(`...${allProducts.length} total products found and loaded.`);
+        console.log(`...${userProducts.length} products created by the user found and loaded.`);
         console.log(
-          `...${reservedItems.length} reserved products found. Moving on with our lives.`
+          `...${expiredProducts.length} expired products found${
+            expiredProducts.length
+              ? ', attempting to update these...'
+              : ', moving on with our lives...'
+          }`
         );
+        //If the product has expired, call a function which passes correct new fields and then push the updated product to the reservedItems array
+        if (expiredProducts.length) {
+          expiredProducts.forEach(function (prod) {
+            dispatch(unReserveProduct(prod.id));
+            console.log(`...'${prod.id}' product was expired, but is now updated.`);
+          });
+        }
       }
     } catch (error) {
       console.log('Error in actions/products/fetchProducts: ', error);
@@ -113,9 +114,7 @@ export function fetchProducts() {
 }
 
 export function unReserveProduct(id) {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
-
+  return async (dispatch) => {
     try {
       console.log(`Product with id ${id} is expired.`);
       //Since the products reservation date has passed and no collectingDate has been set, reset these values as:
@@ -135,40 +134,35 @@ export function unReserveProduct(id) {
         buyerAgreed: '',
       };
 
-      console.log('New fields to update expired product with: ', updatedProduct);
+      console.log('Data to update expired product with: ', updatedProduct);
 
       // Perform the API call - update the product that has been expired
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedProduct),
-        }
-      );
-      const updatedData = await response.json();
+      const returnedProductData = await firebase
+        .database()
+        .ref(`products/${id}`)
+        .update(updatedProduct);
+
+      console.log('Data expired product was updated to:', returnedProductData);
+
       dispatch({
         type: CHANGE_PRODUCT_STATUS,
         pid: id,
         productData: {
-          reservedUserId: updatedData.reservedUserId,
-          collectingUserId: updatedData.collectingUserId,
-          newOwnerId: updatedData.newOwnerId,
-          status: updatedData.status,
-          readyDate: updatedData.readyDate,
-          reservedDate: updatedData.reservedDate,
-          reservedUntil: updatedData.reservedUntil,
-          suggestedDate: updatedData.suggestedDate,
-          collectingDate: updatedData.collectingDate,
-          collectedDate: updatedData.collectedDate,
-          projectId: updatedData.projectId,
-          sellerAgreed: updatedData.sellerAgreed,
-          buyerAgreed: updatedData.buyerAgreed,
+          reservedUserId: returnedProductData.reservedUserId,
+          collectingUserId: returnedProductData.collectingUserId,
+          newOwnerId: returnedProductData.newOwnerId,
+          status: returnedProductData.status,
+          readyDate: returnedProductData.readyDate,
+          reservedDate: returnedProductData.reservedDate,
+          reservedUntil: returnedProductData.reservedUntil,
+          suggestedDate: returnedProductData.suggestedDate,
+          collectingDate: returnedProductData.collectingDate,
+          collectedDate: returnedProductData.collectedDate,
+          projectId: returnedProductData.projectId,
+          sellerAgreed: returnedProductData.sellerAgreed,
+          buyerAgreed: returnedProductData.buyerAgreed,
         },
       });
-      console.log('product updated to: ', updatedData);
     } catch (error) {
       console.log('Error in actions/products/unReserveProduct: ', error);
       throw error;
@@ -177,14 +171,16 @@ export function unReserveProduct(id) {
 }
 
 export const deleteProduct = (productId) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
+      console.log(`Attempting to delete product with id: ${productId}...`);
       await firebase.database().ref(`products/${productId}`).remove();
 
       dispatch({ type: DELETE_PRODUCT, pid: productId });
+      console.log(`...product deleted!`);
     } catch (error) {
       console.log('Error in actions/products/deleteProduct: ', error);
-      throw error;
+      throw new Error(error.message);
     }
   };
 };
@@ -201,7 +197,7 @@ export function createProduct(
   pickupDetails,
   phone,
   description,
-  background,
+  background = '',
   length,
   height,
   width,
@@ -210,19 +206,40 @@ export function createProduct(
   internalComments
 ) {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
+    const ownerId = getState().auth.userId;
 
     try {
       console.log('Creating product...');
 
       //First convert the base64 image to a firebase url...
       const convertedImage = await dispatch(convertImage(image));
-
-      //...then take the returned image and together with the rest of the data create the productData object.
       const productData = {
-        ownerId: userId,
+        date: currentDate,
+        condition,
+        style,
+        material,
+        color,
+        title,
+        image: convertedImage.image, //This is how we link to the image we store above
+        address,
+        pickupDetails,
+        phone,
+        description,
+        background,
+        length,
+        height,
+        width,
+        price,
+        priceText,
+        internalComments,
+      };
+
+      const { key } = await firebase.database().ref('products').push(productData);
+
+      const newProductData = {
+        id: key,
+        ownerId,
         reservedUserId: '',
         collectingUserId: '',
         newOwnerId: '',
@@ -232,7 +249,7 @@ export function createProduct(
         material,
         color,
         title,
-        image: convertedImage.image, //This is how we link to the image we create through the convertImage function
+        image: convertedImage.image,
         address,
         pickupDetails,
         phone,
@@ -257,56 +274,11 @@ export function createProduct(
         buyerAgreed: '',
       };
 
-      // Perform the API call - create the product, passing the productData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/products.json?auth=${token}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(productData),
-        }
-      );
-      const returnedProductData = await response.json();
-
       dispatch({
         type: CREATE_PRODUCT,
-        productData: {
-          id: returnedProductData.name,
-          ownerId: userId,
-          reservedUserId: '',
-          collectingUserId: '',
-          newOwnerId: '',
-          category,
-          condition,
-          style,
-          material,
-          color,
-          title,
-          image: convertedImage.image,
-          address,
-          pickupDetails,
-          phone,
-          description,
-          background,
-          length,
-          height,
-          width,
-          price,
-          priceText,
-          date: currentDate,
-          status: 'redo',
-          readyDate: currentDate,
-          reservedDate: '',
-          reservedUntil: '',
-          suggestedDate: '',
-          collectingDate: '',
-          collectedDate: '',
-          projectId: '000',
-          internalComments,
-          sellerAgreed: '',
-          buyerAgreed: '',
-        },
+        productData: newProductData,
       });
-      console.log('...product created!');
+      console.log(`...created new product with id ${key}:`, newProductData);
     } catch (error) {
       console.log('Error in actions/products/createProduct: ', error);
       throw error;
@@ -335,40 +307,35 @@ export function updateProduct(
   priceText,
   internalComments
 ) {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
-
-    //If we are NOT passing a base64 image, update with the old image and passed data
-    let dataToUpdate = {
-      category,
-      condition,
-      style,
-      material,
-      color,
-      title,
-      image,
-      address,
-      pickupDetails,
-      phone,
-      description,
-      background,
-      length,
-      height,
-      width,
-      price,
-      priceText,
-      internalComments,
-    };
-
+  return async (dispatch) => {
     try {
-      console.log('Attempting to update product with data: ', dataToUpdate);
+      console.log(`Attempting to update product with id: ${id}...`);
+
+      //If we are NOT passing a base64 image, update with the old image and passed data
+      let dataToUpdate = {
+        category,
+        condition,
+        style,
+        material,
+        color,
+        title,
+        image,
+        address,
+        pickupDetails,
+        phone,
+        description,
+        background,
+        length,
+        height,
+        width,
+        price,
+        priceText,
+        internalComments,
+      };
 
       //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
       if (image.length > 1000) {
-        //First convert the base64 image to a firebase url...
         const convertedImage = await dispatch(convertImage(image));
-        //...then take the returned image and update our dataToUpdate object
-
         dataToUpdate = {
           category,
           condition,
@@ -391,24 +358,18 @@ export function updateProduct(
         };
       }
 
-      // Perform the API call - create the product, passing the productData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify(dataToUpdate),
-        }
-      );
-      const returnedProductData = await response.json();
+      const returnedProductData = await firebase
+        .database()
+        .ref(`products/${id}`)
+        .update(dataToUpdate);
 
-      console.log('returnedProductData from updating product, after patch', returnedProductData);
+      console.log(`...updated product with id ${id}:`, returnedProductData);
 
       dispatch({
         type: UPDATE_PRODUCT,
         pid: id,
         productData: dataToUpdate,
       });
-      console.log('...product updated!');
     } catch (error) {
       console.log('Error in actions/products/updateProduct: ', error);
       throw error;
@@ -424,7 +385,6 @@ export const changeProductStatus = (
   dateRelatedToStatus
 ) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
     const currentUserId = getState().auth.userId;
     const currentDate = new Date().toISOString();
 
@@ -525,20 +485,18 @@ export const changeProductStatus = (
     try {
       console.log('Attempting to change product status, and set data to: ', productDataToUpdate);
 
-      await fetch(`https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productDataToUpdate),
-      });
+      const returnedProductData = await firebase
+        .database()
+        .ref(`products/${id}`)
+        .update(productDataToUpdate);
+
+      console.log(`...updated product with id ${id} to:`, returnedProductData);
 
       dispatch({
         type: CHANGE_PRODUCT_STATUS,
         pid: id,
         productData: productDataToUpdate,
       });
-      console.log('Product status changed!');
     } catch (error) {
       console.log('Error in actions/products/changeProductStatus: ', error);
       throw error;
@@ -548,23 +506,17 @@ export const changeProductStatus = (
 
 export const changeProductAgreement = (id, sellerAgreed, buyerAgreed) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-
     try {
       console.log('Attempting to change product agreement:');
       console.log('sellerAgreed:', sellerAgreed);
       console.log('buyerAgreed: ', buyerAgreed);
 
-      await fetch(`https://egnahemsfabriken.firebaseio.com/products/${id}.json?auth=${token}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sellerAgreed,
-          buyerAgreed,
-        }),
+      const returnedProductData = await firebase.database().ref(`products/${id}`).update({
+        sellerAgreed,
+        buyerAgreed,
       });
+
+      console.log(`...updated product with id ${id} to:`, returnedProductData);
 
       dispatch({
         type: CHANGE_PRODUCT_AGREEMENT,
@@ -574,7 +526,6 @@ export const changeProductAgreement = (id, sellerAgreed, buyerAgreed) => {
           buyerAgreed,
         },
       });
-      console.log('Product agreement changed!');
     } catch (error) {
       console.log('Error in actions/products/changeProductAgreement: ', error);
       throw error;

@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 import Proposal from '../../models/proposal';
 
 export const DELETE_PROPOSAL = 'DELETE_PROPOSAL';
@@ -8,70 +10,75 @@ export const CHANGE_PROPOSAL_STATUS = 'CHANGE_PROPOSAL_STATUS';
 
 export function fetchProposals() {
   return async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+    const uid = getState().auth.userId;
 
     try {
       console.log('Fetching proposals...');
-      const response = await fetch('https://egnahemsfabriken.firebaseio.com/proposals.json');
-      const resData = await response.json();
-      const loadedProposals = [];
-      for (const key in resData) {
-        loadedProposals.push(
-          new Proposal(
+      const proposalSnapshot = await firebase.database().ref('proposals').once('value');
+
+      if (proposalSnapshot.exists) {
+        const normalizedProposalData = proposalSnapshot.val();
+        const allProposals = [];
+        const userProposals = [];
+
+        for (const key in normalizedProposalData) {
+          const proposal = normalizedProposalData[key];
+          const newProposal = new Proposal(
             key,
-            resData[key].ownerId,
-            resData[key].projectId,
-            resData[key].title,
-            resData[key].description,
-            resData[key].price,
-            resData[key].date,
-            resData[key].status
-          )
-        );
+            proposal.ownerId,
+            proposal.projectId,
+            proposal.title,
+            proposal.description,
+            proposal.price,
+            proposal.date,
+            proposal.status
+          );
+
+          allProposals.push(newProposal);
+
+          if (proposal.ownerId === uid) {
+            userProposals.push(newProposal);
+          }
+        }
+
+        dispatch({
+          type: SET_PROPOSALS,
+          proposals: allProposals,
+          userProposals,
+        });
+        console.log(`Proposals:`);
+        console.log(`...${allProposals.length} total proposals found and loaded.`);
+        console.log(`...${userProposals.length} proposals created by the user found and loaded.`);
       }
-      // Set our proposals in the reducer
-      dispatch({
-        type: SET_PROPOSALS,
-        proposals: loadedProposals,
-        userProposals: loadedProposals.filter((proposal) => proposal.ownerId === userId),
-      });
-      console.log('...proposals fetched!');
     } catch (error) {
-      console.log('Error in actions/projects/fetchProposals: ', error);
+      console.log('Error in actions/proposals/fetchProposals: ', error);
       throw error;
     }
   };
 }
 
 export const deleteProposal = (proposalId) => {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/proposals/${proposalId}.json?auth=${token}`,
-      {
-        method: 'DELETE',
-      }
-    );
+  return async (dispatch) => {
+    try {
+      await firebase.database().ref(`proposals/${proposalId}`).remove();
 
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      const message = errorId;
-      throw new Error(message);
+      dispatch({ type: DELETE_PROPOSAL, pid: proposalId });
+    } catch (error) {
+      throw new Error(error.message);
     }
-    dispatch({ type: DELETE_PROPOSAL, pid: proposalId });
   };
 };
 
 export function createProposal(title, description, price, projectId) {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const userId = getState().auth.userId;
     const currentDate = new Date().toISOString();
+    const ownerId = getState().auth.userId;
 
     try {
+      console.log('Attempting to create new proposal...');
+
       const proposalData = {
-        ownerId: userId,
+        ownerId,
         projectId,
         title,
         description,
@@ -79,23 +86,13 @@ export function createProposal(title, description, price, projectId) {
         date: currentDate,
       };
 
-      // Perform the API call - create the proposal, passing the proposalData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/proposals.json?auth=${token}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(proposalData),
-        }
-      );
-      const returnedProposalData = await response.json();
-
-      console.log('dispatching CREATE_PROPOSAL');
+      const { key } = await firebase.database().ref('proposals').push(proposalData);
 
       dispatch({
         type: CREATE_PROPOSAL,
         proposalData: {
-          id: returnedProposalData.name,
-          ownerId: userId,
+          id: key,
+          ownerId,
           projectId,
           title,
           description,
@@ -104,23 +101,18 @@ export function createProposal(title, description, price, projectId) {
         },
       });
 
-      console.log('----------actions/proposals/createProposal--------END');
+      console.log(`...created new proposal with id ${key}:`, proposalData);
     } catch (error) {
-      console.log(error);
-
-      ('----------actions/proposals/createProposal--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/proposals/createProposal: ', error);
       throw error;
     }
   };
 }
 
 export function updateProposal(id, title, description, price, projectId) {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
-
+  return async (dispatch) => {
     try {
-      console.log('START----------actions/proposals/updateProposal--------');
+      console.log(`Attempting to update proposal with id: ${id}...`);
 
       const dataToUpdate = {
         title,
@@ -129,66 +121,47 @@ export function updateProposal(id, title, description, price, projectId) {
         projectId,
       };
 
-      // Perform the API call - create the proposal, passing the proposalData object above
-      const response = await fetch(
-        `https://egnahemsfabriken.firebaseio.com/proposals/${id}.json?auth=${token}`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify(dataToUpdate),
-        }
-      );
-      const returnedProposalData = await response.json();
+      const returnedProposalData = await firebase
+        .database()
+        .ref(`proposals/${id}`)
+        .update(dataToUpdate);
 
-      console.log('returnedProposalData from updating proposal, after patch', returnedProposalData);
-
-      console.log('dispatching UPDATE_PROPOSAL');
+      console.log(`...updated proposal with id ${id}:`, returnedProposalData);
 
       dispatch({
         type: UPDATE_PROPOSAL,
         pid: id,
         proposalData: dataToUpdate,
       });
-
-      console.log('----------actions/proposals/updateProposal--------END');
     } catch (error) {
-      console.log(error);
-      ('----------actions/proposals/updateProposal--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/proposals/updateProposal: ', error);
       throw error;
     }
   };
 }
 
-export const changeProposalStatus = (id, status) => {
-  return async (dispatch, getState) => {
-    const token = getState().auth.token;
+export function changeProposalStatus(id, status) {
+  return async (dispatch) => {
+    try {
+      console.log(`Attempting to update status of proposal with id: ${id} to '${status}'...`);
 
-    const response = await fetch(
-      `https://egnahemsfabriken.firebaseio.com/proposals/${id}.json?auth=${token}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const returnedProposalData = await firebase
+        .database()
+        .ref(`proposals/${id}`)
+        .update({ status });
+
+      console.log(`...updated proposal with id ${id}:`, returnedProposalData);
+
+      dispatch({
+        type: CHANGE_PROPOSAL_STATUS,
+        pid: id,
+        proposalData: {
           status,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      const message = errorId;
-      throw new Error(message);
+        },
+      });
+    } catch (error) {
+      console.log('Error in actions/proposals/changeProposalStatus: ', error);
+      throw error;
     }
-
-    dispatch({
-      type: CHANGE_PROPOSAL_STATUS,
-      pid: id,
-      proposalData: {
-        status,
-      },
-    });
   };
-};
+}

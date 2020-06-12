@@ -117,7 +117,7 @@ const EditProductScreen = (props) => {
     if (!formState.formIsValid) {
       Alert.alert(
         'Ojoj',
-        'Det verkar som något saknas i formuläret, kolla så du fyllt i alla fält.',
+        'Det verkar som något saknas i formuläret, kolla så du fyllt i titel, beskrivning och lagt upp en bild.',
         [{ text: 'OK' }]
       );
       return;

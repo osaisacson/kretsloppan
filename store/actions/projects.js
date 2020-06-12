@@ -17,8 +17,6 @@ export function fetchProjects() {
       const projectSnapshot = await firebase.database().ref('projects').once('value');
 
       if (projectSnapshot.exists) {
-        console.log('...projects fetched!');
-
         const normalizedProjectData = projectSnapshot.val();
         const allProjects = [];
         const userProjects = [];
@@ -49,8 +47,10 @@ export function fetchProjects() {
           projects: allProjects,
           userProjects,
         });
+        console.log(`Projects:`);
+        console.log(`...${allProjects.length} total projects found and loaded.`);
+        console.log(`...${userProjects.length} projects created by the user found and loaded.`);
       }
-      // Set our projects in the reducer
     } catch (error) {
       console.log('Error in actions/projects/fetchProjects: ', error);
       throw error;
@@ -59,12 +59,15 @@ export function fetchProjects() {
 }
 
 export const deleteProject = (projectId) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
+      console.log(`Attempting to delete project with id: ${projectId}...`);
       await firebase.database().ref(`projects/${projectId}`).remove();
 
       dispatch({ type: DELETE_PROJECT, pid: projectId });
+      console.log(`...project deleted!`);
     } catch (error) {
+      console.log('Error in actions/projects/deleteProject: ', error);
       throw new Error(error.message);
     }
   };
@@ -76,7 +79,7 @@ export function createProject(title, location, description, slogan, image, statu
     const ownerId = getState().auth.userId;
 
     try {
-      console.log('START----------actions/projects/createProject--------');
+      console.log('Attempting to create new project...');
 
       //First convert the base64 image to a firebase url...
       const convertedImage = await dispatch(convertImage(image));
@@ -91,7 +94,6 @@ export function createProject(title, location, description, slogan, image, statu
         status,
       };
 
-      console.log('dispatching CREATE_PRODUCT', projectData);
       const { key } = await firebase.database().ref('projects').push(projectData);
 
       dispatch({
@@ -109,21 +111,18 @@ export function createProject(title, location, description, slogan, image, statu
         },
       });
 
-      console.log('----------actions/projects/createProject--------END');
+      console.log(`...created new project with id ${key}:`, projectData);
     } catch (error) {
-      console.log(error);
-
-      console.log('----------actions/projects/createProject--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/projects/createProject: ', error);
       throw error;
     }
   };
 }
 
 export function updateProject(id, title, location, description, slogan, image) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
-      console.log('START----------actions/projects/updateProject--------');
+      console.log(`Attempting to update project with id: ${id}...`);
 
       let dataToUpdate = {
         title,
@@ -150,21 +149,15 @@ export function updateProject(id, title, location, description, slogan, image) {
         .ref(`projects/${id}`)
         .update(dataToUpdate);
 
-      console.log('returnedProjectData from updating project, after patch', returnedProjectData);
-
-      console.log('dispatching UPDATE_PROJECT');
+      console.log(`...updated project with id ${id}:`, returnedProjectData);
 
       dispatch({
         type: UPDATE_PROJECT,
         pid: id,
         projectData: dataToUpdate,
       });
-
-      console.log('----------actions/projects/updateProject--------END');
     } catch (error) {
-      console.log(error);
-      console.log('----------actions/projects/updateProject--------END');
-      // Rethrow so returned Promise is rejected
+      console.log('Error in actions/projects/updateProject: ', error);
       throw error;
     }
   };
