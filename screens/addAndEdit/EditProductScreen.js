@@ -126,7 +126,7 @@ const EditProductScreen = (props) => {
     setIsLoading(true);
     try {
       if (editedProduct) {
-        dispatch(
+        await dispatch(
           productsActions.updateProduct(
             prodId,
             formState.inputValues.category,
@@ -150,7 +150,7 @@ const EditProductScreen = (props) => {
           )
         );
       } else {
-        dispatch(
+        await dispatch(
           productsActions.createProduct(
             formState.inputValues.category,
             formState.inputValues.condition,
