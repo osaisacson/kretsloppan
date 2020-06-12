@@ -112,11 +112,12 @@ const HorizontalScroll = (props) => {
                       animated
                       icon="dots-horizontal"
                       color="#fff"
-                      style={{
+                      contentStyle={{
                         width: 100,
-                        paddingTop: scrollHeight / 2 - 10,
                         paddingLeft: 10,
                         height: scrollHeight,
+                      }}
+                      style={{
                         borderColor: '#fff',
                         borderWidth: 0.5,
                         backgroundColor: Colors.darkPrimary,
