@@ -29,11 +29,14 @@ const UserAvatar = (props) => {
   const badgeNumber = reservedBy + reservedFrom + collectionBy + collectionFrom;
 
   //If we are passing a userId, use this as the current user, else use the currently logged in user
-  const currentUser = useSelector((state) =>
-    state.profiles.allProfiles.find((prof) =>
-      props.userId ? prof.profileId === props.userId : prof.profileId === loggedInUserId
-    )
-  );
+  let currentUser;
+  if (props.userId) {
+    currentUser = useSelector((state) =>
+      state.profiles.allProfiles.find((prof) => prof.profileId === props.userId)
+    );
+  } else {
+    currentUser = useSelector((state) => state.profiles.userProfile);
+  }
 
   return (
     <TouchableCmp

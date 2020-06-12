@@ -3,6 +3,7 @@ import { SET_PROFILES, CREATE_PROFILE, UPDATE_PROFILE } from '../actions/profile
 
 const initialState = {
   allProfiles: [],
+  userProfile: {},
 };
 
 export default (state = initialState, action) => {
@@ -10,6 +11,7 @@ export default (state = initialState, action) => {
     case SET_PROFILES:
       return {
         allProfiles: action.allProfiles,
+        userProfile: action.userProfile,
       };
     case CREATE_PROFILE: {
       const newProfile = new Profile(

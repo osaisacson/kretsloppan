@@ -38,8 +38,7 @@ export function fetchProfiles() {
           allProfiles.push(newProfile);
 
           if (profile.profileId === uid) {
-            console.log('HÄR ÄR PROFILEN: ', profile.profileName);
-            userProfile = JSON.stringify(newProfile, null, 2);
+            userProfile = newProfile;
           }
         }
 

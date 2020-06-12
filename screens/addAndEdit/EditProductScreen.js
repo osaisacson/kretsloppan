@@ -175,7 +175,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.internalComments
           )
         );
-        props.navigation.navigate('ProductDetail', { detailId: prodId });
+        props.navigation.navigate('Kretsloppan');
         setIsLoading(false);
       }
     } catch (err) {
