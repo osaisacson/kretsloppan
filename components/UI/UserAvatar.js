@@ -54,15 +54,15 @@ const UserAvatar = (props) => {
         style={{
           color: '#fff',
           backgroundColor: '#fff',
-          borderWidth: 0.3,
-          borderColor: '#000',
+          borderWidth: 0.5,
+          borderColor: '#fff',
         }}
         source={
           currentUser && currentUser.image
             ? { uri: currentUser.image }
             : require('./../../assets/avatar-placeholder-image.png')
         }
-        size={40}
+        size={props.size ? props.size : 40}
       />
       {props.showBadge && badgeNumber > 0 ? (
         <Badge

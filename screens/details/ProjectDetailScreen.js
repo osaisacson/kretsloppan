@@ -161,6 +161,7 @@ const ProjectDetailScreen = (props) => {
         }
         renderItem={(itemData) => (
           <ProductItem
+            navigation={props.navigation}
             isSearchView
             itemData={itemData.item}
             onSelect={() => {

@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 import CachedImage from '../../components/UI/CachedImage';
 import StatusBadge from '../../components/UI/StatusBadge';
+import UserAvatar from '../../components/UI/UserAvatar';
 import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
 import Card from './Card';
@@ -66,11 +67,28 @@ const ProductItem = (props) => {
   return (
     <View style={styles.container}>
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
+        <View
+          style={{
+            position: 'absolute',
+            alignSelf: 'flex-start',
+            zIndex: 100,
+          }}>
+          <UserAvatar
+            size={30}
+            userId={props.itemData.ownerId}
+            showBadge={false}
+            actionOnPress={() => {
+              props.navigation.navigate('Användare', {
+                detailId: props.itemData.ownerId,
+              });
+            }}
+          />
+        </View>
         {props.isSearchView ? (
           <Ionicons
             style={{
               position: 'absolute',
-              alignSelf: 'flex-start',
+              alignSelf: 'flex-end',
               textAlign: 'center',
               zIndex: 100,
               backgroundColor: bgColor,

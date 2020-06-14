@@ -88,6 +88,7 @@ const HorizontalScroll = (props) => {
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {scrollData.map((item) => (
                   <RenderedItem
+                    navigation={props.navigation}
                     itemData={item}
                     key={item.id}
                     isHorizontal

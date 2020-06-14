@@ -94,6 +94,7 @@ const UserProductsScreen = (props) => {
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProductItem
+            navigation={props.navigation}
             itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(
