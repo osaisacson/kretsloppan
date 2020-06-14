@@ -185,7 +185,7 @@ export const ShopNavigator = (props) => {
         component={TabNavigator}
         options={{
           drawerIcon: (props) => (
-            <MaterialCommunityIcons name="ladybug" size={23} color={props.color} />
+            <MaterialCommunityIcons name="home" size={23} color={props.color} />
           ),
         }}
       />

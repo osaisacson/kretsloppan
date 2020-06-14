@@ -88,7 +88,7 @@ const EditProductScreen = (props) => {
     },
     inputValidities: {
       title: !!editedProduct,
-      description: !!editedProduct,
+      description: true,
       internalComments: true,
       length: true,
       height: true,
@@ -118,7 +118,7 @@ const EditProductScreen = (props) => {
     if (!formState.formIsValid) {
       Alert.alert(
         'Ojoj',
-        'Det verkar som något saknas i formuläret, kolla så du fyllt i titel, beskrivning och lagt upp en bild.',
+        'Det verkar som något saknas i formuläret, kolla så du fyllt i titel och lagt upp en bild.',
         [{ text: 'OK' }]
       );
       return;
@@ -232,7 +232,7 @@ const EditProductScreen = (props) => {
       <FormFieldWrapper
         prompt="Lägg in ett pris (det kan vara 0)"
         highlightedSubLabel="Notera att betalning hanteras utanför appen."
-        subLabel="Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Ange då detta i fältet 'Kommentarer till pris' nedan.">
+        subLabel="Skippa detta fält om pris inte är aktuellt">
         <TextInput
           placeholder="Styckpris. För företag: ange pris inklusive moms"
           style={formStyles.input}
@@ -242,9 +242,12 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper prompt="Lägg in en kommentar till pris">
+      <FormFieldWrapper
+        prompt="Alternativt pris"
+        subLabel="Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Skriv då istället 'Förhandlingsbart' eller 'Ett tjog ägg' här.">
+        >
         <TextInput
-          placeholder="Kommentarer till pris (valfritt)"
+          placeholder="Alternativt pris"
           style={formStyles.input}
           value={formState.inputValues.priceText}
           onChangeText={textChangeHandler.bind(this, 'priceText')}
@@ -252,9 +255,9 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper prompt="Skriv in en kort beskrivning">
+      <FormFieldWrapper prompt="Skriv in eventuella kommentarer">
         <TextInput
-          placeholder="Beskrivning"
+          placeholder="Kommentarer"
           style={formStyles.multilineInput}
           value={formState.inputValues.description}
           multiline
