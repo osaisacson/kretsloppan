@@ -49,7 +49,7 @@ export function fetchProfiles() {
         });
         console.log(`Profiles:`);
         console.log(`...${allProfiles.length} total profiles found and loaded.`);
-        console.log(`...profile created by the user found and loaded: ${userProfile}`);
+        console.log(`...profile for ${userProfile.profileName} found and loaded`);
       }
     } catch (error) {
       console.log('Error in actions/projects/fetchProfiles: ', error);
