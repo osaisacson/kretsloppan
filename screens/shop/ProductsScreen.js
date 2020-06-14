@@ -70,7 +70,13 @@ const ProductsScreen = (props) => {
     return <EmptyState text="Inga produkter hittade." />;
   }
 
-  const productsToShow = renderedProducts ? renderedProducts : products;
+  const productsToShowRaw = renderedProducts ? renderedProducts : products;
+
+  const productsToShow = productsToShowRaw.sort(function (a, b) {
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
+  });
 
   return (
     <View>
@@ -80,7 +86,7 @@ const ProductsScreen = (props) => {
         placeholder="Leta bland återbruk"
       />
       <FlatList
-        numColumns={3}
+        numColumns={2}
         initialNumToRender={12}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
