@@ -19,66 +19,38 @@ const SpotlightProductsScreen = (props) => {
   const slides = [
     {
       key: 'k1',
-      title: 'Välkommen',
+      title: 'Välkommen!',
       text:
         'Mer återbruk åt folket! Kretsloppan är ett verktyg för att hjälpa till att synliggöra och sprida återbruk.',
-      image: {
-        uri: 'https://i.imgur.com/jr6pfzM.png',
-      },
-      titleStyle: styles.title,
-      textStyle: styles.text,
-      imageStyle: styles.image,
-      backgroundColor: '#F7BB64',
+      backgroundColor: '#583451',
     },
     {
       key: 'k2',
       title: 'Dela/Hitta',
       text: 'Lägg upp ditt eget återbruk och hitta det andra lagt upp',
-      image: {
-        uri: 'https://i.imgur.com/au4H7Vt.png',
-      },
-      titleStyle: styles.title,
-      textStyle: styles.text,
-      imageStyle: styles.image,
-      backgroundColor: '#F4B1BA',
+      backgroundColor: '#713f51',
     },
     {
       key: 'k3',
       title: 'Hantera',
-      text:
-        'När du hittat ett återbruk du vill ha, reservera det och föreslå en tid för upphämtning. När säljaren godkänt tiden får nu en notifikation. Då är det bara att dyka upp på överenskommen tid och plats.',
-      image: {
-        uri: 'https://i.imgur.com/bXgn893.png',
-      },
-      titleStyle: styles.title,
-      textStyle: styles.text,
-      imageStyle: styles.image,
-      backgroundColor: '#4093D2',
+      text: 'När du hittat ett återbruk du vill ha, reservera och föreslå en tid för upphämtning.',
+      subText:
+        'När säljaren godkänt tiden får du en notifikation. Då är det bara att dyka upp på överenskommen tid och plats.',
+      backgroundColor: '#644EE2',
     },
     {
       key: 'k4',
       title: 'Följ återbrukets resa',
       text:
-        'Du kan se vad som händer med återbruket efter det blivit återanvänt - kolla in fliken Projekt för att se dess nya liv.',
-      image: {
-        uri: 'https://i.imgur.com/mFKL47j.png',
-      },
-      titleStyle: styles.title,
-      textStyle: styles.text,
-      imageStyle: styles.image,
-      backgroundColor: '#644EE2',
+        'Du kan se vad som händer med återbruket efter det blivit återanvänt - kolla in Projekten för att se dess nya liv.',
+      backgroundColor: '#b08ca1',
     },
     {
       key: 'k5',
       title: 'Nu kör vi!',
-
-      image: {
-        uri: 'https://i.imgur.com/mFKL47j.png',
-      },
-      titleStyle: styles.title,
-      textStyle: styles.text,
-      imageStyle: styles.image,
-      backgroundColor: '#FF00FF',
+      image: true,
+      isDark: true,
+      backgroundColor: '#f9ddbf',
     },
   ];
 
@@ -114,9 +86,18 @@ const SpotlightProductsScreen = (props) => {
   const renderItem = ({ item }) => {
     return (
       <View style={{ ...styles.slide, backgroundColor: item.backgroundColor }}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Image source={item.image} />
-        <Text style={styles.text}>{item.text}</Text>
+        <Text style={item.isDark ? { ...styles.title, ...styles.darkText } : styles.title}>
+          {item.title}
+        </Text>
+        {item.image ? (
+          <Image style={styles.image} source={require('./../../assets/kretsloppan.png')} />
+        ) : null}
+        <Text style={item.isDark ? { ...styles.text, ...styles.darkText } : styles.text}>
+          {item.text}
+        </Text>
+        <Text style={item.isDark ? { ...styles.text, ...styles.darkText } : styles.text}>
+          {item.subText}
+        </Text>
       </View>
     );
   };
@@ -211,6 +192,11 @@ const styles = StyleSheet.create({
   text: {
     color: '#fff',
     fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  darkText: {
+    color: '#000',
   },
   image: {
     width: 200,

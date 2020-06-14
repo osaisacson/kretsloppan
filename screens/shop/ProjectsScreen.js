@@ -97,8 +97,7 @@ const ProjectsScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title="Alla Projekt"
-            buttonText="Projekt"
-            buttonOnPress={() => props.navigation.navigate('EditProject')}
+            showAddLink={() => props.navigation.navigate('EditProject')}
             icon={
               <Entypo
                 name="tools"

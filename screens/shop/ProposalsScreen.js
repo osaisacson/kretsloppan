@@ -97,8 +97,7 @@ const ProposalsScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title="Alla Efterlysningar"
-            buttonText="Efterlysning"
-            buttonOnPress={() => props.navigation.navigate('EditProposal')}
+            showAddLink={() => props.navigation.navigate('EditProposal')}
             icon={
               <MaterialCommunityIcons
                 name="alert-decagram-outline"

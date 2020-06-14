@@ -40,7 +40,7 @@ const HeaderTwo = (props) => {
             <ButtonIcon icon="plus" onSelect={showAddLink} color={Colors.darkPrimary} />
           </View>
         ) : null}
-        {buttonText && <ButtonAdd title={buttonText} onPress={buttonOnPress} />}
+        {buttonText ? <ButtonAdd title={buttonText} onPress={buttonOnPress} /> : null}
       </View>
     </View>
   );
