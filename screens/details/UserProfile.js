@@ -126,31 +126,33 @@ const UserProfile = (props) => {
         detailPath="ProjectDetail"
         title="Projekt"
         subTitle="Projekt användaren bygger med återbruk"
+        simpleCount={userProjects.length}
         scrollData={userProjects}
         navigation={props.navigation}
       />
       <HorizontalScroll
-        title="Tillgängligt förråd"
-        subTitle="Återbruk av användaren som är tillgängligt att reservera"
+        title="Till Salu"
+        simpleCount={availableUserProducts.length}
         scrollData={availableUserProducts}
         navigation={props.navigation}
       />
+      {collectedFromUser.length ? (
+        <HorizontalScroll
+          title="Sålt"
+          simpleCount={collectedFromUser.length}
+          scrollData={collectedFromUser}
+          navigation={props.navigation}
+        />
+      ) : null}
       <HorizontalScroll
         textItem
         detailPath="ProposalDetail"
         title="Efterlysningar"
         subTitle="Återbruk, tjänster, tips..."
+        simpleCount={userProposals.length}
         scrollData={userProposals}
         navigation={props.navigation}
       />
-      {collectedFromUser.length ? (
-        <HorizontalScroll
-          title="Gett Igen"
-          subTitle="Återbruk användaren har gett till andra"
-          scrollData={collectedFromUser}
-          navigation={props.navigation}
-        />
-      ) : null}
     </ScrollViewToTop>
   );
 };

@@ -15,6 +15,7 @@ const HeaderTwo = (props) => {
     indicator,
     buttonText,
     buttonOnPress,
+    simpleCount,
     showAddLink,
     showNotificationBadge,
   } = props;
@@ -25,11 +26,12 @@ const HeaderTwo = (props) => {
         <View style={styles.textAndBadge}>
           {icon ? icon : null}
           <Text style={styles.contentHeader}>{title}</Text>
+          {simpleCount ? <Text style={styles.simpleCount}>({simpleCount})</Text> : null}
           {showNotificationBadge ? (
             <Badge style={{ fontWeight: 'bold', marginBottom: 5 }}>{indicator}</Badge>
           ) : null}
         </View>
-        <Text style={styles.subTitle}>{subTitle}</Text>
+        {subTitle ? <Text style={styles.subTitle}>{subTitle}</Text> : null}
         {extraSubTitle ? <Text style={styles.extraSubTitle}>{extraSubTitle}</Text> : null}
       </View>
       <View style={styles.indicatorSection}>
@@ -70,6 +72,11 @@ const styles = StyleSheet.create({
     fontFamily: 'bebas-neue-bold',
     fontSize: 25,
     marginRight: 6,
+  },
+  simpleCount: {
+    fontFamily: 'roboto-regular',
+    fontSize: 18,
+    marginBottom: 5,
   },
   indicator: {
     fontFamily: 'roboto-regular',

@@ -137,6 +137,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Projekt som byggs med återbruk"
           showAddLink={() => props.navigation.navigate('EditProject')}
           showMoreLink={() => props.navigation.navigate('Projekt')}
+          simpleCount={allProjects.length}
           scrollData={recentProjects}
           navigation={props.navigation}
           icon={
@@ -154,6 +155,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Senast tillgängliga återbruket"
           showAddLink={() => props.navigation.navigate('EditProduct')}
           showMoreLink={() => props.navigation.navigate('Återbruk')}
+          simpleCount={allProducts.length}
           scrollData={recentProducts}
           navigation={props.navigation}
           icon={
@@ -173,6 +175,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Kontakta efterlysaren om du sitter på svaret"
           showAddLink={() => props.navigation.navigate('EditProposal')}
           showMoreLink={() => props.navigation.navigate('Efterlysningar')}
+          simpleCount={allProposals.length}
           scrollData={recentProposals}
           navigation={props.navigation}
           icon={

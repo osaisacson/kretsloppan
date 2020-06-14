@@ -181,18 +181,6 @@ const UserSpotlightScreen = (props) => {
             <Caption style={{ color: '#fff' }}>Projekt</Caption>
           </View>
         </View>
-        <View style={userProfileStyles.row}>
-          <ButtonAdd title="Återbruk" onPress={() => props.navigation.navigate('EditProduct')} />
-          <ButtonAdd
-            title="Projekt"
-            style={{ marginHorizontal: 4, paddingRight: 5 }}
-            onPress={() => props.navigation.navigate('EditProject')}
-          />
-          <ButtonAdd
-            title="Efterlysning"
-            onPress={() => props.navigation.navigate('EditProposal')}
-          />
-        </View>
       </View>
       {badgeNr ? (
         <ActionLine
