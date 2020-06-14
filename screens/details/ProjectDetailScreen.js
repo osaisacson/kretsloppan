@@ -136,10 +136,6 @@ const ProjectDetailScreen = (props) => {
     </View>
   ) : null;
 
-  useEffect(() => {
-    console.log('ProjectDetailScreen', selectedProject, props);
-  }, [selectedProject]);
-
   if (!selectedProject) {
     return null;
   }
