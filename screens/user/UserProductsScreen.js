@@ -80,8 +80,8 @@ const UserProductsScreen = (props) => {
         placeholder="Leta bland ditt återbruk"
       />
       <HeaderTwo
-        title="Allt mitt upplagda återbruk"
-        subTitle="Allt du själv har lagt upp eller hämtat."
+        title="Mitt förråd"
+        subTitle="Allt återbruk du själv har lagt upp eller hämtat."
         indicator={productsSorted.length ? productsSorted.length : 0}
       />
       <FlatList

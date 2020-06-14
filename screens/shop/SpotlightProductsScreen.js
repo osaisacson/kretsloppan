@@ -133,11 +133,11 @@ const SpotlightProductsScreen = (props) => {
         <HorizontalScroll
           largeImageItem
           detailPath="ProjectDetail"
-          title="Projekt"
+          title="Senaste Projekten"
           subTitle="Projekt som byggs med återbruk"
           showAddLink={() => props.navigation.navigate('EditProject')}
           showMoreLink={() => props.navigation.navigate('Projekt')}
-          simpleCount={allProjects.length}
+          showMoreLinkName={`Se alla projekt (${allProjects.length})`}
           scrollData={recentProjects}
           navigation={props.navigation}
           icon={
@@ -155,7 +155,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Senast tillgängliga återbruket"
           showAddLink={() => props.navigation.navigate('EditProduct')}
           showMoreLink={() => props.navigation.navigate('Återbruk')}
-          simpleCount={allProducts.length}
+          showMoreLinkName={`Se allt återbruk (${allProducts.length})`}
           scrollData={recentProducts}
           navigation={props.navigation}
           icon={
@@ -171,11 +171,11 @@ const SpotlightProductsScreen = (props) => {
         <HorizontalScroll
           textItem
           detailPath="ProposalDetail"
-          title="efterlysningar"
+          title="Senaste efterlysningarna"
           subTitle="Kontakta efterlysaren om du sitter på svaret"
           showAddLink={() => props.navigation.navigate('EditProposal')}
           showMoreLink={() => props.navigation.navigate('Efterlysningar')}
-          simpleCount={allProposals.length}
+          showMoreLinkName={`Se alla efterlysningar (${allProposals.length})`}
           scrollData={recentProposals}
           navigation={props.navigation}
           icon={

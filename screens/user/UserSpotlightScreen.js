@@ -4,7 +4,6 @@ import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
 import ActionLine from '../../components/UI/ActionLine';
-import ButtonAdd from '../../components/UI/ButtonAdd';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import Colors from '../../constants/Colors';
 import { userProfileStyles } from '../details/UserProfile';
@@ -204,6 +203,7 @@ const UserSpotlightScreen = (props) => {
         userProjects={userProjects}
         userProposals={userProposals}
         userUploads={userUploads}
+        userProducts={userProducts}
         navigation={props.navigation}
       />
     </ScrollViewToTop>
