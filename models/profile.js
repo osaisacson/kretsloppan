@@ -9,6 +9,8 @@ class Profile {
     address,
     defaultPickupDetails,
     image,
+    hasWalkedThrough,
+    hasReadNews,
     expoTokens = []
   ) {
     this.id = id;
@@ -20,6 +22,8 @@ class Profile {
     this.address = address;
     this.defaultPickupDetails = defaultPickupDetails;
     this.image = image;
+    this.hasWalkedThrough = hasWalkedThrough;
+    this.hasReadNews = hasReadNews;
     this.expoTokens = expoTokens;
   }
 }

@@ -2,19 +2,22 @@ import { MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View, Text, Image } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import { useSelector } from 'react-redux';
+import { Button } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
 
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/UI/SaferArea';
+import * as profilesActions from '../../store/actions/profiles';
 
 const SpotlightProductsScreen = (props) => {
-  //Get products, projects and proposals from state
   const allProducts = useSelector((state) => state.products.availableProducts);
   const allProjects = useSelector((state) => state.projects.availableProjects);
   const allProposals = useSelector((state) => state.proposals.availableProposals);
-
+  const currentProfile = useSelector((state) => state.profiles.userProfile);
   const [showWalkthrough, setShowWalkthrough] = useState(true);
+
+  const dispatch = useDispatch();
 
   const slides = [
     {
@@ -80,9 +83,15 @@ const SpotlightProductsScreen = (props) => {
   const recentProjects = recentProjectsSorted.slice(0, 5);
   const recentProposals = recentProposalsSorted.slice(0, 5);
 
+  const renderDoneButton = () => {
+    return <Button>Klar!</Button>;
+  };
+
   const onDoneAllSlides = () => {
+    dispatch(profilesActions.updateWalkthrough(currentProfile.id));
     setShowWalkthrough(false);
   };
+
   const renderItem = ({ item }) => {
     return (
       <View style={{ ...styles.slide, backgroundColor: item.backgroundColor }}>
@@ -101,15 +110,26 @@ const SpotlightProductsScreen = (props) => {
       </View>
     );
   };
-  if (showWalkthrough) {
-    return <AppIntroSlider renderItem={renderItem} data={slides} onDone={onDoneAllSlides} />;
+  if (showWalkthrough && !currentProfile.hasWalkedThrough) {
+    return (
+      <AppIntroSlider
+        renderItem={renderItem}
+        data={slides}
+        onDone={onDoneAllSlides}
+        renderDoneButton={renderDoneButton}
+      />
+    );
   }
   return (
     <SaferArea>
-      <Introduction
-        pic="https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80"
-        text="NYHETER: Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0-beta3"
-      />
+      {!currentProfile.hasReadNews ? (
+        <Introduction
+          currUserId={currentProfile.id}
+          hasReadNews={currentProfile.hasReadNews}
+          pic="https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80"
+          text="NYHETER: Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0-beta3"
+        />
+      ) : null}
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
           largeImageItem

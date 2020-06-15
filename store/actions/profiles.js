@@ -6,6 +6,8 @@ import { convertImage } from '../helpers';
 export const SET_PROFILES = 'SET_PROFILES';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const UPDATE_WALKTHROUGH = 'UPDATE_WALKTHROUGH';
+export const UPDATE_READNEWS = 'UPDATE_READNEWS';
 
 export function fetchProfiles() {
   return async (dispatch, getState) => {
@@ -32,6 +34,8 @@ export function fetchProfiles() {
             profile.address,
             profile.defaultPickupDetails,
             profile.image,
+            profile.hasWalkedThrough,
+            profile.hasReadNews,
             profile.expoTokens
           );
 
@@ -165,6 +169,76 @@ export function updateProfile(
       });
     } catch (error) {
       console.log('Error in actions/profiles/updateProfile: ', error);
+      throw error;
+    }
+  };
+}
+
+export function updateWalkthrough(firebaseId) {
+  return async (dispatch, getState) => {
+    const uid = getState().auth.userId;
+
+    try {
+      console.log(
+        `Attempting to set hasWalkedThrough to true for profile with firebase id of: ${firebaseId}...`
+      );
+
+      var dataToUpdate = {
+        hasWalkedThrough: true,
+      };
+
+      const returnedProfileData = await firebase
+        .database()
+        .ref(`profiles/${firebaseId}`)
+        .update(dataToUpdate);
+
+      console.log(`...updated profile with id ${firebaseId}:`, returnedProfileData);
+
+      dispatch({
+        type: UPDATE_WALKTHROUGH,
+        currUser: uid,
+        fid: firebaseId,
+        profileData: { hasWalkedThrough: true },
+      });
+    } catch (error) {
+      console.log('Error in actions/profiles/updateWalkthrough: ', error);
+      throw error;
+    }
+  };
+}
+
+export function updateReadNews(firebaseId) {
+  return async (dispatch, getState) => {
+    const uid = getState().auth.userId;
+
+    try {
+      console.log(`Attempting to set hasReadNews to true for profile with id of: ${firebaseId}...`);
+
+      var dataToUpdate = {
+        hasReadNews: true,
+      };
+
+      const returnedProfileData = await firebase
+        .database()
+        .ref(`profiles/${firebaseId}`)
+        .update(dataToUpdate, function (error) {
+          if (error) {
+            console.log('Error when trying to update updateReadNews to true', error);
+          } else {
+            console.log('Updated updateReadNews to true!');
+          }
+        });
+
+      console.log(`...updated profile with id ${firebaseId}:`, returnedProfileData);
+
+      dispatch({
+        type: UPDATE_READNEWS,
+        currUser: uid,
+        fid: firebaseId,
+        profileData: { hasReadNews: true },
+      });
+    } catch (error) {
+      console.log('Error in actions/profiles/updateReadNews: ', error);
       throw error;
     }
   };

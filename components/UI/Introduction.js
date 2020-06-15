@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Banner } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
 import CachedImage from '../../components/UI/CachedImage';
 import Colors from '../../constants/Colors';
+import * as profilesActions from '../../store/actions/profiles';
 
 const Introduction = (props) => {
+  const dispatch = useDispatch();
   const [visibleBanner, setVisibleBanner] = useState(true);
 
   return (
@@ -18,8 +21,10 @@ const Introduction = (props) => {
             label: 'Stäng',
             style: { backgroundColor: Colors.darkPrimary, color: '#fff' },
             labelStyle: { color: '#fff' },
-
-            onPress: () => setVisibleBanner(false),
+            onPress: () => {
+              dispatch(profilesActions.updateReadNews(props.currUserId));
+              setVisibleBanner(false);
+            },
           },
         ]}>
         <Text style={styles.bannerText}>{props.text}</Text>
