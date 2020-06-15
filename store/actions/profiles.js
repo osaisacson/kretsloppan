@@ -50,6 +50,7 @@ export function fetchProfiles() {
           type: SET_PROFILES,
           allProfiles,
           userProfile,
+          hasWalkedThrough: userProfile.hasWalkedThrough,
         });
         console.log(`Profiles:`);
         console.log(`...${allProfiles.length} total profiles found and loaded.`);
@@ -198,7 +199,7 @@ export function updateWalkthrough(firebaseId) {
         type: UPDATE_WALKTHROUGH,
         currUser: uid,
         fid: firebaseId,
-        profileData: { hasWalkedThrough: true },
+        hasWalkedThrough: true,
       });
     } catch (error) {
       console.log('Error in actions/profiles/updateWalkthrough: ', error);

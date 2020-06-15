@@ -10,6 +10,7 @@ import {
 const initialState = {
   allProfiles: [],
   userProfile: {},
+  hasWalkedThrough: false,
 };
 
 export default (state = initialState, action) => {
@@ -18,6 +19,7 @@ export default (state = initialState, action) => {
       return {
         allProfiles: action.allProfiles,
         userProfile: action.userProfile,
+        hasWalkedThrough: action.hasWalkedThrough,
       };
     case CREATE_PROFILE: {
       const newProfile = new Profile(
@@ -66,33 +68,9 @@ export default (state = initialState, action) => {
       };
     }
     case UPDATE_WALKTHROUGH: {
-      const profileIndex = state.allProfiles.findIndex(
-        (profile) => profile.profileId === action.currUser //Find the index of the profile where the profileId is the same as the currently logged in userId
-      );
-      const updatedProfileWalkthrough = new Profile(
-        action.fid, //the id of the profile in firebase
-        state.allProfiles[profileIndex].profileId, //prev state profileId (ie, don't update this)
-        state.allProfiles[profileIndex].profileName,
-        state.allProfiles[profileIndex].profileDescription,
-        state.allProfiles[profileIndex].email,
-        state.allProfiles[profileIndex].phone,
-        state.allProfiles[profileIndex].address,
-        state.allProfiles[profileIndex].defaultPickupDetails,
-        state.allProfiles[profileIndex].image,
-        action.profileData.hasWalkedThrough,
-        state.allProfiles[profileIndex].hasReadNews,
-        state.allProfiles[profileIndex].expoTokens
-      );
-      console.log(
-        'store/reducers/profiles/UPDATE_WALKTHROUGH, updated profile: ',
-        updatedProfileWalkthrough
-      );
-      const updatedProfiles = [...state.allProfiles];
-      updatedProfiles[profileIndex] = updatedProfileWalkthrough;
-
       return {
         ...state,
-        allProfiles: updatedProfiles,
+        hasWalkedThrough: true,
       };
     }
     case UPDATE_READNEWS: {

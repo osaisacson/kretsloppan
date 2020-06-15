@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import { AsyncStorage } from 'react-native';
 
-import ENV from '../../env';
 import { updateExpoTokens } from '../helpers';
 import * as profilesActions from './profiles';
 
