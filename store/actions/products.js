@@ -257,24 +257,24 @@ export function createProduct(
 
 export function updateProduct(
   id,
-  category,
-  condition,
-  style,
-  material,
-  color,
+  category = '',
+  condition = '',
+  style = '',
+  material = '',
+  color = '',
   title,
   image,
-  address,
-  pickupDetails,
+  address = '',
+  pickupDetails = '',
   phone,
-  description,
-  background,
-  length,
-  height,
-  width,
-  price,
-  priceText,
-  internalComments
+  description = '',
+  background = '',
+  length = '',
+  height = '',
+  width = '',
+  price = '',
+  priceText = '',
+  internalComments = ''
 ) {
   return async (dispatch) => {
     try {

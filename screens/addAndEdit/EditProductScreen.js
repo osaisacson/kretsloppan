@@ -42,12 +42,8 @@ const formReducer = (state, action) => {
 const EditProductScreen = (props) => {
   const prodId = props.route.params ? props.route.params.detailId : null; //Get the id of the currently edited product, passed from previous screen
 
-  const loggedInUserId = useSelector((state) => state.auth.userId);
-
   //Find the profile that matches the id of the currently logged in User
-  const currentUser = useSelector((state) =>
-    state.profiles.allProfiles.find((prof) => prof.profileId === loggedInUserId)
-  );
+  const currentUser = useSelector((state) => state.profiles.userProfile);
 
   //Find product
   const editedProduct = useSelector((state) =>
@@ -77,7 +73,7 @@ const EditProductScreen = (props) => {
       price: editedProduct ? editedProduct.price : '',
       priceText: editedProduct ? editedProduct.priceText : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
-      pickupDetails: editedProduct ? editedProduct.pickupDetails : defaultPickupDetails, //set picku details the user entered in their profile as default if they have them
+      pickupDetails: editedProduct ? editedProduct.pickupDetails : defaultPickupDetails, //set pickup details the user entered in their profile as default if they have them
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
       image: editedProduct ? editedProduct.image : '',
       category: editedProduct ? editedProduct.category : 'Ingen',
@@ -245,7 +241,6 @@ const EditProductScreen = (props) => {
       <FormFieldWrapper
         prompt="Alternativt pris"
         subLabel="Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Skriv då istället 'Förhandlingsbart' eller 'Ett tjog ägg' här.">
-        >
         <TextInput
           placeholder="Alternativt pris"
           style={formStyles.input}

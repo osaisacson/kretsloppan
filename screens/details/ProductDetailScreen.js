@@ -107,18 +107,22 @@ const ProductDetailScreen = (props) => {
           {/* Show delete and edit buttons if the user has editing 
         permissions and the product is not yet picked up */}
           {hasEditPermission && !isPickedUp ? (
-            <>
-              <View style={detailStyles.editOptions}>
-                <ButtonIcon
-                  icon="pen"
-                  color={Colors.neutral}
-                  onSelect={() => {
-                    editProductHandler(id);
-                  }}
-                />
-                <ButtonIcon icon="delete" color={Colors.warning} onSelect={deleteHandler} />
-              </View>
-            </>
+            <View style={detailStyles.editOptions}>
+              <ButtonIcon
+                icon="delete"
+                color={Colors.warning}
+                onSelect={() => {
+                  deleteHandler(selectedProduct.id);
+                }}
+              />
+              <ButtonIcon
+                icon="pen"
+                color={Colors.neutral}
+                onSelect={() => {
+                  editProductHandler(selectedProduct.id);
+                }}
+              />
+            </View>
           ) : null}
 
           {/* General description */}

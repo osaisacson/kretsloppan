@@ -123,7 +123,6 @@ const ProjectDetailScreen = (props) => {
 
       {associatedProducts.length ? (
         <View style={{ marginVertical: 10 }}>
-          {/* Information about the project */}
           <HeaderTwo
             title="Återbruk"
             subTitle="Återbruk som används i projektet"
