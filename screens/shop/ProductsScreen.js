@@ -1,16 +1,15 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { FlatList, View } from 'react-native';
+import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
-//Imports
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
 import SearchBar from '../../components/UI/SearchBar';
-//Actions
 import * as productsActions from '../../store/actions/products';
 
 const ProductsScreen = (props) => {
@@ -22,7 +21,6 @@ const ProductsScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
 
   //Prepare for changing the rendered products on search
-  const [renderedProducts, setRenderedProducts] = useState();
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
@@ -40,15 +38,16 @@ const ProductsScreen = (props) => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  const searchHandler = (text) => {
-    const newData = products.filter((item) => {
-      const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    setRenderedProducts(text.length ? newData : products);
-    setSearchQuery(text.length ? text : '');
-  };
+  //Set which fields to filter by
+  const KEYS_TO_FILTERS = ['title', 'description'];
+
+  const filteredProductsRaw = products.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+
+  const filteredProducts = filteredProductsRaw.sort(function (a, b) {
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
+  });
 
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProductDetail', {
@@ -70,27 +69,16 @@ const ProductsScreen = (props) => {
     return <EmptyState text="Inga produkter hittade." />;
   }
 
-  const productsToShowRaw = renderedProducts ? renderedProducts : products;
-
-  const productsToShow = productsToShowRaw.sort(function (a, b) {
-    a = new Date(a.date);
-    b = new Date(b.date);
-    return a > b ? -1 : a < b ? 1 : 0;
-  });
-
   return (
     <View>
-      <SearchBar
-        actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
-        placeholder="Leta bland återbruk"
-      />
+      <SearchBar placeholder="Leta bland återbruk" onChangeText={(term) => setSearchQuery(term)} />
+
       <FlatList
         numColumns={2}
         initialNumToRender={12}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
-        data={productsToShow}
+        data={filteredProducts}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProductItem
@@ -105,10 +93,10 @@ const ProductsScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title="Allt återbruk"
-            simpleCount={productsToShow.length}
+            simpleCount={filteredProducts.length}
             showAddLink={() => props.navigation.navigate('EditProduct')}
             icon={<FontAwesome5 name="recycle" size={20} style={{ marginRight: 5 }} />}
-            indicator={productsToShow.length ? productsToShow.length : 0}
+            indicator={filteredProducts.length ? filteredProducts.length : 0}
           />
         }
       />

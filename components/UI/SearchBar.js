@@ -1,18 +1,15 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
+import SearchInput from 'react-native-search-filter';
 
-//Imports
-import { StyleSheet, TextInput } from 'react-native';
-
-//Constants
 import Colors from '../../constants/Colors';
 
 const SearchBar = (props) => {
   return (
-    <TextInput
+    <SearchInput
+      onChangeText={props.onChangeText}
       clearTextOnFocus
       style={styles.textInputStyle}
-      onChangeText={props.actionOnChangeText}
-      value={props.searchQuery}
       underlineColorAndroid="transparent"
       placeholder={props.placeholder}
     />
