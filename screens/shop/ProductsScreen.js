@@ -39,7 +39,23 @@ const ProductsScreen = (props) => {
   }, [dispatch, setIsLoading, setError]);
 
   //Set which fields to filter by
-  const KEYS_TO_FILTERS = ['title', 'description'];
+  const KEYS_TO_FILTERS = [
+    'category',
+    'condition',
+    'style',
+    'material',
+    'color',
+    'title',
+    'description',
+    'background',
+    'length',
+    'height',
+    'width',
+    'price',
+    'priceText',
+    'status',
+    'internalComments',
+  ];
 
   const filteredProductsRaw = products.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
 
@@ -71,7 +87,10 @@ const ProductsScreen = (props) => {
 
   return (
     <View>
-      <SearchBar placeholder="Leta bland återbruk" onChangeText={(term) => setSearchQuery(term)} />
+      <SearchBar
+        placeholder="Leta bland återbruk: namn, kommentarer, mått..."
+        onChangeText={(term) => setSearchQuery(term)}
+      />
 
       <FlatList
         numColumns={2}
