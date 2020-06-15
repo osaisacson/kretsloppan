@@ -57,9 +57,11 @@ export const MATERIAL = [
 
 export const COLOR = [
   new Filter('Ingen/flera', 'Ingen/flera', 'transparent'),
+  new Filter('Omålad', 'Omålad', 'transparent'),
   new Filter('Vit', '', '#fff'),
   new Filter('Gul', '', '#ffbb00'),
   new Filter('Orange', '', '#f56f02'),
+  new Filter('Brun', '', '#8b4513'),
   new Filter('Röd', '', '#cb1f47'),
   new Filter('Rosa', '', '#d10161'),
   new Filter('Lila', '', '#645dac'),

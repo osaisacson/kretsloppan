@@ -240,7 +240,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Alternativt pris"
-        subLabel="ALTERNATIV: Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Skriv då istället 'Förhandlingsbart' eller 'Ett tjog ägg' här.">
+        subLabel="ALTERNATIV: Är priset förhandlingsbart eller vill du hellre ha ett tjog ägg som betalning? - Inga problem! Skriv då istället 'Förhandlingsbart' eller 'Ett tjog ägg' här.">
         <TextInput
           placeholder="Alternativt pris"
           style={formStyles.input}
@@ -348,7 +348,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       {/* Category */}
       <FormFieldWrapper label="Kategori" prompt="Välj en kategori">
-        <HorizontalScrollContainer scrollHeight={75}>
+        <HorizontalScrollContainer scrollHeight={100}>
           {PART.map((item) => (
             <PickerItem
               title={item.title}
@@ -362,7 +362,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       {/* Condition */}
       <FormFieldWrapper label="Skick" prompt="Välj skick på ditt upplagda återbruk">
-        <HorizontalScrollContainer scrollHeight={75}>
+        <HorizontalScrollContainer scrollHeight={100}>
           {CONDITION.map((item) => (
             <PickerItem
               title={item.title}
@@ -376,7 +376,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       {/* Style */}
       <FormFieldWrapper label="Stil" prompt="Välj en stil">
-        <HorizontalScrollContainer scrollHeight={75}>
+        <HorizontalScrollContainer scrollHeight={100}>
           {STYLE.map((item) => (
             <PickerItem
               title={item.title}
@@ -390,7 +390,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       {/* Material */}
       <FormFieldWrapper label="Material" prompt="Välj ett material">
-        <HorizontalScrollContainer scrollHeight={75}>
+        <HorizontalScrollContainer scrollHeight={100}>
           {MATERIAL.map((item) => (
             <PickerItem
               title={item.title}
@@ -404,7 +404,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       {/* Color */}
       <FormFieldWrapper label="Färg" prompt="Välj en stil">
-        <HorizontalScrollContainer scrollHeight={75}>
+        <HorizontalScrollContainer scrollHeight={100}>
           {COLOR.map((item) => (
             <PickerItem
               title={item.title}

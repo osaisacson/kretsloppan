@@ -10,14 +10,15 @@ const PickerItem = (props) => {
         style={{
           ...styles.touchable,
           backgroundColor: props.color,
-          height: props.isSelected ? 45 : 35,
+          borderWidth: props.isSelected ? 1 : 0.5,
+          height: props.isSelected ? 65 : 55,
         }}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View style={styles.textContainer}>
             <Text
               style={{
-                fontSize: 18,
-                fontFamily: props.isSelected ? 'bebas-neue' : 'bebas-neue-light',
+                fontSize: 14,
+                fontFamily: props.isSelected ? 'roboto-bold-italic' : 'roboto-light-italic',
                 color: '#000',
               }}>
               {props.title}
@@ -39,9 +40,10 @@ const styles = StyleSheet.create({
   },
   item: {
     minWidth: 100,
-    marginLeft: 14,
+    marginLeft: 10,
   },
   touchable: {
+    borderColor: '#666',
     borderRadius: 3,
     overflow: 'hidden',
     marginBottom: 20,

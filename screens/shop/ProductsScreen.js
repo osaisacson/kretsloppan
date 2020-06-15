@@ -88,7 +88,7 @@ const ProductsScreen = (props) => {
   return (
     <View>
       <SearchBar
-        placeholder="Leta bland återbruk: namn, kommentarer, mått..."
+        placeholder="Leta bland återbruk: titel, skick, mått..."
         onChangeText={(term) => setSearchQuery(term)}
       />
 
