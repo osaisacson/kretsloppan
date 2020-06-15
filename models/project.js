@@ -1,17 +1,7 @@
 import moment from 'moment';
 
 class Project {
-  constructor(
-    id,
-    ownerId,
-    title,
-    location,
-    description,
-    image,
-    slogan,
-    date,
-    status
-  ) {
+  constructor(id, ownerId, title, location, description, image, slogan, date, status) {
     this.id = id;
     this.ownerId = ownerId;
     this.title = title;

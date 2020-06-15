@@ -1,7 +1,7 @@
 import { Entypo } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-//Imports
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
+import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
 import EmptyState from '../../components/UI/EmptyState';
@@ -9,9 +9,7 @@ import Error from '../../components/UI/Error';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import ProjectItem from '../../components/UI/ProjectItem';
-import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
-//Actions
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectsScreen = (props) => {
@@ -23,7 +21,6 @@ const ProjectsScreen = (props) => {
   const projects = useSelector((state) => state.projects.availableProjects);
 
   //Prepare for changing the rendered projects on search
-  const [renderedProjects, setRenderedProjects] = useState(projects);
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
@@ -41,15 +38,16 @@ const ProjectsScreen = (props) => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  const searchHandler = (text) => {
-    const newData = renderedProjects.filter((item) => {
-      const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    setRenderedProjects(text.length ? newData : projects);
-    setSearchQuery(text.length ? text : '');
-  };
+  //Set which fields to filter by
+  const KEYS_TO_FILTERS = ['title', 'location', 'description', 'slogan', 'status'];
+
+  const filteredProjectsRaw = projects.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+
+  const filteredProjects = filteredProjectsRaw.sort(function (a, b) {
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
+  });
 
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProjectDetail', {
@@ -68,23 +66,22 @@ const ProjectsScreen = (props) => {
   }
 
   if (!isLoading && projects.length === 0) {
-    return <EmptyState text="Inga projekt hittade." />;
+    return <EmptyState text="Hittade inga projekt." />;
   }
 
   return (
-    <SaferArea>
+    <View>
       <SearchBar
-        actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
-        placeholder="Leta bland projekt"
+        placeholder="Leta bland projekt: titel, plats..."
+        onChangeText={(term) => setSearchQuery(term.length ? term : '')}
       />
+
       <FlatList
-        horizontal={false}
         numColumns={1}
-        initialNumToRender={4}
+        initialNumToRender={6}
         onRefresh={loadProjects}
         refreshing={isRefreshing}
-        data={renderedProjects}
+        data={filteredProjects}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProjectItem
@@ -98,6 +95,7 @@ const ProjectsScreen = (props) => {
           <HeaderTwo
             title="Alla Projekt"
             showAddLink={() => props.navigation.navigate('EditProject')}
+            simpleCount={filteredProjects.length}
             icon={
               <Entypo
                 name="tools"
@@ -107,11 +105,11 @@ const ProjectsScreen = (props) => {
                 }}
               />
             }
-            indicator={renderedProjects.length ? renderedProjects.length : 0}
+            indicator={filteredProjects.length ? filteredProjects.length : 0}
           />
         }
       />
-    </SaferArea>
+    </View>
   );
 };
 

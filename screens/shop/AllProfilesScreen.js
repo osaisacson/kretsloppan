@@ -1,39 +1,36 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { Divider } from 'react-native-paper';
+import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
+import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
-import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
 import * as profilesActions from '../../store/actions/profiles';
 
 const AllProfilesScreen = (props) => {
-  const dispatch = useDispatch();
-
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
-  //Get profiles from state
+  //Get original profiles from state
   const profiles = useSelector((state) => state.profiles.allProfiles);
 
   //Prepare for changing the rendered profiles on search
-  const [renderedProfiles, setRenderedProfiles] = useState(profiles);
   const [searchQuery, setSearchQuery] = useState('');
 
-  //Sort profiles by name
-  const profilesSorted = renderedProfiles.sort(function (a, b) {
-    return b.profileName - a.profileName;
-  });
+  const dispatch = useDispatch();
 
+  //Load profiles
   const loadProfiles = useCallback(async () => {
     setError(null);
     setIsRefreshing(true);
     try {
+      console.log('AllProfilesScreen: fetching profiles...');
       dispatch(profilesActions.fetchProfiles());
     } catch (err) {
       setError(err.message);
@@ -41,15 +38,14 @@ const AllProfilesScreen = (props) => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  const searchHandler = (text) => {
-    const newData = renderedProfiles.filter((item) => {
-      const itemData = item.profileName ? item.profileName.toUpperCase() : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    setRenderedProfiles(text.length ? newData : profiles);
-    setSearchQuery(text.length ? text : '');
-  };
+  //Set which fields to filter by
+  const KEYS_TO_FILTERS = ['profileName', 'profileDescription', 'email', 'phone', 'address'];
+
+  const filteredProfilesRaw = profiles.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+
+  const filteredProfiles = filteredProfilesRaw.sort(function (a, b) {
+    return b.profileName - a.profileName;
+  });
 
   const selectItemHandler = (profileId, profileName) => {
     props.navigation.navigate('Användare', {
@@ -67,23 +63,23 @@ const AllProfilesScreen = (props) => {
   }
 
   if (!isLoading && profiles.length === 0) {
-    return <EmptyState text="Inga användare ännu" />;
+    return <EmptyState text="Hittar inga användare." />;
   }
 
   return (
-    <SaferArea>
+    <View>
       <SearchBar
-        actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
-        placeholder="Leta bland användare"
+        placeholder="Leta bland användare: namn, beskrivning, address..."
+        onChangeText={(term) => setSearchQuery(term)}
       />
+
       <FlatList
-        initialNumToRender={8}
+        initialNumToRender={10}
         horizontal={false}
         numColumns={1}
         onRefresh={loadProfiles}
         refreshing={isRefreshing}
-        data={profilesSorted}
+        data={filteredProfiles}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <View>
@@ -109,8 +105,15 @@ const AllProfilesScreen = (props) => {
             <Divider />
           </View>
         )}
+        ListHeaderComponent={
+          <HeaderTwo
+            title="Alla profiler"
+            simpleCount={filteredProfiles.length}
+            indicator={filteredProfiles.length ? filteredProfiles.length : 0}
+          />
+        }
       />
-    </SaferArea>
+    </View>
   );
 };
 

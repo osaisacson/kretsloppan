@@ -1,17 +1,15 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-//Imports
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
+import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
 import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
-import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
 import TextItem from '../../components/UI/TextItem';
-//Actions
 import * as proposalsActions from '../../store/actions/proposals';
 
 const ProposalsScreen = (props) => {
@@ -23,7 +21,6 @@ const ProposalsScreen = (props) => {
   const proposals = useSelector((state) => state.proposals.availableProposals);
 
   //Prepare for changing the rendered proposals on search
-  const [renderedProposals, setRenderedProposals] = useState(proposals);
   const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
@@ -41,15 +38,16 @@ const ProposalsScreen = (props) => {
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
-  const searchHandler = (text) => {
-    const newData = renderedProposals.filter((item) => {
-      const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    setRenderedProposals(text.length ? newData : proposals);
-    setSearchQuery(text.length ? text : '');
-  };
+  //Set which fields to filter by
+  const KEYS_TO_FILTERS = ['title', 'description', 'price', 'status'];
+
+  const filteredProposalsRaw = proposals.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+
+  const filteredProposals = filteredProposalsRaw.sort(function (a, b) {
+    a = new Date(a.date);
+    b = new Date(b.date);
+    return a > b ? -1 : a < b ? 1 : 0;
+  });
 
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate('ProposalDetail', {
@@ -68,23 +66,22 @@ const ProposalsScreen = (props) => {
   }
 
   if (!isLoading && proposals.length === 0) {
-    return <EmptyState text="Inga efterlysningar hittade." />;
+    return <EmptyState text="Hittade inga efterlysningar." />;
   }
 
   return (
-    <SaferArea>
+    <View>
       <SearchBar
-        actionOnChangeText={(text) => searchHandler(text)}
-        searchQuery={searchQuery}
-        placeholder="Leta bland efterlysningar"
+        placeholder="Leta bland efterlysningar: titel, beskrivning..."
+        onChangeText={(term) => setSearchQuery(term.length ? term : '')}
       />
+
       <FlatList
-        horizontal={false}
         numColumns={1}
         initialNumToRender={10}
         onRefresh={loadProposals}
         refreshing={isRefreshing}
-        data={renderedProposals}
+        data={filteredProposals}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <TextItem
@@ -98,6 +95,7 @@ const ProposalsScreen = (props) => {
           <HeaderTwo
             title="Alla Efterlysningar"
             showAddLink={() => props.navigation.navigate('EditProposal')}
+            simpleCount={filteredProposals.length}
             icon={
               <MaterialCommunityIcons
                 name="alert-decagram-outline"
@@ -107,11 +105,11 @@ const ProposalsScreen = (props) => {
                 }}
               />
             }
-            indicator={renderedProposals.length ? renderedProposals.length : 0}
+            indicator={filteredProposals.length ? filteredProposals.length : 0}
           />
         }
       />
-    </SaferArea>
+    </View>
   );
 };
 
