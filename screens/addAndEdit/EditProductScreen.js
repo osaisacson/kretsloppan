@@ -138,9 +138,9 @@ const EditProductScreen = (props) => {
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
-            formState.inputValues.length,
-            formState.inputValues.height,
-            formState.inputValues.width,
+            +formState.inputValues.length,
+            +formState.inputValues.height,
+            +formState.inputValues.width,
             +formState.inputValues.price,
             formState.inputValues.priceText,
             formState.inputValues.internalComments
@@ -163,9 +163,9 @@ const EditProductScreen = (props) => {
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
-            formState.inputValues.length,
-            formState.inputValues.height,
-            formState.inputValues.width,
+            +formState.inputValues.length,
+            +formState.inputValues.height,
+            +formState.inputValues.width,
             +formState.inputValues.price,
             formState.inputValues.priceText,
             formState.inputValues.internalComments
@@ -240,7 +240,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Alternativt pris"
-        subLabel="Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Skriv då istället 'Förhandlingsbart' eller 'Ett tjog ägg' här.">
+        subLabel="ALTERNATIV: Är priset förhandlingsbart? Vill du hellre ha ett tjog ägg som betalning? - Inga problem! Skriv då istället 'Förhandlingsbart' eller 'Ett tjog ägg' här.">
         <TextInput
           placeholder="Alternativt pris"
           style={formStyles.input}
