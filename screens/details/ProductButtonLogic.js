@@ -6,7 +6,7 @@ import { View, Alert, Text, StyleSheet } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { Button, Divider } from 'react-native-paper';
+import { Button, Divider, Badge } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonAction from '../../components/UI/ButtonAction';
@@ -293,14 +293,17 @@ const ProductButtonLogic = (props) => {
       <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
         <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
         {!isPickedUp ? (
-          <Button
-            labelStyle={{ fontSize: 10 }}
-            color={Colors.darkPrimary}
-            style={{ position: 'absolute', left: '36%' }}
-            mode="contained"
-            onPress={toggleShowOptions}>
-            Logistik
-          </Button>
+          <>
+            <Button
+              labelStyle={{ fontSize: 10 }}
+              color={Colors.darkPrimary}
+              style={{ position: 'absolute', left: 130 }}
+              mode="contained"
+              onPress={toggleShowOptions}>
+              Logistik
+            </Button>
+            <Badge size={15} style={{ position: 'absolute', left: 208, bottom: 25 }} />
+          </>
         ) : null}
         <View
           style={{
