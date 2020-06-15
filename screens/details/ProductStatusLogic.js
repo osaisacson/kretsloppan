@@ -74,12 +74,7 @@ const ProductStatusLogic = (props) => {
   return (
     <View style={{ marginTop: 20 }}>
       {/* If we have a status of the product, show a badge with conditional copy */}
-      <StatusBadge
-        style={{ alignSelf: 'flex-end' }}
-        text={statusText}
-        icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
-        backgroundColor={statusColor}
-      />
+
       {!isPickedUp && !isOrganised ? (
         <StatusBadge
           style={{ alignSelf: 'flex-end' }}
@@ -91,6 +86,12 @@ const ProductStatusLogic = (props) => {
           backgroundColor={bgColor}
         />
       ) : null}
+      <StatusBadge
+        style={{ alignSelf: 'flex-end' }}
+        text={statusText}
+        icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
+        backgroundColor={statusColor}
+      />
     </View>
   );
 };

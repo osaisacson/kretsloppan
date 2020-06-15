@@ -55,7 +55,7 @@ const UserAvatar = (props) => {
           color: '#fff',
           backgroundColor: '#fff',
           borderWidth: 0.5,
-          borderColor: '#fff',
+          borderColor: '#666',
         }}
         source={
           currentUser && currentUser.image

@@ -312,19 +312,18 @@ const ProductButtonLogic = (props) => {
           {receivingProfile ? (
             <View style={styles.textAndBadge}>
               <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
-                <Text style={styles.smallText}>Av</Text>
+                <Text style={styles.smallText}>köpare</Text>
               </View>
               <HeaderAvatar profileId={receivingId} navigation={props.navigation} />
               {projectForProduct ? (
                 <>
-                  <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
-                    <Text style={styles.smallText}>Till</Text>
+                  <View style={{ marginLeft: -20, zIndex: -1 }}>
+                    <SmallRoundItem
+                      detailPath="ProjectDetail"
+                      item={projectForProduct}
+                      navigation={props.navigation}
+                    />
                   </View>
-                  <SmallRoundItem
-                    detailPath="ProjectDetail"
-                    item={projectForProduct}
-                    navigation={props.navigation}
-                  />
                 </>
               ) : null}
             </View>
@@ -647,15 +646,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   box: {
+    borderRadius: 5,
     paddingVertical: 12,
     paddingHorizontal: 14,
     alignSelf: 'center',
-    backgroundColor: Colors.darkPrimary,
+    borderWidth: 0.5,
+    borderColor: '#000',
   },
   boxText: {
     fontFamily: 'roboto-bold',
     fontSize: 16,
-    color: '#fff',
+    color: '#000',
     textAlign: 'center',
   },
 });
