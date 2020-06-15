@@ -107,7 +107,7 @@ const AllProfilesScreen = (props) => {
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title="Alla profiler"
+            title="Alla användare"
             simpleCount={filteredProfiles.length}
             indicator={filteredProfiles.length ? filteredProfiles.length : 0}
           />
