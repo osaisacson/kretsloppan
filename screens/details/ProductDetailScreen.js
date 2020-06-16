@@ -15,7 +15,6 @@ import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWra
 import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
 import ProductButtonLogic from './ProductButtonLogic';
-import ProductStatusLogic from './ProductStatusLogic';
 
 const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
@@ -88,19 +87,17 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        <Text style={{ textAlign: 'right', color: '#666' }}>
+        <Text style={{ textAlign: 'right', color: '#666', marginBottom: 5 }}>
           Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
         </Text>
 
-        {isTouched ? <ProductStatusLogic selectedProduct={selectedProduct} /> : null}
-
+        {/* Buttons for handling reservation, coordination and collection */}
+        <ProductButtonLogic
+          selectedProduct={selectedProduct}
+          hasEditPermission={hasEditPermission}
+          navigation={props.navigation}
+        />
         <SectionCard>
-          {/* Buttons for handling reservation, coordination and collection */}
-          <ProductButtonLogic
-            selectedProduct={selectedProduct}
-            hasEditPermission={hasEditPermission}
-            navigation={props.navigation}
-          />
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
 

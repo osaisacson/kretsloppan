@@ -19,6 +19,7 @@ import UserAvatar from '../../components/UI/UserAvatar';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
+import ProductStatusLogic from './ProductStatusLogic';
 
 const ProductButtonLogic = (props) => {
   const dispatch = useDispatch();
@@ -291,20 +292,12 @@ const ProductButtonLogic = (props) => {
   return (
     <View>
       <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
-        <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
-        {!isPickedUp ? (
-          <>
-            <Button
-              labelStyle={{ fontSize: 10 }}
-              color={Colors.darkPrimary}
-              style={{ position: 'absolute', left: 130 }}
-              mode="contained"
-              onPress={toggleShowOptions}>
-              Logistik
-            </Button>
-            <Badge size={15} style={{ position: 'absolute', left: 208, bottom: 25 }} />
-          </>
-        ) : null}
+        <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
+          <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
+          <View style={[styles.smallBadge, { backgroundColor: statusColor, left: -10 }]}>
+            <Text style={styles.smallText}>säljare</Text>
+          </View>
+        </View>
         <View
           style={{
             flex: 1,
@@ -313,8 +306,8 @@ const ProductButtonLogic = (props) => {
             right: 0,
           }}>
           {receivingProfile ? (
-            <View style={styles.textAndBadge}>
-              <View style={[styles.smallBadge, { backgroundColor: statusColor }]}>
+            <View style={[styles.textAndBadge, { justifyContent: 'flex-end' }]}>
+              <View style={[styles.smallBadge, { backgroundColor: statusColor, right: -10 }]}>
                 <Text style={styles.smallText}>köpare</Text>
               </View>
               <HeaderAvatar profileId={receivingId} navigation={props.navigation} />
@@ -337,6 +330,19 @@ const ProductButtonLogic = (props) => {
         </View>
       </View>
 
+      {!isPickedUp ? (
+        <>
+          <ProductStatusLogic selectedProduct={props.selectedProduct} />
+          <Button
+            labelStyle={{ fontSize: 10 }}
+            color={Colors.darkPrimary}
+            style={{ width: '100%' }}
+            mode="contained"
+            onPress={toggleShowOptions}>
+            {receivingProfile ? 'Hantera detaljer' : 'Se detaljer'}
+          </Button>
+        </>
+      ) : null}
       {/* When trying to reserve, open this up for selection of associated project */}
       {showUserProjects ? (
         <>
@@ -626,14 +632,11 @@ const styles = StyleSheet.create({
   textAndBadge: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
   },
   smallBadge: {
     zIndex: 10,
-    right: -10,
     paddingHorizontal: 2,
     borderRadius: 5,
-    backgroundColor: Colors.primary,
     height: 17,
   },
   smallText: {

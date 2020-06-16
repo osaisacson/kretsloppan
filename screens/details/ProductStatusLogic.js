@@ -1,6 +1,6 @@
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
 //Imports
@@ -31,6 +31,7 @@ const ProductStatusLogic = (props) => {
   const isReserved = status === 'reserverad';
   const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
+  const isTouched = isReserved || isOrganised || isPickedUp;
 
   const loggedInUserId = useSelector((state) => state.auth.userId);
 
@@ -67,31 +68,32 @@ const ProductStatusLogic = (props) => {
   }
 
   if (!suggestedDate) {
-    promptText = "Inget förslag än, föreslå en tid via 'logistik' nedan";
+    promptText = "Inget förslag än, föreslå en tid via 'se detaljer' nedan";
     bgColor = Colors.darkPrimary;
   }
 
-  return (
-    <View style={{ marginTop: 20 }}>
-      {/* If we have a status of the product, show a badge with conditional copy */}
+  if (!isTouched) {
+    return null;
+  }
 
+  return (
+    <View style={{ height: 40 }}>
+      {/* If we have a status of the product, show a badge with conditional copy */}
+      <Text
+        style={{
+          textTransform: 'lowercase',
+          textAlign: 'center',
+        }}>
+        {statusText}
+      </Text>
       {!isPickedUp && !isOrganised ? (
-        <StatusBadge
-          style={{ alignSelf: 'flex-end' }}
-          textStyle={{
-            textAlign: 'right',
-          }}
-          text={promptText}
-          icon={Platform.OS === 'android' ? 'md-information-circle' : 'ios-information-circle'}
-          backgroundColor={bgColor}
-        />
+        <Text
+          style={{
+            textAlign: 'center',
+          }}>
+          {promptText}
+        </Text>
       ) : null}
-      <StatusBadge
-        style={{ alignSelf: 'flex-end' }}
-        text={statusText}
-        icon={Platform.OS === 'android' ? `md-${statusIcon}` : `ios-${statusIcon}`}
-        backgroundColor={statusColor}
-      />
     </View>
   );
 };
