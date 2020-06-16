@@ -25,7 +25,7 @@ const ActionLine = (props) => {
       <Animatable.View
         animation="pulse"
         easing="ease-out"
-        duration={2000}
+        duration={500}
         iterationCount="infinite"
         style={{
           alignItems: 'center',
