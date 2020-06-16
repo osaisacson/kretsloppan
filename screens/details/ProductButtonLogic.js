@@ -89,6 +89,10 @@ const ProductButtonLogic = (props) => {
     statusColor = Colors.completed;
   }
 
+  if (!suggestedDate) {
+    statusColor = Colors.darkPrimary;
+  }
+
   //Avatar logic
   const profiles = useSelector((state) => state.profiles.allProfiles);
 

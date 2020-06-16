@@ -1,10 +1,8 @@
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import { View, Platform, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-//Imports
-import StatusBadge from '../../components/UI/StatusBadge';
 import Colors from '../../constants/Colors';
 
 const ProductStatusLogic = (props) => {
@@ -21,11 +19,8 @@ const ProductStatusLogic = (props) => {
   } = props.selectedProduct;
 
   //These will change based on where we are in the reservation process
-  let statusText;
-  let statusIcon;
-  let statusColor;
+  let statusText = '';
   let promptText;
-  let bgColor;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -42,20 +37,16 @@ const ProductStatusLogic = (props) => {
 
   if (isReserved) {
     statusText = `Reserverad tills ${Moment(reservedUntil).locale('sv').calendar()}`;
-    statusIcon = 'bookmark';
-    statusColor = Colors.primary;
   }
 
   if (isOrganised) {
-    statusText = `Upphämtning satt till ${Moment(collectingDate).locale('sv').calendar()}`;
-    statusIcon = 'star';
-    statusColor = Colors.subtleGreen;
+    statusText = `Upphämtning satt till ${Moment(collectingDate)
+      .locale('sv')
+      .format('D MMMM HH:MM')}`;
   }
 
   if (isPickedUp) {
     statusText = 'Hämtad';
-    statusIcon = 'checkmark';
-    statusColor = Colors.completed;
   }
 
   if (suggestedDate) {
@@ -64,32 +55,35 @@ const ProductStatusLogic = (props) => {
         ? ', väntar på ditt godkännande '
         : `av dig, väntar på ${sellerAgreed ? 'köparens' : 'säljarens'} godkännande`
     }`;
-    bgColor = waitingForYou ? Colors.darkPrimary : Colors.subtleBlue;
   }
 
   if (!suggestedDate) {
     promptText = "Inget förslag än, föreslå en tid via 'se detaljer' nedan";
-    bgColor = Colors.darkPrimary;
   }
+
+  const statusTextFormattedLow = statusText.toLowerCase(); //Make moment() text lowercase
+  const statusTextFormatted =
+    statusTextFormattedLow.charAt(0).toUpperCase() + statusTextFormattedLow.slice(1); //Make first letter of sentence uppercase
 
   if (!isTouched) {
     return null;
   }
 
   return (
-    <View style={{ height: 40 }}>
+    <View style={{ marginBottom: 5 }}>
       {/* If we have a status of the product, show a badge with conditional copy */}
       <Text
         style={{
-          textTransform: 'lowercase',
           textAlign: 'center',
+          fontFamily: 'roboto-light-italic',
         }}>
-        {statusText}
+        {statusTextFormatted}
       </Text>
       {!isPickedUp && !isOrganised ? (
         <Text
           style={{
             textAlign: 'center',
+            fontFamily: 'roboto-bold-italic',
           }}>
           {promptText}
         </Text>

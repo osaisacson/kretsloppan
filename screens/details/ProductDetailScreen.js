@@ -87,10 +87,6 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        <Text style={{ textAlign: 'right', color: '#666', marginBottom: 5 }}>
-          Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
-        </Text>
-
         {/* Buttons for handling reservation, coordination and collection */}
         <ProductButtonLogic
           selectedProduct={selectedProduct}
@@ -199,6 +195,9 @@ const ProductDetailScreen = (props) => {
             </View>
           ) : null}
         </SectionCard>
+        <Text style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
+          Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
+        </Text>
       </View>
     </DetailWrapper>
   );

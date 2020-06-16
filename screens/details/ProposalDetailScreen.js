@@ -85,9 +85,6 @@ const ProposalDetailScreen = (props) => {
 
   return selectedProposal ? (
     <DetailWrapper>
-      <Text style={{ textAlign: 'right', color: '#666' }}>
-        Upplagt {Moment(selectedProposal.date).locale('sv').startOf('hour').fromNow()}
-      </Text>
       {isResolved ? (
         <StatusBadge
           style={{ alignSelf: 'flex-start', marginTop: 5 }}
@@ -172,6 +169,9 @@ const ProposalDetailScreen = (props) => {
           </View>
         </SectionCard>
       ) : null}
+      <Text style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
+        Upplagt {Moment(selectedProposal.date).locale('sv').startOf('hour').fromNow()}
+      </Text>
     </DetailWrapper>
   ) : null;
 };
