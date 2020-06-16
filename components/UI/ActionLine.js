@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-
+import * as Animatable from 'react-native-animatable';
 import Colors from '../../constants/Colors';
 
 const ActionLine = (props) => {
@@ -22,7 +22,11 @@ const ActionLine = (props) => {
         }}>
         {props.isActive ? 'Dölj' : 'Visa'}{' '}
       </Text>
-      <View
+      <Animatable.View
+        animation="pulse"
+        easing="ease-out"
+        duration={2000}
+        iterationCount="infinite"
         style={{
           alignItems: 'center',
           justifyContent: 'center',
@@ -32,7 +36,7 @@ const ActionLine = (props) => {
           borderRadius: 50,
         }}>
         <Text style={{ color: '#fff' }}>{props.badgeNr}</Text>
-      </View>
+      </Animatable.View>
       <Text
         style={{
           color: Colors.darkPrimary,

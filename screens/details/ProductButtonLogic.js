@@ -6,7 +6,7 @@ import { View, Alert, Text, StyleSheet } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { Button, Divider, Badge } from 'react-native-paper';
+import { Button, Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonAction from '../../components/UI/ButtonAction';
