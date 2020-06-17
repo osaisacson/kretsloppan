@@ -54,7 +54,7 @@ const ProductItem = (props) => {
     icon = 'star';
     bgColor = Colors.subtleGreen;
     userBadgeIcon = 'clock';
-    badgeText = moment(props.itemData.collectingDate).locale('sv').calendar();
+    badgeText = moment(props.itemData.collectingDate).locale('sv').format('D MMMM YYYY, hh:mm');
   }
 
   if (isPickedUp) {

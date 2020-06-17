@@ -3,6 +3,7 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -337,14 +338,21 @@ const ProductButtonLogic = (props) => {
       {!isPickedUp ? (
         <>
           <ProductStatusLogic selectedProduct={props.selectedProduct} />
-          <Button
-            labelStyle={{ fontSize: 10 }}
-            color={Colors.darkPrimary}
-            style={{ width: '100%' }}
-            mode="contained"
-            onPress={toggleShowOptions}>
-            {receivingProfile ? 'Hantera detaljer' : 'Se detaljer'}
-          </Button>
+          <Animatable.View
+            animation="flipInX"
+            easing="ease-out"
+            delay={500}
+            duration={500}
+            iterationCount={1}>
+            <Button
+              labelStyle={{ fontSize: 10 }}
+              color={Colors.darkPrimary}
+              style={{ width: '100%' }}
+              mode="contained"
+              onPress={toggleShowOptions}>
+              {receivingProfile ? 'Hantera detaljer' : 'Se detaljer'}
+            </Button>
+          </Animatable.View>
         </>
       ) : null}
       {/* When trying to reserve, open this up for selection of associated project */}
@@ -506,14 +514,20 @@ const ProductButtonLogic = (props) => {
                       />
                     ) : null}
                     {!sellerAgreed && hasEditPermission ? (
-                      <ButtonAction
-                        buttonLabelStyle={{ color: '#fff' }}
-                        buttonColor={Colors.approved}
-                        title="Godkänn förslag"
-                        onSelect={() => {
-                          approveSuggestedDateTime(suggestedDate);
-                        }}
-                      />
+                      <Animatable.View
+                        animation="pulse"
+                        easing="ease-out"
+                        duration={1000}
+                        iterationCount="infinite">
+                        <ButtonAction
+                          buttonLabelStyle={{ color: '#fff' }}
+                          buttonColor={Colors.approved}
+                          title="Godkänn förslag"
+                          onSelect={() => {
+                            approveSuggestedDateTime(suggestedDate);
+                          }}
+                        />
+                      </Animatable.View>
                     ) : null}
                     {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
                       <ButtonAction
