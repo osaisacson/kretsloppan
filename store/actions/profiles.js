@@ -65,11 +65,11 @@ export function fetchProfiles() {
 
 export function createProfile(
   profileName,
-  profileDescription,
-  email,
-  phone,
-  address,
-  defaultPickupDetails,
+  profileDescription = '',
+  email = '',
+  phone = '',
+  address = '',
+  defaultPickupDetails = '',
   image
 ) {
   return async (dispatch, getState) => {
@@ -118,11 +118,11 @@ export function createProfile(
 export function updateProfile(
   firebaseId,
   profileName,
-  profileDescription,
-  email,
-  phone,
-  address,
-  defaultPickupDetails,
+  profileDescription = '',
+  email = '',
+  phone = '',
+  address = '',
+  defaultPickupDetails = '',
   image
 ) {
   return async (dispatch, getState) => {

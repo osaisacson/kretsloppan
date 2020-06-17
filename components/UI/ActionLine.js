@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import Colors from '../../constants/Colors';
 
 const ActionLine = (props) => {
