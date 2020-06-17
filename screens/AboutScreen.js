@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   link: { color: Colors.primary, fontFamily: 'roboto-bold' },
-  logoLarge: { width: 200, height: 130, alignSelf: 'center' },
+  logoLarge: { width: 300, height: 200, alignSelf: 'center' },
   logoSmall: { width: 80, height: 100 },
 });
 

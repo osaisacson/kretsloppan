@@ -23,9 +23,7 @@ export const TabNavigator = () => {
         name="Kretsloppan"
         component={SpotlightNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="ladybug" color={color} size={23} />
-          ),
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={23} />,
         }}
       />
       <TabStackNavigator.Screen
