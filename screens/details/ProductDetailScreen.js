@@ -57,10 +57,7 @@ const ProductDetailScreen = (props) => {
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
-  const isReserved = status === 'reserverad';
-  const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
-  const isTouched = isReserved || isOrganised || isPickedUp;
 
   const editProductHandler = (id) => {
     navigation.navigate('EditProduct', { detailId: id });

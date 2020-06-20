@@ -1,5 +1,3 @@
-//Imports
-
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
@@ -426,22 +424,6 @@ const ProductButtonLogic = (props) => {
             <>
               <Divider style={{ marginBottom: 10 }} />
 
-              {!collectingDate && suggestedDate ? (
-                <>
-                  <View style={styles.box}>
-                    <HeaderThree
-                      style={styles.boxText}
-                      text={`Föreslagen tid av ${waitingForYou ? 'motpart' : 'dig'}: ${moment(
-                        suggestedDate
-                      )
-                        .locale('sv')
-                        .format('D MMMM, HH:mm')}`}
-                    />
-                    <HeaderThree style={styles.boxText} text={`Plats: ${address}`} />
-                  </View>
-                </>
-              ) : null}
-
               {!suggestedDate ? (
                 <>
                   <HeaderThree
@@ -556,18 +538,6 @@ const ProductButtonLogic = (props) => {
 
           {collectingDate && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
             <>
-              <Divider style={{ marginBottom: 10 }} />
-              <View style={styles.box}>
-                <HeaderThree
-                  style={styles.boxText}
-                  text={`Överenskommen tid: ${moment(collectingDate)
-                    .locale('sv')
-                    .format('D MMMM, HH:mm')}`}
-                />
-                <HeaderThree style={styles.boxText} text={`Plats: ${address}`} />
-              </View>
-              <Divider style={{ marginTop: 10 }} />
-
               <View style={styles.actionButtons}>
                 <ButtonAction
                   buttonColor={Colors.darkRed}

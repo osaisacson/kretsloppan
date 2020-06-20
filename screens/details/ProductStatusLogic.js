@@ -1,9 +1,10 @@
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
-import Colors from '../../constants/Colors';
+import InfoText from './../../components/UI/InfoText';
 
 const ProductStatusLogic = (props) => {
   const {
@@ -16,11 +17,11 @@ const ProductStatusLogic = (props) => {
     buyerAgreed,
     sellerAgreed,
     suggestedDate,
+    address,
   } = props.selectedProduct;
 
   //These will change based on where we are in the reservation process
   let statusText = '';
-  let promptText;
 
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
@@ -34,31 +35,40 @@ const ProductStatusLogic = (props) => {
   const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
   const youHaveNotAgreed = viewerIsBuyer ? !buyerAgreed : viewerIsSeller ? !sellerAgreed : null;
   const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
+  const isReservedUser = reservedUserId === loggedInUserId;
+  const isOrganisedUser = collectingUserId === loggedInUserId;
+  const hasEditPermission = ownerId === loggedInUserId;
+  const isSellerOrBuyer = hasEditPermission || isReservedUser || isOrganisedUser;
+
+  let secondLine;
+  let thirdLine;
 
   if (isReserved) {
     statusText = `Reserverad tills ${Moment(reservedUntil).locale('sv').calendar()}`;
   }
 
   if (isOrganised) {
-    statusText = `Upphämtning satt till ${Moment(collectingDate)
+    statusText = `Hämtas av ${viewerIsBuyer ? 'dig' : 'köpare'} ${Moment(collectingDate)
       .locale('sv')
       .format('D MMMM HH:MM')}`;
+    secondLine = `Från: ${address}`;
+  }
+
+  if (suggestedDate) {
+    statusText = `Föreslagen tid av ${waitingForYou ? 'motpart' : 'dig'}: ${Moment(suggestedDate)
+      .locale('sv')
+      .format('D MMMM, HH:MM')}  `;
+    secondLine = `Väntar på ${sellerAgreed ? 'köparens' : 'säljarens'} godkännande`;
+    thirdLine = `Reservation går ut ${Moment(reservedUntil).locale('sv').endOf('day').fromNow()}`;
   }
 
   if (isPickedUp) {
     statusText = 'Hämtad';
   }
 
-  if (suggestedDate) {
-    promptText = `Tid föreslagen ${
-      waitingForYou
-        ? ', väntar på ditt godkännande '
-        : `av dig, väntar på ${sellerAgreed ? 'köparens' : 'säljarens'} godkännande`
-    }`;
-  }
-
-  if (!suggestedDate) {
-    promptText = "Inget förslag än, föreslå en tid via 'se detaljer' nedan";
+  if (!isPickedUp && !isOrganised && !suggestedDate) {
+    statusText = 'Inget förslag för upphämtning ännu';
+    secondLine = `Föreslå en tid som passar dig via 'hantera detaljer' nedan`;
   }
 
   const statusTextFormattedLow = statusText.toLowerCase(); //Make moment() text lowercase
@@ -71,22 +81,12 @@ const ProductStatusLogic = (props) => {
 
   return (
     <View style={{ marginBottom: 5 }}>
-      {/* If we have a status of the product, show a badge with conditional copy */}
-      <Text
-        style={{
-          textAlign: 'center',
-          fontFamily: 'roboto-light-italic',
-        }}>
-        {statusTextFormatted}
-      </Text>
-      {!isPickedUp && !isOrganised ? (
-        <Text
-          style={{
-            textAlign: 'center',
-            fontFamily: 'roboto-bold-italic',
-          }}>
-          {promptText}
-        </Text>
+      {isSellerOrBuyer ? (
+        <>
+          <InfoText text={statusTextFormatted} />
+          {secondLine ? <InfoText isBold text={secondLine} /> : null}
+          {thirdLine ? <InfoText text={thirdLine} /> : null}
+        </>
       ) : null}
     </View>
   );
