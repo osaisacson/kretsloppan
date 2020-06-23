@@ -83,6 +83,12 @@ export default (state = initialState, action) => {
     case UPDATE_WALKTHROUGH: {
       return {
         ...state,
+        allProfiles: state.allProfiles.map((profile) => {
+          if (profile.profileId === action.currUser) {
+            profile.hasWalkedThrough = true;
+          }
+          return profile;
+        }),
         userProfile: {
           ...state.userProfile,
           hasWalkedThrough: true,
