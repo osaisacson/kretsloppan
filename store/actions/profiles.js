@@ -54,7 +54,13 @@ export function fetchProfiles() {
         });
         console.log(`Profiles:`);
         console.log(`...${allProfiles.length} total profiles found and loaded.`);
-        console.log(`...profile for ${userProfile.profileName} found and loaded`);
+        if (!userProfile) {
+          console.log(`...profile for ${userProfile.profileName} found and loaded`);
+        } else {
+          console.log(
+            `*****PROBLEM***** userProfile is not loaded. getState().auth.userId is: ${uid}.`
+          );
+        }
       }
     } catch (error) {
       console.log('Error in actions/projects/fetchProfiles: ', error);

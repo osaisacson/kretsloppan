@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useCallback, useRef } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,30 +8,6 @@ import * as profilesActions from '../store/actions/profiles';
 
 const WalkthroughScreen = (props) => {
   const dispatch = useDispatch();
-
-  const isMountedRef = useRef(null);
-
-  const loadProfiles = useCallback(async () => {
-    try {
-      dispatch(profilesActions.fetchProfiles());
-    } catch (err) {
-      console.log('Error in loadProfiles from ShopNavigator ', err.message);
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    if (isMountedRef.current) {
-      loadProfiles()
-        .then(() => {
-          console.log('Profiles loaded in walkthrough screen!');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    return () => (isMountedRef.current = false);
-  }, [dispatch]);
 
   const currentProfile = useSelector((state) => state.profiles.userProfile);
 
