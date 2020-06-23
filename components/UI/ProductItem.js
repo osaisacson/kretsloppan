@@ -161,6 +161,11 @@ const ProductItem = (props) => {
       <Text numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
         {props.itemData.title}
       </Text>
+      {props.showBackgroundText ? (
+        <Text numberOfLines={5} ellipsizeMode="tail" style={styles.backgroundText}>
+          {props.itemData.background}
+        </Text>
+      ) : null}
     </View>
   );
 };
@@ -216,7 +221,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
   },
-
   image: {
     width: '100%',
     height: '100%',
@@ -228,6 +232,13 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     width: 200,
     fontFamily: 'roboto-light-italic',
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  backgroundText: {
+    paddingLeft: 4,
+    fontFamily: 'roboto-light-italic',
+    color: Colors.darkPrimary,
     fontSize: 16,
     marginLeft: 8,
   },

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React from 'react';
 //Imports
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
@@ -36,7 +36,9 @@ const ProjectDetailScreen = (props) => {
   );
 
   const associatedProposals = useSelector((state) =>
-    state.proposals.availableProposals.filter((proposal) => proposal.projectId === projectId)
+    state.proposals.availableProposals.filter(
+      (proposal) => proposal.projectId === projectId && proposal.status !== 'löst'
+    )
   );
 
   const dispatch = useDispatch();
@@ -123,11 +125,7 @@ const ProjectDetailScreen = (props) => {
 
       {associatedProducts.length ? (
         <View style={{ marginVertical: 10 }}>
-          <HeaderTwo
-            title="Återbruk"
-            subTitle="Återbruk som används i projektet"
-            indicator={associatedProducts.length ? associatedProducts.length : 0}
-          />
+          <HeaderTwo title="Återbruk i projektet" simpleCount={associatedProducts.length} />
         </View>
       ) : (
         <EmptyState style={{ marginVertical: 30 }}>Inget återbruk i projektet ännu</EmptyState>
@@ -141,25 +139,24 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
+      {associatedProposals.length ? (
+        <HorizontalScroll
+          textItem
+          detailPath="ProposalDetail"
+          scrollData={associatedProposals}
+          navigation={props.navigation}
+        />
+      ) : null}
       <FlatList
         initialNumToRender={8}
         horizontal={false}
-        numColumns={3}
+        numColumns={1}
         data={associatedProducts}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={projectHeader}
-        ListFooterComponent={
-          associatedProposals.length ? (
-            <HorizontalScroll
-              textItem
-              detailPath="ProposalDetail"
-              scrollData={associatedProposals}
-              navigation={props.navigation}
-            />
-          ) : null
-        }
         renderItem={(itemData) => (
           <ProductItem
+            showBackgroundText
             navigation={props.navigation}
             isSearchView
             itemData={itemData.item}

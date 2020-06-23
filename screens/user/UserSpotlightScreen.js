@@ -117,6 +117,24 @@ const UserSpotlightScreen = (props) => {
 
   return (
     <ScrollViewToTop>
+      {badgeNr ? (
+        <ActionLine
+          isActive={showUserActions}
+          badgeNr={badgeNr}
+          onPress={() => {
+            setShowUserActions(!showUserActions);
+          }}
+        />
+      ) : null}
+
+      {showUserActions ? (
+        <UserActions
+          reservedProducts={reservedProducts}
+          toBeBought={toBeBought}
+          toBeSold={toBeSold}
+          navigation={props.navigation}
+        />
+      ) : null}
       <View style={userProfileStyles.userInfoSection}>
         <Image
           source={require('./../../assets/userBackground.png')}
@@ -181,24 +199,7 @@ const UserSpotlightScreen = (props) => {
           </View>
         </View>
       </View>
-      {badgeNr ? (
-        <ActionLine
-          isActive={showUserActions}
-          badgeNr={badgeNr}
-          onPress={() => {
-            setShowUserActions(!showUserActions);
-          }}
-        />
-      ) : null}
 
-      {showUserActions ? (
-        <UserActions
-          reservedProducts={reservedProducts}
-          toBeBought={toBeBought}
-          toBeSold={toBeSold}
-          navigation={props.navigation}
-        />
-      ) : null}
       <UserItems
         userProjects={userProjects}
         userProposals={userProposals}

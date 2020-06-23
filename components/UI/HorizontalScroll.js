@@ -89,6 +89,7 @@ const HorizontalScroll = (props) => {
                 {scrollData.map((item) => (
                   <RenderedItem
                     navigation={props.navigation}
+                    showBackgroundText={props.showBackgroundText}
                     itemData={item}
                     key={item.id}
                     isHorizontal

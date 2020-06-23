@@ -3,6 +3,6 @@ export default {
   leftRight: 15,
   productItemHeight: 200,
   roundItemHeight: 190,
-  textItemHeight: 120,
+  textItemHeight: 90,
   largeImageItemHeight: 230,
 };
