@@ -8,6 +8,14 @@ export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_WALKTHROUGH = 'UPDATE_WALKTHROUGH';
 export const UPDATE_READNEWS = 'UPDATE_READNEWS';
+export const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE';
+
+export function setCurrentProfile(profile) {
+  return {
+    type: SET_CURRENT_PROFILE,
+    payload: profile,
+  };
+}
 
 export function fetchProfiles() {
   return async (dispatch, getState) => {

@@ -3,7 +3,7 @@ import { AppLoading, Notifications } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import * as firebase from 'firebase';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Vibration } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import { Provider, useDispatch } from 'react-redux';
@@ -43,7 +43,7 @@ Notifications.addListener(() => Vibration.vibrate());
 
 const AppWrapper = () => {
   console.log('Calling AppWrapper, creating store and provider.');
-  const store = createStore(rootReducer, applyMiddleware(ReduxThunk, checkExpiredToken));
+  const store = createStore(rootReducer, applyMiddleware(checkExpiredToken, ReduxThunk));
 
   return (
     <Provider store={store}>
@@ -55,8 +55,18 @@ const AppWrapper = () => {
 const App = () => {
   console.log('Calling App. Initializing data loading...');
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [isAuthLoaded, setIsAuthLoaded] = useState(false);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentUser = firebase.auth().currentUser;
+
+    if (dataLoaded) {
+      dispatch(profilesActions.setCurrentProfile(currentUser ? currentUser.toJSON() : {}));
+      setIsAuthLoaded(true);
+    }
+  }, [dataLoaded]);
 
   const loadResourcesAsync = async () => {
     try {
@@ -92,14 +102,14 @@ const App = () => {
   };
 
   //If data is not loaded yet return the AppLoading component which pauses the showing of the app until x has been met
-  if (!dataLoaded) {
+  if (!dataLoaded || !isAuthLoaded) {
     console.log('Waiting for font and data to be loaded...');
     return (
       <AppLoading
         startAsync={loadResourcesAsync}
         onFinish={() => {
-          enableScreens(); //optimise navigation
           setDataLoaded(true);
+          enableScreens(); //optimise navigation
           console.log(
             '...loaded all resources successfully, setting isLoading to false and moving on.'
           );

@@ -5,6 +5,7 @@ import {
   UPDATE_PROFILE,
   UPDATE_WALKTHROUGH,
   UPDATE_READNEWS,
+  SET_CURRENT_PROFILE,
 } from '../actions/profiles';
 
 const initialState = {
@@ -17,10 +18,22 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PROFILES:
       return {
+        ...state,
         allProfiles: action.allProfiles,
         userProfile: action.userProfile,
-        hasWalkedThrough: action.hasWalkedThrough,
+        hasWalkedThrough: !!action.hasWalkedThrough,
       };
+
+    case SET_CURRENT_PROFILE: {
+      const userProfile = action.payload.uid
+        ? state.allProfiles.find((profile) => profile.profileId === action.payload.uid)
+        : {};
+
+      return {
+        ...state,
+        userProfile,
+      };
+    }
     case CREATE_PROFILE: {
       const newProfile = new Profile(
         action.profileData.firebaseId,
@@ -70,7 +83,16 @@ export default (state = initialState, action) => {
     case UPDATE_WALKTHROUGH: {
       return {
         ...state,
-        hasWalkedThrough: true,
+        allProfiles: state.allProfiles.map((profile) => {
+          if (profile.profileId === action.currUser) {
+            profile.hasWalkedThrough = true;
+          }
+          return profile;
+        }),
+        userProfile: {
+          ...state.userProfile,
+          hasWalkedThrough: true,
+        },
       };
     }
     case UPDATE_READNEWS: {
