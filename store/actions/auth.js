@@ -19,6 +19,8 @@ export const authenticate = (userId, token, expiryTime) => {
 };
 
 const userCredentialsToJson = (credentials) => credentials.user.toJSON();
+const withFirebaseAuthPersistence = (callbackFn) =>
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(callbackFn);
 
 export const signup = (
   email,
@@ -32,17 +34,16 @@ export const signup = (
 ) => {
   return async (dispatch) => {
     try {
-      const authData = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(userCredentialsToJson);
+      const authData = await withFirebaseAuthPersistence(() =>
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(userCredentialsToJson)
+      );
 
       const uid = authData.uid;
       const accessToken = authData.stsTokenManager.accessToken;
       const expirationTime = authData.stsTokenManager.expirationTime;
 
+      await saveDataToStorage(accessToken, uid, expirationTime);
       await dispatch(authenticate(uid, accessToken, expirationTime));
-      saveDataToStorage(accessToken, uid, expirationTime);
       updateExpoTokens(uid);
 
       console.log('store/actions/auth: attempting to create a profile with this data:', authData);
@@ -102,16 +103,18 @@ export const signup = (
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const authData = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(userCredentialsToJson);
+      const authData = await withFirebaseAuthPersistence(() =>
+        firebase.auth().signInWithEmailAndPassword(email, password).then(userCredentialsToJson)
+      );
+
+      console.log('Auth data on login', authData);
 
       const uid = authData.uid;
       const accessToken = authData.stsTokenManager.accessToken;
       const expirationTime = authData.stsTokenManager.expirationTime;
 
       dispatch(authenticate(uid, accessToken, expirationTime));
+      dispatch(profilesActions.setCurrentProfile(authData));
       saveDataToStorage(accessToken, uid, expirationTime);
       updateExpoTokens(uid);
     } catch (error) {
@@ -157,9 +160,9 @@ export const logout = () => {
   };
 };
 
-const saveDataToStorage = (token, userId, expirationDate) => {
+const saveDataToStorage = async (token, userId, expirationDate) => {
   try {
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       'userData',
       JSON.stringify({
         token,
@@ -167,6 +170,8 @@ const saveDataToStorage = (token, userId, expirationDate) => {
         expiryDate: String(expirationDate),
       })
     );
+
+    console.log('User date saved to AsyncStorage');
   } catch (error) {
     console.log('Error in store/actions/auth/saveDataToStorage: ', error);
     throw error;
