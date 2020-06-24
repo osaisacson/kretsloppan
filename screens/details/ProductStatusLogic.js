@@ -74,6 +74,10 @@ const ProductStatusLogic = (props) => {
     secondLine = `Föreslå en tid som passar dig via 'hantera detaljer' nedan`;
   }
 
+  if (isReserved && !isOrganised && !hasEditPermission && !isReservedUser && !isOrganisedUser) {
+    statusText = 'Parterna är i processen att ordna med logistik';
+  }
+
   const statusTextFormattedLow = statusText.toLowerCase(); //Make moment() text lowercase
   const statusTextFormatted =
     statusTextFormattedLow.charAt(0).toUpperCase() + statusTextFormattedLow.slice(1); //Make first letter of sentence uppercase

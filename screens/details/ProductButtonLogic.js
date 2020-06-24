@@ -552,16 +552,6 @@ const ProductButtonLogic = (props) => {
             </>
           ) : null}
 
-          {isReserved &&
-          !isOrganised &&
-          !hasEditPermission &&
-          !isReservedUser &&
-          !isOrganisedUser ? (
-            <HeaderThree
-              style={{ textAlign: 'center', marginBottom: 20 }}
-              text="Parterna är i processen att ordna med logistik"
-            />
-          ) : null}
           {/* TBD: In-app messaging - Button for passing an object 
             reference to the in-app messaging screen */}
           {/* <ButtonAction
