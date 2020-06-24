@@ -54,11 +54,13 @@ const ProductStatusLogic = (props) => {
     secondLine = `Från: ${address}`;
   }
 
+  const sellerOrBuyer = sellerAgreed ? 'köparens' : 'säljarens';
+
   if (suggestedDate) {
     statusText = `Föreslagen tid av ${waitingForYou ? 'motpart' : 'dig'}: ${Moment(suggestedDate)
       .locale('sv')
       .format('D MMMM, HH:MM')}  `;
-    secondLine = `Väntar på ${sellerAgreed ? 'köparens' : 'säljarens'} godkännande`;
+    secondLine = `Väntar på ${waitingForYou ? 'ditt' : sellerOrBuyer} godkännande`;
     thirdLine = `Reservation går ut ${Moment(reservedUntil).locale('sv').endOf('day').fromNow()}`;
   }
 

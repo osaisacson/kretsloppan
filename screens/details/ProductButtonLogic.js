@@ -62,13 +62,6 @@ const ProductButtonLogic = (props) => {
   const isOrganisedUser = collectingUserId === loggedInUserId;
   const hasEditPermission = props.hasEditPermission;
 
-  const viewerIsSeller = loggedInUserId === ownerId;
-  const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);
-
-  const youHaveNotAgreed = viewerIsBuyer ? !buyerAgreed : viewerIsSeller ? !sellerAgreed : null;
-
-  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
-
   //Will change based on where we are in the reservation process
   let receivingId;
   let statusColor;
@@ -181,7 +174,7 @@ const ProductButtonLogic = (props) => {
                 prevReservedUser
               ) //by default resets the date to expire in four days, since the status is 'reserved'
             ).then(setIsLoading(false));
-            setSuggestedDateLocal('');
+            setSuggestedDateLocal();
             setShowUserProjects(false);
           },
         },
@@ -256,11 +249,11 @@ const ProductButtonLogic = (props) => {
   const collectHandler = () => {
     Alert.alert(
       'Är produkten hämtad?',
-      'Genom att klicka här bekräftar du att produkten är hämtad. Den kommer då försvinna från det aktiva förrådet och hamna i ditt Gett Igen förråd.',
+      'Genom att klicka här bekräftar du att produkten är hämtad.',
       [
         { text: 'Nej', style: 'default' },
         {
-          text: 'Ja, flytta den',
+          text: 'Japp, den är hämtad!',
           style: 'destructive',
           onPress: () => {
             dispatch(
@@ -546,15 +539,13 @@ const ProductButtonLogic = (props) => {
                     resetSuggestedDT();
                   }}
                 />
-                {hasEditPermission ? (
-                  <ButtonAction
-                    disabled={isPickedUp}
-                    buttonColor={Colors.approved}
-                    buttonLabelStyle={{ color: '#fff' }}
-                    title="Byt till hämtad"
-                    onSelect={collectHandler.bind(this)}
-                  />
-                ) : null}
+                <ButtonAction
+                  disabled={isPickedUp}
+                  buttonColor={Colors.approved}
+                  buttonLabelStyle={{ color: '#fff' }}
+                  title="Byt till hämtad"
+                  onSelect={collectHandler.bind(this)}
+                />
               </View>
               <Divider />
             </>
