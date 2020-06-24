@@ -75,7 +75,7 @@ const UserActions = (props) => {
           {reservedByOrFromUser.length ? (
             <HorizontalScroll
               title="Reservationer"
-              subTitle="Väntar på att ni kommer överens om tid för upphämtning/avlämning"
+              subTitle="Väntar på att ni kommer överens om tid för överlämning"
               scrollData={reservedByOrFromUser}
               showNotificationBadge
               navigation={navigation}

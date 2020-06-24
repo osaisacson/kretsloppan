@@ -1,11 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import CachedImage from '../../components/UI/CachedImage';
-import StatusBadge from '../../components/UI/StatusBadge';
+import ProductStatusCopy from '../../components/UI/ProductStatusCopy';
 import UserAvatar from '../../components/UI/UserAvatar';
 import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
@@ -13,60 +11,37 @@ import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
 const ProductItem = (props) => {
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.profileId;
-
-  const viewerIsSeller = loggedInUserId === props.itemData.ownerId;
-  const viewerIsBuyer =
-    loggedInUserId === (props.itemData.reservedUserId || props.itemData.collectingUserId);
-
-  const youHaveNotAgreed = viewerIsBuyer
-    ? !props.itemData.buyerAgreed
-    : viewerIsSeller
-    ? !props.itemData.sellerAgreed
-    : null;
-
-  const waitingForYou = (viewerIsBuyer && youHaveNotAgreed) || (viewerIsSeller && youHaveNotAgreed);
-
   const isReserved = props.itemData.status === 'reserverad';
   const isOrganised = props.itemData.status === 'ordnad';
   const isPickedUp = props.itemData.status === 'hämtad';
 
   let icon;
   let bgColor;
-  let textColor;
-  let userBadgeIcon;
-  let badgeText;
   let noCorners;
 
   if (isReserved) {
     icon = 'bookmark';
     bgColor = Colors.lightPrimary;
-    textColor = '#000';
-    userBadgeIcon = 'return-left';
     noCorners = true;
-    badgeText = `Går ut ${moment(props.itemData.reservedUntil)
-      .locale('sv')
-      .endOf('day')
-      .fromNow()}`;
   }
 
   if (isOrganised) {
     icon = 'star';
     bgColor = Colors.subtleGreen;
-    userBadgeIcon = 'clock';
-    badgeText = moment(props.itemData.collectingDate).locale('sv').format('D MMMM YYYY, hh:mm');
   }
 
   if (isPickedUp) {
     icon = 'checkmark';
     bgColor = Colors.completed;
-    userBadgeIcon = 'checkmark';
-    badgeText = `Ordnat ${moment(props.itemData.collectedDate).locale('sv').calendar()}`;
   }
 
   return (
     <View style={styles.container}>
+      <ProductStatusCopy
+        selectedProduct={props.itemData}
+        noCorners={noCorners}
+        style={styles.statusBadge}
+      />
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         <View
           style={{
@@ -99,44 +74,7 @@ const ProductItem = (props) => {
             name={icon ? (Platform.OS === 'android' ? `md-${icon}` : `ios-${icon}`) : null}
             size={23}
           />
-        ) : (
-          <>
-            <StatusBadge
-              noCorners={noCorners}
-              style={styles.statusBadge}
-              text={badgeText}
-              icon={
-                userBadgeIcon
-                  ? Platform.OS === 'android'
-                    ? `md-${userBadgeIcon}`
-                    : `ios-${userBadgeIcon}`
-                  : null
-              }
-              backgroundColor={Colors.lightPrimary}
-              textColor={textColor}
-            />
-            {isReserved ? (
-              <StatusBadge
-                style={{
-                  padding: 0,
-                  top: 20,
-                  position: 'absolute',
-                  zIndex: 100,
-                  width: '100%',
-                }}
-                text={
-                  !props.itemData.suggestedDate
-                    ? 'Ange tidsförslag'
-                    : waitingForYou
-                    ? 'Väntar på ditt godkännande'
-                    : 'Väntar på motpart'
-                }
-                icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
-                backgroundColor={Colors.lightPrimary}
-              />
-            ) : null}
-          </>
-        )}
+        ) : null}
 
         <View style={styles.touchable}>
           <TouchableCmp onPress={props.onSelect} useForeground>
@@ -180,12 +118,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   statusBadge: {
-    padding: 0,
-    margin: 0,
-    top: 0,
-    position: 'absolute',
-    width: '100%',
-    zIndex: 100,
+    marginLeft: 12,
+    fontSize: 12,
+    color: '#000',
+    backgroundColor: Colors.lightPrimary,
   },
   horizontalProduct: {
     height: Styles.productItemHeight,

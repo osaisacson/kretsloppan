@@ -1,24 +1,5 @@
 import { Notifications } from 'expo';
 import firebase from 'firebase';
-import { AsyncStorage } from 'react-native';
-
-export const currentUser = () => {
-  return async () => {
-    try {
-      const userData = await AsyncStorage.getItem('userData').then((data) =>
-        data ? JSON.parse(data) : {}
-      );
-      console.log(
-        '---------------------------------------------------------------------------USERDATA: ',
-        userData
-      );
-      return userData;
-    } catch (error) {
-      console.log('Error in store/helpers/currentUser: ', error);
-      throw error;
-    }
-  };
-};
 
 export const getIndex = (stateSegment, matchId) => {
   return stateSegment.findIndex((item) => item.id === matchId);

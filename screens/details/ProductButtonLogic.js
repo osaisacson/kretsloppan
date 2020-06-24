@@ -18,7 +18,7 @@ import UserAvatar from '../../components/UI/UserAvatar';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
-import ProductStatusLogic from './ProductStatusLogic';
+import ProductStatusCopy from '../../components/UI/ProductStatusCopy';
 
 const ProductButtonLogic = (props) => {
   const dispatch = useDispatch();
@@ -329,7 +329,10 @@ const ProductButtonLogic = (props) => {
 
       {!isPickedUp ? (
         <>
-          <ProductStatusLogic selectedProduct={props.selectedProduct} />
+          <ProductStatusCopy
+            style={{ textAlign: 'center' }}
+            selectedProduct={props.selectedProduct}
+          />
           <Animatable.View
             animation="flipInX"
             easing="ease-out"
