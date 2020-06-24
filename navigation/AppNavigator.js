@@ -12,12 +12,13 @@ const AppNavigator = (props) => {
   const didTryAutoLogin = useSelector((state) => state.auth.didTryAutoLogin);
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const hasWalkedThrough = currentProfile.hasWalkedThrough;
-  console.log('Calling AppNavigator');
+  console.log('Calling AppNavigator--------------');
   console.log('isAuth: ', isAuth);
   console.log('didTryAutoLogin: ', didTryAutoLogin);
-
   console.log('Currently logged in profile: ', currentProfile);
   console.log('hasWalkedThrough: ', hasWalkedThrough);
+  console.log('--------------AppNavigator END');
+
   return (
     <NavigationContainer>
       {!isAuth && didTryAutoLogin && <AuthNavigator />}

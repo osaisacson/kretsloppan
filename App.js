@@ -53,7 +53,7 @@ const AppWrapper = () => {
 };
 
 const App = () => {
-  console.log('Calling App. Initializing data loading...');
+  console.log('Calling App');
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isAuthLoaded, setIsAuthLoaded] = useState(false);
 
@@ -70,6 +70,7 @@ const App = () => {
 
   const loadResourcesAsync = async () => {
     try {
+      console.log('Initializing data loading.........');
       const allPromises = await Promise.all([
         // Load assets
         Asset.loadAsync([require('./assets/userBackground.png')]),
@@ -97,7 +98,7 @@ const App = () => {
     } catch (error) {
       console.log('Error in attempting to load all resources, App.js', error);
     } finally {
-      console.log('Ok done!');
+      console.log('.........all resources loaded from App.js!');
     }
   };
 
@@ -111,7 +112,7 @@ const App = () => {
           setDataLoaded(true);
           enableScreens(); //optimise navigation
           console.log(
-            '...loaded all resources successfully, setting isLoading to false and moving on.'
+            '.........loaded all resources successfully in App.js, disabling AppLoading and moving on to call AppNavigator.'
           );
         }}
       />

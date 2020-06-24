@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { AsyncStorage } from 'react-native';
 
 import Profile from '../../models/profile';
 import { convertImage } from '../helpers';
@@ -18,8 +19,11 @@ export function setCurrentProfile(profile) {
 }
 
 export function fetchProfiles() {
-  return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
 
     try {
       console.log('Fetching profiles...');
@@ -62,11 +66,11 @@ export function fetchProfiles() {
         });
         console.log(`Profiles:`);
         console.log(`...${allProfiles.length} total profiles found and loaded.`);
-        if (!userProfile) {
+        if (userProfile) {
           console.log(`...profile for ${userProfile.profileName} found and loaded`);
         } else {
           console.log(
-            `*****PROBLEM***** userProfile is not loaded. getState().auth.userId is: ${uid}.`
+            `*****************************************************PROBLEM***************************************** userProfile is not loaded. uid is: ${uid}.`
           );
         }
       }
@@ -87,7 +91,10 @@ export function createProfile(
   image
 ) {
   return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
 
     try {
       const convertedImage = await dispatch(convertImage(image));
@@ -139,8 +146,11 @@ export function updateProfile(
   defaultPickupDetails = '',
   image
 ) {
-  return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
 
     try {
       console.log(`Attempting to update profile with id: ${firebaseId}...`);
@@ -190,8 +200,11 @@ export function updateProfile(
 }
 
 export function updateWalkthrough(firebaseId) {
-  return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
 
     try {
       console.log(
@@ -223,8 +236,11 @@ export function updateWalkthrough(firebaseId) {
 }
 
 export function updateReadNews(firebaseId) {
-  return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
 
     try {
       console.log(`Attempting to set hasReadNews to true for profile with id of: ${firebaseId}...`);

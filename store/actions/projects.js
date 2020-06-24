@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { AsyncStorage } from 'react-native';
 
 import Project from '../../models/project';
 import { convertImage } from '../helpers';
@@ -9,8 +10,11 @@ export const UPDATE_PROJECT = 'UPDATE_PROJECT';
 export const SET_PROJECTS = 'SET_PROJECTS';
 
 export function fetchProjects() {
-  return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
 
     try {
       console.log('Fetching projects...');
@@ -76,7 +80,10 @@ export const deleteProject = (projectId) => {
 export function createProject(title, location, description, slogan, image, status = null) {
   return async (dispatch, getState) => {
     const currentDate = new Date().toISOString();
-    const ownerId = getState().auth.userId;
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const ownerId = userData.userId;
 
     try {
       console.log('Attempting to create new project...');

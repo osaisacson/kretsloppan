@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { AsyncStorage } from 'react-native';
 
 import Product from '../../models/product';
 import { convertImage } from '../helpers';
@@ -11,8 +12,28 @@ export const CHANGE_PRODUCT_AGREEMENT = 'CHANGE_PRODUCT_AGREEMENT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export function fetchProducts() {
-  return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
+    // const uid = getState().auth.userId;
+    // console.log(
+    //   '****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************'
+    // );
+    // console.log(
+    //   'PROBLEM: const uid = getState().auth.userId... wherever we use this line it returns: ',
+    //   getState().auth.userId
+    // );
+    // console.log(
+    //   'Updating all places where we used to have this to instead be: '
+    // );
+    // console.log(
+    //   'const userData = await AsyncStorage.getItem('userData').then((data) => data ? JSON.parse(data) : {}); const uid = userData.userId;'
+    // );
+    // console.log(
+    //   '****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************'
+    // );
 
     try {
       console.log('Fetching products...');
@@ -191,9 +212,12 @@ export function createProduct(
   priceText,
   internalComments
 ) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const currentDate = new Date().toISOString();
-    const ownerId = getState().auth.userId;
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const ownerId = userData.userId;
 
     try {
       console.log('Creating product...');
@@ -353,8 +377,12 @@ export const changeProductStatus = (
   idRelatedToStatus,
   dateRelatedToStatus
 ) => {
-  return async (dispatch, getState) => {
-    const currentUserId = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const currentUserId = userData.userId;
+
     const currentDate = new Date().toISOString();
 
     const isReady = status === 'redo';

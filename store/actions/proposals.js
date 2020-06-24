@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { AsyncStorage } from 'react-native';
 
 import Proposal from '../../models/proposal';
 
@@ -9,8 +10,11 @@ export const SET_PROPOSALS = 'SET_PROPOSALS';
 export const CHANGE_PROPOSAL_STATUS = 'CHANGE_PROPOSAL_STATUS';
 
 export function fetchProposals() {
-  return async (dispatch, getState) => {
-    const uid = getState().auth.userId;
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const uid = userData.userId;
 
     try {
       console.log('Fetching proposals...');
@@ -72,7 +76,10 @@ export const deleteProposal = (proposalId) => {
 export function createProposal(title, description, price, projectId) {
   return async (dispatch, getState) => {
     const currentDate = new Date().toISOString();
-    const ownerId = getState().auth.userId;
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const ownerId = userData.userId;
 
     try {
       console.log('Attempting to create new proposal...');
