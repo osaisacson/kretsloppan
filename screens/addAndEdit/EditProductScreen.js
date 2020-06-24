@@ -66,6 +66,7 @@ const EditProductScreen = (props) => {
     inputValues: {
       title: editedProduct ? editedProduct.title : '',
       description: editedProduct ? editedProduct.description : '',
+      background: editedProduct ? editedProduct.background : '',
       internalComments: editedProduct ? editedProduct.internalComments : '',
       length: editedProduct ? editedProduct.length : '',
       height: editedProduct ? editedProduct.height : '',
@@ -85,6 +86,7 @@ const EditProductScreen = (props) => {
     inputValidities: {
       title: !!editedProduct,
       description: true,
+      background: true,
       internalComments: true,
       length: true,
       height: true,
@@ -138,9 +140,9 @@ const EditProductScreen = (props) => {
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
-            +formState.inputValues.length,
-            +formState.inputValues.height,
-            +formState.inputValues.width,
+            formState.inputValues.length,
+            formState.inputValues.height,
+            formState.inputValues.width,
             +formState.inputValues.price,
             formState.inputValues.priceText,
             formState.inputValues.internalComments
@@ -163,9 +165,9 @@ const EditProductScreen = (props) => {
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
-            +formState.inputValues.length,
-            +formState.inputValues.height,
-            +formState.inputValues.width,
+            formState.inputValues.length,
+            formState.inputValues.height,
+            formState.inputValues.width,
             +formState.inputValues.price,
             formState.inputValues.priceText,
             formState.inputValues.internalComments
