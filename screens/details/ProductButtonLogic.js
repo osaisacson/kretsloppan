@@ -64,7 +64,7 @@ const ProductButtonLogic = (props) => {
   const hasEditPermission = props.hasEditPermission;
 
   //Will change based on where we are in the reservation process
-  let receivingId;
+  let receivingId = '';
   let statusColor;
 
   if (isReserved) {
