@@ -3,6 +3,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 const StatusBadge = (props) => {
+  const statusText = props.text.toLowerCase(); //Make moment() text lowercase
+  const statusTextFormatted = statusText.charAt(0).toUpperCase() + statusText.slice(1); //Make first letter of sentence uppercase
+
   return (
     <View
       style={{
@@ -27,13 +30,13 @@ const StatusBadge = (props) => {
         style={[
           props.textStyle,
           {
-            textTransform: 'uppercase',
-            fontSize: 10,
+            fontFamily: props.boldText ? 'roboto-bold-italic' : 'roboto-light-italic',
+            fontSize: 12,
             padding: 4,
             color: props.textColor ? props.textColor : '#fff',
           },
         ]}>
-        {props.text}
+        {statusTextFormatted}
       </Text>
     </View>
   );

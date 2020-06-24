@@ -112,7 +112,7 @@ const ProductItem = (props) => {
                     : `ios-${userBadgeIcon}`
                   : null
               }
-              backgroundColor={bgColor}
+              backgroundColor={Colors.lightPrimary}
               textColor={textColor}
             />
             {isReserved ? (
@@ -132,13 +132,7 @@ const ProductItem = (props) => {
                     : 'Väntar på motpart'
                 }
                 icon={Platform.OS === 'android' ? 'md-calendar' : 'ios-calendar'}
-                backgroundColor={
-                  !props.itemData.suggestedDate
-                    ? Colors.darkPrimary
-                    : waitingForYou
-                    ? Colors.darkPrimary
-                    : Colors.subtleBlue
-                }
+                backgroundColor={Colors.lightPrimary}
               />
             ) : null}
           </>

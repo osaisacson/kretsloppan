@@ -1,7 +1,6 @@
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View } from 'react-native';
-import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
 import InfoText from './../../components/UI/InfoText';
