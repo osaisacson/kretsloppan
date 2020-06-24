@@ -14,7 +14,7 @@ import TouchableCmp from './TouchableCmp';
 
 const ProductItem = (props) => {
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.id;
+  const loggedInUserId = currentProfile.profileId;
 
   const viewerIsSeller = loggedInUserId === props.itemData.ownerId;
   const viewerIsBuyer =

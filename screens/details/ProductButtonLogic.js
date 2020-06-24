@@ -26,7 +26,7 @@ const ProductButtonLogic = (props) => {
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.id;
+  const loggedInUserId = currentProfile.profileId;
 
   //Set up state hooks
   const [isLoading, setIsLoading] = useState(false);

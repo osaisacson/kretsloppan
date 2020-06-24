@@ -30,7 +30,7 @@ const ProductStatusLogic = (props) => {
   const isTouched = isReserved || isOrganised || isPickedUp;
 
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.id;
+  const loggedInUserId = currentProfile.profileId;
 
   const viewerIsSeller = loggedInUserId === ownerId;
   const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);

@@ -24,7 +24,7 @@ const ProductDetailScreen = (props) => {
   const productId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.id;
+  const loggedInUserId = currentProfile.profileId;
 
   //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>

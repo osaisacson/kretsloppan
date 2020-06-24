@@ -7,7 +7,7 @@ import TouchableCmp from './TouchableCmp';
 const UserAvatar = (props) => {
   //Get logged in userId from state, and products
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.id;
+  const loggedInUserId = currentProfile.profileId;
 
   const availableProducts = useSelector((state) => state.products.availableProducts);
 
