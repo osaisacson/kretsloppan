@@ -9,7 +9,7 @@ import * as profilesActions from '../store/actions/profiles';
 const WalkthroughScreen = (props) => {
   const dispatch = useDispatch();
 
-  const currentProfile = useSelector((state) => state.profiles.userProfile);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
 
   const slides = [
     {

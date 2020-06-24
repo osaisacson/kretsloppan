@@ -29,7 +29,8 @@ const ProductStatusLogic = (props) => {
   const isPickedUp = status === 'hämtad';
   const isTouched = isReserved || isOrganised || isPickedUp;
 
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   const viewerIsSeller = loggedInUserId === ownerId;
   const viewerIsBuyer = loggedInUserId === (reservedUserId || collectingUserId);

@@ -39,14 +39,8 @@ const AddProfileScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  //Get profiles, return only the one which matches the logged in id
-  const loggedInUserId = useSelector((state) => state.auth.userId);
-  const profilesArray = useSelector((state) => state.profiles.allProfiles).filter(
-    (profile) => profile.profileId === loggedInUserId
-  );
-
   //Currently edited profile
-  const currentProfile = profilesArray[0];
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
 
   const dispatch = useDispatch();
 

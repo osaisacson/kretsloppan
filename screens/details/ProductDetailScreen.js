@@ -23,7 +23,8 @@ const ProductDetailScreen = (props) => {
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const productId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>

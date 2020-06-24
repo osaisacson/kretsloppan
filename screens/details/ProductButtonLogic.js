@@ -25,7 +25,8 @@ const ProductButtonLogic = (props) => {
   const colorScheme = useColorScheme();
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   //Set up state hooks
   const [isLoading, setIsLoading] = useState(false);

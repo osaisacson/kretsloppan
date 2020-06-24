@@ -25,7 +25,8 @@ const ProposalDetailScreen = (props) => {
 
   //Get proposal and owner id from navigation params (from parent screen) and current user id from state
   const proposalId = props.route.params.detailId;
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   //Find us the proposal that matches the current proposalId
   const selectedProposal = useSelector((state) =>

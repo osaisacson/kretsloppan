@@ -15,9 +15,8 @@ const UserSpotlightScreen = (props) => {
   const [showUserActions, setShowUserActions] = useState(false);
 
   //Get profiles, return only the one which matches the logged in id
-  const loggedInUserId = useSelector((state) => state.auth.userId);
-
-  const currentProfile = useSelector((state) => state.profiles.userProfile);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   //Gets all products
   const availableProducts = useSelector((state) => state.products.availableProducts);

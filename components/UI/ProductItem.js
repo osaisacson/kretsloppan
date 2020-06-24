@@ -13,7 +13,8 @@ import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
 const ProductItem = (props) => {
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   const viewerIsSeller = loggedInUserId === props.itemData.ownerId;
   const viewerIsBuyer =

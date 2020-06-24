@@ -39,7 +39,7 @@ const EditProfileScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const currentProfile = useSelector((state) => state.profiles.userProfile);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
 
   const firebaseId = props.route.params ? props.route.params.detailId : null;
 

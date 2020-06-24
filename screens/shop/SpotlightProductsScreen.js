@@ -15,8 +15,8 @@ const SpotlightProductsScreen = (props) => {
   const allProducts = useSelector((state) => state.products.availableProducts);
   const allProjects = useSelector((state) => state.projects.availableProjects);
   const allProposals = useSelector((state) => state.proposals.availableProposals);
-  const currentProfile = useSelector((state) => state.profiles.userProfile);
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   //Filters all products with the tag 'redo'
   const recentProductsRaw = allProducts.filter(

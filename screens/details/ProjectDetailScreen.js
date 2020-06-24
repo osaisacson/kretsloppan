@@ -23,7 +23,8 @@ const ProjectDetailScreen = (props) => {
   const projectId = props.route.params.detailId;
   const ownerId = props.route.params.ownerId;
 
-  const loggedInUserId = useSelector((state) => state.auth.userId);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.id;
 
   const selectedProject = useSelector((state) => {
     return projectId
