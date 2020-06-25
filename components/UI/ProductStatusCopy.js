@@ -70,9 +70,13 @@ const ProductStatusCopy = (props) => {
 
   if (!isPickedUp && !isOrganised && !suggestedDate) {
     mainStatus = 'Inget förslag för upphämtning ännu';
-    secondaryStatus = `Föreslå en tid som passar dig via 'hantera detaljer' nedan`;
+    secondaryStatus = `Föreslå en tid som passar dig`;
+    tertiaryStatus = `Reservation går ut ${Moment(reservedUntil)
+      .locale('sv')
+      .endOf('day')
+      .fromNow()}`;
   }
-
+  //If viewer is someone not involved in the deal
   if (isReserved && !isOrganised && !hasEditPermission && !isReservedUser && !isOrganisedUser) {
     mainStatus = 'Parterna är i processen att ordna med logistik';
   }

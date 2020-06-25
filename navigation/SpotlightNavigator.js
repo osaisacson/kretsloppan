@@ -25,6 +25,7 @@ import ProposalDetailScreen, {
 import UserProfile from '../screens/details/UserProfile';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
+import UserProposalsScreen from '../screens/user/UserProposalsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 import {
   defaultNavOptions,
@@ -51,6 +52,11 @@ export const SpotlightNavigator = () => {
       <SpotlightStackNavigator.Screen
         name="Mitt upplagda återbruk"
         component={UserProductsScreen}
+        options={mainPageOptionsNoUser}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Alla mina efterlysningar"
+        component={UserProposalsScreen}
         options={mainPageOptionsNoUser}
       />
       <SpotlightStackNavigator.Screen

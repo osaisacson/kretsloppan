@@ -478,11 +478,11 @@ const ProductButtonLogic = (props) => {
                   text="Om du vill ändra plats gör detta genom att redigera din produkt och uppdatera upphämtningsaddress där."
                 />
               ) : null}
-              <Divider style={{ marginTop: 10 }} />
 
               <View style={styles.actionButtons}>
                 {suggestedDate ? (
                   <>
+                    <Divider style={{ marginTop: 10 }} />
                     {hasEditPermission || isReservedUser || isOrganisedUser ? (
                       <ButtonAction
                         buttonColor={Colors.darkRed}

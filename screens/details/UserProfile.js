@@ -31,7 +31,7 @@ const UserProfile = (props) => {
   //Gets all proposals for the user we are currently visiting
   const availableProposals = useSelector((state) => state.proposals.availableProposals);
   const userProposalsRaw = availableProposals.filter(
-    (proposal) => proposal.ownerId === visitedUserId
+    (proposal) => proposal.ownerId === visitedUserId && proposal.status !== 'löst'
   );
   const userProposals = userProposalsRaw.sort(function (a, b) {
     a = new Date(a.date);

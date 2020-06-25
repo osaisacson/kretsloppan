@@ -5,6 +5,8 @@ import HorizontalScroll from '../../components/UI/HorizontalScroll';
 const UserItems = (props) => {
   const { userProjects, userProposals, userUploads, userProducts, navigation } = props;
 
+  const activeUserProposals = userProposals.filter((proposal) => proposal.status !== 'löst');
+
   return (
     <>
       {/* Product, project and proposal sections */}
@@ -20,8 +22,6 @@ const UserItems = (props) => {
       />
       <HorizontalScroll
         title="Mitt tillgängliga återbruk"
-        isNavigationButton
-        buttonOnPress={() => navigation.navigate('Mitt upplagda återbruk')}
         scrollData={userUploads}
         simpleCount={userUploads.length}
         navigation={navigation}
@@ -31,13 +31,14 @@ const UserItems = (props) => {
       />
       <HorizontalScroll
         textItem
+        scrollData={activeUserProposals}
         detailPath="ProposalDetail"
-        title="Mina Efterlysningar"
-        subTitle="Mina upplagda efterlysningar"
-        simpleCount={userProposals.length}
-        scrollData={userProposals}
+        title="Mina Aktiva Efterlysningar"
+        simpleCount={activeUserProposals.length}
         navigation={navigation}
         showAddLink={() => props.navigation.navigate('EditProposal')}
+        showMoreLink={() => props.navigation.navigate('Alla mina efterlysningar')}
+        showMoreLinkName={`Se alla mina efterlysningar(${userProposals.length})`}
       />
     </>
   );
