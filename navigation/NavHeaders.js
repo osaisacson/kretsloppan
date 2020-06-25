@@ -8,7 +8,7 @@ import Colors from '../constants/Colors';
 
 export const defaultNavOptions = {
   headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.darkPrimary : '',
+    backgroundColor: Colors.darkPrimary,
   },
   headerTitleStyle: {
     fontFamily: 'bebas-neue-bold',
@@ -17,7 +17,7 @@ export const defaultNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'roboto-regular',
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.darkPrimary,
+  headerTintColor: '#fff',
 };
 
 export const defaultMainPageOptions = (navData) => {
