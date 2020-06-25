@@ -62,7 +62,7 @@ const ProductItem = (props) => {
             }}
           />
         </View>
-        {props.isSearchView ? (
+        {props.showSmallStatusIcons ? (
           <Ionicons
             style={{
               position: 'absolute',

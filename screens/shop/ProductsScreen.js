@@ -102,7 +102,7 @@ const ProductsScreen = (props) => {
         renderItem={(itemData) => (
           <ProductItem
             navigation={props.navigation}
-            isSearchView
+            showSmallStatusIcons
             itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
