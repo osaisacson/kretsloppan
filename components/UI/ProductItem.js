@@ -37,11 +37,13 @@ const ProductItem = (props) => {
 
   return (
     <View style={styles.container}>
-      <ProductStatusCopy
-        selectedProduct={props.itemData}
-        noCorners={noCorners}
-        style={styles.statusBadge}
-      />
+      {props.showStatus ? (
+        <ProductStatusCopy
+          selectedProduct={props.itemData}
+          noCorners={noCorners}
+          style={styles.statusBadge}
+        />
+      ) : null}
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         <View
           style={{
@@ -91,7 +93,7 @@ const ProductItem = (props) => {
           </TouchableCmp>
         </View>
       </Card>
-      <Text numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
         {props.itemData.title}
       </Text>
       {props.showBackgroundText ? (

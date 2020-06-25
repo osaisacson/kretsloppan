@@ -74,6 +74,7 @@ const UserActions = (props) => {
           }}>
           {reservedByOrFromUser.length ? (
             <HorizontalScroll
+              showStatus
               title="Reservationer"
               subTitle="Väntar på att ni kommer överens om tid för överlämning"
               scrollData={reservedByOrFromUser}
@@ -83,6 +84,7 @@ const UserActions = (props) => {
           ) : null}
           {toBeBought.length ? (
             <HorizontalScroll
+              showStatus
               title="Överenskommet - att köpas"
               subTitle="Väntar på att köpas och hämtas av dig på överenskommen tid."
               scrollData={toBeBought}
@@ -92,6 +94,7 @@ const UserActions = (props) => {
           ) : null}
           {toBeSold.length ? (
             <HorizontalScroll
+              showStatus
               title="Överenskommet - att säljas"
               subTitle="Väntar på att säljas och lämnas av dig på överenskommen tid."
               scrollData={toBeSold}
