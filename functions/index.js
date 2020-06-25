@@ -119,7 +119,7 @@ exports.sendPushNotifications = functions.database
             to: productOwner.expoTokens,
             sound: 'default',
             title: 'Produkt Reserverad',
-            body: `${reservedBy.profileName} reserverade precis ditt återbruk ${productName}`,
+            body: `${reservedBy.profileName} reserverade precis ditt återbruk ${productName}. Gå in och se vilken tid de föreslagit för upphämtning eller föreslå en tid själv.`,
             _displayInForeground: true,
           };
 
