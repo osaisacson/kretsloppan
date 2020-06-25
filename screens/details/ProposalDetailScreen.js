@@ -38,7 +38,8 @@ const ProposalDetailScreen = (props) => {
   }
 
   //Get all projects from state, and then return the ones that matches the id of the current proposal
-  const userProjects = useSelector((state) => state.projects.userProjects);
+  const availableProjects = useSelector((state) => state.projects.availableProjects);
+  const userProjects = availableProjects.filter((project) => project.ownerId === loggedInUserId);
   const projectForProposal = userProjects.filter((proj) => proj.id === selectedProposal.projectId);
 
   const ownerId = selectedProposal ? selectedProposal.ownerId : null;

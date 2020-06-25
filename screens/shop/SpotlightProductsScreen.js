@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
@@ -50,9 +50,12 @@ const SpotlightProductsScreen = (props) => {
           text="NYHETER: Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0-beta3"
         />
       ) : null}
+      <UserActions navigation={props.navigation} falseAtStart={false} />
 
-      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <UserActions navigation={props.navigation} />
+      <ScrollView
+        style={{ marginTop: 50 }}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled>
         <HorizontalScroll
           largeImageItem
           detailPath="ProjectDetail"

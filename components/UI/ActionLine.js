@@ -23,6 +23,9 @@ const ActionLine = (props) => {
         alignItems: 'center',
         justifyContent: 'center',
         height: 50,
+        position: 'absolute',
+        zIndex: 100,
+        width: '100%',
       }}>
       <Text
         style={{

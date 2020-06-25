@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, SectionList, Text } from 'react-native';
-import { useSelector } from 'react-redux';
 import { Divider } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+
 import ActionLine from '../../components/UI/ActionLine';
 import UserActionItem from '../../components/UI/UserActionItem';
 import Colors from '../../constants/Colors';
 
 const UserActions = (props) => {
-  const [showUserActions, setShowUserActions] = useState(false);
+  const [showUserActions, setShowUserActions] = useState(props.falseAtStart);
 
   const availableProducts = useSelector((state) => state.products.availableProducts);
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
@@ -48,10 +49,6 @@ const UserActions = (props) => {
 
   const badgeNr = reservedByOrFromUser.length + toBeBought.length + toBeSold.length;
 
-  const clickItem = (item) => {
-    alert(item);
-  };
-
   return (
     <>
       {badgeNr ? (
@@ -64,8 +61,14 @@ const UserActions = (props) => {
         />
       ) : null}
       {showUserActions ? (
-        <View
+        <SectionList
+          stickySectionHeadersEnabled={false}
           style={{
+            position: 'absolute',
+            top: 50,
+            zIndex: 100,
+            flex: 1,
+            width: '100%',
             backgroundColor: Colors.lightPrimary,
             shadowColor: '#000',
             shadowOffset: {
@@ -74,27 +77,27 @@ const UserActions = (props) => {
             },
             shadowOpacity: 0.18,
             shadowRadius: 1.0,
-            elevation: 1,
-          }}>
-          <SectionList
-            sections={[
-              {
-                title: 'Reservationer',
-                subTitle: 'Väntar på att ni kommer överens om tid för överlämning',
-                data: reservedByOrFromUser,
-              },
-              {
-                title: 'Att köpas',
-                subTitle: 'Väntar på att köpas av dig på överenskommen tid',
-                data: toBeBought,
-              },
-              {
-                title: 'Att säljas',
-                subTitle: 'Väntar på att säljas av dig på överenskommen tid',
-                data: toBeSold,
-              },
-            ]}
-            renderSectionHeader={({ section }) => (
+            elevation: 2,
+          }}
+          sections={[
+            {
+              title: 'Reservationer',
+              subTitle: 'Väntar på att ni kommer överens om tid för överlämning',
+              data: reservedByOrFromUser,
+            },
+            {
+              title: 'Att köpas',
+              subTitle: 'Väntar på att köpas av dig på överenskommen tid',
+              data: toBeBought,
+            },
+            {
+              title: 'Att säljas',
+              subTitle: 'Väntar på att säljas av dig på överenskommen tid',
+              data: toBeSold,
+            },
+          ]}
+          renderSectionHeader={({ section }) =>
+            section.data.length ? (
               <>
                 <View style={{ marginHorizontal: 15, marginBottom: 10 }}>
                   <Text style={{ fontFamily: 'bebas-neue-bold', fontSize: 23, marginTop: 15 }}>
@@ -106,47 +109,16 @@ const UserActions = (props) => {
                 </View>
                 <Divider />
               </>
-            )}
-            renderItem={({ item }) => (
-              <>
-                <UserActionItem detailPath="ProductDetail" item={item} navigation={navigation} />
-                <Divider />
-              </>
-            )}
-            keyExtractor={(item, index) => index}
-          />
-
-          {/* {reservedByOrFromUser.length ? (
-            <HorizontalScroll
-              showStatus
-              title="Reservationer"
-              subTitle="Väntar på att ni kommer överens om tid för överlämning"
-              scrollData={reservedByOrFromUser}
-              showNotificationBadge
-              navigation={navigation}
-            />
-          ) : null}
-          {toBeBought.length ? (
-            <HorizontalScroll
-              showStatus
-              title="Att köpas"
-              subTitle="Väntar på att köpas av dig på överenskommen tid."
-              scrollData={toBeBought}
-              showNotificationBadge
-              navigation={navigation}
-            />
-          ) : null}
-          {toBeSold.length ? (
-            <HorizontalScroll
-              showStatus
-              title="Att säljas"
-              subTitle="Väntar på att säljas av dig på överenskommen tid."
-              scrollData={toBeSold}
-              showNotificationBadge
-              navigation={navigation}
-            />
-          ) : null} */}
-        </View>
+            ) : null
+          }
+          renderItem={({ item }) => (
+            <>
+              <UserActionItem detailPath="ProductDetail" item={item} navigation={navigation} />
+              <Divider />
+            </>
+          )}
+          keyExtractor={(item, index) => index}
+        />
       ) : null}
     </>
   );

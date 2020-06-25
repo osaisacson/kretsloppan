@@ -40,9 +40,12 @@ const EditProjectScreen = (props) => {
   const projId = props.route.params ? props.route.params.detailId : null;
 
   //Find project
-  const editedProject = useSelector((state) =>
-    state.projects.userProjects.find((proj) => proj.id === projId)
-  );
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.profileId;
+  const availableProjects = useSelector((state) => state.projects.availableProjects);
+  const userProjects = availableProjects.filter((project) => project.ownerId === loggedInUserId);
+  const editedProject = userProjects.find((project) => project.id === projId);
+
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {

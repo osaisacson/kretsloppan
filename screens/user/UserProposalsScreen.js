@@ -13,7 +13,12 @@ import * as proposalsActions from '../../store/actions/proposals';
 
 const UserProposalsScreen = (props) => {
   //Get user proposals from state
-  const userProposals = useSelector((state) => state.proposals.userProposals);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.profileId;
+  const availableProposals = useSelector((state) => state.proposals.availableProposals);
+  const userProposals = availableProposals.filter(
+    (proposal) => proposal.ownerId === loggedInUserId
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);

@@ -44,13 +44,19 @@ const EditProposalScreen = (props) => {
 
   const proposalId = props.route.params ? props.route.params.detailId : null;
 
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.profileId;
+
   //Find proposal
-  const editedProposal = useSelector((state) =>
-    state.proposals.userProposals.find((proposal) => proposal.id === proposalId)
+  const availableProposals = useSelector((state) => state.projects.availableProposals);
+  const userProposals = availableProposals.filter(
+    (proposal) => proposal.ownerId === loggedInUserId
   );
+  const editedProposal = userProposals.find((proposal) => proposal.id === proposalId);
 
   //Find the user's projects
-  const userProjects = useSelector((state) => state.projects.userProjects);
+  const availableProjects = useSelector((state) => state.projects.availableProjects);
+  const userProjects = availableProjects.filter((project) => project.ownerId === loggedInUserId);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {

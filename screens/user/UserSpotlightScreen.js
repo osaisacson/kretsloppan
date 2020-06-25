@@ -61,7 +61,10 @@ const UserSpotlightScreen = (props) => {
   );
 
   //Get user proposals
-  const userProposalsRaw = useSelector((state) => state.proposals.userProposals);
+  const availableProposals = useSelector((state) => state.proposals.availableProposals);
+  const userProposalsRaw = availableProposals.filter(
+    (proposal) => proposal.ownerId === loggedInUserId
+  );
   const userProposals = userProposalsRaw.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
@@ -80,81 +83,84 @@ const UserSpotlightScreen = (props) => {
   };
 
   return (
-    <ScrollViewToTop>
+    <>
       <UserActions navigation={props.navigation} />
-      <View style={userProfileStyles.userInfoSection}>
-        <Image
-          source={require('./../../assets/userBackground.png')}
-          style={{
-            flex: 1,
-            resizeMode: 'cover',
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            width: '100%',
-            height: '105%',
-          }}
-        />
-        <Avatar.Image
-          style={{
-            color: '#fff',
-            backgroundColor: '#fff',
-            borderWidth: 0.3,
-            borderColor: '#000',
-          }}
-          source={
-            currentProfile && currentProfile.image
-              ? { uri: currentProfile.image }
-              : require('./../../assets/avatar-placeholder-image.png')
-          }
-          size={80}
-        />
-        <ButtonIcon icon="settings" color={Colors.neutral} onSelect={editProfileHandler} />
+      <ScrollViewToTop>
+        <View style={userProfileStyles.userInfoSection}>
+          <Image
+            source={require('./../../assets/userBackground.png')}
+            style={{
+              flex: 1,
+              resizeMode: 'cover',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '100%',
+              height: '105%',
+            }}
+          />
+          <Avatar.Image
+            style={{
+              marginTop: 50,
+              color: '#fff',
+              backgroundColor: '#fff',
+              borderWidth: 0.3,
+              borderColor: '#000',
+            }}
+            source={
+              currentProfile && currentProfile.image
+                ? { uri: currentProfile.image }
+                : require('./../../assets/avatar-placeholder-image.png')
+            }
+            size={80}
+          />
+          <ButtonIcon icon="settings" color={Colors.neutral} onSelect={editProfileHandler} />
 
-        <Title style={{ color: '#fff', ...userProfileStyles.title }}>
-          {currentProfile.profileName}
-        </Title>
-        {currentProfile.profileDescription ? (
-          <Title style={{ color: '#fff', ...userProfileStyles.subtitle }}>
-            {currentProfile.profileDescription}
+          <Title style={{ color: '#fff', ...userProfileStyles.title }}>
+            {currentProfile.profileName}
           </Title>
-        ) : null}
-        <View style={userProfileStyles.row}>
-          <View style={userProfileStyles.section}>
-            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
-              {added ? added : 0}
-            </Paragraph>
-            <Caption style={{ color: '#fff' }}>Upplagda</Caption>
-          </View>
-          <View style={userProfileStyles.section}>
-            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
-              {collected ? collected : 0}
-            </Paragraph>
-            <Caption style={{ color: '#fff' }}>Köpta</Caption>
-          </View>
-          <View style={userProfileStyles.section}>
-            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
-              {sold ? sold : 0}
-            </Paragraph>
-            <Caption style={{ color: '#fff' }}>Sålda</Caption>
-          </View>
-          <View style={userProfileStyles.section}>
-            <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
-              {nrOfProjects ? nrOfProjects : 0}
-            </Paragraph>
-            <Caption style={{ color: '#fff' }}>Projekt</Caption>
+          {currentProfile.profileDescription ? (
+            <Title style={{ color: '#fff', ...userProfileStyles.subtitle }}>
+              {currentProfile.profileDescription}
+            </Title>
+          ) : null}
+          <View style={userProfileStyles.row}>
+            <View style={userProfileStyles.section}>
+              <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
+                {added ? added : 0}
+              </Paragraph>
+              <Caption style={{ color: '#fff' }}>Upplagda</Caption>
+            </View>
+            <View style={userProfileStyles.section}>
+              <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
+                {collected ? collected : 0}
+              </Paragraph>
+              <Caption style={{ color: '#fff' }}>Köpta</Caption>
+            </View>
+            <View style={userProfileStyles.section}>
+              <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
+                {sold ? sold : 0}
+              </Paragraph>
+              <Caption style={{ color: '#fff' }}>Sålda</Caption>
+            </View>
+            <View style={userProfileStyles.section}>
+              <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
+                {nrOfProjects ? nrOfProjects : 0}
+              </Paragraph>
+              <Caption style={{ color: '#fff' }}>Projekt</Caption>
+            </View>
           </View>
         </View>
-      </View>
 
-      <UserItems
-        userProjects={userProjects}
-        userProposals={userProposals}
-        userUploads={userUploads}
-        userProducts={userProducts}
-        navigation={props.navigation}
-      />
-    </ScrollViewToTop>
+        <UserItems
+          userProjects={userProjects}
+          userProposals={userProposals}
+          userUploads={userUploads}
+          userProducts={userProducts}
+          navigation={props.navigation}
+        />
+      </ScrollViewToTop>
+    </>
   );
 };
 
