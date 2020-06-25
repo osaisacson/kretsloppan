@@ -11,21 +11,21 @@ const UserAvatar = (props) => {
 
   const availableProducts = useSelector((state) => state.products.availableProducts);
 
-  const userProducts = useSelector((state) => state.products.userProducts);
+  const reservedProducts = availableProducts.filter((prod) => prod.status === 'reserverad');
 
   //Get all products which are reserved by or from the logged in user
-  const reservedBy = availableProducts.filter(
-    (prod) => prod.status === 'reserverad' && prod.reservedUserId === loggedInUserId
-  ).length;
+  const reservedBy = reservedProducts.filter((prod) => prod.reservedUserId === loggedInUserId)
+    .length;
 
-  const reservedFrom = userProducts.filter((prod) => prod.status === 'reserverad').length;
+  const reservedFrom = reservedProducts.filter((prod) => prod.ownerId === loggedInUserId).length;
 
   //Get all products which have a time for collection set, and are pending collection by or for the user
-  const collectionBy = availableProducts.filter(
-    (prod) => prod.status === 'ordnad' && prod.collectingUserId === loggedInUserId
-  ).length;
+  const collectedProducts = availableProducts.filter((prod) => prod.status === 'ordnad');
 
-  const collectionFrom = userProducts.filter((prod) => prod.status === 'ordnad').length;
+  const collectionBy = collectedProducts.filter((prod) => prod.collectingUserId === loggedInUserId)
+    .length;
+
+  const collectionFrom = collectedProducts.filter((prod) => prod.ownerId === loggedInUserId).length;
 
   const badgeNumber = reservedBy + reservedFrom + collectionBy + collectionFrom;
 

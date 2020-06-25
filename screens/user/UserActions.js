@@ -9,15 +9,15 @@ import Colors from '../../constants/Colors';
 const UserActions = (props) => {
   const [showUserActions, setShowUserActions] = useState(false);
 
-  const allProducts = useSelector((state) => state.products.availableProducts);
-  const userProducts = useSelector((state) => state.products.userProducts);
+  const availableProducts = useSelector((state) => state.products.availableProducts);
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const loggedInUserId = currentProfile.profileId;
+  const userProducts = availableProducts.filter((prod) => prod.ownerId === loggedInUserId);
 
   const { navigation } = props;
 
   //Reserved by or from user
-  const reservedByOrFromUserRaw = allProducts.filter(
+  const reservedByOrFromUserRaw = availableProducts.filter(
     (product) =>
       product.status === 'reserverad' &&
       (product.reservedUserId === loggedInUserId || product.ownerId === loggedInUserId)
@@ -37,7 +37,7 @@ const UserActions = (props) => {
   });
 
   //To be bought: Gets all products marked as ready to be collected by the user
-  const toBeBoughtRaw = allProducts.filter(
+  const toBeBoughtRaw = availableProducts.filter(
     (product) => product.status === 'ordnad' && product.collectingUserId === loggedInUserId
   );
   const toBeBought = toBeBoughtRaw.sort(function (a, b) {
@@ -85,8 +85,8 @@ const UserActions = (props) => {
           {toBeBought.length ? (
             <HorizontalScroll
               showStatus
-              title="Överenskommet - att köpas"
-              subTitle="Väntar på att köpas och hämtas av dig på överenskommen tid."
+              title="Att köpas"
+              subTitle="Väntar på att köpas av dig på överenskommen tid."
               scrollData={toBeBought}
               showNotificationBadge
               navigation={navigation}
@@ -95,8 +95,8 @@ const UserActions = (props) => {
           {toBeSold.length ? (
             <HorizontalScroll
               showStatus
-              title="Överenskommet - att säljas"
-              subTitle="Väntar på att säljas och lämnas av dig på överenskommen tid."
+              title="Att säljas"
+              subTitle="Väntar på att säljas av dig på överenskommen tid."
               scrollData={toBeSold}
               showNotificationBadge
               navigation={navigation}

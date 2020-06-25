@@ -13,7 +13,10 @@ import * as productsActions from '../../store/actions/products';
 
 const UserProductsScreen = (props) => {
   //Get user products from state
-  const userProducts = useSelector((state) => state.products.userProducts);
+  const availableProducts = useSelector((state) => state.products.availableProducts);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.profileId;
+  const userProducts = availableProducts.filter((prod) => prod.ownerId === loggedInUserId);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);

@@ -43,12 +43,13 @@ const EditProductScreen = (props) => {
   const prodId = props.route.params ? props.route.params.detailId : null; //Get the id of the currently edited product, passed from previous screen
 
   //Find the profile that matches the id of the currently logged in User
-  const currentUser = useSelector((state) => state.profiles.userProfile);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
 
   //Find product
-  const editedProduct = useSelector((state) =>
-    state.products.userProducts.find((prod) => prod.id === prodId)
-  );
+  const loggedInUserId = currentProfile.profileId;
+  const availableProducts = useSelector((state) => state.products.availableProducts);
+  const userProducts = availableProducts.filter((prod) => prod.ownerId === loggedInUserId);
+  const editedProduct = userProducts.find((prod) => prod.id === prodId);
 
   //Set states
   const [isLoading, setIsLoading] = useState(false);
@@ -56,10 +57,10 @@ const EditProductScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  const defaultAddress = currentUser.address ? currentUser.address : '';
-  const defaultPhone = currentUser.phone ? currentUser.phone : '';
-  const defaultPickupDetails = currentUser.defaultPickupDetails
-    ? currentUser.defaultPickupDetails
+  const defaultAddress = currentProfile.address ? currentProfile.address : '';
+  const defaultPhone = currentProfile.phone ? currentProfile.phone : '';
+  const defaultPickupDetails = currentProfile.defaultPickupDetails
+    ? currentProfile.defaultPickupDetails
     : '';
 
   const [formState, dispatchFormState] = useReducer(formReducer, {

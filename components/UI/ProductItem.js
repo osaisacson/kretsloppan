@@ -39,6 +39,7 @@ const ProductItem = (props) => {
     <View style={styles.container}>
       {props.showStatus ? (
         <ProductStatusCopy
+          essentialStatusOnly
           selectedProduct={props.itemData}
           noCorners={noCorners}
           style={styles.statusBadge}
@@ -83,11 +84,11 @@ const ProductItem = (props) => {
             <View style={styles.imageContainer}>
               <CachedImage style={styles.image} uri={props.itemData.image} />
             </View>
-            {props.itemData.priceText ? (
+            {props.itemData.priceText && !props.itemData.price ? (
               <Text style={styles.price}>{props.itemData.priceText}</Text>
             ) : null}
 
-            {props.itemData.price ? (
+            {props.itemData.price && !props.itemData.priceText ? (
               <Text style={styles.price}>{props.itemData.price ? props.itemData.price : 0} kr</Text>
             ) : null}
           </TouchableCmp>
@@ -121,9 +122,7 @@ const styles = StyleSheet.create({
   },
   statusBadge: {
     marginLeft: 12,
-    fontSize: 12,
-    color: '#000',
-    backgroundColor: Colors.lightPrimary,
+    fontSize: 13,
   },
   horizontalProduct: {
     height: Styles.productItemHeight,
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 4,
     width: 200,
-    fontFamily: 'roboto-light-italic',
+    fontFamily: 'roboto-bold',
     fontSize: 16,
     marginLeft: 8,
   },
@@ -174,6 +173,7 @@ const styles = StyleSheet.create({
     color: Colors.darkPrimary,
     fontSize: 16,
     marginLeft: 8,
+    marginBottom: 10,
   },
   price: {
     position: 'absolute',

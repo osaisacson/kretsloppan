@@ -19,7 +19,7 @@ const UserSpotlightScreen = (props) => {
   const availableProducts = useSelector((state) => state.products.availableProducts);
 
   //Gets all products by the logged in user
-  const userProducts = useSelector((state) => state.products.userProducts);
+  const userProducts = availableProducts.filter((prod) => prod.ownerId === loggedInUserId);
 
   //COLLECTED: Gets all collected products from all products
   const collectedItemsRawAll = availableProducts.filter((product) => product.status === 'hämtad');

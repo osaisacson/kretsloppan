@@ -12,13 +12,13 @@ import ButtonAction from '../../components/UI/ButtonAction';
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import Loader from '../../components/UI/Loader';
+import ProductStatusCopy from '../../components/UI/ProductStatusCopy';
 import RoundItem from '../../components/UI/RoundItem';
 import SmallRoundItem from '../../components/UI/SmallRoundItem';
 import UserAvatar from '../../components/UI/UserAvatar';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
-import ProductStatusCopy from '../../components/UI/ProductStatusCopy';
 
 const ProductButtonLogic = (props) => {
   const dispatch = useDispatch();

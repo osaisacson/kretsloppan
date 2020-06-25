@@ -2,6 +2,7 @@ import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import Colors from '../../constants/Colors';
 
 const ProductStatusCopy = (props) => {
   const {
@@ -45,10 +46,10 @@ const ProductStatusCopy = (props) => {
   }
 
   if (isOrganised) {
-    mainStatus = `Hämtas av ${viewerIsBuyer ? 'dig' : 'köpare'} ${Moment(collectingDate)
+    secondaryStatus = `Hämtas av ${viewerIsBuyer ? 'dig' : 'köpare'} ${Moment(collectingDate)
       .locale('sv')
       .format('D MMMM HH:MM')}`;
-    secondaryStatus = `Från: ${address}`;
+    tertiaryStatus = `Från: ${address}`;
   }
 
   const sellerOrBuyer = sellerAgreed ? 'köparens' : 'säljarens';
@@ -106,9 +107,19 @@ const ProductStatusCopy = (props) => {
     <View style={{ marginBottom: 5, zIndex: 100 }}>
       {isSellerOrBuyer ? (
         <>
-          <InfoText style={props.style} text={mainStatusFormatted} />
-          {secondaryStatus ? <InfoText isBold style={props.style} text={secondaryStatus} /> : null}
-          {tertiaryStatus ? <InfoText style={props.style} text={tertiaryStatus} /> : null}
+          {mainStatus && !props.essentialStatusOnly ? (
+            <InfoText style={props.style} text={mainStatusFormatted} />
+          ) : null}
+          {secondaryStatus ? (
+            <InfoText
+              isBold
+              style={{ ...props.style, color: Colors.darkPrimary }}
+              text={secondaryStatus}
+            />
+          ) : null}
+          {tertiaryStatus && !props.essentialStatusOnly ? (
+            <InfoText style={props.style} text={tertiaryStatus} />
+          ) : null}
         </>
       ) : null}
     </View>
