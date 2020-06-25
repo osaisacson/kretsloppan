@@ -37,14 +37,6 @@ const ProductItem = (props) => {
 
   return (
     <View style={styles.container}>
-      {props.showStatus ? (
-        <ProductStatusCopy
-          essentialStatusOnly
-          selectedProduct={props.itemData}
-          noCorners={noCorners}
-          style={styles.statusBadge}
-        />
-      ) : null}
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         <View
           style={{

@@ -117,9 +117,7 @@ const ProductStatusCopy = (props) => {
               text={secondaryStatus}
             />
           ) : null}
-          {tertiaryStatus && !props.essentialStatusOnly ? (
-            <InfoText style={props.style} text={tertiaryStatus} />
-          ) : null}
+          {tertiaryStatus ? <InfoText style={props.style} text={tertiaryStatus} /> : null}
         </>
       ) : null}
     </View>

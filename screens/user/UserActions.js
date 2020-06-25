@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, SectionList, Text } from 'react-native';
 import { useSelector } from 'react-redux';
-
+import { Divider } from 'react-native-paper';
 import ActionLine from '../../components/UI/ActionLine';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
+import UserActionItem from '../../components/UI/UserActionItem';
 import Colors from '../../constants/Colors';
 
 const UserActions = (props) => {
@@ -48,6 +48,10 @@ const UserActions = (props) => {
 
   const badgeNr = reservedByOrFromUser.length + toBeBought.length + toBeSold.length;
 
+  const clickItem = (item) => {
+    alert(item);
+  };
+
   return (
     <>
       {badgeNr ? (
@@ -72,7 +76,47 @@ const UserActions = (props) => {
             shadowRadius: 1.0,
             elevation: 1,
           }}>
-          {reservedByOrFromUser.length ? (
+          <SectionList
+            sections={[
+              {
+                title: 'Reservationer',
+                subTitle: 'Väntar på att ni kommer överens om tid för överlämning',
+                data: reservedByOrFromUser,
+              },
+              {
+                title: 'Att köpas',
+                subTitle: 'Väntar på att köpas av dig på överenskommen tid',
+                data: toBeBought,
+              },
+              {
+                title: 'Att säljas',
+                subTitle: 'Väntar på att säljas av dig på överenskommen tid',
+                data: toBeSold,
+              },
+            ]}
+            renderSectionHeader={({ section }) => (
+              <>
+                <View style={{ marginHorizontal: 15, marginBottom: 10 }}>
+                  <Text style={{ fontFamily: 'bebas-neue-bold', fontSize: 23, marginTop: 15 }}>
+                    {section.title}
+                  </Text>
+                  <Text style={{ fontFamily: 'roboto-light-italic', fontSize: 15 }}>
+                    {section.subTitle}
+                  </Text>
+                </View>
+                <Divider />
+              </>
+            )}
+            renderItem={({ item }) => (
+              <>
+                <UserActionItem detailPath="ProductDetail" item={item} navigation={navigation} />
+                <Divider />
+              </>
+            )}
+            keyExtractor={(item, index) => index}
+          />
+
+          {/* {reservedByOrFromUser.length ? (
             <HorizontalScroll
               showStatus
               title="Reservationer"
@@ -101,7 +145,7 @@ const UserActions = (props) => {
               showNotificationBadge
               navigation={navigation}
             />
-          ) : null}
+          ) : null} */}
         </View>
       ) : null}
     </>

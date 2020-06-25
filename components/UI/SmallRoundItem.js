@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import CachedImage from '../../components/UI/CachedImage';
-import Colors from '../../constants/Colors';
 import TouchableCmp from './TouchableCmp';
 
 const SmallRoundItem = (props) => {

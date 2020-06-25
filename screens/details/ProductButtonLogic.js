@@ -288,7 +288,7 @@ const ProductButtonLogic = (props) => {
 
   return (
     <View>
-      <View style={[styles.oneLineSpread, { marginBottom: 6 }]}>
+      <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
         <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
           <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
           <View style={[styles.smallBadge, { backgroundColor: statusColor, left: -10 }]}>

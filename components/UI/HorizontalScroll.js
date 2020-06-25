@@ -42,10 +42,6 @@ const HorizontalScroll = (props) => {
     scrollHeight = 100;
   }
 
-  if (props.showStatus) {
-    scrollHeight = 250;
-  }
-
   const selectItemHandler = (id, ownerId, title) => {
     props.navigation.navigate(detailPath, {
       detailId: id,
@@ -92,7 +88,6 @@ const HorizontalScroll = (props) => {
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {scrollData.map((item) => (
                   <RenderedItem
-                    showStatus={props.showStatus}
                     navigation={props.navigation}
                     showBackgroundText={props.showBackgroundText}
                     itemData={item}
