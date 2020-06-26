@@ -23,6 +23,7 @@ import ProposalDetailScreen, {
   screenOptions as proposalDetailScreenOptions,
 } from '../screens/details/ProposalDetailScreen';
 import UserProfile from '../screens/details/UserProfile';
+import ProductsScreen from '../screens/shop/ProductsScreen';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import UserProposalsScreen from '../screens/user/UserProposalsScreen';
@@ -45,29 +46,9 @@ export const SpotlightNavigator = () => {
         options={defaultMainPageOptions}
       />
       <SpotlightStackNavigator.Screen
-        name="Min Sida"
-        component={UserSpotlightScreen}
-        options={mainPageOptionsNoUser}
-      />
-      <SpotlightStackNavigator.Screen
-        name="Mitt upplagda återbruk"
-        component={UserProductsScreen}
-        options={mainPageOptionsNoUser}
-      />
-      <SpotlightStackNavigator.Screen
-        name="Alla mina efterlysningar"
-        component={UserProposalsScreen}
-        options={mainPageOptionsNoUser}
-      />
-      <SpotlightStackNavigator.Screen
-        name="Användare"
-        component={UserProfile}
-        options={mainPageOptionsWithUser}
-      />
-      <SpotlightStackNavigator.Screen
-        name="EditProfile"
-        component={EditProfileScreen}
-        options={editProfileScreenOptions}
+        name="Återbruk"
+        component={ProductsScreen}
+        options={productDetailScreenOptions}
       />
       {/* Details */}
       <SpotlightStackNavigator.Screen
@@ -87,6 +68,11 @@ export const SpotlightNavigator = () => {
       />
       {/* Edits */}
       <SpotlightStackNavigator.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={editProfileScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
         name="EditProduct"
         component={EditProductScreen}
         options={editProductScreenOptions}
@@ -100,6 +86,26 @@ export const SpotlightNavigator = () => {
         name="EditProposal"
         component={EditProposalScreen}
         options={editProposalScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Min Sida"
+        component={UserSpotlightScreen}
+        options={mainPageOptionsNoUser}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Mitt upplagda återbruk"
+        component={UserProductsScreen}
+        options={mainPageOptionsNoUser}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Alla mina efterlysningar"
+        component={UserProposalsScreen}
+        options={mainPageOptionsNoUser}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Användare"
+        component={UserProfile}
+        options={mainPageOptionsWithUser}
       />
     </SpotlightStackNavigator.Navigator>
   );

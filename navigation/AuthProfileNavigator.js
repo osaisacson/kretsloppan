@@ -1,11 +1,8 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 
-//Headers
-import { emptyHeader } from './NavHeaders';
-
-//Add screens
 import AddProfileScreen from '../screens/addAndEdit/AddProfileScreen';
+import { emptyHeader } from './NavHeaders';
 
 const AuthProfileStackNavigator = createStackNavigator();
 
@@ -16,8 +13,7 @@ export const AuthProfileNavigator = () => {
         headerStyle: {
           height: 0,
         },
-      }}
-    >
+      }}>
       <AuthProfileStackNavigator.Screen
         name="AddProfile"
         component={AddProfileScreen}

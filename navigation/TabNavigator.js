@@ -3,11 +3,16 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import React from 'react';
 
 import Colors from '../constants/Colors';
-import { ProductsNavigator } from './ProductsNavigator';
-import { ProjectsNavigator } from './ProjectsNavigator';
-import { ProposalsNavigator } from './ProposalsNavigator';
+import ProductsScreen from '../screens/shop/ProductsScreen';
+import ProjectsScreen from '../screens/shop/ProjectsScreen';
+import ProposalsScreen from '../screens/shop/ProposalsScreen';
+import {
+  defaultNavOptions,
+  defaultMainPageOptions,
+  mainPageOptionsNoUser,
+  mainPageOptionsWithUser,
+} from './NavHeaders';
 import { SpotlightNavigator } from './SpotlightNavigator';
-
 const TabStackNavigator = createMaterialBottomTabNavigator();
 
 export const TabNavigator = () => {
@@ -28,21 +33,21 @@ export const TabNavigator = () => {
       />
       <TabStackNavigator.Screen
         name="Återbruk"
-        component={ProductsNavigator}
+        component={ProductsScreen}
         options={{
           tabBarIcon: ({ color }) => <FontAwesome5 name="recycle" color={color} size={23} />,
         }}
       />
       <TabStackNavigator.Screen
         name="Projekt"
-        component={ProjectsNavigator}
+        component={ProjectsScreen}
         options={{
           tabBarIcon: ({ color }) => <Entypo name="tools" size={23} color={color} />,
         }}
       />
       <TabStackNavigator.Screen
         name="Efterlysningar"
-        component={ProposalsNavigator}
+        component={ProposalsScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="alert-decagram-outline" color={color} size={23} />
