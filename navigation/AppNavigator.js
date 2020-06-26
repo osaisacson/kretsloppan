@@ -10,14 +10,8 @@ import { ShopNavigator } from './ShopNavigator';
 const AppNavigator = (props) => {
   const isAuth = useSelector((state) => !!state.auth.token);
   const didTryAutoLogin = useSelector((state) => state.auth.didTryAutoLogin);
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const currentProfile = useSelector((state) => state.profiles.userProfile);
   const hasWalkedThrough = currentProfile.hasWalkedThrough;
-  console.log('Calling AppNavigator--------------');
-  console.log('isAuth: ', isAuth);
-  console.log('didTryAutoLogin: ', didTryAutoLogin);
-  console.log('Currently logged in profile: ', currentProfile);
-  console.log('hasWalkedThrough: ', hasWalkedThrough);
-  console.log('--------------AppNavigator END');
 
   return (
     <NavigationContainer>

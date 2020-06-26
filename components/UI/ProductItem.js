@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-
+import { Divider } from 'react-native-paper';
 import CachedImage from '../../components/UI/CachedImage';
 import UserAvatar from '../../components/UI/UserAvatar';
 import Colors from './../../constants/Colors';
@@ -159,10 +159,9 @@ const styles = StyleSheet.create({
   backgroundText: {
     paddingLeft: 4,
     fontFamily: 'roboto-light-italic',
-    color: Colors.darkPrimary,
     fontSize: 16,
     marginLeft: 8,
-    marginBottom: 10,
+    marginBottom: 20,
   },
   price: {
     position: 'absolute',

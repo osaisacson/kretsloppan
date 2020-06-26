@@ -123,9 +123,25 @@ const ProjectDetailScreen = (props) => {
           <Paragraph style={{ padding: 5 }}>{selectedProject.description}</Paragraph>
         </SectionCard>
       ) : null}
-
+      {associatedProposals.length ? (
+        <>
+          <View style={{ marginTop: 10 }}>
+            <HeaderTwo
+              title="Efterlysningar till projektet"
+              simpleCount={associatedProposals.length}
+            />
+          </View>
+          <HorizontalScroll
+            textItem
+            detailPath="ProposalDetail"
+            scrollHeight={40}
+            scrollData={associatedProposals}
+            navigation={props.navigation}
+          />
+        </>
+      ) : null}
       {associatedProducts.length ? (
-        <View style={{ marginVertical: 10 }}>
+        <View style={{ marginTop: 10 }}>
           <HeaderTwo title="Återbruk i projektet" simpleCount={associatedProducts.length} />
         </View>
       ) : (
@@ -140,14 +156,6 @@ const ProjectDetailScreen = (props) => {
 
   return (
     <SaferArea>
-      {associatedProposals.length ? (
-        <HorizontalScroll
-          textItem
-          detailPath="ProposalDetail"
-          scrollData={associatedProposals}
-          navigation={props.navigation}
-        />
-      ) : null}
       <FlatList
         initialNumToRender={8}
         horizontal={false}

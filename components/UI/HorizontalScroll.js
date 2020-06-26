@@ -27,7 +27,7 @@ const HorizontalScroll = (props) => {
   //Check if we instead should render the TextItem
   if (props.textItem) {
     RenderedItem = TextItem;
-    scrollHeight = Styles.textItemHeight;
+    scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.textItemHeight;
   }
 
   //Check if we instead should render the LargeImageItem
