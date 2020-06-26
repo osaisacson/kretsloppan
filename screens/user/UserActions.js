@@ -63,6 +63,7 @@ const UserActions = (props) => {
       {showUserActions ? (
         <SectionList
           stickySectionHeadersEnabled={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
           style={{
             position: 'absolute',
             top: 50,
