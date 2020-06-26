@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Linking, Image, SafeAreaView, ScrollView } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { Paragraph } from 'react-native-paper';
 
 import SectionCard from '../components/UI/SectionCard';
@@ -11,9 +12,17 @@ const AboutScreen = (props) => {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <Image
           resizeMode="contain"
-          style={styles.logoLarge}
-          source={require('./../assets/icon.png')}
+          style={{ ...styles.logoLarge, position: 'absolute', top: 0 }}
+          source={require('./../assets/kretsloppan_loppan_only.png')}
         />
+        <Animatable.View animation="rotate" delay={1000} duration={10000} iterationCount={1}>
+          <Image
+            resizeMode="contain"
+            style={styles.logoLarge}
+            source={require('./../assets/kretsloppan_circle_only.png')}
+          />
+        </Animatable.View>
+
         <Paragraph style={styles.paragraph}>
           Kretsloppan är skapad 2020 av Egnahemsfabriken och Orust Kretsloppsakademi med stöd av
           Vinnova - Sveriges Innovationsmyndighet.
