@@ -68,7 +68,7 @@ const UserActions = (props) => {
             position: 'absolute',
             top: 50,
             zIndex: 100,
-            height: '95%',
+            height: '100%',
             width: '100%',
             backgroundColor: Colors.lightPrimary,
             shadowColor: '#000',

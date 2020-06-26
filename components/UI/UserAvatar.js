@@ -6,7 +6,14 @@ import TouchableCmp from './TouchableCmp';
 
 const UserAvatar = (props) => {
   //Get logged in userId from state, and products
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  let currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  //If we are passing a userId, use this as the current user, else use the currently logged in user
+  if (props.userId) {
+    currentProfile = useSelector((state) =>
+      state.profiles.allProfiles.find((prof) => prof.profileId === props.userId)
+    );
+  }
+
   const loggedInUserId = currentProfile.profileId;
 
   const availableProducts = useSelector((state) => state.products.availableProducts);
@@ -29,16 +36,6 @@ const UserAvatar = (props) => {
 
   const badgeNumber = reservedBy + reservedFrom + collectionBy + collectionFrom;
 
-  //If we are passing a userId, use this as the current user, else use the currently logged in user
-  let currentUser;
-  if (props.userId) {
-    currentUser = useSelector((state) =>
-      state.profiles.allProfiles.find((prof) => prof.profileId === props.userId)
-    );
-  } else {
-    currentUser = useSelector((state) => state.profiles.userProfile);
-  }
-
   return (
     <TouchableCmp
       activeOpacity={0.5}
@@ -59,8 +56,8 @@ const UserAvatar = (props) => {
           borderColor: '#666',
         }}
         source={
-          currentUser && currentUser.image
-            ? { uri: currentUser.image }
+          currentProfile && currentProfile.image
+            ? { uri: currentProfile.image }
             : require('./../../assets/avatar-placeholder-image.png')
         }
         size={props.size ? props.size : 40}
