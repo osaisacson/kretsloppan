@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { Alert, TextInput } from 'react-native';
+import { Alert, TextInput, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ImagePicker from '../../components/UI/ImgPicker';
@@ -142,6 +142,10 @@ const EditProjectScreen = (props) => {
           onImageTaken={textChangeHandler('image')}
           passedImage={formState.inputValues.image}
         />
+        <Text style={{ textAlign: 'center' }}>
+          Lägg in en bild som representerar projektet ovan - det kan till exempel vara en bild på
+          pågående bygge, ritningen av hur det är tänkt att bli eller platsen där det ska byggas.
+        </Text>
       </FormFieldWrapper>
 
       <FormFieldWrapper prompt="Skriv in en titel">

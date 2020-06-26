@@ -518,7 +518,7 @@ const ProductButtonLogic = (props) => {
                     ) : null}
                   </>
                 ) : null}
-                {isReservedUser ? (
+                {isReservedUser || hasEditPermission ? (
                   <ButtonAction
                     disabled={isPickedUp}
                     buttonColor={Colors.subtleRed}
