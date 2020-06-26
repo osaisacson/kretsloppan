@@ -34,12 +34,9 @@ export const defaultMainPageOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: () => (
-      <View
-        style={Platform.select({
-          android: styles.avatarContainer,
-        })}>
+      <View style={styles.avatarContainer}>
         <UserAvatar
-          style={Platform.select({ ios: styles.userAvatar })}
+          style={styles.userAvatar}
           showBadge
           actionOnPress={() => {
             navData.navigation.navigate('Min Sida');
@@ -96,6 +93,6 @@ export const emptyHeader = (navData) => {
 };
 
 const styles = StyleSheet.create({
-  avatarContainer: { marginRight: 5 },
-  userAvatar: { marginTop: 15, marginRight: 10 },
+  avatarContainer: { marginTop: 10, marginRight: 10 },
+  userAvatar: { marginTop: 10, marginRight: 10 },
 });
