@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
+import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { Divider } from 'react-native-paper';
+
 import CachedImage from '../../components/UI/CachedImage';
 import UserAvatar from '../../components/UI/UserAvatar';
 import Colors from './../../constants/Colors';
@@ -32,8 +33,21 @@ const ProductItem = (props) => {
     bgColor = Colors.completed;
   }
 
+  const relevantDate = props.itemData.collectedDate
+    ? `Hämtad ${Moment(props.itemData.collectedDate).locale('sv').format('D MMMM YYYY')}`
+    : props.itemData.organisedDate
+    ? `Hämtas ${Moment(props.itemData.organisedDate).locale('sv').format('D MMMM YYYY')}`
+    : props.itemData.reservedDate
+    ? `Reserverad till ${Moment(props.itemData.reservedDate).locale('sv').format('D MMMM YYYY')}`
+    : 'Inget relevant datum';
+
   return (
     <View style={styles.container}>
+      {props.showBackgroundText ? (
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.date}>
+          {relevantDate}
+        </Text>
+      ) : null}
       <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
         <View
           style={{
@@ -154,14 +168,23 @@ const styles = StyleSheet.create({
     width: 200,
     fontFamily: 'roboto-bold',
     fontSize: 16,
-    marginLeft: 8,
+    marginLeft: 15,
   },
   backgroundText: {
     paddingLeft: 4,
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
-    marginLeft: 8,
+    marginLeft: 15,
     marginBottom: 20,
+  },
+  date: {
+    width: '100%',
+    textAlign: 'right',
+    marginBottom: -10,
+    paddingRight: 25,
+    marginTop: 10,
+    fontFamily: 'roboto-light-italic',
+    fontSize: 14,
   },
   price: {
     position: 'absolute',
