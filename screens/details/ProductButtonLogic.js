@@ -328,12 +328,9 @@ const ProductButtonLogic = (props) => {
         </View>
       </View>
 
+      <ProductStatusCopy style={{ textAlign: 'center' }} selectedProduct={props.selectedProduct} />
       {!isPickedUp ? (
         <>
-          <ProductStatusCopy
-            style={{ textAlign: 'center' }}
-            selectedProduct={props.selectedProduct}
-          />
           <Animatable.View
             animation="flipInX"
             easing="ease-out"

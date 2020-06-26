@@ -2,6 +2,7 @@ import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+
 import Colors from '../../constants/Colors';
 
 const ProductStatusCopy = (props) => {
@@ -9,6 +10,7 @@ const ProductStatusCopy = (props) => {
     status,
     reservedUntil,
     collectingDate,
+    collectedDate,
     ownerId,
     reservedUserId,
     collectingUserId,
@@ -78,8 +80,15 @@ const ProductStatusCopy = (props) => {
       .fromNow()}`;
   }
   //If viewer is someone not involved in the deal
-  if (isReserved && !isOrganised && !hasEditPermission && !isReservedUser && !isOrganisedUser) {
+  if (isReserved && !isOrganised && !isSellerOrBuyer) {
     mainStatus = 'Parterna är i processen att ordna med logistik';
+    secondaryStatus = '';
+  }
+
+  //If product is collected
+  if (collectedDate) {
+    mainStatus = `Hämtades ${Moment(collectedDate).locale('sv').format('D MMMM YYYY')}`;
+    secondaryStatus = '';
   }
 
   const mainStatusFormattedLow = mainStatus.toLowerCase(); //Make moment() text lowercase
@@ -105,21 +114,17 @@ const ProductStatusCopy = (props) => {
 
   return (
     <View style={{ marginBottom: 5, zIndex: 100 }}>
-      {isSellerOrBuyer ? (
-        <>
-          {mainStatus && !props.essentialStatusOnly ? (
-            <InfoText style={props.style} text={mainStatusFormatted} />
-          ) : null}
-          {secondaryStatus ? (
-            <InfoText
-              isBold
-              style={{ ...props.style, color: Colors.darkPrimary }}
-              text={secondaryStatus}
-            />
-          ) : null}
-          {tertiaryStatus ? <InfoText style={props.style} text={tertiaryStatus} /> : null}
-        </>
+      {mainStatus && !props.essentialStatusOnly ? (
+        <InfoText style={props.style} text={mainStatusFormatted} />
       ) : null}
+      {secondaryStatus ? (
+        <InfoText
+          isBold
+          style={{ ...props.style, color: Colors.darkPrimary }}
+          text={secondaryStatus}
+        />
+      ) : null}
+      {tertiaryStatus ? <InfoText style={props.style} text={tertiaryStatus} /> : null}
     </View>
   );
 };

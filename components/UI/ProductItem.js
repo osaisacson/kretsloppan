@@ -3,7 +3,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 
 import CachedImage from '../../components/UI/CachedImage';
-import ProductStatusCopy from '../../components/UI/ProductStatusCopy';
 import UserAvatar from '../../components/UI/UserAvatar';
 import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
@@ -17,12 +16,10 @@ const ProductItem = (props) => {
 
   let icon;
   let bgColor;
-  let noCorners;
 
   if (isReserved) {
     icon = 'bookmark';
-    bgColor = Colors.lightPrimary;
-    noCorners = true;
+    bgColor = Colors.primary;
   }
 
   if (isOrganised) {
