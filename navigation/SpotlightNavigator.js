@@ -24,6 +24,8 @@ import ProposalDetailScreen, {
 } from '../screens/details/ProposalDetailScreen';
 import UserProfile from '../screens/details/UserProfile';
 import ProductsScreen from '../screens/shop/ProductsScreen';
+import ProjectsScreen from '../screens/shop/ProjectsScreen';
+import ProposalsScreen from '../screens/shop/ProposalsScreen';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import UserProposalsScreen from '../screens/user/UserProposalsScreen';
@@ -31,6 +33,7 @@ import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 import {
   defaultNavOptions,
   defaultMainPageOptions,
+  defaultDetailOptions,
   mainPageOptionsNoUser,
   mainPageOptionsWithUser,
 } from './NavHeaders';
@@ -49,6 +52,16 @@ export const SpotlightNavigator = () => {
         name="Återbruk"
         component={ProductsScreen}
         options={productDetailScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Projekt"
+        component={ProjectsScreen}
+        options={projectDetailScreenOptions}
+      />
+      <SpotlightStackNavigator.Screen
+        name="Efterlysningar"
+        component={ProposalsScreen}
+        options={proposalDetailScreenOptions}
       />
       {/* Details */}
       <SpotlightStackNavigator.Screen
