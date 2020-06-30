@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 /**
  * usePopToTopOnBlur
  * @param {object} navigationProps
- * @param {string} route
+ * @param {string} routeName
  */
 function usePopToTopOnBlur(navigationProps, routeName) {
   useEffect(() => {
