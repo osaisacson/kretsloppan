@@ -19,7 +19,7 @@ import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
-import MyProfileStack from './MyProfileStack';
+import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 import { topStackHeaderForTabs, detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
 import { SpotlightNavigator } from './SpotlightNavigator';
 
@@ -45,7 +45,7 @@ const ProductsStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="Min Sida"
-        component={MyProfileStack}
+        component={UserSpotlightScreen}
         options={mainPageOptionsNoUser}
       />
     </DetailsStack.Navigator>
@@ -88,7 +88,7 @@ const ProjectsStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="Min Sida"
-        component={MyProfileStack}
+        component={UserSpotlightScreen}
         options={mainPageOptionsNoUser}
       />
     </DetailsStack.Navigator>
@@ -111,7 +111,7 @@ const ProposalsStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="Min Sida"
-        component={MyProfileStack}
+        component={UserSpotlightScreen}
         options={mainPageOptionsNoUser}
       />
     </DetailsStack.Navigator>
