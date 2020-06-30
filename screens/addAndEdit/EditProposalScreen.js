@@ -48,7 +48,7 @@ const EditProposalScreen = (props) => {
   const loggedInUserId = currentProfile.profileId;
 
   //Find proposal
-  const availableProposals = useSelector((state) => state.projects.availableProposals);
+  const availableProposals = useSelector((state) => state.proposals.availableProposals);
   const userProposals = availableProposals.filter(
     (proposal) => proposal.ownerId === loggedInUserId
   );
