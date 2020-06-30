@@ -1,4 +1,3 @@
-import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { FlatList, View } from 'react-native';
 import { createFilter } from 'react-native-search-filter';
@@ -111,10 +110,9 @@ const ProductsScreen = (props) => {
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title="Allt återbruk"
+            isSearch
             simpleCount={filteredProducts.length}
             showAddLink={() => props.navigation.navigate('EditProduct')}
-            icon={<FontAwesome5 name="recycle" size={20} style={{ marginRight: 5 }} />}
             indicator={filteredProducts.length ? filteredProducts.length : 0}
           />
         }

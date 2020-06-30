@@ -1,4 +1,3 @@
-import { Entypo } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { FlatList, View } from 'react-native';
 import { createFilter } from 'react-native-search-filter';
@@ -93,18 +92,9 @@ const ProjectsScreen = (props) => {
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title="Alla Projekt"
+            isSearch
             showAddLink={() => props.navigation.navigate('EditProject')}
             simpleCount={filteredProjects.length}
-            icon={
-              <Entypo
-                name="tools"
-                size={20}
-                style={{
-                  marginRight: 5,
-                }}
-              />
-            }
             indicator={filteredProjects.length ? filteredProjects.length : 0}
           />
         }

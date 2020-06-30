@@ -47,6 +47,46 @@ export const defaultMainPageOptions = (navData) => {
   };
 };
 
+export const detailHeader = (navData) => {
+  return {
+    headerTitle: '',
+  };
+};
+
+export const detailHeaderForTabs = (navData) => {
+  return {
+    headerBackTitle: 'Tillbaka',
+    headerTitle: '',
+  };
+};
+
+export const topStackHeaderForTabs = (navData) => {
+  return {
+    headerStyle: {
+      backgroundColor: Colors.darkPrimary,
+    },
+    headerTitleStyle: {
+      fontFamily: 'bebas-neue-bold',
+      fontSize: 25,
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'roboto-regular',
+    },
+    headerTintColor: '#fff',
+    headerRight: () => (
+      <View style={styles.avatarContainer}>
+        <UserAvatar
+          style={styles.userAvatar}
+          showBadge
+          actionOnPress={() => {
+            navData.navigation.navigate('Min Sida');
+          }}
+        />
+      </View>
+    ),
+  };
+};
+
 export const mainPageOptionsWithUser = (navData) => {
   return {
     headerTitle: '',

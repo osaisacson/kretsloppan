@@ -1,6 +1,8 @@
+import { StackActions, useNavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
+import usePopToTopOnBlur from '../hooks/usePopToTopOnBlur';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
@@ -13,34 +15,28 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen, {
-  screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetailScreen';
-import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
+import ProductDetailScreen from '../screens/details/ProductDetailScreen';
+import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
+import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import UserProfile from '../screens/details/UserProfile';
 import ProductsScreen from '../screens/shop/ProductsScreen';
-import ProjectsScreen from '../screens/shop/ProjectsScreen';
-import ProposalsScreen from '../screens/shop/ProposalsScreen';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import UserProposalsScreen from '../screens/user/UserProposalsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 import {
+  detailHeader,
   defaultNavOptions,
   defaultMainPageOptions,
-  defaultDetailOptions,
   mainPageOptionsNoUser,
   mainPageOptionsWithUser,
 } from './NavHeaders';
 
 const SpotlightStackNavigator = createStackNavigator();
 
-export const SpotlightNavigator = () => {
+export const SpotlightNavigator = ({ navigation }) => {
+  usePopToTopOnBlur(navigation, 'Kretsloppan');
+
   return (
     <SpotlightStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <SpotlightStackNavigator.Screen
@@ -48,36 +44,22 @@ export const SpotlightNavigator = () => {
         component={SpotlightProductsScreen}
         options={defaultMainPageOptions}
       />
-      <SpotlightStackNavigator.Screen
-        name="Återbruk"
-        component={ProductsScreen}
-        options={productDetailScreenOptions}
-      />
-      <SpotlightStackNavigator.Screen
-        name="Projekt"
-        component={ProjectsScreen}
-        options={projectDetailScreenOptions}
-      />
-      <SpotlightStackNavigator.Screen
-        name="Efterlysningar"
-        component={ProposalsScreen}
-        options={proposalDetailScreenOptions}
-      />
+      <SpotlightStackNavigator.Screen name="Återbruk" component={ProductsScreen} />
       {/* Details */}
       <SpotlightStackNavigator.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
-        options={productDetailScreenOptions}
+        options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProposalDetail"
         component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
+        options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProjectDetail"
         component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
+        options={detailHeader}
       />
       {/* Edits */}
       <SpotlightStackNavigator.Screen
@@ -101,24 +83,27 @@ export const SpotlightNavigator = () => {
         options={editProposalScreenOptions}
       />
       <SpotlightStackNavigator.Screen
+        name="Användare"
+        component={UserProfile}
+        options={mainPageOptionsWithUser}
+      />
+      <SpotlightStackNavigator.Screen
         name="Min Sida"
         component={UserSpotlightScreen}
         options={mainPageOptionsNoUser}
       />
+      {/* User product screens  */}
       <SpotlightStackNavigator.Screen
         name="Mitt upplagda återbruk"
         component={UserProductsScreen}
         options={mainPageOptionsNoUser}
       />
+      {/* User project screens  */}
+      {/* User proposal screens  */}
       <SpotlightStackNavigator.Screen
         name="Alla mina efterlysningar"
         component={UserProposalsScreen}
         options={mainPageOptionsNoUser}
-      />
-      <SpotlightStackNavigator.Screen
-        name="Användare"
-        component={UserProfile}
-        options={mainPageOptionsWithUser}
       />
     </SpotlightStackNavigator.Navigator>
   );

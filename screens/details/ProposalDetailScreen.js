@@ -178,11 +178,4 @@ const ProposalDetailScreen = (props) => {
   ) : null;
 };
 
-//Sets/overrides the default navigation options in the ShopNavigator
-export const screenOptions = (navData) => {
-  return {
-    headerTitle: '',
-  };
-};
-
 export default ProposalDetailScreen;
