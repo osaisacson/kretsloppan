@@ -26,7 +26,11 @@ const HeaderTwo = (props) => {
         <View style={styles.textAndBadge}>
           {icon ? icon : null}
           <Text style={styles.contentHeader}>{title}</Text>
-          {simpleCount ? <Text style={styles.simpleCount}>({simpleCount})</Text> : null}
+          {simpleCount ? (
+            <Text style={props.isSearch ? styles.simpleCountForSearch : styles.simpleCount}>
+              {props.isSearch ? `${simpleCount} Hittade` : `(${simpleCount})`}
+            </Text>
+          ) : null}
           {showNotificationBadge ? (
             <Badge style={{ fontWeight: 'bold', marginBottom: 5 }}>{indicator}</Badge>
           ) : null}
@@ -77,6 +81,11 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-regular',
     fontSize: 18,
     marginBottom: 5,
+  },
+  simpleCountForSearch: {
+    fontFamily: 'roboto-light-italic',
+    fontSize: 16,
+    marginBottom: 15,
   },
   indicator: {
     fontFamily: 'roboto-regular',

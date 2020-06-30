@@ -4,6 +4,27 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import Colors from '../constants/Colors';
+import EditProductScreen, {
+  screenOptions as editProductScreenOptions,
+} from '../screens/addAndEdit/EditProductScreen';
+import EditProfileScreen, {
+  screenOptions as editProfileScreenOptions,
+} from '../screens/addAndEdit/EditProfileScreen';
+import EditProjectScreen, {
+  screenOptions as editProjectScreenOptions,
+} from '../screens/addAndEdit/EditProjectScreen';
+import EditProposalScreen, {
+  screenOptions as editProposalScreenOptions,
+} from '../screens/addAndEdit/EditProposalScreen';
+import ProductDetailScreen, {
+  screenOptions as productDetailScreenOptions,
+} from '../screens/details/ProductDetailScreen';
+import ProjectDetailScreen, {
+  screenOptions as projectDetailScreenOptions,
+} from '../screens/details/ProjectDetailScreen';
+import ProposalDetailScreen, {
+  screenOptions as proposalDetailScreenOptions,
+} from '../screens/details/ProposalDetailScreen';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
@@ -14,10 +35,78 @@ const TabStackNavigator = createMaterialBottomTabNavigator();
 
 const DetailsStack = createStackNavigator();
 
+// We need all screens accessible from each of the below stacks defined specifically in each stack,
+// otherwise the back button defaults to taking us back to the spotlightNavigator stack instead.
 const ProductsStack = ({ navigation }) => {
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
-      <DetailsStack.Screen name="Återbruk" component={ProductsScreen} />
+      <DetailsStack.Screen name="Allt återbruk" component={ProductsScreen} />
+      <DetailsStack.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+    </DetailsStack.Navigator>
+  );
+};
+
+const ProjectsStack = ({ navigation }) => {
+  return (
+    <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
+      <DetailsStack.Screen name="Alla projekt" component={ProjectsScreen} />
+      <DetailsStack.Screen
+        name="ProjectDetail"
+        component={ProjectDetailScreen}
+        options={projectDetailScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="EditProject"
+        component={EditProjectScreen}
+        options={editProjectScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
+    </DetailsStack.Navigator>
+  );
+};
+
+const ProposalsStack = ({ navigation }) => {
+  return (
+    <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
+      <DetailsStack.Screen name="Alla efterlysningar" component={ProposalsScreen} />
+      <DetailsStack.Screen
+        name="ProposalDetail"
+        component={ProposalDetailScreen}
+        options={proposalDetailScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="EditProposal"
+        component={EditProposalScreen}
+        options={editProposalScreenOptions}
+      />
     </DetailsStack.Navigator>
   );
 };
@@ -52,7 +141,7 @@ export const TabNavigator = ({ navigation }) => {
       <TabStackNavigator.Screen
         name="Projekt"
         unmountOnBlur
-        component={ProjectsScreen}
+        component={ProjectsStack}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ color }) => <Entypo name="tools" size={23} color={color} />,
@@ -61,7 +150,7 @@ export const TabNavigator = ({ navigation }) => {
       <TabStackNavigator.Screen
         name="Efterlysningar"
         unmountOnBlur
-        component={ProposalsScreen}
+        component={ProposalsStack}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ color }) => (

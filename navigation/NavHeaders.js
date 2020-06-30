@@ -59,19 +59,7 @@ export const topStackHeaderForTabs = (navData) => {
     headerBackTitleStyle: {
       fontFamily: 'roboto-regular',
     },
-    // headerTitle: '',
     headerTintColor: '#fff',
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
     headerRight: () => (
       <View style={styles.avatarContainer}>
         <UserAvatar
@@ -83,6 +71,13 @@ export const topStackHeaderForTabs = (navData) => {
         />
       </View>
     ),
+  };
+};
+
+export const detailHeaderForTabs = (navData) => {
+  return {
+    headerBackTitle: 'Tillbaka',
+    headerTitle: '',
   };
 };
 

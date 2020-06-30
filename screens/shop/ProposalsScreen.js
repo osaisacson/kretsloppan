@@ -1,4 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { FlatList, View } from 'react-native';
 import { createFilter } from 'react-native-search-filter';
@@ -93,18 +92,9 @@ const ProposalsScreen = (props) => {
         )}
         ListHeaderComponent={
           <HeaderTwo
-            title="Alla Efterlysningar"
+            isSearch
             showAddLink={() => props.navigation.navigate('EditProposal')}
             simpleCount={filteredProposals.length}
-            icon={
-              <MaterialCommunityIcons
-                name="alert-decagram-outline"
-                size={24}
-                style={{
-                  marginRight: 3,
-                }}
-              />
-            }
             indicator={filteredProposals.length ? filteredProposals.length : 0}
           />
         }
