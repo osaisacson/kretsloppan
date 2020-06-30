@@ -201,11 +201,4 @@ const ProductDetailScreen = (props) => {
   );
 };
 
-//Sets/overrides the default navigation options in the ShopNavigator
-export const screenOptions = (navData) => {
-  return {
-    headerTitle: '',
-  };
-};
-
 export default ProductDetailScreen;

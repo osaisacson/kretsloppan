@@ -47,6 +47,19 @@ export const defaultMainPageOptions = (navData) => {
   };
 };
 
+export const detailHeader = (navData) => {
+  return {
+    headerTitle: '',
+  };
+};
+
+export const detailHeaderForTabs = (navData) => {
+  return {
+    headerBackTitle: 'Tillbaka',
+    headerTitle: '',
+  };
+};
+
 export const topStackHeaderForTabs = (navData) => {
   return {
     headerStyle: {
@@ -71,13 +84,6 @@ export const topStackHeaderForTabs = (navData) => {
         />
       </View>
     ),
-  };
-};
-
-export const detailHeaderForTabs = (navData) => {
-  return {
-    headerBackTitle: 'Tillbaka',
-    headerTitle: '',
   };
 };
 

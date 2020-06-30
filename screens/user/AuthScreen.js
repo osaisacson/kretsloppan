@@ -355,10 +355,6 @@ const AuthScreen = (props) => {
   );
 };
 
-export const screenOptions = {
-  headerTitle: '',
-};
-
 const d = Dimensions.get('window');
 
 const styles = StyleSheet.create({

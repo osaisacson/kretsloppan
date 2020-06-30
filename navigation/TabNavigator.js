@@ -7,28 +7,19 @@ import Colors from '../constants/Colors';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
-import EditProfileScreen, {
-  screenOptions as editProfileScreenOptions,
-} from '../screens/addAndEdit/EditProfileScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions,
 } from '../screens/addAndEdit/EditProjectScreen';
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen, {
-  screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetailScreen';
-import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
+import ProductDetailScreen from '../screens/details/ProductDetailScreen';
+import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
+import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
-import { topStackHeaderForTabs } from './NavHeaders';
+import { topStackHeaderForTabs, detailHeaderForTabs } from './NavHeaders';
 import { SpotlightNavigator } from './SpotlightNavigator';
 
 const TabStackNavigator = createMaterialBottomTabNavigator();
@@ -44,7 +35,7 @@ const ProductsStack = ({ navigation }) => {
       <DetailsStack.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
-        options={productDetailScreenOptions}
+        options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
         name="EditProduct"
@@ -62,7 +53,7 @@ const ProjectsStack = ({ navigation }) => {
       <DetailsStack.Screen
         name="ProjectDetail"
         component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
+        options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
         name="EditProject"
@@ -72,7 +63,7 @@ const ProjectsStack = ({ navigation }) => {
       <DetailsStack.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
-        options={productDetailScreenOptions}
+        options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
         name="EditProduct"
@@ -82,7 +73,7 @@ const ProjectsStack = ({ navigation }) => {
       <DetailsStack.Screen
         name="ProposalDetail"
         component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
+        options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
         name="EditProposal"
@@ -100,7 +91,7 @@ const ProposalsStack = ({ navigation }) => {
       <DetailsStack.Screen
         name="ProposalDetail"
         component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
+        options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
         name="EditProposal"

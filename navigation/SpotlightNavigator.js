@@ -13,15 +13,9 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen, {
-  screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetailScreen';
-import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
+import ProductDetailScreen from '../screens/details/ProductDetailScreen';
+import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
+import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import UserProfile from '../screens/details/UserProfile';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
@@ -29,6 +23,7 @@ import UserProductsScreen from '../screens/user/UserProductsScreen';
 import UserProposalsScreen from '../screens/user/UserProposalsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 import {
+  detailHeader,
   defaultNavOptions,
   defaultMainPageOptions,
   mainPageOptionsNoUser,
@@ -45,26 +40,22 @@ export const SpotlightNavigator = () => {
         component={SpotlightProductsScreen}
         options={defaultMainPageOptions}
       />
-      <SpotlightStackNavigator.Screen
-        name="Återbruk"
-        component={ProductsScreen}
-        options={productDetailScreenOptions}
-      />
+      <SpotlightStackNavigator.Screen name="Återbruk" component={ProductsScreen} />
       {/* Details */}
       <SpotlightStackNavigator.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
-        options={productDetailScreenOptions}
+        options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProposalDetail"
         component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
+        options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProjectDetail"
         component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
+        options={detailHeader}
       />
       {/* Edits */}
       <SpotlightStackNavigator.Screen

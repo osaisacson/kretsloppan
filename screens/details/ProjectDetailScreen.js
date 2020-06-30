@@ -179,13 +179,6 @@ const ProjectDetailScreen = (props) => {
   );
 };
 
-//Sets/overrides the default navigation options in the ShopNavigator
-export const screenOptions = (navData) => {
-  return {
-    headerTitle: '',
-  };
-};
-
 const styles = StyleSheet.create({
   image: {
     height: 300,
