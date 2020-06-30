@@ -47,6 +47,45 @@ export const defaultMainPageOptions = (navData) => {
   };
 };
 
+export const topStackHeaderForTabs = (navData) => {
+  return {
+    headerStyle: {
+      backgroundColor: Colors.darkPrimary,
+    },
+    headerTitleStyle: {
+      fontFamily: 'bebas-neue-bold',
+      fontSize: 25,
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'roboto-regular',
+    },
+    // headerTitle: '',
+    headerTintColor: '#fff',
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <View style={styles.avatarContainer}>
+        <UserAvatar
+          style={styles.userAvatar}
+          showBadge
+          actionOnPress={() => {
+            navData.navigation.navigate('Min Sida');
+          }}
+        />
+      </View>
+    ),
+  };
+};
+
 export const mainPageOptionsWithUser = (navData) => {
   return {
     headerTitle: '',

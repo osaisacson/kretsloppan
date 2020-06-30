@@ -7,15 +7,17 @@ import Colors from '../constants/Colors';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
+import { topStackHeaderForTabs } from './NavHeaders';
 import { SpotlightNavigator } from './SpotlightNavigator';
+
 const TabStackNavigator = createMaterialBottomTabNavigator();
 
 const DetailsStack = createStackNavigator();
 
 const ProductsStack = ({ navigation }) => {
   return (
-    <DetailsStack.Navigator>
-      <DetailsStack.Screen name="ProjectsScreen" component={ProductsScreen} />
+    <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
+      <DetailsStack.Screen name="Återbruk" component={ProductsScreen} />
     </DetailsStack.Navigator>
   );
 };
