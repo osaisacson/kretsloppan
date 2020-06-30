@@ -19,7 +19,9 @@ import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import UserProfile from '../screens/details/UserProfile';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
-import MyProfileStack from './MyProfileStack';
+import UserProductsScreen from '../screens/user/UserProductsScreen';
+import UserProposalsScreen from '../screens/user/UserProposalsScreen';
+import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 import {
   detailHeader,
   defaultNavOptions,
@@ -83,7 +85,20 @@ export const SpotlightNavigator = () => {
       />
       <SpotlightStackNavigator.Screen
         name="Min Sida"
-        component={MyProfileStack}
+        component={UserSpotlightScreen}
+        options={mainPageOptionsNoUser}
+      />
+      {/* User product screens  */}
+      <SpotlightStackNavigator.Screen
+        name="Mitt upplagda återbruk"
+        component={UserProductsScreen}
+        options={mainPageOptionsNoUser}
+      />
+      {/* User project screens  */}
+      {/* User proposal screens  */}
+      <SpotlightStackNavigator.Screen
+        name="Alla mina efterlysningar"
+        component={UserProposalsScreen}
         options={mainPageOptionsNoUser}
       />
     </SpotlightStackNavigator.Navigator>
