@@ -14,7 +14,7 @@ export const AuthNavigator = () => {
           height: 0,
         },
       }}>
-      <AuthStackNavigator.Screen name="Auth" component={AuthScreen} options={authScreenOptions} />
+      <AuthStackNavigator.Screen name="Auth" component={AuthScreen} />
     </AuthStackNavigator.Navigator>
   );
 };
