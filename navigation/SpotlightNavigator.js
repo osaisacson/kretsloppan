@@ -2,6 +2,7 @@ import { StackActions, useNavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
+import usePopToTopOnBlur from '../hooks/usePopToTopOnBlur';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
@@ -34,17 +35,7 @@ import {
 const SpotlightStackNavigator = createStackNavigator();
 
 export const SpotlightNavigator = ({ navigation }) => {
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
-      const navState = navigation.dangerouslyGetState();
-      const stackIndex = navState ? navState.routes[0].state.index : 0;
-      if (stackIndex > 0) {
-        navigation.dispatch(StackActions.popToTop());
-      }
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+  usePopToTopOnBlur(navigation, 'Kretsloppan');
 
   return (
     <SpotlightStackNavigator.Navigator screenOptions={defaultNavOptions}>

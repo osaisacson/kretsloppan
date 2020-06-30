@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import Colors from '../constants/Colors';
+import usePopToTopOnBlur from '../hooks/usePopToTopOnBlur';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from '../screens/addAndEdit/EditProductScreen';
@@ -30,6 +31,8 @@ const DetailsStack = createStackNavigator();
 // We need all screens accessible from each of the below stacks defined specifically in each stack,
 // otherwise the back button defaults to taking us back to the spotlightNavigator stack instead.
 const ProductsStack = ({ navigation }) => {
+  usePopToTopOnBlur(navigation, 'Återbruk');
+
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
       <DetailsStack.Screen name="Allt återbruk" component={ProductsScreen} />
@@ -53,6 +56,8 @@ const ProductsStack = ({ navigation }) => {
 };
 
 const ProjectsStack = ({ navigation }) => {
+  usePopToTopOnBlur(navigation, 'Projekt');
+
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
       <DetailsStack.Screen name="Alla projekt" component={ProjectsScreen} />
@@ -96,6 +101,8 @@ const ProjectsStack = ({ navigation }) => {
 };
 
 const ProposalsStack = ({ navigation }) => {
+  usePopToTopOnBlur(navigation, 'Återbruk');
+
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
       <DetailsStack.Screen name="Alla efterlysningar" component={ProposalsScreen} />
