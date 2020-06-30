@@ -19,7 +19,8 @@ import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import ProjectsScreen from '../screens/shop/ProjectsScreen';
 import ProposalsScreen from '../screens/shop/ProposalsScreen';
-import { topStackHeaderForTabs, detailHeaderForTabs } from './NavHeaders';
+import MyProfileStack from './MyProfileStack';
+import { topStackHeaderForTabs, detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
 import { SpotlightNavigator } from './SpotlightNavigator';
 
 const TabStackNavigator = createMaterialBottomTabNavigator();
@@ -41,6 +42,11 @@ const ProductsStack = ({ navigation }) => {
         name="EditProduct"
         component={EditProductScreen}
         options={editProductScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="Min Sida"
+        component={MyProfileStack}
+        options={mainPageOptionsNoUser}
       />
     </DetailsStack.Navigator>
   );
@@ -80,6 +86,11 @@ const ProjectsStack = ({ navigation }) => {
         component={EditProposalScreen}
         options={editProposalScreenOptions}
       />
+      <DetailsStack.Screen
+        name="Min Sida"
+        component={MyProfileStack}
+        options={mainPageOptionsNoUser}
+      />
     </DetailsStack.Navigator>
   );
 };
@@ -97,6 +108,11 @@ const ProposalsStack = ({ navigation }) => {
         name="EditProposal"
         component={EditProposalScreen}
         options={editProposalScreenOptions}
+      />
+      <DetailsStack.Screen
+        name="Min Sida"
+        component={MyProfileStack}
+        options={mainPageOptionsNoUser}
       />
     </DetailsStack.Navigator>
   );
