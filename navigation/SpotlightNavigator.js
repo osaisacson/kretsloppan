@@ -27,8 +27,8 @@ import {
   detailHeader,
   defaultNavOptions,
   defaultMainPageOptions,
-  mainPageOptionsWithUser,
   mainPageOptionsNoUser,
+  mainPageOptionsWithUser,
 } from './NavHeaders';
 
 const SpotlightStackNavigator = createStackNavigator();
