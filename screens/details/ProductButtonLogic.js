@@ -63,28 +63,39 @@ const ProductButtonLogic = (props) => {
   const isReservedUser = reservedUserId === loggedInUserId;
   const isOrganisedUser = collectingUserId === loggedInUserId;
   const hasEditPermission = props.hasEditPermission;
+  const isSellerOrBuyer = hasEditPermission || isReservedUser || isOrganisedUser;
+  const showButtons = isSellerOrBuyer && (isReserved || isOrganised);
 
   //Will change based on where we are in the reservation process
   let receivingId = '';
-  let statusColor;
+  let buttonCopy = 'Se detaljer';
+  const statusColor = Colors.darkPrimary;
 
   if (isReserved) {
     receivingId = reservedUserId;
-    statusColor = Colors.primary;
+    // statusColor = Colors.primary;
   }
 
   if (isOrganised) {
     receivingId = collectingUserId;
-    statusColor = Colors.subtleGreen;
+    // statusColor = Colors.subtleGreen;
   }
 
   if (isPickedUp) {
     receivingId = newOwnerId;
-    statusColor = Colors.completed;
+    // statusColor = Colors.completed;
   }
 
-  if (!suggestedDate) {
-    statusColor = Colors.darkPrimary;
+  if (showButtons && !suggestedDate) {
+    buttonCopy = 'Föreslå en tid';
+  }
+
+  if (showButtons && collectingDate) {
+    buttonCopy = 'Se detaljer eller markera som hämtad';
+  }
+
+  if (suggestedDate && !sellerAgreed && hasEditPermission) {
+    buttonCopy = 'Godkänn/ändra tid';
   }
 
   //Avatar logic
@@ -288,7 +299,7 @@ const ProductButtonLogic = (props) => {
   }
 
   return (
-    <View>
+    <>
       <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
         <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
           <HeaderAvatar profileId={ownerId} navigation={props.navigation} />
@@ -327,186 +338,234 @@ const ProductButtonLogic = (props) => {
           ) : null}
         </View>
       </View>
-
-      <ProductStatusCopy style={{ textAlign: 'center' }} selectedProduct={props.selectedProduct} />
-      {!isPickedUp ? (
-        <>
-          <Animatable.View
-            animation="flipInX"
-            easing="ease-out"
-            delay={500}
-            duration={500}
-            iterationCount={1}>
-            <Button
-              labelStyle={{ fontSize: 10 }}
-              color={Colors.darkPrimary}
-              style={{ width: '100%' }}
-              mode="contained"
-              onPress={toggleShowOptions}>
-              {receivingProfile ? 'Hantera detaljer' : 'Se detaljer'}
-            </Button>
-          </Animatable.View>
-        </>
-      ) : null}
-      {/* When trying to reserve, open this up for selection of associated project */}
-      {showUserProjects ? (
-        <>
-          <HeaderThree
-            text="Vilket projekt ska återbruket användas i?"
-            style={detailStyles.centeredHeader}
+      <View
+        style={{
+          backgroundColor: Colors.lightPrimary,
+          borderWidth: 0.5,
+          borderColor: '#000',
+          borderRadius: 5,
+          padding: 5,
+        }}>
+        <View>
+          <ProductStatusCopy
+            style={{ textAlign: 'center' }}
+            selectedProduct={props.selectedProduct}
           />
-
-          <HorizontalScrollContainer>
-            <RoundItem
-              itemData={{
-                image: './../../assets/avatar-placeholder-image.png',
-                title: 'Inget projekt',
-              }}
-              key="000"
-              isHorizontal
-              onSelect={() => {
-                reserveHandler('000');
-              }}
+          {!isPickedUp ? (
+            <Animatable.View
+              animation="flipInX"
+              easing="ease-out"
+              delay={500}
+              duration={500}
+              iterationCount={1}>
+              <Button
+                labelStyle={{ fontSize: 10 }}
+                color={Colors.darkPrimary}
+                style={{ width: '100%' }}
+                mode="contained"
+                onPress={toggleShowOptions}>
+                {buttonCopy}
+              </Button>
+            </Animatable.View>
+          ) : null}
+        </View>
+        {/* When trying to reserve, open this up for selection of associated project */}
+        {showUserProjects ? (
+          <>
+            <HeaderThree
+              text="Vilket projekt ska återbruket användas i?"
+              style={detailStyles.centeredHeader}
             />
-            {userProjects.map((item) => (
+
+            <HorizontalScrollContainer>
               <RoundItem
-                itemData={item}
-                key={item.id}
+                itemData={{
+                  image: './../../assets/avatar-placeholder-image.png',
+                  title: 'Inget projekt',
+                }}
+                key="000"
                 isHorizontal
                 onSelect={() => {
-                  reserveHandler(item.id);
+                  reserveHandler('000');
                 }}
               />
-            ))}
-          </HorizontalScrollContainer>
-        </>
-      ) : null}
+              {userProjects.map((item) => (
+                <RoundItem
+                  itemData={item}
+                  key={item.id}
+                  isHorizontal
+                  onSelect={() => {
+                    reserveHandler(item.id);
+                  }}
+                />
+              ))}
+            </HorizontalScrollContainer>
+          </>
+        ) : null}
 
-      {/* Details about the item, and options for the logistics */}
-      {showOptions ? (
-        <>
-          <Divider style={{ marginBottom: 10 }} />
-          <View style={styles.oneLineSpread}>
-            <View style={styles.ownerOptions}>
-              <Text>{ownerProfile.profileName}</Text>
-              <Text>{phone ? phone : 'Ingen telefon angiven'}</Text>
-              {address ? <Text>{address ? address : 'Ingen address angiven'}</Text> : null}
-              {pickupDetails ? (
-                <View style={styles.pickupDetails}>
-                  <HeaderThree text="Upphämtningsdetaljer: " />
-                  <Text>{pickupDetails}</Text>
+        {/* Details about the item, and options for the logistics */}
+        {showOptions ? (
+          <>
+            <Divider style={{ marginBottom: 10 }} />
+            <View style={styles.oneLineSpread}>
+              <View style={styles.ownerOptions}>
+                <Text>{ownerProfile.profileName}</Text>
+                <Text>{phone ? phone : 'Ingen telefon angiven'}</Text>
+                {address ? <Text>{address ? address : 'Ingen address angiven'}</Text> : null}
+                {pickupDetails ? (
+                  <View style={styles.pickupDetails}>
+                    <HeaderThree text="Upphämtningsdetaljer: " />
+                    <Text>{pickupDetails}</Text>
+                  </View>
+                ) : null}
+              </View>
+
+              {receivingProfile ? (
+                <View style={styles.receivingOptions}>
+                  <Text>{receivingProfile.profileName}</Text>
+                  <Text>
+                    {receivingProfile.phone ? receivingProfile.phone : 'Ingen telefon angiven'}
+                  </Text>
+                  {receivingProfile.address ? (
+                    <Text style={{ textAlign: 'right' }}>
+                      {receivingProfile.address
+                        ? receivingProfile.address
+                        : 'Ingen address angiven'}
+                    </Text>
+                  ) : null}
                 </View>
               ) : null}
             </View>
 
-            {receivingProfile ? (
-              <View style={styles.receivingOptions}>
-                <Text>{receivingProfile.profileName}</Text>
-                <Text>
-                  {receivingProfile.phone ? receivingProfile.phone : 'Ingen telefon angiven'}
-                </Text>
-                {receivingProfile.address ? (
-                  <Text style={{ textAlign: 'right' }}>
-                    {receivingProfile.address ? receivingProfile.address : 'Ingen address angiven'}
-                  </Text>
+            {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
+            {isReserved && isSellerOrBuyer ? (
+              <>
+                {!suggestedDate ? (
+                  <>
+                    <Divider style={{ marginBottom: 10 }} />
+                    <HeaderThree
+                      style={{ textAlign: 'center', marginBottom: 10 }}
+                      text="Föreslå tid för upphämtning nedan."
+                    />
+                    <View style={{ flex: 1 }}>
+                      <CalendarStrip
+                        scrollable
+                        selectedDate={suggestedDateLocal}
+                        daySelectionAnimation={{
+                          type: 'border',
+                          borderWidth: 0.5,
+                          borderHighlightColor: Colors.darkPrimary,
+                          duration: 200,
+                        }}
+                        highlightDateNameStyle={{ color: Colors.darkPrimary }}
+                        highlightDateNumberStyle={{ color: Colors.darkPrimary }}
+                        styleWeekend
+                        onDateSelected={(date) => {
+                          handleTimePicker(date);
+                        }}
+                        style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+                        type="border"
+                        borderWidth={1}
+                        borderHighlightColor="#666"
+                      />
+                      <DateTimePickerModal
+                        date={new Date(suggestedDateLocal)}
+                        isDarkModeEnabled={colorScheme === 'dark'}
+                        cancelTextIOS="Avbryt"
+                        confirmTextIOS="Klar!"
+                        headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
+                          .locale('sv')
+                          .format('D MMMM')}. Välj tid:`}
+                        isVisible={showTimePicker}
+                        mode="time"
+                        locale="sv_SV" // Use "en_GB" here
+                        onConfirm={(dateTime) => {
+                          sendSuggestedDT(dateTime);
+                        }}
+                        onCancel={hideTimePicker}
+                      />
+                    </View>
+
+                    <HeaderThree
+                      style={{ textAlign: 'center' }}
+                      text="...kontakta varandra via detaljerna ovan om ni har frågor, annars är det ovan tid och plats som gäller."
+                    />
+                  </>
                 ) : null}
+
+                {suggestedDate && hasEditPermission ? (
+                  <HeaderThree
+                    style={{
+                      textAlign: 'center',
+                      marginBottom: 20,
+                      marginTop: 10,
+                    }}
+                    text="TIPS: Om du vill ändra plats gör detta genom att redigera din produkt och uppdatera upphämtningsaddress där."
+                  />
+                ) : null}
+              </>
+            ) : null}
+
+            {showButtons && (suggestedDate || collectingDate) ? <Divider /> : null}
+
+            {suggestedDate && isSellerOrBuyer ? (
+              <View style={{ alignItems: 'center', marginTop: 10 }}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: 'roboto-light-italic',
+                    color: Colors.darkPrimary,
+                  }}>
+                  Föreslagen tid
+                </Text>
+                <Text
+                  style={{ fontSize: 15, fontFamily: 'roboto-bold', color: Colors.darkPrimary }}>
+                  {moment(suggestedDate).locale('sv').format('D MMMM, HH:MM')}
+                </Text>
               </View>
             ) : null}
-          </View>
-
-          {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
-          {isReserved && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
-            <>
-              <Divider style={{ marginBottom: 10 }} />
-
-              {!suggestedDate ? (
+            <View style={styles.actionButtons}>
+              {collectingDate && isSellerOrBuyer ? (
                 <>
-                  <HeaderThree
-                    style={{ textAlign: 'center', marginBottom: 10 }}
-                    text="Föreslå tid för upphämtning nedan."
+                  <ButtonAction
+                    buttonColor={Colors.subtleGrey}
+                    title="Ändra tid"
+                    onSelect={() => {
+                      resetSuggestedDT();
+                    }}
                   />
-                  <View style={{ flex: 1 }}>
-                    <CalendarStrip
-                      scrollable
-                      selectedDate={suggestedDateLocal}
-                      daySelectionAnimation={{
-                        type: 'border',
-                        borderWidth: 0.5,
-                        borderHighlightColor: Colors.darkPrimary,
-                        duration: 200,
-                      }}
-                      highlightDateNameStyle={{ color: Colors.darkPrimary }}
-                      highlightDateNumberStyle={{ color: Colors.darkPrimary }}
-                      styleWeekend
-                      onDateSelected={(date) => {
-                        handleTimePicker(date);
-                      }}
-                      style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-                      type="border"
-                      borderWidth={1}
-                      borderHighlightColor="#666"
+                  <Animatable.View
+                    animation="pulse"
+                    easing="ease-out"
+                    duration={1000}
+                    iterationCount="infinite">
+                    <ButtonAction
+                      disabled={isPickedUp}
+                      buttonColor={Colors.approved}
+                      buttonLabelStyle={{ color: '#fff' }}
+                      title="hämtad!"
+                      onSelect={collectHandler.bind(this)}
                     />
-                    <DateTimePickerModal
-                      date={new Date(suggestedDateLocal)}
-                      isDarkModeEnabled={colorScheme === 'dark'}
-                      cancelTextIOS="Avbryt"
-                      confirmTextIOS="Klar!"
-                      headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
-                        .locale('sv')
-                        .format('D MMMM')}. Välj tid:`}
-                      isVisible={showTimePicker}
-                      mode="time"
-                      locale="sv_SV" // Use "en_GB" here
-                      onConfirm={(dateTime) => {
-                        sendSuggestedDT(dateTime);
-                      }}
-                      onCancel={hideTimePicker}
-                    />
-                  </View>
+                  </Animatable.View>
                 </>
               ) : null}
-
-              {suggestedDate && hasEditPermission ? (
-                <HeaderThree
-                  style={{
-                    textAlign: 'center',
-                    marginBottom: 20,
-                    marginTop: 10,
-                  }}
-                  text="Om du vill ändra plats gör detta genom att redigera din produkt och uppdatera upphämtningsaddress där."
-                />
-              ) : null}
-
-              <View style={styles.actionButtons}>
-                {suggestedDate ? (
-                  <>
-                    <Divider style={{ marginTop: 10 }} />
-                    {hasEditPermission || isReservedUser || isOrganisedUser ? (
-                      <ButtonAction
-                        buttonColor={Colors.darkRed}
-                        title="Annan tid"
-                        onSelect={() => {
-                          resetSuggestedDT();
-                        }}
-                      />
-                    ) : null}
-                    {!sellerAgreed && hasEditPermission ? (
-                      <Animatable.View
-                        animation="pulse"
-                        easing="ease-out"
-                        duration={1000}
-                        iterationCount="infinite">
-                        <ButtonAction
-                          buttonLabelStyle={{ color: '#fff' }}
-                          buttonColor={Colors.approved}
-                          title="Godkänn förslag"
-                          onSelect={() => {
-                            approveSuggestedDateTime(suggestedDate);
-                          }}
-                        />
-                      </Animatable.View>
-                    ) : null}
-                    {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
+              {suggestedDate ? (
+                <>
+                  {isSellerOrBuyer ? (
+                    <ButtonAction
+                      buttonColor={Colors.subtleGrey}
+                      title="Annan tid"
+                      onSelect={() => {
+                        resetSuggestedDT();
+                      }}
+                    />
+                  ) : null}
+                  {!sellerAgreed && hasEditPermission ? (
+                    <Animatable.View
+                      animation="pulse"
+                      easing="ease-out"
+                      duration={1000}
+                      iterationCount="infinite">
                       <ButtonAction
                         buttonLabelStyle={{ color: '#fff' }}
                         buttonColor={Colors.approved}
@@ -515,55 +574,44 @@ const ProductButtonLogic = (props) => {
                           approveSuggestedDateTime(suggestedDate);
                         }}
                       />
-                    ) : null}
-                  </>
-                ) : null}
-                {isReservedUser || hasEditPermission ? (
-                  <ButtonAction
-                    disabled={isPickedUp}
-                    buttonColor={Colors.subtleRed}
-                    buttonLabelStyle={{ color: '#fff' }}
-                    onSelect={unReserveHandler}
-                    title="avreservera"
-                  />
-                ) : null}
-              </View>
-            </>
-          ) : null}
+                    </Animatable.View>
+                  ) : null}
+                  {!buyerAgreed && (isReservedUser || isOrganisedUser) ? (
+                    <ButtonAction
+                      buttonLabelStyle={{ color: '#fff' }}
+                      buttonColor={Colors.approved}
+                      title="Godkänn förslag"
+                      onSelect={() => {
+                        approveSuggestedDateTime(suggestedDate);
+                      }}
+                    />
+                  ) : null}
 
-          {collectingDate && (hasEditPermission || isReservedUser || isOrganisedUser) ? (
-            <>
-              <View style={styles.actionButtons}>
-                <ButtonAction
-                  buttonColor={Colors.darkRed}
-                  title="Ändra tid"
-                  onSelect={() => {
-                    resetSuggestedDT();
-                  }}
-                />
-                <ButtonAction
-                  disabled={isPickedUp}
-                  buttonColor={Colors.approved}
-                  buttonLabelStyle={{ color: '#fff' }}
-                  title="Byt till hämtad"
-                  onSelect={collectHandler.bind(this)}
-                />
-              </View>
-              <Divider />
-            </>
-          ) : null}
+                  {isReservedUser || hasEditPermission ? (
+                    <ButtonAction
+                      disabled={isPickedUp}
+                      buttonColor={Colors.subtleGrey}
+                      buttonLabelStyle={{ color: '#fff' }}
+                      onSelect={unReserveHandler}
+                      title="avreservera"
+                    />
+                  ) : null}
+                </>
+              ) : null}
+            </View>
 
-          {/* TBD: In-app messaging - Button for passing an object 
+            {/* TBD: In-app messaging - Button for passing an object 
             reference to the in-app messaging screen */}
-          {/* <ButtonAction
+            {/* <ButtonAction
               large={true}
               icon="email"
               title={'Skicka meddelande'} //Send message
               onSelect={() => {}} //Should open the in-app messaging view, forwarding a title to what the message is about: {`Angående: ${objectForDetails.title}`}. Title should in the message link to the post it refers to.
             /> */}
-        </>
-      ) : null}
-    </View>
+          </>
+        ) : null}
+      </View>
+    </>
   );
 };
 
@@ -617,10 +665,9 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   actionButtons: {
-    flex: 1,
     flexDirection: 'row',
     marginVertical: 10,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   box: {
     borderRadius: 5,

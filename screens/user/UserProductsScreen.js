@@ -82,15 +82,10 @@ const UserProductsScreen = (props) => {
         searchQuery={searchQuery}
         placeholder="Leta bland ditt återbruk"
       />
-      <HeaderTwo
-        title="Mitt förråd"
-        subTitle="Allt återbruk du själv har lagt upp eller hämtat."
-        indicator={productsSorted.length ? productsSorted.length : 0}
-      />
+
       <FlatList
-        initialNumToRender={8}
-        horizontal={false}
         numColumns={2}
+        initialNumToRender={12}
         onRefresh={loadProducts}
         refreshing={isRefreshing}
         data={productsSorted}
@@ -98,17 +93,21 @@ const UserProductsScreen = (props) => {
         renderItem={(itemData) => (
           <ProductItem
             navigation={props.navigation}
+            showSmallStatusIcons
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title,
-                'ProductDetail'
-              );
+              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
             }}
           />
         )}
+        ListHeaderComponent={
+          <HeaderTwo
+            isSearch
+            simpleCount={productsSorted.length}
+            showAddLink={() => props.navigation.navigate('EditProduct')}
+            indicator={productsSorted.length ? productsSorted.length : 0}
+          />
+        }
       />
     </SaferArea>
   );

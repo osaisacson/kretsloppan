@@ -83,17 +83,14 @@ const UserActions = (props) => {
           sections={[
             {
               title: 'Reservationer',
-              subTitle: 'Väntar på att ni kommer överens om tid för överlämning',
               data: reservedByOrFromUser,
             },
             {
               title: 'Att köpas',
-              subTitle: 'Väntar på att köpas av dig på överenskommen tid',
               data: toBeBought,
             },
             {
               title: 'Att säljas',
-              subTitle: 'Väntar på att säljas av dig på överenskommen tid',
               data: toBeSold,
             },
           ]}
@@ -103,9 +100,6 @@ const UserActions = (props) => {
                 <View style={{ marginHorizontal: 15, marginBottom: 10 }}>
                   <Text style={{ fontFamily: 'bebas-neue-bold', fontSize: 23, marginTop: 15 }}>
                     {section.title}
-                  </Text>
-                  <Text style={{ fontFamily: 'roboto-light-italic', fontSize: 15 }}>
-                    {section.subTitle}
                   </Text>
                 </View>
                 <Divider />

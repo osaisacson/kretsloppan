@@ -60,7 +60,7 @@ const ProductStatusCopy = (props) => {
     mainStatus = `Föreslagen tid av ${waitingForYou ? 'motpart' : 'dig'}: ${Moment(suggestedDate)
       .locale('sv')
       .format('D MMMM, HH:MM')}  `;
-    secondaryStatus = `Väntar på ${waitingForYou ? 'ditt' : sellerOrBuyer} godkännande`;
+    secondaryStatus = `Väntar på ${waitingForYou ? 'ditt' : sellerOrBuyer} godkännande av tid`;
     tertiaryStatus = `Reservation går ut ${Moment(reservedUntil)
       .locale('sv')
       .endOf('day')

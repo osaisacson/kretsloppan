@@ -90,7 +90,6 @@ const ProductsScreen = (props) => {
         placeholder="Leta bland återbruk: titel, skick, mått..."
         onChangeText={(term) => setSearchQuery(term)}
       />
-
       <FlatList
         numColumns={2}
         initialNumToRender={12}

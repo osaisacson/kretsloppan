@@ -129,6 +129,15 @@ const ProposalDetailScreen = (props) => {
                   deleteHandler(selectedProposal.id);
                 }}
               />
+              {!isResolved ? (
+                <ButtonAction
+                  disabled={isResolved} //disable/enable base on true/false of these params
+                  onSelect={() => {
+                    collectHandler(selectedProposal.id);
+                  }}
+                  title="Avaktivera och markera som löst"
+                />
+              ) : null}
 
               <ButtonIcon
                 icon="pen"
@@ -148,8 +157,8 @@ const ProposalDetailScreen = (props) => {
             <HeaderThree text="Relaterar till projektet:" style={detailStyles.centeredHeader} />
 
             <HorizontalScroll
-              scrollHeight={155}
-              roundItem
+              scrollHeight={200}
+              largeImageItem
               detailPath="ProjectDetail"
               scrollData={projectForProposal}
               navigation={props.navigation}
@@ -158,19 +167,6 @@ const ProposalDetailScreen = (props) => {
         </SectionCard>
       ) : null}
 
-      {!isResolved && hasEditPermission ? (
-        <SectionCard>
-          <View style={detailStyles.toggles}>
-            <ButtonAction
-              disabled={isResolved} //disable/enable base on true/false of these params
-              onSelect={() => {
-                collectHandler(selectedProposal.id);
-              }}
-              title="Avaktivera och markera som löst"
-            />
-          </View>
-        </SectionCard>
-      ) : null}
       <Text style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
         Upplagt {Moment(selectedProposal.date).locale('sv').startOf('hour').fromNow()}
       </Text>
