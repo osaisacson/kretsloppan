@@ -55,8 +55,8 @@ const UserProductsScreen = (props) => {
     setSearchQuery(text.length ? text : '');
   };
 
-  const selectItemHandler = (id, ownerId, title, detailPath) => {
-    props.navigation.navigate(detailPath, {
+  const selectItemHandler = (id, ownerId, title) => {
+    props.navigation.navigate('ProductDetail', {
       detailId: id,
       ownerId,
       detailTitle: title,
