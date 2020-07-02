@@ -21,6 +21,8 @@ export const ShopNavigator = (props) => {
 
   return (
     <ShopDrawerNavigator.Navigator
+      lazy
+      openByDefault={false}
       drawerContent={(props) => {
         return (
           <View style={{ flex: 1 }}>
