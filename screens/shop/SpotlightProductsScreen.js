@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
@@ -55,7 +55,7 @@ const SpotlightProductsScreen = (props) => {
       <UserActions navigation={props.navigation} falseAtStart={false} />
 
       <ScrollView
-        style={{ marginTop: 50 }}
+        style={{ paddingTop: 50 }}
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
         <HorizontalScroll
