@@ -2,6 +2,15 @@ import { StackActions } from '@react-navigation/native';
 import { useEffect } from 'react';
 
 /**
+ * matchRouteName
+ * @param {string} routeName
+ */
+function matchRouteName(routeName) {
+  const regexPattern = new RegExp(routeName);
+  return (route) => regexPattern.test(route.name) && route?.state?.index > 0;
+}
+
+/**
  * usePopToTopOnBlur
  * @param {object} navigationProps
  * @param {string} routeName
@@ -12,12 +21,11 @@ function usePopToTopOnBlur(navigationProps, routeName) {
       const navState = navigationProps.dangerouslyGetState();
 
       if (navState && navState.routes.length) {
-        navState.routes.forEach((route) => {
-          const regexPattern = new RegExp(routeName);
-          if (regexPattern.test(route.name) && route?.state?.index > 0) {
-            navigationProps.dispatch(StackActions.popToTop());
-          }
-        });
+        const hasMatched = navState.routes.some(matchRouteName(routeName));
+
+        if (hasMatched) {
+          navigationProps.dispatch(StackActions.popToTop());
+        }
       }
     });
 
