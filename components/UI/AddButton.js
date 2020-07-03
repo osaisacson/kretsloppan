@@ -10,7 +10,7 @@ const AddButton = (props) => {
 
   return (
     <Provider>
-      <Portal direction={'down'}>
+      <Portal direction="down">
         <FAB.Group
           open={isOpen}
           icon={isOpen ? 'plus' : 'plus'}

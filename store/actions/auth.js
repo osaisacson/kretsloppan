@@ -150,8 +150,8 @@ export const logout = () => {
       const userData = await AsyncStorage.getItem('userData').then((data) =>
         data ? JSON.parse(data) : {}
       );
+      await AsyncStorage.removeItem('userData'); //Remove data from our local storage
       updateExpoTokens(userData.userId, true);
-      AsyncStorage.removeItem('userData'); //Remove data from our local storage
       dispatch({ type: LOGOUT });
     } catch (error) {
       console.log('Error in store/actions/auth/saveDataToStorage: ', error);

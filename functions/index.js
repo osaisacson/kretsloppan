@@ -66,11 +66,14 @@ exports.storeImage = functions.https.onRequest((request, response) => {
 });
 
 function denormalize(data) {
-  const keys = Object.keys(data);
+  if (data) {
+    const keys = Object.keys(data);
 
-  if (keys) {
-    return data[keys[0]];
+    if (keys.length) {
+      return data[keys[0]];
+    }
   }
+
   return null;
 }
 

@@ -42,6 +42,10 @@ export function convertImage(image) {
 }
 
 export function denormalizeData(data) {
+  if (!data || typeof data !== 'object') {
+    return;
+  }
+
   const id = Object.keys(data).pop();
 
   return {

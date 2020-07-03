@@ -1,6 +1,6 @@
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
@@ -17,10 +17,27 @@ const ShopDrawerNavigator = createDrawerNavigator();
 export const ShopNavigator = (props) => {
   console.log('Calling ShopNavigator');
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    let timeoutId = 0;
+    if (!isLoaded) {
+      timeoutId = setTimeout(() => setIsLoaded(true), 50);
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [isLoaded]);
+
   const dispatch = useDispatch();
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
     <ShopDrawerNavigator.Navigator
+      lazy
+      openByDefault={false}
       drawerContent={(props) => {
         return (
           <View style={{ flex: 1 }}>
@@ -53,7 +70,7 @@ export const ShopNavigator = (props) => {
           </View>
         );
       }}
-      initialRouteName="Home"
+      initialRouteName="Kretsloppan"
       drawerContentOptions={{
         activeTintColor: Colors.primary,
       }}>
