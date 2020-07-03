@@ -30,7 +30,7 @@ const ImgPicker = (props) => {
     const pickerResult = await ImagePicker.launchCameraAsync({
       base64: true, //lets us get and use the base64 encoded image to pass to storage
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 0.1,
     });
 
