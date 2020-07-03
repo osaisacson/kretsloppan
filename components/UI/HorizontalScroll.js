@@ -39,7 +39,7 @@ const HorizontalScroll = (props) => {
   const scrollData = props.scrollData;
 
   if (!scrollData.length) {
-    scrollHeight = 100;
+    scrollHeight = 20;
   }
 
   const selectItemHandler = (id, ownerId, title) => {
@@ -132,7 +132,7 @@ const HorizontalScroll = (props) => {
               </ScrollView>
             </View>
           ) : (
-            <EmptyState>Inget här ännu</EmptyState>
+            <EmptyState style={{ height: 20 }}>Inget här ännu</EmptyState>
           )}
         </View>
       </ScrollView>
