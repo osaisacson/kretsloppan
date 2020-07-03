@@ -89,6 +89,8 @@ const EditProfileScreen = (props) => {
             formState.inputValues.image
           )
         );
+        props.navigation.navigate('ProductDetail', { detailId: firebaseId });
+        setIsLoading(false);
       } else {
         await dispatch(
           profilesActions.createProfile(

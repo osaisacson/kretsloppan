@@ -91,6 +91,8 @@ const EditProjectScreen = (props) => {
             formState.inputValues.image
           )
         );
+        props.navigation.navigate('ProductDetail', { detailId: projId });
+        setIsLoading(false);
       } else {
         await dispatch(
           projectsActions.createProject(
@@ -101,6 +103,8 @@ const EditProjectScreen = (props) => {
             formState.inputValues.image
           )
         );
+        props.navigation.goBack();
+        setIsLoading(false);
       }
     } catch (err) {
       setError(err.message);
