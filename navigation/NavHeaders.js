@@ -133,6 +133,6 @@ export const emptyHeader = (navData) => {
 };
 
 const styles = StyleSheet.create({
-  avatarContainer: { marginTop: 10, marginRight: 10 },
-  userAvatar: { marginTop: 10, marginRight: 10 },
+  avatarContainer: { marginRight: 10 },
+  userAvatar: { marginRight: 10 },
 });

@@ -60,7 +60,7 @@ const UserActions = (props) => {
           }}
         />
       ) : null}
-      {showUserActions ? (
+      {showUserActions && badgeNr ? (
         <SectionList
           stickySectionHeadersEnabled={false}
           contentContainerStyle={{ paddingBottom: 100 }}
