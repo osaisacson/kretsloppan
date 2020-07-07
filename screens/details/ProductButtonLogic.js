@@ -1,5 +1,5 @@
 import moment from 'moment/min/moment-with-locales';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useColorScheme } from 'react-native-appearance';
@@ -55,6 +55,21 @@ const ProductButtonLogic = (props) => {
     sellerAgreed,
     buyerAgreed,
     pickupDetails,
+    category,
+    condition,
+    style,
+    material,
+    color,
+    title,
+    image,
+    description,
+    background,
+    length,
+    height,
+    width,
+    price,
+    priceText,
+    internalComments,
   } = props.selectedProduct;
 
   //Check status of product and privileges of user
@@ -273,6 +288,46 @@ const ProductButtonLogic = (props) => {
             dispatch(
               productsActions.changeProductStatus(id, 'hämtad', projectId, collectingUserId)
             );
+            props.navigation.goBack();
+          },
+        },
+      ]
+    );
+  };
+
+  const copyHandler = () => {
+    Alert.alert(
+      'Kopiera återbruk?',
+      'Du kan sen redigera den tidigare posten till att vara säg 3 fönster och den nya till 2 fönster.',
+      [
+        { text: 'Nej', style: 'default' },
+        {
+          text: 'Ja, kopiera!',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(
+              productsActions.createProduct(
+                category,
+                condition,
+                style,
+                material,
+                color,
+                title,
+                image,
+                address,
+                pickupDetails,
+                phone,
+                description,
+                background,
+                length,
+                height,
+                width,
+                price,
+                priceText,
+                internalComments
+              )
+            );
+            alert('Kopierad till ditt återbruksförråd! Uppdatera som det passar :)');
             props.navigation.goBack();
           },
         },
@@ -510,6 +565,15 @@ const ProductButtonLogic = (props) => {
               </View>
             ) : null}
             <View style={styles.actionButtons}>
+              {hasEditPermission ? (
+                <ButtonAction
+                  disabled={isPickedUp}
+                  buttonColor={Colors.approved}
+                  buttonLabelStyle={{ color: '#fff' }}
+                  title="Kopiera"
+                  onSelect={copyHandler.bind(this)}
+                />
+              ) : null}
               {collectingDate && isSellerOrBuyer ? (
                 <>
                   <ButtonAction
