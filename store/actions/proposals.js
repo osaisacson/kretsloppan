@@ -64,10 +64,13 @@ export function fetchProposals() {
 export const deleteProposal = (proposalId) => {
   return async (dispatch) => {
     try {
+      console.log(`Attempting to delete proposal with id: ${proposalId}...`);
       await firebase.database().ref(`proposals/${proposalId}`).remove();
 
       dispatch({ type: DELETE_PROPOSAL, pid: proposalId });
+      console.log(`...proposal deleted!`);
     } catch (error) {
+      console.log('Error in actions/proposals/deleteProposal: ', error);
       throw new Error(error.message);
     }
   };

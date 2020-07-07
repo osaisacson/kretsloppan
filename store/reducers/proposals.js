@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
         availableProposals: action.proposals,
         userProposals: action.userProposals,
       };
-    case CREATE_PROPOSAL:
+    case CREATE_PROPOSAL: {
       const newProposal = new Proposal(
         action.proposalData.id,
         action.proposalData.ownerId,
@@ -37,7 +37,8 @@ export default (state = initialState, action) => {
         availableProposals: state.availableProposals.concat(newProposal),
         userProposals: state.userProposals.concat(newProposal),
       };
-    case UPDATE_PROPOSAL:
+    }
+    case UPDATE_PROPOSAL: {
       const userProposalIndex = getIndex(state.userProposals, action.pid);
 
       const updatedUserProposal = new Proposal( //Whenever we do a new proposal we have to pass the full params to match model
@@ -72,7 +73,8 @@ export default (state = initialState, action) => {
         availableProposals: updatedAvailableProposals,
         userProposals: updatedUserProposals,
       };
-    case CHANGE_PROPOSAL_STATUS:
+    }
+    case CHANGE_PROPOSAL_STATUS: {
       const availableProposalsIndexCPS = getIndex(state.availableProposals, action.pid);
 
       console.log(
@@ -112,6 +114,7 @@ export default (state = initialState, action) => {
         availableProposals: updatedAvailableProposalsCPS,
         userProposals: updatedUserProposalsCPS,
       };
+    }
     case DELETE_PROPOSAL:
       return {
         ...state,
