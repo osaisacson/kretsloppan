@@ -22,15 +22,16 @@ export const PART = [
   new Filter('p18', 'Värme', '#d1d1e0'),
   new Filter('p19', 'Dekoration', '#d1d1e0'),
   new Filter('p20', 'Redskap', '#d1d1e0'),
+  new Filter('p21', 'Byggmaterial', '#d1d1e0'),
 ];
 
 export const CONDITION = [
   new Filter('c0', 'Inget', 'transparent'),
-  new Filter('c1', 'Dåligt', '#ebebfa'),
-  new Filter('c2', 'Ok', '#ebebfa'),
-  new Filter('c3', 'Bra', '#ebebfa'),
-  new Filter('c4', 'Perfekt', '#ebebfa'),
-  new Filter('c5', 'Varierande', '#ebebfa'),
+  new Filter('c1', 'Dåligt skick', '#ebebfa'),
+  new Filter('c2', 'Ok skick', '#ebebfa'),
+  new Filter('c3', 'Bra skick', '#ebebfa'),
+  new Filter('c4', 'Perfekt skick', '#ebebfa'),
+  new Filter('c5', 'Varierande skick', '#ebebfa'),
 ];
 
 export const STYLE = [
@@ -56,8 +57,8 @@ export const MATERIAL = [
 ];
 
 export const COLOR = [
-  new Filter('Ingen/flera', 'Ingen/flera', 'transparent'),
   new Filter('Omålad', 'Omålad', 'transparent'),
+  new Filter('Flera färger', 'Flera färger', 'transparent'),
   new Filter('Vit', '', '#fff'),
   new Filter('Gul', '', '#ffbb00'),
   new Filter('Orange', '', '#f56f02'),

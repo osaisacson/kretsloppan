@@ -266,7 +266,7 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper
         prompt="Skriv in historik eller annan kuriosa om återbruket"
-        subLabel="Det här kommer bli en del av historien i projektet återbruket används i sen.">
+        subLabel="Det här kommer synas som en del av historien i det projekt återbruket sedan används i, så berätta gärna så mycket du kan om föremålets historia och annan kuriosa.">
         <TextInput
           placeholder="Kuriosa/Historik"
           style={formStyles.multilineInput}
