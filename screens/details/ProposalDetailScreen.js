@@ -31,15 +31,17 @@ const ProposalDetailScreen = (props) => {
     state.proposals.availableProposals.find((proposal) => proposal.id === proposalId)
   );
 
+  //Get all projects from state, and then return the ones that matches the id of the current proposal
+  const availableProjects = useSelector((state) => state.projects.availableProjects || {});
+
   if (!selectedProposal) {
     return null;
   }
 
   const { projectId, ownerId, id, status, title, description, price } = selectedProposal;
 
-  //Get all projects from state, and then return the ones that matches the id of the current proposal
-  const availableProjects = useSelector((state) => state.projects.availableProjects);
-  const projectForProposal = availableProjects.filter((proj) => proj.id === projectId);
+  //Return the projects that matches the id of the current proposal
+  const projectForProposal = availableProjects.filter((proj) => proj.id === projectId || {});
 
   const hasEditPermission = ownerId === loggedInUserId;
   const isResolved = selectedProposal ? status === 'löst' : null;
@@ -149,7 +151,7 @@ const ProposalDetailScreen = (props) => {
       {projectId && projectForProposal.length ? (
         <SectionCard>
           <View style={detailStyles.centered}>
-            <HeaderThree text="Relaterar till projektet:" style={detailStyles.centeredHeader} />
+            <HeaderThree text="Relaterar till projektet" style={detailStyles.centeredHeader} />
 
             <HorizontalScroll
               scrollHeight={200}
