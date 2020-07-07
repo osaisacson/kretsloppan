@@ -95,11 +95,11 @@ const ProposalDetailScreen = (props) => {
           backgroundColor={Colors.completed}
         />
       ) : null}
+
       <SectionCard>
-        {/* Show contact info only if the user is not the creator */}
         <UserLine profileId={ownerId} style={{ marginBottom: 10 }} showLine />
-        <ContactDetails profileId={ownerId} proposalId={id} />
-        <Divider style={{ marginVertical: 10 }} />
+
+        <Divider style={{ marginBottom: 10 }} />
 
         <View style={detailStyles.textCard}>
           <Text style={detailStyles.proposalText}>{title}</Text>
@@ -107,45 +107,15 @@ const ProposalDetailScreen = (props) => {
         <View style={detailStyles.textCard}>
           <Text style={detailStyles.boundaryText}>{description}</Text>
         </View>
+
         {price ? (
           <>
             <Divider style={{ marginTop: 40 }} />
             <Text style={detailStyles.price}>{`Ersättning: ${price} kr`}</Text>
           </>
         ) : null}
-        {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
-        {hasEditPermission ? (
-          <>
-            <Divider style={{ marginTop: 40 }} />
-            <View style={detailStyles.spaceBetweenRow}>
-              {/* Delete button */}
-              <ButtonIcon
-                icon="delete"
-                color={Colors.warning}
-                onSelect={() => {
-                  deleteHandler();
-                }}
-              />
-              {!isResolved ? (
-                <ButtonAction
-                  disabled={isResolved} //disable/enable base on true/false of these params
-                  onSelect={() => {
-                    collectHandler(selectedProposal.id);
-                  }}
-                  title="Avaktivera och markera som löst"
-                />
-              ) : null}
 
-              <ButtonIcon
-                icon="pen"
-                color={Colors.neutral}
-                onSelect={() => {
-                  editProposalHandler(selectedProposal.id);
-                }}
-              />
-            </View>
-          </>
-        ) : null}
+        <ContactDetails profileId={ownerId} proposalId={id} />
       </SectionCard>
 
       {projectId && projectForProposal.length ? (
@@ -162,6 +132,39 @@ const ProposalDetailScreen = (props) => {
             />
           </View>
         </SectionCard>
+      ) : null}
+
+      {/* Buttons to show if the user has edit permissions and the proposal is not yet resolved */}
+      {hasEditPermission ? (
+        <View style={{ marginTop: 10 }}>
+          <View style={detailStyles.spaceBetweenRow}>
+            {/* Delete button */}
+            <ButtonIcon
+              icon="delete"
+              color={Colors.warning}
+              onSelect={() => {
+                deleteHandler();
+              }}
+            />
+            {!isResolved ? (
+              <ButtonAction
+                disabled={isResolved} //disable/enable base on true/false of these params
+                onSelect={() => {
+                  collectHandler(selectedProposal.id);
+                }}
+                title="Avaktivera och markera som löst"
+              />
+            ) : null}
+
+            <ButtonIcon
+              icon="pen"
+              color={Colors.neutral}
+              onSelect={() => {
+                editProposalHandler(selectedProposal.id);
+              }}
+            />
+          </View>
+        </View>
       ) : null}
 
       <Text style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
