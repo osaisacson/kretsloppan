@@ -39,7 +39,12 @@ const EditProfileScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  //TBD: Find a better solution for this. Currently the user object does not update if we don't pull in all profiles
+  const currentProfileForId = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfileForId.profileId;
+  const currentProfile = useSelector((state) =>
+    state.profiles.allProfiles.find((profile) => profile.profileId === loggedInUserId)
+  );
 
   const firebaseId = props.route.params ? props.route.params.detailId : null;
 

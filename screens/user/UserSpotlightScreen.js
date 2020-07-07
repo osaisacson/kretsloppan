@@ -11,9 +11,12 @@ import UserActions from './UserActions';
 import UserItems from './UserItems';
 
 const UserSpotlightScreen = (props) => {
-  //Get profiles, return only the one which matches the logged in id
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.profileId;
+  //TBD: Find a better solution for this. Currently the user object does not update if we don't pull in all profiles
+  const currentProfileForId = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfileForId.profileId;
+  const currentProfile = useSelector((state) =>
+    state.profiles.allProfiles.find((profile) => profile.profileId === loggedInUserId)
+  );
 
   //Gets all products
   const availableProducts = useSelector((state) => state.products.availableProducts);
