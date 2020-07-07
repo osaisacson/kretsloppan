@@ -4,6 +4,8 @@ const cors = require('cors')({ origin: true });
 const { Expo } = require('expo-server-sdk');
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
+const moment = require('moment');
+
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 admin.initializeApp();
 const fs = require('fs');
@@ -102,8 +104,8 @@ exports.sendPushNotifications = functions.database
 
     const beforeReservedDate = beforeVal.reservedDate;
     const afterReservedDate = afterVal.reservedDate;
-    const beforeCollectingDate = beforeVal.collectingDate;
-    const afterCollectingDate = afterVal.collectingDate;
+    const beforeSuggestedDate = beforeVal.suggestedDate;
+    const afterSuggestedDate = afterVal.suggestedDate;
     const ownerId = afterVal.ownerId;
     const productName = afterVal.title;
 
@@ -137,12 +139,12 @@ exports.sendPushNotifications = functions.database
     }
 
     //Sends a push notification when a proposed collection date is set for your product
-    if (!beforeCollectingDate && afterCollectingDate) {
-      const collectingUserId = afterVal.collectingUserId;
+    if (!beforeSuggestedDate && afterSuggestedDate) {
+      const reservedUserId = afterVal.reservedUserId;
 
       try {
         const [suggestedBy, productOwner] = await Promise.all([
-          getUserProfileById(collectingUserId),
+          getUserProfileById(reservedUserId),
           getUserProfileById(ownerId),
         ]);
 
@@ -152,8 +154,12 @@ exports.sendPushNotifications = functions.database
           const dateMessage = {
             to: productOwner.expoTokens,
             sound: 'default',
-            title: 'Förslag på tid angivet',
-            body: `${suggestedBy.profileName} föreslog precis en upphämtningstid för ditt återbruk: "${productName}"`,
+            title: 'Förslag på upphämtningstid angivet',
+            body: `${suggestedBy.profileName} föreslog precis ${moment(afterSuggestedDate)
+              .locale('sv')
+              .format(
+                'MMMM Do, HH:MM'
+              )} som upphämtningstid för ditt återbruk: "${productName}". Gå in och godkänn eller föreslå en annan tid.`,
             _displayInForeground: true,
           };
 
