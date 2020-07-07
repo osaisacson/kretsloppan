@@ -5,6 +5,7 @@ import { View, Alert, Text } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
+import ButtonAction from '../../components/UI/ButtonAction';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import CachedImage from '../../components/UI/CachedImage';
 import FilterLine from '../../components/UI/FilterLine';
@@ -53,6 +54,9 @@ const ProductDetailScreen = (props) => {
     style,
     title,
     width,
+    address,
+    pickupDetails,
+    phone,
   } = selectedProduct;
 
   //Check status of product and privileges of user
@@ -81,6 +85,46 @@ const ProductDetailScreen = (props) => {
     );
   };
 
+  const copyHandler = () => {
+    Alert.alert(
+      'Kopiera återbruk?',
+      'Du kan sen redigera den tidigare posten till att vara säg 3 fönster och den nya till 2 fönster.',
+      [
+        { text: 'Nej', style: 'default' },
+        {
+          text: 'Ja, kopiera!',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(
+              productsActions.copyProduct(
+                category,
+                condition,
+                style,
+                material,
+                color,
+                `${title} (Kopia)`,
+                image,
+                address,
+                pickupDetails,
+                phone,
+                description,
+                background,
+                length,
+                height,
+                width,
+                price,
+                priceText,
+                internalComments
+              )
+            );
+            alert('Kopierad till ditt återbruksförråd! Uppdatera som det passar :)');
+            props.navigation.goBack();
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <DetailWrapper>
       <View>
@@ -103,6 +147,17 @@ const ProductDetailScreen = (props) => {
                 color={Colors.warning}
                 onSelect={() => {
                   deleteHandler(selectedProduct.id);
+                }}
+              />
+
+              <ButtonAction
+                style={{ marginTop: 10 }}
+                disabled={isPickedUp}
+                buttonColor={Colors.approved}
+                buttonLabelStyle={{ color: '#fff' }}
+                title="Kopiera"
+                onSelect={() => {
+                  copyHandler();
                 }}
               />
               <ButtonIcon

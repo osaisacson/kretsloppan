@@ -295,46 +295,6 @@ const ProductButtonLogic = (props) => {
     );
   };
 
-  const copyHandler = () => {
-    Alert.alert(
-      'Kopiera återbruk?',
-      'Du kan sen redigera den tidigare posten till att vara säg 3 fönster och den nya till 2 fönster.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Ja, kopiera!',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              productsActions.createProduct(
-                category,
-                condition,
-                style,
-                material,
-                color,
-                title,
-                image,
-                address,
-                pickupDetails,
-                phone,
-                description,
-                background,
-                length,
-                height,
-                width,
-                price,
-                priceText,
-                internalComments
-              )
-            );
-            alert('Kopierad till ditt återbruksförråd! Uppdatera som det passar :)');
-            props.navigation.goBack();
-          },
-        },
-      ]
-    );
-  };
-
   const HeaderAvatar = (props) => {
     return (
       <UserAvatar
@@ -565,15 +525,6 @@ const ProductButtonLogic = (props) => {
               </View>
             ) : null}
             <View style={styles.actionButtons}>
-              {hasEditPermission ? (
-                <ButtonAction
-                  disabled={isPickedUp}
-                  buttonColor={Colors.approved}
-                  buttonLabelStyle={{ color: '#fff' }}
-                  title="Kopiera"
-                  onSelect={copyHandler.bind(this)}
-                />
-              ) : null}
               {collectingDate && isSellerOrBuyer ? (
                 <>
                   <ButtonAction

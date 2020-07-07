@@ -279,6 +279,91 @@ export function createProduct(
   };
 }
 
+export function copyProduct(
+  category,
+  condition,
+  style,
+  material,
+  color,
+  title,
+  image,
+  address,
+  pickupDetails,
+  phone,
+  description,
+  background,
+  length,
+  height,
+  width,
+  price,
+  priceText,
+  internalComments
+) {
+  return async (dispatch) => {
+    const currentDate = new Date().toISOString();
+    const userData = await AsyncStorage.getItem('userData').then((data) =>
+      data ? JSON.parse(data) : {}
+    );
+    const ownerId = userData.userId;
+
+    try {
+      console.log('Copying product...');
+
+      const productData = {
+        date: currentDate,
+        ownerId,
+        reservedUserId: '',
+        collectingUserId: '',
+        newOwnerId: '',
+        category,
+        condition,
+        style,
+        material,
+        color,
+        title,
+        image,
+        address,
+        pickupDetails,
+        phone,
+        description,
+        background,
+        length,
+        height,
+        width,
+        price,
+        priceText,
+        status: 'redo',
+        readyDate: currentDate,
+        reservedDate: '',
+        reservedUntil: '',
+        suggestedDate: '',
+        collectingDate: '',
+        collectedDate: '',
+        projectId: '000',
+        internalComments,
+        sellerAgreed: '',
+        buyerAgreed: '',
+      };
+
+      const { key } = await firebase.database().ref('products').push(productData);
+
+      const newProductData = {
+        ...productData,
+        id: key,
+      };
+
+      dispatch({
+        type: CREATE_PRODUCT,
+        productData: newProductData,
+      });
+      console.log(`...copied product and gave it the new id of ${key}:`, newProductData);
+    } catch (error) {
+      console.log('Error in actions/products/copyProduct: ', error);
+      throw error;
+    }
+  };
+}
+
 export function updateProduct(
   id,
   category = '',
