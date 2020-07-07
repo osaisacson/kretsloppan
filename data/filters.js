@@ -43,7 +43,7 @@ export const STYLE = [
 ];
 
 export const MATERIAL = [
-  new Filter('m1', 'Inget', 'transparent'),
+  new Filter('m1', 'Blandade', 'transparent'),
   new Filter('m2', 'Trä', '#f0e6ff'),
   new Filter('m3', 'Plast', '#f0e6ff'),
   new Filter('m4', 'Metall', '#f0e6ff'),
@@ -53,7 +53,6 @@ export const MATERIAL = [
   new Filter('m8', 'Textil', '#f0e6ff'),
   new Filter('m9', 'Keramik', '#f0e6ff'),
   new Filter('m10', 'Betong', '#f0e6ff'),
-  new Filter('m11', 'Blandat', '#f0e6ff'),
 ];
 
 export const COLOR = [

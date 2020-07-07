@@ -4,14 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
 import ImagePicker from '../../components/UI/ImgPicker';
-//Imports
 import Loader from '../../components/UI/Loader';
 import PickerItem from '../../components/UI/PickerItem';
 import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
 import FormWrapper from '../../components/wrappers/FormWrapper';
-//Actions
 import * as productsActions from '../../store/actions/products';
-//Data
 import { PART, CONDITION, STYLE, MATERIAL, COLOR } from './../../data/filters';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -81,8 +78,8 @@ const EditProductScreen = (props) => {
       category: editedProduct ? editedProduct.category : 'Ingen',
       condition: editedProduct ? editedProduct.condition : 'Inget',
       style: editedProduct ? editedProduct.style : 'Ingen',
-      material: editedProduct ? editedProduct.material : 'Inget',
-      color: editedProduct ? editedProduct.color : 'Ingen',
+      material: editedProduct ? editedProduct.material : 'Blandade',
+      color: editedProduct ? editedProduct.color : 'Omålad',
     },
     inputValidities: {
       title: !!editedProduct,
@@ -141,9 +138,9 @@ const EditProductScreen = (props) => {
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
-            formState.inputValues.length,
-            formState.inputValues.height,
-            formState.inputValues.width,
+            +formState.inputValues.length,
+            +formState.inputValues.height,
+            +formState.inputValues.width,
             +formState.inputValues.price,
             formState.inputValues.priceText,
             formState.inputValues.internalComments
@@ -166,9 +163,9 @@ const EditProductScreen = (props) => {
             +formState.inputValues.phone,
             formState.inputValues.description,
             formState.inputValues.background,
-            formState.inputValues.length,
-            formState.inputValues.height,
-            formState.inputValues.width,
+            +formState.inputValues.length,
+            +formState.inputValues.height,
+            +formState.inputValues.width,
             +formState.inputValues.price,
             formState.inputValues.priceText,
             formState.inputValues.internalComments
@@ -189,7 +186,7 @@ const EditProductScreen = (props) => {
     let isValid = true;
 
     //If we haven't entered any value (its empty) set form validity to false
-    if (text.trim().length === 0) {
+    if (inputIdentifier === 'title' && text.trim().length === 0) {
       isValid = false;
     }
 
