@@ -410,7 +410,7 @@ const ProductButtonLogic = (props) => {
             <View style={styles.oneLineSpread}>
               <View style={styles.ownerOptions}>
                 <Text>{ownerProfile.profileName}</Text>
-                <Text>{phone ? phone : 'Ingen telefon angiven'}</Text>
+                <Text>{phone ? `0${phone}` : 'Ingen telefon angiven'}</Text>
                 {address ? <Text>{address ? address : 'Ingen address angiven'}</Text> : null}
                 {pickupDetails ? (
                   <View style={styles.pickupDetails}>
