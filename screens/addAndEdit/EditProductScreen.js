@@ -264,7 +264,9 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper prompt="Skriv in historik eller annan kuriosa om återbruket">
+      <FormFieldWrapper
+        prompt="Skriv in historik eller annan kuriosa om återbruket"
+        subLabel="Det här kommer bli en del av historien i projektet återbruket används i sen.">
         <TextInput
           placeholder="Kuriosa/Historik"
           style={formStyles.multilineInput}
