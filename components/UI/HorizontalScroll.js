@@ -102,7 +102,7 @@ const HorizontalScroll = (props) => {
                     }
                   />
                 ))}
-                {props.showMoreLink ? (
+                {props.showMoreLink && scrollData.length > 1 ? (
                   <TouchableCmp
                     onPress={props.showMoreLink}
                     style={{
@@ -113,17 +113,12 @@ const HorizontalScroll = (props) => {
                     }}>
                     <Button
                       animated
-                      icon="dots-horizontal"
-                      color="#fff"
+                      icon="chevron-right"
+                      color="#000"
                       contentStyle={{
-                        width: 100,
-                        paddingLeft: 10,
+                        width: 40,
+                        paddingLeft: 35,
                         height: scrollHeight,
-                      }}
-                      style={{
-                        borderColor: '#fff',
-                        borderWidth: 0.5,
-                        backgroundColor: Colors.darkPrimary,
                       }}
                       onPress={props.showMoreLink}
                     />
