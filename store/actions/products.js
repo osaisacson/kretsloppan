@@ -383,6 +383,7 @@ export function updateProduct(
   width = '',
   price = '',
   priceText = '',
+  projectId = '',
   internalComments = ''
 ) {
   return async (dispatch) => {
@@ -408,6 +409,7 @@ export function updateProduct(
         width,
         price,
         priceText,
+        projectId,
         internalComments,
       };
 
@@ -432,6 +434,7 @@ export function updateProduct(
           width,
           price,
           priceText,
+          projectId,
           internalComments,
         };
       }
