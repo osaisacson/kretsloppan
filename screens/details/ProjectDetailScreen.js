@@ -7,13 +7,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import CachedImage from '../../components/UI/CachedImage';
-import ContactDetails from '../../components/UI/ContactDetails';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ProductItem from '../../components/UI/ProductItem';
 import SaferArea from '../../components/UI/SaferArea';
 import SectionCard from '../../components/UI/SectionCard';
+import UserLine from '../../components/UI/UserLine';
 //Constants
 import Colors from '../../constants/Colors';
 //Actions
@@ -85,11 +85,9 @@ const ProjectDetailScreen = (props) => {
           <Text style={styles.subTitle}>{selectedProject.location}</Text>
         ) : null}
         <Divider style={{ marginBottom: 8 }} />
-        <ContactDetails
-          hideButton
+        <UserLine
           profileId={selectedProject.ownerId}
-          projectId={selectedProject.id}
-          buttonText="kontaktdetaljer"
+          style={{ marginBottom: -50, marginLeft: 5 }}
         />
         <CachedImage
           style={styles.image}

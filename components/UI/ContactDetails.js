@@ -1,35 +1,53 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { detailStyles } from '../wrappers/DetailWrapper';
-import ButtonAction from './ButtonAction';
-import UserAvatar from './UserAvatar';
+import AnimatedButton from './AnimatedButton';
 
 const ContactDetails = (props) => {
-  const navigation = useNavigation();
   const [toggleDetails, setToggleDetails] = useState(false);
 
   //Find the profile which matches the id we passed on clicking to the detail
-  let profile = useSelector((state) =>
+  const defaultObject = useSelector((state) =>
     state.profiles.allProfiles.find(({ profileId }) => profileId === props.profileId)
   );
 
-  if (!profile) {
+  if (!defaultObject) {
     return null;
   }
 
-  const contactEmail = profile && profile.email ? profile.email : 'Ingen email';
+  const { email, phone, address } = defaultObject;
+
+  let contactEmail = email;
+  let contactPhone = phone;
+  let contactAddress = address;
 
   //If we are looking at the details for a product, proposal or project, instead show the specific details for this
   if (props.productId) {
-    const productArray = useSelector((state) =>
+    const product = useSelector((state) =>
       state.products.availableProducts.filter((prod) => prod.id === props.productId)
     );
 
-    profile = productArray[0];
+    const productObj = product[0];
+
+    contactEmail = productObj.email ? productObj.email : email;
+    contactPhone = productObj.phone ? productObj.phone : phone;
+    contactAddress = productObj.address ? productObj.address : address;
   }
+
+  if (props.proposalId) {
+    const proposal = useSelector((state) =>
+      state.proposals.availableProposals.filter((proposal) => proposal.id === props.proposalId)
+    );
+
+    const proposalObj = proposal[0];
+
+    contactEmail = proposalObj.email ? proposalObj.email : email;
+    contactPhone = proposalObj.phone ? proposalObj.phone : phone;
+    contactAddress = proposalObj.address ? proposalObj.address : address;
+  }
+
+  const hasInfo = contactEmail || contactPhone || contactAddress;
 
   const toggleShowDetails = () => {
     setToggleDetails((prevState) => !prevState);
@@ -37,95 +55,36 @@ const ContactDetails = (props) => {
 
   return (
     <>
-      {props.isProfile ? (
-        <ButtonAction
-          large
-          icon="phone"
-          title={toggleDetails ? 'Dölj kontaktdetaljer' : 'kontaktdetaljer'}
-          onSelect={toggleShowDetails}
-        />
-      ) : (
+      <AnimatedButton
+        text={toggleDetails ? 'Dölj kontaktdetaljer' : 'kontaktdetaljer'}
+        onPress={toggleShowDetails}
+      />
+      {/* Contact information */}
+      {toggleDetails ? (
         <View
           style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
+            marginVertical: 5,
             alignItems: 'center',
-            marginRight: 5,
           }}>
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <UserAvatar
-              userId={props.profileId}
-              showBadge={false}
-              actionOnPress={() => {
-                navigation.navigate('Användare', {
-                  detailId: props.profileId,
-                });
-              }}
-            />
-            <Text
-              style={{
-                marginLeft: 10,
-                textAlign: 'left',
-                fontFamily: 'roboto-regular',
-                fontSize: 14,
-              }}>
-              {profile.profileName}
-            </Text>
-          </View>
-          {props.hideButton ? null : (
-            <ButtonAction
-              large
-              icon="phone"
-              title={toggleDetails ? `Dölj ${props.buttonText}` : props.buttonText}
-              onSelect={toggleShowDetails}
-            />
+          {hasInfo ? (
+            <>
+              <Text>{contactEmail}</Text>
+              <Text>{contactPhone}</Text>
+              <Text>{contactAddress}</Text>
+            </>
+          ) : (
+            <Text>Ingen kontaktinformation tillgänglig</Text>
           )}
-        </View>
-      )}
-
-      <View
-        style={
-          props.isProfile
-            ? detailStyles.centeredContent
-            : {
-                flex: 1,
-                marginRight: 5,
-                marginVertical: 5,
-                alignItems: 'flex-end',
-              }
-        }>
-        {/* Contact information */}
-        {toggleDetails ? (
-          <>
-            <View style={detailStyles.textCard}>
-              <Text style={detailStyles.oneLiner}>
-                {contactEmail ? contactEmail : 'Ingen email angiven'}
-              </Text>
-            </View>
-            <View style={detailStyles.textCard}>
-              <Text style={detailStyles.oneLiner}>
-                {profile.phone ? profile.phone : 'Ingen telefon angiven'}
-              </Text>
-            </View>
-            {profile.address ? (
-              <View style={detailStyles.textCard}>
-                <Text style={detailStyles.oneLiner}>
-                  {profile.address ? profile.address : 'Ingen address angiven'}
-                </Text>
-              </View>
-            ) : null}
-            {/* TBD: In-app messaging - Button for passing an object 
+          {/* TBD: In-app messaging - Button for passing an object 
             reference to the in-app messaging screen */}
-            {/* <ButtonAction
+          {/* <ButtonAction
               large={true}
               icon="email"
               title={'Skicka meddelande'} //Send message
               onSelect={() => {}} //Should open the in-app messaging view, forwarding a title to what the message is about: {`Angående: ${objectForDetails.title}`}. Title should in the message link to the post it refers to.
             /> */}
-          </>
-        ) : null}
-      </View>
+        </View>
+      ) : null}
     </>
   );
 };

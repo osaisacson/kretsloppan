@@ -5,9 +5,10 @@ import * as Animatable from 'react-native-animatable';
 import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { Button, Divider } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
+import AnimatedButton from '../../components/UI/AnimatedButton';
 import ButtonAction from '../../components/UI/ButtonAction';
 import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
@@ -351,23 +352,7 @@ const ProductButtonLogic = (props) => {
             style={{ textAlign: 'center' }}
             selectedProduct={props.selectedProduct}
           />
-          {!isPickedUp ? (
-            <Animatable.View
-              animation="flipInX"
-              easing="ease-out"
-              delay={500}
-              duration={500}
-              iterationCount={1}>
-              <Button
-                labelStyle={{ fontSize: 10 }}
-                color={Colors.darkPrimary}
-                style={{ width: '100%' }}
-                mode="contained"
-                onPress={toggleShowOptions}>
-                {buttonCopy}
-              </Button>
-            </Animatable.View>
-          ) : null}
+          {!isPickedUp ? <AnimatedButton onPress={toggleShowOptions} text={buttonCopy} /> : null}
         </View>
         {/* When trying to reserve, open this up for selection of associated project */}
         {showUserProjects ? (

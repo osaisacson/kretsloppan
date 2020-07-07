@@ -13,6 +13,7 @@ import HeaderThree from '../../components/UI/HeaderThree';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import SectionCard from '../../components/UI/SectionCard';
 import StatusBadge from '../../components/UI/StatusBadge';
+import UserLine from '../../components/UI/UserLine';
 import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWrapper';
 //Constants
 import Colors from '../../constants/Colors';
@@ -98,11 +99,8 @@ const ProposalDetailScreen = (props) => {
       ) : null}
       <SectionCard>
         {/* Show contact info only if the user is not the creator */}
-        <ContactDetails
-          profileId={ownerId}
-          proposalId={selectedProposal.id}
-          buttonText="kontaktdetaljer"
-        />
+        <UserLine profileId={ownerId} style={{ marginBottom: 10 }} showLine />
+        <ContactDetails profileId={ownerId} proposalId={selectedProposal.id} />
         <Divider style={{ marginVertical: 10 }} />
 
         <View style={detailStyles.textCard}>

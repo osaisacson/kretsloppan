@@ -219,7 +219,7 @@ const EditProductScreen = (props) => {
       <FormFieldWrapper prompt="Skriv in en titel">
         <TextInput
           placeholder="Titel (max 30 bokstäver)"
-          maxLength={20}
+          maxLength={30}
           style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}
