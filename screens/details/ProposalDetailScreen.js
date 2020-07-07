@@ -41,7 +41,7 @@ const ProposalDetailScreen = (props) => {
   const { projectId, ownerId, id, status, title, description, price } = selectedProposal;
 
   //Return the projects that matches the id of the current proposal
-  const projectForProposal = availableProjects.filter((proj) => proj.id === projectId || {});
+  const projectForProposal = availableProjects.filter((proj) => proj.id === projectId || null);
 
   const hasEditPermission = ownerId === loggedInUserId;
   const isResolved = selectedProposal ? status === 'löst' : null;
