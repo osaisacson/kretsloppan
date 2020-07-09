@@ -66,6 +66,7 @@ const UserProfile = (props) => {
       <View style={userProfileStyles.centeredContent}>
         <Avatar.Image
           style={{
+            marginTop: 20,
             color: '#fff',
             backgroundColor: '#fff',
             borderWidth: 0.3,
@@ -112,30 +113,32 @@ const UserProfile = (props) => {
         </View>
       </View>
 
-      <View style={userProfileStyles.centeredContent}>
+      <View style={{ ...userProfileStyles.centeredContent, marginBottom: 20 }}>
         <ContactDetails
           isProfile
           profileId={currentProfile.profileId}
           buttonText="kontaktdetaljer"
         />
       </View>
+      {userProposals.length ? (
+        <HorizontalScroll
+          textItem
+          detailPath="ProposalDetail"
+          title="Efterlysningar"
+          simpleCount={userProposals.length}
+          scrollData={userProposals}
+          navigation={props.navigation}
+        />
+      ) : null}
+      {availableUserProducts.length ? (
+        <HorizontalScroll
+          title="Till Salu"
+          simpleCount={availableUserProducts.length}
+          scrollData={availableUserProducts}
+          navigation={props.navigation}
+        />
+      ) : null}
 
-      {/* Product, project and proposal sections */}
-      <HorizontalScroll
-        largeImageItem
-        detailPath="ProjectDetail"
-        title="Projekt"
-        subTitle="Projekt användaren bygger med återbruk"
-        simpleCount={userProjects.length}
-        scrollData={userProjects}
-        navigation={props.navigation}
-      />
-      <HorizontalScroll
-        title="Till Salu"
-        simpleCount={availableUserProducts.length}
-        scrollData={availableUserProducts}
-        navigation={props.navigation}
-      />
       {collectedFromUser.length ? (
         <HorizontalScroll
           title="Sålt"
@@ -144,15 +147,16 @@ const UserProfile = (props) => {
           navigation={props.navigation}
         />
       ) : null}
-      <HorizontalScroll
-        textItem
-        detailPath="ProposalDetail"
-        title="Efterlysningar"
-        subTitle="Återbruk, tjänster, tips..."
-        simpleCount={userProposals.length}
-        scrollData={userProposals}
-        navigation={props.navigation}
-      />
+      {userProjects.length ? (
+        <HorizontalScroll
+          largeImageItem
+          detailPath="ProjectDetail"
+          title="Återbruksprojekt"
+          simpleCount={userProjects.length}
+          scrollData={userProjects}
+          navigation={props.navigation}
+        />
+      ) : null}
     </ScrollViewToTop>
   );
 };

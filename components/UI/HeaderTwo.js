@@ -52,16 +52,16 @@ const HeaderTwo = (props) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
+    paddingTop: 15,
+    paddingBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
   },
   textSection: {
-    paddingTop: 20,
     paddingLeft: 15,
     paddingRight: 10,
-    paddingBottom: 2,
     flexGrow: 3,
   },
   indicatorSection: {
@@ -74,18 +74,17 @@ const styles = StyleSheet.create({
   },
   contentHeader: {
     fontFamily: 'bebas-neue-bold',
-    fontSize: 25,
+    fontSize: 24,
     marginRight: 6,
   },
   simpleCount: {
-    fontFamily: 'roboto-regular',
-    fontSize: 18,
-    marginBottom: 5,
+    fontFamily: 'roboto-light',
+    fontSize: 15,
+    marginBottom: 6,
   },
   simpleCountForSearch: {
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
-    marginBottom: 15,
   },
   indicator: {
     fontFamily: 'roboto-regular',

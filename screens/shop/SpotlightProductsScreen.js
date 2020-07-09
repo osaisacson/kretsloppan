@@ -59,21 +59,24 @@ const SpotlightProductsScreen = (props) => {
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
         <HorizontalScroll
-          largeImageItem
-          detailPath="ProjectDetail"
-          title="Senaste Projekten"
-          subTitle="Projekt som byggs med återbruk"
-          showAddLink={() => props.navigation.navigate('EditProject')}
-          showMoreLink={() => props.navigation.navigate('Projekt')}
-          showMoreLinkName={`Se alla projekt (${allProjects.length})`}
-          scrollData={recentProjects}
+          textItem
+          scrollHeight={55}
+          detailPath="ProposalDetail"
+          title="Senaste efterlysningarna"
+          subTitle="Kontakta efterlysaren om du sitter på svaret"
+          showAddLink={() => props.navigation.navigate('EditProposal')}
+          showMoreLink={
+            allProposals.length > 1 ? () => props.navigation.navigate('Efterlysningar') : false
+          }
+          showMoreLinkName={`Se alla efterlysningar (${allProposals.length})`}
+          scrollData={recentProposals}
           navigation={props.navigation}
           icon={
-            <Entypo
-              name="tools"
-              size={21}
+            <MaterialCommunityIcons
+              name="alert-decagram-outline"
+              size={24}
               style={{
-                marginRight: 5,
+                marginRight: 3,
               }}
             />
           }
@@ -97,21 +100,21 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
-          textItem
-          detailPath="ProposalDetail"
-          title="Senaste efterlysningarna"
-          subTitle="Kontakta efterlysaren om du sitter på svaret"
-          showAddLink={() => props.navigation.navigate('EditProposal')}
-          showMoreLink={() => props.navigation.navigate('Efterlysningar')}
-          showMoreLinkName={`Se alla efterlysningar (${allProposals.length})`}
-          scrollData={recentProposals}
+          largeImageItem
+          detailPath="ProjectDetail"
+          title="Senaste Projekten"
+          subTitle="Projekt som byggs med återbruk"
+          showAddLink={() => props.navigation.navigate('EditProject')}
+          showMoreLink={() => props.navigation.navigate('Projekt')}
+          showMoreLinkName={`Se alla projekt (${allProjects.length})`}
+          scrollData={recentProjects}
           navigation={props.navigation}
           icon={
-            <MaterialCommunityIcons
-              name="alert-decagram-outline"
-              size={24}
+            <Entypo
+              name="tools"
+              size={21}
               style={{
-                marginRight: 3,
+                marginRight: 5,
               }}
             />
           }

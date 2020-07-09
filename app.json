@@ -6,7 +6,7 @@
     "description": "Återbruksappen 'Kretsloppan' är ett verktyg för att synliggöra och öka användandet av återbruk. Den riktar sig mot alla intressenter - från organisationer till individer. Förutom att se tillgängligt återbruk kan man via appen också lägga upp sitt projekt och följa återbrukets resa från ett hem till ett annat.",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
-    "version": "1.0.2",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,7 +20,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.egnahemsfabriken.kretsloppan",
-      "buildNumber": "1.0.0",
+      "buildNumber": "1.0.4",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "NSCameraUsageDescription": "Enable Kretsloppan to access your camera so that you capture product, project or your profile photo.",
@@ -29,7 +29,7 @@
     },
     "android": {
       "package": "com.egnahemsfabriken.kretsloppan",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash.png",
         "backgroundColor": "#ffffff"

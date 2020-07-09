@@ -4,7 +4,6 @@ import { Divider, Button } from 'react-native-paper';
 
 import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
-import EmptyState from './EmptyState';
 import HeaderTwo from './HeaderTwo';
 import LargeImageItem from './LargeImageItem';
 import ProductItem from './ProductItem';
@@ -39,7 +38,7 @@ const HorizontalScroll = (props) => {
   const scrollData = props.scrollData;
 
   if (!scrollData.length) {
-    scrollHeight = 20;
+    scrollHeight = 0;
   }
 
   const selectItemHandler = (id, ownerId, title) => {
@@ -49,6 +48,8 @@ const HorizontalScroll = (props) => {
       detailTitle: title,
     });
   };
+
+  const scrollHeightAndMargins = scrollHeight > 0 ? scrollHeight + 70 : 0;
 
   return (
     <>
@@ -76,13 +77,13 @@ const HorizontalScroll = (props) => {
         <View
           style={{
             flex: 1,
-            height: scrollHeight + 70,
+            height: scrollHeightAndMargins,
           }}>
           {/* If dataset passed is not empty  */}
           {scrollData.length ? (
             <View
               style={{
-                height: scrollHeight + 70,
+                height: scrollHeightAndMargins,
                 marginTop: 20,
               }}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -126,9 +127,7 @@ const HorizontalScroll = (props) => {
                 ) : null}
               </ScrollView>
             </View>
-          ) : (
-            <EmptyState style={{ height: 20 }}>Inget här ännu</EmptyState>
-          )}
+          ) : null}
         </View>
       </ScrollView>
       {props.showMoreLink ? (

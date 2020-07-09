@@ -9,26 +9,6 @@ const UserItems = (props) => {
 
   return (
     <>
-      {/* Product, project and proposal sections */}
-      <HorizontalScroll
-        largeImageItem
-        detailPath="ProjectDetail"
-        title="Mina projekt"
-        subTitle="Projekt jag bygger med återbruk"
-        scrollData={userProjects}
-        simpleCount={userProjects.length}
-        navigation={navigation}
-        showAddLink={() => props.navigation.navigate('EditProject')}
-      />
-      <HorizontalScroll
-        title="Mitt tillgängliga återbruk"
-        scrollData={userUploads}
-        simpleCount={userUploads.length}
-        navigation={navigation}
-        showAddLink={() => props.navigation.navigate('EditProduct')}
-        showMoreLink={() => props.navigation.navigate('Mitt upplagda återbruk')}
-        showMoreLinkName={`Se hela mitt förråd (${userProducts.length})`}
-      />
       <HorizontalScroll
         textItem
         scrollData={activeUserProposals}
@@ -37,8 +17,32 @@ const UserItems = (props) => {
         simpleCount={activeUserProposals.length}
         navigation={navigation}
         showAddLink={() => props.navigation.navigate('EditProposal')}
-        showMoreLink={() => props.navigation.navigate('Alla mina efterlysningar')}
+        showMoreLink={
+          userProposals.length > 1
+            ? () => props.navigation.navigate('Alla mina efterlysningar')
+            : false
+        }
         showMoreLinkName={`Se alla mina efterlysningar(${userProposals.length})`}
+      />
+      <HorizontalScroll
+        title="Mitt tillgängliga återbruk"
+        scrollData={userUploads}
+        simpleCount={userUploads.length}
+        navigation={navigation}
+        showAddLink={() => props.navigation.navigate('EditProduct')}
+        showMoreLink={
+          userProducts.length ? () => props.navigation.navigate('Mitt upplagda återbruk') : false
+        }
+        showMoreLinkName={`Se hela mitt förråd (${userProducts.length})`}
+      />
+      <HorizontalScroll
+        largeImageItem
+        detailPath="ProjectDetail"
+        title="Mina återbruksprojekt"
+        scrollData={userProjects}
+        simpleCount={userProjects.length}
+        navigation={navigation}
+        showAddLink={() => props.navigation.navigate('EditProject')}
       />
     </>
   );
