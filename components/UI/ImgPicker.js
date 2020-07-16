@@ -5,9 +5,9 @@ import { View, Image, Text, StyleSheet, Alert } from 'react-native';
 
 import ButtonAction from '../../components/UI/ButtonAction';
 
-const ImgPicker = (props) => {
+const ImgPicker = ({ passedImage, onImageTaken }) => {
   const [isUploading, setIsUploading] = useState(false);
-  const [pickedImage, setPickedImage] = useState(props.passedImage); //Set state to be a previously taken picture if we have one. Passed from wherever we use this component.
+  const [pickedImage, setPickedImage] = useState(passedImage); //Set state to be a previously taken picture if we have one. Passed from wherever we use this component.
 
   const verifyPermissions = async () => {
     const permissionGallery = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -56,8 +56,8 @@ const ImgPicker = (props) => {
     try {
       setIsUploading(true);
       if (!pickerResult.cancelled) {
-        setPickedImage(pickerResult.uri ? pickerResult.uri : props.passedImage); //show image from local storage
-        props.onImageTaken(pickerResult.base64); //Forwards the taken picture to the function 'onImageTaken' passed as a props wherever we use the ImgPicker component
+        setPickedImage(pickerResult.uri ? pickerResult.uri : passedImage); //show image from local storage
+        onImageTaken(pickerResult.base64); //Forwards the taken picture to the function 'onImageTaken' passed as a props wherever we use the ImgPicker component
       }
     } catch (e) {
       console.log(e);

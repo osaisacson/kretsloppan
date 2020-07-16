@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-//Imports
+
 import FormErrorText from './FormErrorText';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';

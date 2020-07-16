@@ -4,28 +4,36 @@ import { ScrollView, View } from 'react-native';
 
 import HeaderTwo from './HeaderTwo';
 
-const HorizontalScrollContainer = (props) => {
+const HorizontalScrollContainer = ({
+  scrollHeight,
+  title,
+  subTitle,
+  extraSubTitle,
+  icon,
+  showNotificationBadge,
+  children,
+}) => {
   //Change scrollHeight according to which component we are rendering
-  const scrollHeight = props.scrollHeight ? props.scrollHeight : 200;
+  const scrollHeightLocal = scrollHeight ? scrollHeight : 200;
 
   return (
     <ScrollView scrollEventThrottle={16}>
-      {props.title ? (
+      {title ? (
         <HeaderTwo
-          title={props.title}
-          subTitle={props.subTitle}
-          extraSubTitle={props.extraSubTitle}
-          icon={props.icon}
-          showNotificationBadge={props.showNotificationBadge}
+          title={title}
+          subTitle={subTitle}
+          extraSubTitle={extraSubTitle}
+          icon={icon}
+          showNotificationBadge={showNotificationBadge}
         />
       ) : null}
       <View
         style={{
-          height: scrollHeight,
+          height: scrollHeightLocal,
           marginTop: 20,
         }}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {props.children}
+          {children}
         </ScrollView>
       </View>
     </ScrollView>

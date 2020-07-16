@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const EmptyState = (props) => {
+const EmptyState = ({ style, text, children }) => {
   return (
-    <View style={{ ...styles.container, ...props.style }}>
+    <View style={{ ...styles.container, ...style }}>
       <Text style={styles.text}>
-        {props.text}
-        {props.children}
+        {text}
+        {children}
       </Text>
     </View>
   );

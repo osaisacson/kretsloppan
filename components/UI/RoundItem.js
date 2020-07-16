@@ -5,17 +5,17 @@ import CachedImage from '../../components/UI/CachedImage';
 import Colors from '../../constants/Colors';
 import TouchableCmp from './TouchableCmp';
 
-const RoundItem = (props) => {
+const RoundItem = ({ isSelected, onSelect, itemData }) => {
   return (
     <View style={styles.project}>
-      <View style={props.isSelected ? styles.selectedTouchable : styles.touchable}>
-        <TouchableCmp onPress={props.onSelect} useForeground>
+      <View style={isSelected ? styles.selectedTouchable : styles.touchable}>
+        <TouchableCmp onPress={onSelect} useForeground>
           <View style={styles.imageContainer}>
-            <CachedImage style={styles.image} uri={props.itemData.image} />
+            <CachedImage style={styles.image} uri={itemData.image} />
           </View>
         </TouchableCmp>
       </View>
-      <Text style={styles.title}>{props.itemData.title} </Text>
+      <Text style={styles.title}>{itemData.title} </Text>
     </View>
   );
 };

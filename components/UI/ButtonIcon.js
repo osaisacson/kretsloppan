@@ -4,21 +4,21 @@ import { IconButton, Badge } from 'react-native-paper';
 
 import TouchableCmp from './TouchableCmp';
 
-const ButtonIcon = (props) => {
+const ButtonIcon = ({ style, badge, icon, size, borderColor, color, onSelect }) => {
   return (
-    <TouchableCmp style={{ ...styles.container, ...props.style }}>
-      {props.badge ? <Badge style={styles.badge}>{props.badge}</Badge> : null}
+    <TouchableCmp style={{ ...styles.container, ...style }}>
+      {badge ? <Badge style={styles.badge}>{badge}</Badge> : null}
       <IconButton
-        icon={props.icon}
-        size={props.size ? props.size : 20}
+        icon={icon}
+        size={size ? size : 20}
         animated
         color="#fff"
         style={{
-          borderColor: props.borderColor ? props.borderColor : '#fff',
+          borderColor: borderColor ? borderColor : '#fff',
           borderWidth: 0.5,
-          backgroundColor: props.color,
+          backgroundColor: color,
         }}
-        onPress={props.onSelect}
+        onPress={onSelect}
       />
     </TouchableCmp>
   );

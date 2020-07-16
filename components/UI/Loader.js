@@ -2,10 +2,10 @@ import React from 'react';
 import { ActivityIndicator, View, StyleSheet, Text } from 'react-native';
 import Colors from '../../constants/Colors';
 
-const Loader = (props) => {
+const Loader = ({ upload }) => {
   return (
     <View style={styles.centered}>
-      {props.upload ? <Text>Laddar upp...</Text> : null}
+      {upload ? <Text>Laddar upp...</Text> : null}
       <ActivityIndicator size="large" color={Colors.primary} />
     </View>
   );

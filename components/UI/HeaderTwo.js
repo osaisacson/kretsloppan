@@ -6,19 +6,19 @@ import Colors from './../../constants/Colors';
 import ButtonAdd from './ButtonAdd';
 import ButtonIcon from './ButtonIcon';
 
-const HeaderTwo = (props) => {
-  const {
-    icon,
-    title,
-    subTitle,
-    extraSubTitle,
-    indicator,
-    buttonText,
-    buttonOnPress,
-    simpleCount,
-    showAddLink,
-    showNotificationBadge,
-  } = props;
+const HeaderTwo = ({
+  icon,
+  title,
+  subTitle,
+  extraSubTitle,
+  indicator,
+  buttonText,
+  buttonOnPress,
+  simpleCount,
+  showAddLink,
+  showNotificationBadge,
+  isSearch,
+}) => {
   const extraStyle = buttonText ? { maxWidth: '80%' } : { maxWidth: '99%' };
   return (
     <View style={styles.headerContainer}>
@@ -27,8 +27,8 @@ const HeaderTwo = (props) => {
           {icon ? icon : null}
           <Text style={styles.contentHeader}>{title}</Text>
           {simpleCount ? (
-            <Text style={props.isSearch ? styles.simpleCountForSearch : styles.simpleCount}>
-              {props.isSearch ? `${simpleCount} Hittade` : `(${simpleCount})`}
+            <Text style={isSearch ? styles.simpleCountForSearch : styles.simpleCount}>
+              {isSearch ? `${simpleCount} Hittade` : `(${simpleCount})`}
             </Text>
           ) : null}
           {showNotificationBadge ? (

@@ -3,8 +3,8 @@ import { Text, StyleSheet } from 'react-native';
 
 import Colors from '../../constants/Colors';
 
-const HeaderThree = (props) => {
-  return <Text style={{ ...styles.headerThree, ...props.style }}>{props.text}</Text>;
+const HeaderThree = ({ style, text }) => {
+  return <Text style={{ ...styles.headerThree, ...style }}>{text}</Text>;
 };
 
 const styles = StyleSheet.create({

@@ -4,10 +4,10 @@ import * as Animatable from 'react-native-animatable';
 
 import Colors from '../../constants/Colors';
 
-const ActionLine = (props) => {
+const ActionLine = ({ onPress, isActive, badgeNr }) => {
   return (
     <TouchableOpacity
-      onPress={props.onPress}
+      onPress={onPress}
       style={{
         shadowColor: '#000',
         shadowOffset: {
@@ -32,7 +32,7 @@ const ActionLine = (props) => {
           color: Colors.darkPrimary,
           fontSize: 16,
         }}>
-        {props.isActive ? 'Dölj' : 'Visa'}{' '}
+        {isActive ? 'Dölj' : 'Visa'}{' '}
       </Text>
       <Animatable.View
         animation="pulse"
@@ -47,7 +47,7 @@ const ActionLine = (props) => {
           backgroundColor: Colors.indicator,
           borderRadius: 50,
         }}>
-        <Text style={{ color: '#fff' }}>{props.badgeNr}</Text>
+        <Text style={{ color: '#fff' }}>{badgeNr}</Text>
       </Animatable.View>
       <Text
         style={{

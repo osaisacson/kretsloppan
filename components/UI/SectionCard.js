@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-native-paper';
 
-const SectionCard = (props) => {
+const SectionCard = ({ children }) => {
   return (
     <Card
       style={{
@@ -9,7 +9,7 @@ const SectionCard = (props) => {
         paddingVertical: 10,
         marginVertical: 5,
       }}>
-      {props.children}
+      {children}
     </Card>
   );
 };

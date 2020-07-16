@@ -3,9 +3,7 @@ import React from 'react';
 //Imports
 import { View, Text } from 'react-native';
 
-const FilterLine = (props) => {
-  const { filter } = props;
-
+const FilterLine = ({ filter }) => {
   return filter ? (
     <View
       style={{

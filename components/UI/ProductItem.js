@@ -10,10 +10,17 @@ import Styles from './../../constants/Styles';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
-const ProductItem = (props) => {
-  const isReserved = props.itemData.status === 'reserverad';
-  const isOrganised = props.itemData.status === 'ordnad';
-  const isPickedUp = props.itemData.status === 'hämtad';
+const ProductItem = ({
+  navigation,
+  itemData,
+  showBackgroundText,
+  isHorizontal,
+  showSmallStatusIcons,
+  onSelect,
+}) => {
+  const isReserved = itemData.status === 'reserverad';
+  const isOrganised = itemData.status === 'ordnad';
+  const isPickedUp = itemData.status === 'hämtad';
 
   let icon;
   let bgColor;
@@ -33,22 +40,22 @@ const ProductItem = (props) => {
     bgColor = Colors.completed;
   }
 
-  const relevantDate = props.itemData.collectedDate
-    ? `Hämtad ${Moment(props.itemData.collectedDate).locale('sv').format('D MMMM YYYY')}`
-    : props.itemData.organisedDate
-    ? `Hämtas ${Moment(props.itemData.organisedDate).locale('sv').format('D MMMM YYYY')}`
-    : props.itemData.reservedDate
-    ? `Reserverad till ${Moment(props.itemData.reservedDate).locale('sv').format('D MMMM YYYY')}`
+  const relevantDate = itemData.collectedDate
+    ? `Hämtad ${Moment(itemData.collectedDate).locale('sv').format('D MMMM YYYY')}`
+    : itemData.organisedDate
+    ? `Hämtas ${Moment(itemData.organisedDate).locale('sv').format('D MMMM YYYY')}`
+    : itemData.reservedDate
+    ? `Reserverad till ${Moment(itemData.reservedDate).locale('sv').format('D MMMM YYYY')}`
     : 'Inget relevant datum';
 
   return (
     <View style={styles.container}>
-      {props.showBackgroundText ? (
+      {showBackgroundText ? (
         <Text numberOfLines={1} ellipsizeMode="tail" style={styles.date}>
           {relevantDate}
         </Text>
       ) : null}
-      <Card style={props.isHorizontal ? styles.horizontalProduct : styles.product}>
+      <Card style={isHorizontal ? styles.horizontalProduct : styles.product}>
         <View
           style={{
             position: 'absolute',
@@ -57,16 +64,16 @@ const ProductItem = (props) => {
           }}>
           <UserAvatar
             size={30}
-            userId={props.itemData.ownerId}
+            userId={itemData.ownerId}
             showBadge={false}
             actionOnPress={() => {
-              props.navigation.navigate('Användare', {
-                detailId: props.itemData.ownerId,
+              navigation.navigate('Användare', {
+                detailId: itemData.ownerId,
               });
             }}
           />
         </View>
-        {props.showSmallStatusIcons ? (
+        {showSmallStatusIcons ? (
           <Ionicons
             style={{
               position: 'absolute',
@@ -83,26 +90,26 @@ const ProductItem = (props) => {
         ) : null}
 
         <View style={styles.touchable}>
-          <TouchableCmp onPress={props.onSelect} useForeground>
+          <TouchableCmp onPress={onSelect} useForeground>
             <View style={styles.imageContainer}>
-              <CachedImage style={styles.image} uri={props.itemData.image} />
+              <CachedImage style={styles.image} uri={itemData.image} />
             </View>
-            {props.itemData.priceText && !props.itemData.price ? (
-              <Text style={styles.price}>{props.itemData.priceText}</Text>
+            {itemData.priceText && !itemData.price ? (
+              <Text style={styles.price}>{itemData.priceText}</Text>
             ) : null}
 
-            {props.itemData.price && !props.itemData.priceText ? (
-              <Text style={styles.price}>{props.itemData.price ? props.itemData.price : 0} kr</Text>
+            {itemData.price && !itemData.priceText ? (
+              <Text style={styles.price}>{itemData.price ? itemData.price : 0} kr</Text>
             ) : null}
           </TouchableCmp>
         </View>
       </Card>
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-        {props.itemData.title}
+        {itemData.title}
       </Text>
-      {props.showBackgroundText ? (
+      {showBackgroundText ? (
         <Text numberOfLines={5} ellipsizeMode="tail" style={styles.backgroundText}>
-          {props.itemData.background}
+          {itemData.background}
         </Text>
       ) : null}
     </View>

@@ -5,20 +5,20 @@ import CachedImage from '../../components/UI/CachedImage';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
-const ProjectItem = (props) => {
+const ProjectItem = ({ onSelect, itemData }) => {
   return (
     <View style={styles.container}>
       <Card style={styles.product}>
         <View style={styles.touchable}>
-          <TouchableCmp onPress={props.onSelect} useForeground>
+          <TouchableCmp onPress={onSelect} useForeground>
             <View style={styles.imageContainer}>
-              <CachedImage style={styles.image} uri={props.itemData.image} />
+              <CachedImage style={styles.image} uri={itemData.image} />
             </View>
           </TouchableCmp>
         </View>
       </Card>
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-        {props.itemData.title}
+        {itemData.title}
       </Text>
     </View>
   );

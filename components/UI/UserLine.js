@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import UserAvatar from './UserAvatar';
 
-const ContactDetails = (props) => {
+const UserLine = (props) => {
   const navigation = useNavigation();
 
   //Find the profile which matches the id we passed on clicking to the detail
@@ -51,4 +51,4 @@ const ContactDetails = (props) => {
   );
 };
 
-export default ContactDetails;
+export default UserLine;

@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 
 import Colors from '../../constants/Colors';
 
-const AnimatedButton = (props) => {
+const AnimatedButton = ({ onPress, text }) => {
   return (
     <Animatable.View
       animation="flipInX"
@@ -17,8 +17,8 @@ const AnimatedButton = (props) => {
         color={Colors.darkPrimary}
         style={{ width: '100%' }}
         mode="contained"
-        onPress={props.onPress}>
-        {props.text}
+        onPress={onPress}>
+        {text}
       </Button>
     </Animatable.View>
   );

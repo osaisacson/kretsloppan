@@ -1,9 +1,9 @@
 import React from 'react';
-//Imports
 import { Badge } from 'react-native-paper';
+
 import Colors from '../../constants/Colors';
 
-const ResolvedBadge = (props) => {
+const ResolvedBadge = ({ badgeText }) => {
   return (
     <Badge
       style={{
@@ -22,7 +22,7 @@ const ResolvedBadge = (props) => {
         shadowRadius: 3.84,
         elevation: 5,
       }}>
-      {props.badgeText}
+      {badgeText}
     </Badge>
   );
 };

@@ -3,25 +3,25 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import TouchableCmp from './TouchableCmp';
 
-const PickerItem = (props) => {
+const PickerItem = ({ color, isSelected, onSelect, title }) => {
   return (
     <View style={styles.item}>
       <View
         style={{
           ...styles.touchable,
-          backgroundColor: props.color,
-          borderWidth: props.isSelected ? 1 : 0.5,
-          height: props.isSelected ? 65 : 55,
+          backgroundColor: color,
+          borderWidth: isSelected ? 1 : 0.5,
+          height: isSelected ? 65 : 55,
         }}>
-        <TouchableCmp onPress={props.onSelect} useForeground>
+        <TouchableCmp onPress={onSelect} useForeground>
           <View style={styles.textContainer}>
             <Text
               style={{
                 fontSize: 14,
-                fontFamily: props.isSelected ? 'roboto-bold-italic' : 'roboto-light-italic',
+                fontFamily: isSelected ? 'roboto-bold-italic' : 'roboto-light-italic',
                 color: '#000',
               }}>
-              {props.title}
+              {title}
             </Text>
           </View>
         </TouchableCmp>

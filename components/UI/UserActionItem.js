@@ -6,9 +6,9 @@ import CachedImage from './CachedImage';
 import ProductStatusCopy from './ProductStatusCopy';
 import TouchableCmp from './TouchableCmp';
 
-const UserActionItem = (props) => {
+const UserActionItem = ({ navigation, detailPath, item, style }) => {
   const selectItemHandler = (id, ownerId, title) => {
-    props.navigation.navigate(props.detailPath, {
+    navigation.navigate(detailPath, {
       detailId: id,
       ownerId,
       detailTitle: title,
@@ -18,19 +18,19 @@ const UserActionItem = (props) => {
   return (
     <TouchableCmp
       onPress={() => {
-        selectItemHandler(props.item.id, props.item.ownerId, props.item.title);
+        selectItemHandler(item.id, item.ownerId, item.title);
       }}
       useForeground>
-      <View style={{ ...styles.itemContainer, ...props.style }}>
+      <View style={{ ...styles.itemContainer, ...style }}>
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.touchable}>
             <View style={styles.imageContainer}>
-              <CachedImage style={styles.image} uri={props.item.image} />
+              <CachedImage style={styles.image} uri={item.image} />
             </View>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{props.item.title}</Text>
-            <ProductStatusCopy essentialStatusOnly selectedProduct={props.item} />
+            <Text style={styles.title}>{item.title}</Text>
+            <ProductStatusCopy essentialStatusOnly selectedProduct={item} />
           </View>
         </View>
         <Entypo name="chevron-thin-right" size={20} color="#c9c9c9" />

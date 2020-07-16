@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FAB, Portal, Provider } from 'react-native-paper';
 
-const AddButton = (props) => {
+const AddButton = ({ navigation }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {
@@ -18,17 +18,17 @@ const AddButton = (props) => {
             {
               icon: 'star',
               label: 'Nytt Återbruk',
-              onPress: () => props.navigation.navigate('EditProduct'),
+              onPress: () => navigation.navigate('EditProduct'),
             },
             {
               icon: 'star',
               label: 'Nytt Projekt',
-              onPress: () => props.navigation.navigate('EditProject'),
+              onPress: () => navigation.navigate('EditProject'),
             },
             {
               icon: 'star',
               label: 'Ny Efterlysning',
-              onPress: () => props.navigation.navigate('EditProposal'),
+              onPress: () => navigation.navigate('EditProposal'),
             },
           ]}
           onStateChange={toggleOpen}

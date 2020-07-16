@@ -2,11 +2,9 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Image, CacheManager } from 'react-native-expo-image-cache';
 
-const CachedImage = (props) => {
+const CachedImage = ({ uri, style }) => {
   const [source, setSource] = useState(null);
-  const [error, setError] = useState('');
-
-  const { uri } = props;
+  const [error, setError] = useState(''); //TBD: display error
 
   useEffect(() => {
     let isSubscribed = true;
@@ -28,7 +26,7 @@ const CachedImage = (props) => {
     });
   }, []);
 
-  return <Image style={props.style} {...{ preview: source, uri }} />;
+  return <Image style={style} {...{ preview: source, uri }} />;
 };
 
 export default CachedImage;

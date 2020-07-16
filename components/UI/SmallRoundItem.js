@@ -4,9 +4,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import CachedImage from '../../components/UI/CachedImage';
 import TouchableCmp from './TouchableCmp';
 
-const SmallRoundItem = (props) => {
+const SmallRoundItem = ({ navigation, detailPath, style, item, showText }) => {
   const selectItemHandler = (id, ownerId, title) => {
-    props.navigation.navigate(props.detailPath, {
+    navigation.navigate(detailPath, {
       detailId: id,
       ownerId,
       detailTitle: title,
@@ -14,19 +14,19 @@ const SmallRoundItem = (props) => {
   };
 
   return (
-    <View style={{ ...styles.project, ...props.style }}>
+    <View style={{ ...styles.project, ...style }}>
       <View style={styles.touchable}>
         <TouchableCmp
           onPress={() => {
-            selectItemHandler(props.item.id, props.item.ownerId, props.item.title);
+            selectItemHandler(item.id, item.ownerId, item.title);
           }}
           useForeground>
           <View style={styles.imageContainer}>
-            <CachedImage style={styles.image} uri={props.item.image} />
+            <CachedImage style={styles.image} uri={item.image} />
           </View>
         </TouchableCmp>
       </View>
-      {props.showText ? <Text style={styles.title}>{props.item.title}</Text> : null}
+      {showText ? <Text style={styles.title}>{item.title}</Text> : null}
     </View>
   );
 };

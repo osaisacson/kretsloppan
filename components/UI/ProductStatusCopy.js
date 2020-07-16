@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 
-const ProductStatusCopy = (props) => {
+const ProductStatusCopy = ({ selectedProduct, isBold, style, text, essentialStatusOnly }) => {
   const {
     status,
     reservedUntil,
@@ -18,7 +18,7 @@ const ProductStatusCopy = (props) => {
     sellerAgreed,
     suggestedDate,
     address,
-  } = props.selectedProduct;
+  } = selectedProduct;
 
   //The texts for the status will change based on where we are in the reservation process
   let mainStatus = '';
@@ -99,32 +99,28 @@ const ProductStatusCopy = (props) => {
     return null;
   }
 
-  const InfoText = (props) => {
+  const InfoText = () => {
     return (
       <Text
         style={
-          props.isBold
-            ? { ...styles.infoText, ...styles.infoTextEmphasis, ...props.style }
-            : { ...styles.infoText, ...props.style }
+          isBold
+            ? { ...styles.infoText, ...styles.infoTextEmphasis, ...style }
+            : { ...styles.infoText, ...style }
         }>
-        {props.text}
+        {text}
       </Text>
     );
   };
 
   return (
     <View style={{ marginBottom: 5, zIndex: 100 }}>
-      {mainStatus && !props.essentialStatusOnly ? (
-        <InfoText style={props.style} text={mainStatusFormatted} />
+      {mainStatus && !essentialStatusOnly ? (
+        <InfoText style={style} text={mainStatusFormatted} />
       ) : null}
       {secondaryStatus ? (
-        <InfoText
-          isBold
-          style={{ ...props.style, color: Colors.darkPrimary }}
-          text={secondaryStatus}
-        />
+        <InfoText isBold style={{ ...style, color: Colors.darkPrimary }} text={secondaryStatus} />
       ) : null}
-      {tertiaryStatus ? <InfoText style={props.style} text={tertiaryStatus} /> : null}
+      {tertiaryStatus ? <InfoText style={style} text={tertiaryStatus} /> : null}
     </View>
   );
 };

@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 
 import TouchableCmp from './TouchableCmp';
 
-const UserAvatar = (props) => {
+const UserAvatar = ({ userId, actionOnPress, style, size, showBadge }) => {
   //Get logged in userId from state, and products
   let currentProfile = useSelector((state) => state.profiles.userProfile || {});
   //If we are passing a userId, use this as the current user, else use the currently logged in user
-  if (props.userId) {
+  if (userId) {
     currentProfile = useSelector((state) =>
-      state.profiles.allProfiles.find((prof) => prof.profileId === props.userId)
+      state.profiles.allProfiles.find((prof) => prof.profileId === userId)
     );
   }
 
@@ -39,10 +39,10 @@ const UserAvatar = (props) => {
   return (
     <TouchableCmp
       activeOpacity={0.5}
-      onPress={props.actionOnPress}
+      onPress={actionOnPress}
       style={
-        props.style
-          ? props.style
+        style
+          ? style
           : {
               marginHorizontal: 10,
               marginTop: 40,
@@ -60,9 +60,9 @@ const UserAvatar = (props) => {
             ? { uri: currentProfile.image }
             : require('./../../assets/avatar-placeholder-image.png')
         }
-        size={props.size ? props.size : 40}
+        size={size ? size : 40}
       />
-      {props.showBadge && badgeNumber > 0 ? (
+      {showBadge && badgeNumber > 0 ? (
         <Badge
           style={{
             fontWeight: 'bold',

@@ -7,13 +7,13 @@ import CachedImage from '../../components/UI/CachedImage';
 import Colors from '../../constants/Colors';
 import * as profilesActions from '../../store/actions/profiles';
 
-const Introduction = (props) => {
+const Introduction = ({ pic, currUserId, text }) => {
   const dispatch = useDispatch();
   const [visibleBanner, setVisibleBanner] = useState(true);
 
   return (
     <View style={styles.container}>
-      {visibleBanner ? <CachedImage style={styles.cachedImage} uri={props.pic} /> : null}
+      {visibleBanner ? <CachedImage style={styles.cachedImage} uri={pic} /> : null}
       <Banner
         visible={visibleBanner}
         actions={[
@@ -22,12 +22,12 @@ const Introduction = (props) => {
             style: { backgroundColor: Colors.darkPrimary, color: '#fff' },
             labelStyle: { color: '#fff' },
             onPress: () => {
-              dispatch(profilesActions.updateReadNews(props.currUserId));
+              dispatch(profilesActions.updateReadNews(currUserId));
               setVisibleBanner(false);
             },
           },
         ]}>
-        <Text style={styles.bannerText}>{props.text}</Text>
+        <Text style={styles.bannerText}>{text}</Text>
       </Banner>
     </View>
   );

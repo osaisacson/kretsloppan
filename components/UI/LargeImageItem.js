@@ -5,18 +5,18 @@ import Styles from './../../constants/Styles';
 import CachedImage from './CachedImage';
 import TouchableCmp from './TouchableCmp';
 
-const LargeImageItem = (props) => {
+const LargeImageItem = ({ onSelect, itemData }) => {
   return (
     <View style={styles.largeProject}>
       <View style={styles.largeTouchable}>
-        <TouchableCmp onPress={props.onSelect} useForeground>
+        <TouchableCmp onPress={onSelect} useForeground>
           <View style={styles.largeImageContainer}>
-            <CachedImage style={styles.largeImage} uri={props.itemData.image} />
+            <CachedImage style={styles.largeImage} uri={itemData.image} />
           </View>
         </TouchableCmp>
       </View>
-      <Text style={styles.title}>{props.itemData.title} </Text>
-      <Text style={styles.slogan}>{props.itemData.slogan} </Text>
+      <Text style={styles.title}>{itemData.title} </Text>
+      <Text style={styles.slogan}>{itemData.slogan} </Text>
     </View>
   );
 };

@@ -7,29 +7,29 @@ import Colors from '../../constants/Colors';
 import Styles from './../../constants/Styles';
 import TouchableCmp from './TouchableCmp';
 
-const TextItem = (props) => {
+const TextItem = ({ itemData, onSelect }) => {
   const resolvedBadge = useMemo(
     () =>
-      props.itemData.status === 'löst' ? (
+      itemData.status === 'löst' ? (
         <ResolvedBadge badgeText="Löst!" />
       ) : (
         <View style={styles.spacer} />
       ),
-    [props.itemData.status]
+    [itemData.status]
   );
 
   return (
     <Card style={{ height: Styles.textItemHeight }}>
       <View style={styles.container}>
         <View style={styles.touchable}>
-          <TouchableCmp onPress={props.onSelect} useForeground>
+          <TouchableCmp onPress={onSelect} useForeground>
             <>
               {resolvedBadge}
               <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-                {props.itemData.title}
+                {itemData.title}
               </Text>
               <Text numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
-                {props.itemData.description}
+                {itemData.description}
               </Text>
             </>
           </TouchableCmp>

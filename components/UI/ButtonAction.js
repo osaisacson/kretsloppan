@@ -4,19 +4,27 @@ import { Button } from 'react-native-paper';
 
 import TouchableCmp from './TouchableCmp';
 
-const ButtonAction = (props) => {
+const ButtonAction = ({
+  style,
+  buttonColor,
+  disabled,
+  buttonLabelStyle,
+  onSelect,
+  icon,
+  title,
+}) => {
   return (
-    <TouchableCmp style={{ ...styles.container, ...props.style }}>
+    <TouchableCmp style={{ ...styles.container, ...style }}>
       <Button
-        color={props.buttonColor}
-        disabled={props.disabled ? props.disabled : false}
+        color={buttonColor}
+        disabled={disabled ? disabled : false}
         mode="contained"
         compact
-        style={{ ...styles.button, ...props.style }}
-        labelStyle={[styles.label, props.buttonLabelStyle]}
-        onPress={props.onSelect}
-        icon={props.icon}>
-        {props.title}
+        style={{ ...styles.button, ...style }}
+        labelStyle={[styles.label, buttonLabelStyle]}
+        onPress={onSelect}
+        icon={icon}>
+        {title}
       </Button>
     </TouchableCmp>
   );
