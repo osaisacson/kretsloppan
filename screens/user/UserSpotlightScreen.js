@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux';
 
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import Colors from '../../constants/Colors';
-import { userProfileStyles } from './UserProfile';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
 import UserActions from './UserActions';
 import UserItems from './UserItems';
+import { userProfileStyles } from './UserProfile';
 
 const UserSpotlightScreen = (props) => {
   //TBD: Find a better solution for this. Currently the user object does not update if we don't pull in all profiles
