@@ -10,8 +10,8 @@ import ProjectDetailScreen, {
 import ProposalDetailScreen, {
   screenOptions as proposalDetailScreenOptions,
 } from '../screens/details/ProposalDetailScreen';
-import UserProfile from '../screens/details/UserProfile';
 import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
+import UserProfile from '../screens/user/UserProfile';
 import { defaultNavOptions, defaultMainPageOptions, mainPageOptionsWithUser } from './NavHeaders';
 
 const ProfilesStackNavigator = createStackNavigator();

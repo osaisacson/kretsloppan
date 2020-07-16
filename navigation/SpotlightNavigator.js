@@ -1,4 +1,3 @@
-import { StackActions, useNavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
@@ -18,10 +17,10 @@ import EditProposalScreen, {
 import ProductDetailScreen from '../screens/details/ProductDetailScreen';
 import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
 import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
-import UserProfile from '../screens/details/UserProfile';
 import ProductsScreen from '../screens/shop/ProductsScreen';
 import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
+import UserProfile from '../screens/user/UserProfile';
 import UserProposalsScreen from '../screens/user/UserProposalsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
 import {
@@ -92,14 +91,11 @@ export const SpotlightNavigator = ({ navigation }) => {
         component={UserSpotlightScreen}
         options={mainPageOptionsNoUser}
       />
-      {/* User product screens  */}
       <SpotlightStackNavigator.Screen
         name="Mitt upplagda återbruk"
         component={UserProductsScreen}
         options={mainPageOptionsNoUser}
       />
-      {/* User project screens  */}
-      {/* User proposal screens  */}
       <SpotlightStackNavigator.Screen
         name="Alla mina efterlysningar"
         component={UserProposalsScreen}

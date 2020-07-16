@@ -53,7 +53,6 @@ const HorizontalScroll = (props) => {
 
   return (
     <>
-      <Divider />
       <ScrollView
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={16}
@@ -129,17 +128,21 @@ const HorizontalScroll = (props) => {
             </View>
           ) : null}
         </View>
+        {!props.showMoreLink ? <Divider /> : null}
       </ScrollView>
       {props.showMoreLink ? (
-        <Button
-          animated
-          mode="contained"
-          style={{ marginHorizontal: 10, marginBottom: 20, alignSelf: 'center' }}
-          labelStyle={{ fontSize: 10 }}
-          color={Colors.darkPrimary}
-          onPress={props.showMoreLink}>
-          {props.showMoreLinkName}
-        </Button>
+        <>
+          <Button
+            animated
+            mode="contained"
+            style={{ marginHorizontal: 10, marginBottom: 20, alignSelf: 'center' }}
+            labelStyle={{ fontSize: 10 }}
+            color={Colors.darkPrimary}
+            onPress={props.showMoreLink}>
+            {props.showMoreLinkName}
+          </Button>
+          <Divider />
+        </>
       ) : null}
     </>
   );

@@ -1,10 +1,10 @@
 import React from 'react';
-//Imports
 import { View, StyleSheet } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
 import ContactDetails from '../../components/UI/ContactDetails';
+import EmptyState from '../../components/UI/EmptyState';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ScrollViewToTop from '../../components/wrappers/ScrollViewToTop';
 
@@ -120,43 +120,52 @@ const UserProfile = (props) => {
           buttonText="kontaktdetaljer"
         />
       </View>
-      {userProposals.length ? (
-        <HorizontalScroll
-          textItem
-          detailPath="ProposalDetail"
-          title="Efterlysningar"
-          simpleCount={userProposals.length}
-          scrollData={userProposals}
-          navigation={props.navigation}
-        />
-      ) : null}
-      {availableUserProducts.length ? (
-        <HorizontalScroll
-          title="Till Salu"
-          simpleCount={availableUserProducts.length}
-          scrollData={availableUserProducts}
-          navigation={props.navigation}
-        />
-      ) : null}
+      {userProposals.length ||
+      availableUserProducts.length ||
+      collectedFromUser.length ||
+      userProjects.length ? (
+        <>
+          {userProposals.length ? (
+            <HorizontalScroll
+              textItem
+              detailPath="ProposalDetail"
+              title="Efterlysningar"
+              simpleCount={userProposals.length}
+              scrollData={userProposals}
+              navigation={props.navigation}
+            />
+          ) : null}
+          {availableUserProducts.length ? (
+            <HorizontalScroll
+              title="Till Salu"
+              simpleCount={availableUserProducts.length}
+              scrollData={availableUserProducts}
+              navigation={props.navigation}
+            />
+          ) : null}
 
-      {collectedFromUser.length ? (
-        <HorizontalScroll
-          title="Sålt"
-          simpleCount={collectedFromUser.length}
-          scrollData={collectedFromUser}
-          navigation={props.navigation}
-        />
-      ) : null}
-      {userProjects.length ? (
-        <HorizontalScroll
-          largeImageItem
-          detailPath="ProjectDetail"
-          title="Återbruksprojekt"
-          simpleCount={userProjects.length}
-          scrollData={userProjects}
-          navigation={props.navigation}
-        />
-      ) : null}
+          {collectedFromUser.length ? (
+            <HorizontalScroll
+              title="Sålt"
+              simpleCount={collectedFromUser.length}
+              scrollData={collectedFromUser}
+              navigation={props.navigation}
+            />
+          ) : null}
+          {userProjects.length ? (
+            <HorizontalScroll
+              largeImageItem
+              detailPath="ProjectDetail"
+              title="Återbruksprojekt"
+              simpleCount={userProjects.length}
+              scrollData={userProjects}
+              navigation={props.navigation}
+            />
+          ) : null}
+        </>
+      ) : (
+        <EmptyState>Användaren har inte lagt upp något ännu</EmptyState>
+      )}
     </ScrollViewToTop>
   );
 };

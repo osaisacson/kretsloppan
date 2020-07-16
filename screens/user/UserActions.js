@@ -7,15 +7,13 @@ import ActionLine from '../../components/UI/ActionLine';
 import UserActionItem from '../../components/UI/UserActionItem';
 import Colors from '../../constants/Colors';
 
-const UserActions = (props) => {
-  const [showUserActions, setShowUserActions] = useState(props.falseAtStart);
+const UserActions = ({ navigation, falseAtStart }) => {
+  const [showUserActions, setShowUserActions] = useState(falseAtStart);
 
   const availableProducts = useSelector((state) => state.products.availableProducts);
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const loggedInUserId = currentProfile.profileId;
   const userProducts = availableProducts.filter((prod) => prod.ownerId === loggedInUserId);
-
-  const { navigation } = props;
 
   //Reserved by or from user
   const reservedByOrFromUserRaw = availableProducts.filter(

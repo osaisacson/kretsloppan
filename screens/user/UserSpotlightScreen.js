@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import Colors from '../../constants/Colors';
-import { userProfileStyles } from '../details/UserProfile';
+import { userProfileStyles } from './UserProfile';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
 import UserActions from './UserActions';
 import UserItems from './UserItems';
@@ -104,7 +104,7 @@ const UserSpotlightScreen = (props) => {
           />
           <Avatar.Image
             style={{
-              marginTop: 50,
+              marginTop: 5,
               color: '#fff',
               backgroundColor: '#fff',
               borderWidth: 0.3,

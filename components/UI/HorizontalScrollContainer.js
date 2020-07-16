@@ -1,5 +1,4 @@
 import React from 'react';
-//Imports
 import { ScrollView, View } from 'react-native';
 
 import HeaderTwo from './HeaderTwo';

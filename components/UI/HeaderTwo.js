@@ -40,7 +40,7 @@ const HeaderTwo = ({
       </View>
       <View style={styles.indicatorSection}>
         {showAddLink ? (
-          <View style={{ alignSelf: 'flex-end' }}>
+          <View style={{ alignSelf: 'flex-end', paddingBottom: subTitle ? 20 : 2 }}>
             <ButtonIcon icon="plus" onSelect={showAddLink} color={Colors.darkPrimary} />
           </View>
         ) : null}

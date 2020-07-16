@@ -1,5 +1,4 @@
 import React from 'react';
-//Imports
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import { Button } from 'react-native-paper';
 

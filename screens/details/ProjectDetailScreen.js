@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-//Imports
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,9 +13,7 @@ import ProductItem from '../../components/UI/ProductItem';
 import SaferArea from '../../components/UI/SaferArea';
 import SectionCard from '../../components/UI/SectionCard';
 import UserLine from '../../components/UI/UserLine';
-//Constants
 import Colors from '../../constants/Colors';
-//Actions
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectDetailScreen = (props) => {

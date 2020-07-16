@@ -6,7 +6,7 @@ import { Paragraph } from 'react-native-paper';
 import SectionCard from '../components/UI/SectionCard';
 import Colors from '../constants/Colors';
 
-const AboutScreen = (props) => {
+const AboutScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -15,7 +15,7 @@ const AboutScreen = (props) => {
           style={{ ...styles.logoLarge, position: 'absolute', top: 0 }}
           source={require('./../assets/kretsloppan_loppan_only.png')}
         />
-        <Animatable.View animation="rotate" delay={1000} duration={10000} iterationCount={1}>
+        <Animatable.View animation="rotate" delay={800} duration={3000} iterationCount={1}>
           <Image
             resizeMode="contain"
             style={styles.logoLarge}
@@ -23,11 +23,11 @@ const AboutScreen = (props) => {
           />
         </Animatable.View>
 
-        <Paragraph style={styles.paragraph}>
+        <Paragraph style={{ ...styles.paragraph, textAlign: 'center' }}>
           Kretsloppan är skapad 2020 av Egnahemsfabriken och Orust Kretsloppsakademi med stöd av
           Vinnova - Sveriges Innovationsmyndighet.
         </Paragraph>
-        <Paragraph style={styles.paragraph}>
+        <Paragraph style={{ ...styles.paragraph, textAlign: 'center' }}>
           Målet är att synliggöra och främja användandet av återbruk, och att skapa en mötesplats
           där vi som bygger hållbart lätt kan dela resurser.
         </Paragraph>
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   link: { color: Colors.primary, fontFamily: 'roboto-bold' },
-  logoLarge: { width: 300, height: 200, alignSelf: 'center' },
+  logoLarge: { width: 200, height: 200, alignSelf: 'center' },
   logoSmall: { width: 80, height: 100 },
 });
 

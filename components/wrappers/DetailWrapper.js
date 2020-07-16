@@ -4,11 +4,11 @@ import { View, StyleSheet } from 'react-native';
 import SaferArea from '../UI/SaferArea';
 import ScrollViewToTop from './ScrollViewToTop';
 
-export const DetailWrapper = (props) => {
+export const DetailWrapper = ({ children }) => {
   return (
     <SaferArea>
       <ScrollViewToTop>
-        <View style={detailStyles.mainDetailWrap}>{props.children}</View>
+        <View style={detailStyles.mainDetailWrap}>{children}</View>
       </ScrollViewToTop>
     </SaferArea>
   );

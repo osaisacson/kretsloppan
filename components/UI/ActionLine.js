@@ -18,12 +18,10 @@ const ActionLine = ({ onPress, isActive, badgeNr }) => {
         shadowRadius: 1.0,
         elevation: 1,
         backgroundColor: Colors.lightPrimary,
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         height: 50,
-        position: 'absolute',
         zIndex: 100,
         width: '100%',
       }}>

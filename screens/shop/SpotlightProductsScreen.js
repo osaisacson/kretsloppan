@@ -53,11 +53,7 @@ const SpotlightProductsScreen = (props) => {
         />
       ) : null}
       <UserActions navigation={props.navigation} falseAtStart={false} />
-
-      <ScrollView
-        style={{ paddingTop: 50 }}
-        showsVerticalScrollIndicator={false}
-        nestedScrollEnabled>
+      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
           textItem
           scrollHeight={55}
@@ -77,6 +73,7 @@ const SpotlightProductsScreen = (props) => {
               size={24}
               style={{
                 marginRight: 3,
+                marginBottom: 2,
               }}
             />
           }

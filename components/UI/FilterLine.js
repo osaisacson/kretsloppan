@@ -1,6 +1,4 @@
 import React from 'react';
-
-//Imports
 import { View, Text } from 'react-native';
 
 const FilterLine = ({ filter }) => {
