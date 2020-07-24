@@ -171,7 +171,7 @@ const saveDataToStorage = async (token, userId, expirationDate) => {
       })
     );
 
-    console.log('User date saved to AsyncStorage');
+    console.log('User data saved to AsyncStorage');
   } catch (error) {
     console.log('Error in store/actions/auth/saveDataToStorage: ', error);
     throw error;

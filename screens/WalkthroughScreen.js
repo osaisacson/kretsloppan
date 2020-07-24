@@ -2,14 +2,14 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import * as profilesActions from '../store/actions/profiles';
 
-const WalkthroughScreen = (props) => {
+const WalkthroughScreen = ({ currentProfile }) => {
   const dispatch = useDispatch();
 
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  console.log('WALKTHROUGHSCREEN --- ---- ---- currentProfile: ', currentProfile);
 
   const slides = [
     {

@@ -200,11 +200,13 @@ export function updateProfile(
 }
 
 export function updateWalkthrough(firebaseId) {
+  console.log('UPDATEWALKTHROUGH --- --- --- --- --- --- firebaseId:', firebaseId);
   return async (dispatch) => {
     const userData = await AsyncStorage.getItem('userData').then((data) =>
       data ? JSON.parse(data) : {}
     );
     const uid = userData.userId;
+    console.log('UPDATEWALKTHROUGH --- --- --- --- --- --- userData:', userData);
 
     try {
       console.log(
