@@ -90,7 +90,7 @@ export function createProfile(
   defaultPickupDetails = '',
   image
 ) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const userData = await AsyncStorage.getItem('userData').then((data) =>
       data ? JSON.parse(data) : {}
     );

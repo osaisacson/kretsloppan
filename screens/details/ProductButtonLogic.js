@@ -1,5 +1,5 @@
 import moment from 'moment/min/moment-with-locales';
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useColorScheme } from 'react-native-appearance';
@@ -55,21 +55,6 @@ const ProductButtonLogic = (props) => {
     sellerAgreed,
     buyerAgreed,
     pickupDetails,
-    category,
-    condition,
-    style,
-    material,
-    color,
-    title,
-    image,
-    description,
-    background,
-    length,
-    height,
-    width,
-    price,
-    priceText,
-    internalComments,
   } = props.selectedProduct;
 
   //Check status of product and privileges of user
@@ -84,22 +69,19 @@ const ProductButtonLogic = (props) => {
 
   //Will change based on where we are in the reservation process
   let receivingId = '';
-  let buttonCopy = 'Se detaljer';
+  let buttonCopy = 'Se upphämtningsdetaljer';
   const statusColor = Colors.darkPrimary;
 
   if (isReserved) {
     receivingId = reservedUserId;
-    // statusColor = Colors.primary;
   }
 
   if (isOrganised) {
     receivingId = collectingUserId;
-    // statusColor = Colors.subtleGreen;
   }
 
   if (isPickedUp) {
     receivingId = newOwnerId;
-    // statusColor = Colors.completed;
   }
 
   if (showButtons && !suggestedDate) {
@@ -156,7 +138,11 @@ const ProductButtonLogic = (props) => {
   };
 
   const toggleReserveButton = () => {
-    setShowUserProjects((prevState) => !prevState);
+    if (userProjects.length) {
+      setShowUserProjects((prevState) => !prevState);
+    } else {
+      reserveHandler('000');
+    }
   };
 
   const toggleShowOptions = () => {

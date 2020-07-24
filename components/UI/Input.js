@@ -1,8 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-import FormErrorText from './FormErrorText';
-
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_BLUR = 'INPUT_BLUR';
 
@@ -57,7 +55,7 @@ const Input = (props) => {
     if (props.minLength != null && text.length < props.minLength) {
       isValid = false;
     }
-    dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
+    dispatch({ type: INPUT_CHANGE, value: text, isValid });
   };
 
   const lostFocusHandler = () => {
@@ -76,7 +74,6 @@ const Input = (props) => {
         onChangeText={textChangeHandler}
         onBlur={lostFocusHandler}
       />
-      {!inputState.isValid && inputState.touched && <FormErrorText errorText={props.errorText} />}
     </View>
   );
 };

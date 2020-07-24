@@ -271,10 +271,10 @@ const AuthScreen = (props) => {
                   />
                   <Input
                     id="defaultPickupDetails"
-                    placeholder="Generella upphämtningsdetaljer (valfritt)"
+                    placeholder="Tillgänglighet, öppettider (valfritt)"
                     keyboardType="default"
                     autoCapitalize="none"
-                    errorText="Generella detaljer som öppetider...                  (inte obligatoriskt)"
+                    errorText="Skriv in generella upphämtningsdetaljer"
                     onInputChange={inputChangeHandler}
                     initialValue=""
                   />
@@ -282,7 +282,7 @@ const AuthScreen = (props) => {
               ) : null}
               <Input
                 id="email"
-                placeholder="E-Mail"
+                placeholder="Email"
                 keyboardType="email-address"
                 required
                 email
