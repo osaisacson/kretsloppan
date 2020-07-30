@@ -107,14 +107,13 @@ export const login = (email, password) => {
         firebase.auth().signInWithEmailAndPassword(email, password).then(userCredentialsToJson)
       );
 
-      console.log('Auth data on login', authData);
+      console.log('Auth data on login', authData.uid);
 
       const uid = authData.uid;
       const accessToken = authData.stsTokenManager.accessToken;
       const expirationTime = authData.stsTokenManager.expirationTime;
 
       dispatch(authenticate(uid, accessToken, expirationTime));
-      dispatch(profilesActions.setCurrentProfile(authData));
       saveDataToStorage(accessToken, uid, expirationTime);
       updateExpoTokens(uid);
     } catch (error) {

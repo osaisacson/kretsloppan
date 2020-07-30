@@ -48,7 +48,7 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const AuthScreen = (props) => {
+const AuthScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isSignup, setIsSignup] = useState(false);
@@ -147,7 +147,8 @@ const AuthScreen = (props) => {
     setIsLoading(false);
     setError(null);
     try {
-      dispatch(action);
+      console.log('Attempting to dispatch either signup och login');
+      dispatch(action); //Sign up or sign in
     } catch (err) {
       setIsLoading(false);
       setError(err.message);

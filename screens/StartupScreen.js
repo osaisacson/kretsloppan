@@ -11,6 +11,7 @@ import * as authActions from '../store/actions/auth';
 import { updateExpoTokens } from '../store/helpers';
 
 const StartupScreen = (props) => {
+  console.log('Calling StartupScreen');
   const isMountedRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -47,6 +48,7 @@ const StartupScreen = (props) => {
         const userData = await AsyncStorage.getItem('userData');
         //If we can't find user data stored on the device dispatch the action:
         if (!userData) {
+          console.log("We don't have any userdata available from AsyncStorage yet");
           dispatch(authActions.setDidTryAutoLogin());
           return;
         }
@@ -58,7 +60,9 @@ const StartupScreen = (props) => {
           dispatch(authActions.setDidTryAutoLogin());
           return;
         }
-
+        console.log(
+          `We have received a userId from AsyncStorage. Authenticating user with id ${userId}`
+        );
         const expirationTime = expirationDate.getTime() - new Date().getTime();
         updateExpoTokens(userId);
         //If we instead succeed and have a valid token then we go to the shop page

@@ -7,6 +7,8 @@ import AuthScreen from '../screens/user/AuthScreen';
 const AuthStackNavigator = createStackNavigator();
 
 export const AuthNavigator = () => {
+  console.log('Calling AuthNavigator, waiting for user to login/signup.');
+
   return (
     <AuthStackNavigator.Navigator
       screenOptions={{

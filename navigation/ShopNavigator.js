@@ -4,34 +4,60 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
+import WalkthroughScreen from '../screens/WalkthroughScreen';
 import * as authActions from '../store/actions/auth';
+import * as productsActions from '../store/actions/products';
+import * as profilesActions from '../store/actions/profiles';
+import * as projectsActions from '../store/actions/projects';
+import * as proposalsActions from '../store/actions/proposals';
 import { AboutNavigator } from './AboutNavigator';
 import { ProfilesNavigator } from './ProfilesNavigator';
 import { TabNavigator } from './TabNavigator';
 
 const ShopDrawerNavigator = createDrawerNavigator();
 
-export const ShopNavigator = (props) => {
-  console.log('Calling ShopNavigator');
-
+export const ShopNavigator = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const hasWalkedThrough = currentProfile.hasWalkedThrough;
+
+  console.log('Calling ShopNavigator');
+  console.log('currentProfile: ', currentProfile);
+  console.log('hasWalkedThrough: ', hasWalkedThrough);
+
+  const loadAppData = async () => {
+    try {
+      console.log('Fetching app data.........');
+      const allPromises = await Promise.all([
+        dispatch(profilesActions.fetchProfiles()),
+        dispatch(productsActions.fetchProducts()),
+        dispatch(projectsActions.fetchProjects()),
+        dispatch(proposalsActions.fetchProposals()),
+      ]);
+      return allPromises;
+    } catch (error) {
+      console.log('Error in attempting to fetch app data, AuthScreen.js', error);
+    } finally {
+      setIsLoaded(true);
+      console.log('.........all app data loaded in AuthScreen.js!');
+    }
+  };
 
   useEffect(() => {
-    let timeoutId = 0;
-    if (!isLoaded) {
-      timeoutId = setTimeout(() => setIsLoaded(true), 50);
-    }
-
-    return () => clearTimeout(timeoutId);
+    loadAppData();
   }, [isLoaded]);
 
   const dispatch = useDispatch();
 
   if (!isLoaded) {
     return null;
+  }
+
+  if (!hasWalkedThrough) {
+    return <WalkthroughScreen currUserId={currentProfile.profileId} />;
   }
 
   return (

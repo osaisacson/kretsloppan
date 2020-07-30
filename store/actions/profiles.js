@@ -27,6 +27,8 @@ export function fetchProfiles() {
 
     try {
       console.log('Fetching profiles...');
+      console.log('userData from AsyncStorage: ', userData);
+
       const profilesSnapshot = await firebase.database().ref('profiles').once('value');
 
       if (profilesSnapshot.exists) {

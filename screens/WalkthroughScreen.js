@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux';
 
 import * as profilesActions from '../store/actions/profiles';
 
-const WalkthroughScreen = ({ currentProfile }) => {
+const WalkthroughScreen = ({ currUserId }) => {
   const dispatch = useDispatch();
-
-  console.log('WALKTHROUGHSCREEN --- ---- ---- currentProfile: ', currentProfile);
+  console.log('Calling WalkthroughScreen.js...', currUserId);
+  console.log('currUserId: ', currUserId);
 
   const slides = [
     {
@@ -65,7 +65,7 @@ const WalkthroughScreen = ({ currentProfile }) => {
   };
 
   const onDoneAllSlides = () => {
-    dispatch(profilesActions.updateWalkthrough(currentProfile.id));
+    dispatch(profilesActions.updateWalkthrough(currUserId));
   };
 
   const renderItem = ({ item }) => {
