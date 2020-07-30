@@ -42,6 +42,8 @@ export const signup = (
       const accessToken = authData.stsTokenManager.accessToken;
       const expirationTime = authData.stsTokenManager.expirationTime;
 
+      console.log(`User with id ${uid} is attempting to sign up`);
+
       await saveDataToStorage(accessToken, uid, expirationTime);
       await dispatch(authenticate(uid, accessToken, expirationTime));
       updateExpoTokens(uid);
@@ -57,7 +59,7 @@ export const signup = (
 
       try {
         console.log('Attempting to create profile');
-        dispatch(
+        await dispatch(
           profilesActions.createProfile(
             profileName,
             profileDescription,
@@ -73,8 +75,9 @@ export const signup = (
           'store/actions/auth: Something went wrong when trying to create profile: ',
           err
         );
+      } finally {
+        console.log('...created profile!');
       }
-      console.log('...created profile!');
     } catch (error) {
       let message = error.message;
 
@@ -107,11 +110,11 @@ export const login = (email, password) => {
         firebase.auth().signInWithEmailAndPassword(email, password).then(userCredentialsToJson)
       );
 
-      console.log('Auth data on login', authData.uid);
-
       const uid = authData.uid;
       const accessToken = authData.stsTokenManager.accessToken;
       const expirationTime = authData.stsTokenManager.expirationTime;
+
+      console.log(`User with id ${uid} is attempting to login`);
 
       dispatch(authenticate(uid, accessToken, expirationTime));
       saveDataToStorage(accessToken, uid, expirationTime);

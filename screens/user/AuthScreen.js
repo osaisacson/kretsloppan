@@ -1,7 +1,7 @@
 import Icon from '@expo/vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import React, { useState, useEffect, useReducer, useCallback } from 'react';
+import React, { useState, useReducer, useCallback } from 'react';
 import {
   ScrollView,
   View,
@@ -114,12 +114,18 @@ const AuthScreen = () => {
     formIsValid: false,
   });
 
-  useEffect(() => {
-    if (error) {
-      Alert.alert('Oj, något gick åt pipsvängen!', error, [{ text: 'OK' }]);
+  const loginOrSignup = async (action) => {
+    try {
+      console.log('Attempting to dispatch either signup och login');
+      const allPromises = await Promise.all([dispatch(action)]);
+      return allPromises;
+    } catch (error) {
+      console.log('Error in attempting to to dispatch either signup och login', error);
+    } finally {
       setIsLoading(false);
+      console.log('.........done with attempting signup or signin!');
     }
-  }, [error]);
+  };
 
   const authHandler = async () => {
     let action;
@@ -144,11 +150,9 @@ const AuthScreen = () => {
       action = authActions.login(formState.inputValues.email, formState.inputValues.password);
       setIsLoading(true);
     }
-    setIsLoading(false);
     setError(null);
     try {
-      console.log('Attempting to dispatch either signup och login');
-      dispatch(action); //Sign up or sign in
+      loginOrSignup(action); //Sign up or sign in
     } catch (err) {
       setIsLoading(false);
       setError(err.message);
@@ -166,6 +170,10 @@ const AuthScreen = () => {
     },
     [dispatchFormState]
   );
+
+  if (error) {
+    return Alert.alert('Å Nej!', 'Något gick snett', [{ text: 'Ok' }]);
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

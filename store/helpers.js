@@ -15,7 +15,6 @@ export const updateCollection = (stateSegment, itemId, itemToUpdateWith) => {
 export function convertImage(image) {
   return async () => {
     try {
-      console.log('START----------actions/images/convertImage--------');
       console.log('Attempting to convert image from base64 to firebase url');
       console.log('image.length: ', image.length);
 
@@ -32,10 +31,8 @@ export function convertImage(image) {
 
       const firebaseImageUrl = await response.json();
       console.log('returned image url from firebase', firebaseImageUrl);
-      console.log('----------actions/images/convertImage--------END');
       return firebaseImageUrl;
     } catch (error) {
-      console.log('----------actions/images/convertImage--------END');
       throw error;
     }
   };

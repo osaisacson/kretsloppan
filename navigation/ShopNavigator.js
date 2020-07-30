@@ -25,8 +25,8 @@ export const ShopNavigator = () => {
   const hasWalkedThrough = currentProfile.hasWalkedThrough;
 
   console.log('Calling ShopNavigator');
-  console.log('currentProfile: ', currentProfile);
-  console.log('hasWalkedThrough: ', hasWalkedThrough);
+  console.log(`Profile of current user ${currentProfile ? 'exists' : 'does not exist yet'}`);
+  console.log(`${currentProfile ? 'hasWalkedThrough: ' + hasWalkedThrough : ''}`);
 
   const loadAppData = async () => {
     try {
@@ -39,10 +39,10 @@ export const ShopNavigator = () => {
       ]);
       return allPromises;
     } catch (error) {
-      console.log('Error in attempting to fetch app data, AuthScreen.js', error);
+      console.log('Error in attempting to fetch app data, ShopNavigator.js', error);
     } finally {
       setIsLoaded(true);
-      console.log('.........all app data loaded in AuthScreen.js!');
+      console.log('.........all app data loaded in ShopNavigator.js!');
     }
   };
 
@@ -57,7 +57,7 @@ export const ShopNavigator = () => {
   }
 
   if (!hasWalkedThrough) {
-    return <WalkthroughScreen currUserId={currentProfile.profileId} />;
+    return <WalkthroughScreen currUserId={currentProfile.id} />;
   }
 
   return (

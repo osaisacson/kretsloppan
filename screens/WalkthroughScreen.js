@@ -8,8 +8,7 @@ import * as profilesActions from '../store/actions/profiles';
 
 const WalkthroughScreen = ({ currUserId }) => {
   const dispatch = useDispatch();
-  console.log('Calling WalkthroughScreen.js...', currUserId);
-  console.log('currUserId: ', currUserId);
+  console.log('Calling WalkthroughScreen');
 
   const slides = [
     {

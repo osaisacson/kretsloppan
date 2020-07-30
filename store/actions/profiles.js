@@ -27,7 +27,7 @@ export function fetchProfiles() {
 
     try {
       console.log('Fetching profiles...');
-      console.log('userData from AsyncStorage: ', userData);
+      console.log(`Attempting to set id: ${uid} as the current user...`);
 
       const profilesSnapshot = await firebase.database().ref('profiles').once('value');
 
@@ -56,6 +56,9 @@ export function fetchProfiles() {
           allProfiles.push(newProfile);
 
           if (profile.profileId === uid) {
+            console.log(
+              `...successfullly set the current user as ${JSON.stringify(newProfile, null, 4)}`
+            );
             userProfile = newProfile;
           }
         }
@@ -202,13 +205,11 @@ export function updateProfile(
 }
 
 export function updateWalkthrough(firebaseId) {
-  console.log('UPDATEWALKTHROUGH --- --- --- --- --- --- firebaseId:', firebaseId);
   return async (dispatch) => {
     const userData = await AsyncStorage.getItem('userData').then((data) =>
       data ? JSON.parse(data) : {}
     );
     const uid = userData.userId;
-    console.log('UPDATEWALKTHROUGH --- --- --- --- --- --- userData:', userData);
 
     try {
       console.log(
@@ -260,7 +261,7 @@ export function updateReadNews(firebaseId) {
           if (error) {
             console.log('Error when trying to update updateReadNews to true', error);
           } else {
-            console.log('Updated updateReadNews to true!');
+            console.log('Updated updateReadNews to true');
           }
         });
 

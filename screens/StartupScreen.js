@@ -10,7 +10,7 @@ import useAsyncEffect from '../hooks/useAsyncEffect';
 import * as authActions from '../store/actions/auth';
 import { updateExpoTokens } from '../store/helpers';
 
-const StartupScreen = (props) => {
+const StartupScreen = () => {
   console.log('Calling StartupScreen');
   const isMountedRef = useRef(null);
   const dispatch = useDispatch();
@@ -57,6 +57,7 @@ const StartupScreen = (props) => {
         const expirationDate = new Date(expiryDate);
         //If we find data but the token is expired, we dispatch an action:
         if (expirationDate <= new Date() || !token || !userId) {
+          console.log(`There is no userId or no token or the expirationDate is expired`);
           dispatch(authActions.setDidTryAutoLogin());
           return;
         }

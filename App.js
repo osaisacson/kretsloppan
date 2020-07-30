@@ -91,7 +91,6 @@ const App = () => {
         onFinish={() => {
           setDataLoaded(true);
           enableScreens(); //optimise navigation
-          console.log('.........disabling AppLoading and moving on to call AppNavigator.');
         }}
       />
     );
