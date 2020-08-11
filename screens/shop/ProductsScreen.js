@@ -39,6 +39,8 @@ const ProductsScreen = (props) => {
 
   //Set which fields to filter by
   const KEYS_TO_FILTERS = [
+    'address',
+    'location',
     'category',
     'condition',
     'style',

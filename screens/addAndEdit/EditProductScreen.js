@@ -55,6 +55,7 @@ const EditProductScreen = (props) => {
   const dispatch = useDispatch();
 
   const defaultAddress = currentProfile.address ? currentProfile.address : '';
+  const defaultLocation = currentProfile.location ? currentProfile.location : '';
   const defaultPhone = currentProfile.phone ? currentProfile.phone : '';
   const defaultPickupDetails = currentProfile.defaultPickupDetails
     ? currentProfile.defaultPickupDetails
@@ -72,6 +73,7 @@ const EditProductScreen = (props) => {
       price: editedProduct ? editedProduct.price : '',
       priceText: editedProduct ? editedProduct.priceText : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
+      location: editedProduct ? editedProduct.location : defaultLocation, //set current location as default if have one
       pickupDetails: editedProduct ? editedProduct.pickupDetails : defaultPickupDetails, //set pickup details the user entered in their profile as default if they have them
       phone: editedProduct ? editedProduct.phone : defaultPhone, //set current phone as default if have one
       image: editedProduct ? editedProduct.image : '',
@@ -92,6 +94,7 @@ const EditProductScreen = (props) => {
       price: true,
       priceText: true,
       address: true,
+      location: true,
       pickupDetails: true,
       phone: true,
       image: !!editedProduct,
@@ -134,6 +137,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
+            formState.inputValues.location,
             formState.inputValues.pickupDetails,
             +formState.inputValues.phone,
             formState.inputValues.description,
@@ -159,6 +163,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.title,
             formState.inputValues.image,
             formState.inputValues.address,
+            formState.inputValues.location,
             formState.inputValues.pickupDetails,
             +formState.inputValues.phone,
             formState.inputValues.description,
@@ -324,6 +329,16 @@ const EditProductScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.address}
           onChangeText={textChangeHandler.bind(this, 'address')}
+          keyboardType="default"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper label="Upphämtningsort" prompt="Den ort återbruket kan hämtas på">
+        <TextInput
+          placeholder="Ort"
+          style={formStyles.input}
+          value={formState.inputValues.location}
+          onChangeText={textChangeHandler.bind(this, 'location')}
           keyboardType="default"
           returnKeyType="next"
         />

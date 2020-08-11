@@ -55,6 +55,7 @@ const ProductDetailScreen = (props) => {
     title,
     width,
     address,
+    location,
     pickupDetails,
     phone,
   } = selectedProduct;
@@ -105,6 +106,7 @@ const ProductDetailScreen = (props) => {
                 `${title} (Kopia)`,
                 image,
                 address,
+                location,
                 pickupDetails,
                 phone,
                 description,
@@ -172,6 +174,12 @@ const ProductDetailScreen = (props) => {
 
           {/* General description */}
           <Title>{title}</Title>
+          {location ? (
+            <>
+              <Divider style={{ marginVertical: 5 }} />
+              <Paragraph>{location}</Paragraph>
+            </>
+          ) : null}
           {description ? (
             <>
               <Divider style={{ marginVertical: 10 }} />
