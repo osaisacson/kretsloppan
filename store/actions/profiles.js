@@ -46,6 +46,7 @@ export function fetchProfiles() {
             profile.email,
             profile.phone,
             profile.address,
+            profile.location,
             profile.defaultPickupDetails,
             profile.image,
             profile.hasWalkedThrough,
@@ -92,6 +93,7 @@ export function createProfile(
   email = '',
   phone = '',
   address = '',
+  location = '',
   defaultPickupDetails = '',
   image
 ) {
@@ -110,6 +112,7 @@ export function createProfile(
         email,
         phone,
         address,
+        location,
         defaultPickupDetails,
         image: convertedImage.image, //This is how we link to the image we store above
       };
@@ -130,6 +133,7 @@ export function createProfile(
           email,
           phone,
           address,
+          location,
           defaultPickupDetails,
           image: convertedImage.image,
         },
@@ -148,6 +152,7 @@ export function updateProfile(
   email = '',
   phone = '',
   address = '',
+  location = '',
   defaultPickupDetails = '',
   image
 ) {
@@ -166,6 +171,7 @@ export function updateProfile(
         email,
         phone,
         address,
+        location,
         defaultPickupDetails,
         image,
       };
@@ -179,6 +185,7 @@ export function updateProfile(
           email,
           phone,
           address,
+          location,
           defaultPickupDetails,
           image: convertedImage.image, //This is how we link to the image we store above
         };

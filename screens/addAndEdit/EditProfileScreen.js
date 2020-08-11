@@ -55,6 +55,7 @@ const EditProfileScreen = (props) => {
       email: currentProfile ? currentProfile.email : '',
       phone: currentProfile ? currentProfile.phone : '',
       address: currentProfile ? currentProfile.address : '',
+      location: currentProfile ? currentProfile.location : '',
       defaultPickupDetails: currentProfile ? currentProfile.defaultPickupDetails : '',
       image: currentProfile ? currentProfile.image : '',
     },
@@ -64,6 +65,7 @@ const EditProfileScreen = (props) => {
       email: !!currentProfile,
       phone: !!currentProfile,
       address: !!currentProfile,
+      location: !!currentProfile,
       defaultPickupDetails: true,
       image: !!currentProfile,
     },
@@ -88,6 +90,7 @@ const EditProfileScreen = (props) => {
             formState.inputValues.email,
             formState.inputValues.phone,
             formState.inputValues.address,
+            formState.inputValues.location,
             formState.inputValues.defaultPickupDetails,
             formState.inputValues.image
           )
@@ -102,6 +105,7 @@ const EditProfileScreen = (props) => {
             formState.inputValues.email,
             formState.inputValues.phone,
             formState.inputValues.address,
+            formState.inputValues.location,
             formState.inputValues.defaultPickupDetails,
             formState.inputValues.image
           )
@@ -206,6 +210,17 @@ const EditProfileScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.address}
           onChangeText={textChangeHandler('address')}
+          keyboardType="default"
+          autoCapitalize="none"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in din ort">
+        <TextInput
+          placeholder="Ort"
+          style={formStyles.input}
+          value={formState.inputValues.location}
+          onChangeText={textChangeHandler('location')}
           keyboardType="default"
           autoCapitalize="none"
           returnKeyType="next"

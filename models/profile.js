@@ -7,6 +7,7 @@ class Profile {
     email,
     phone,
     address,
+    location,
     defaultPickupDetails,
     image,
     hasWalkedThrough,
@@ -20,6 +21,7 @@ class Profile {
     this.email = email;
     this.phone = phone;
     this.address = address;
+    this.location = location;
     this.defaultPickupDetails = defaultPickupDetails;
     this.image = image;
     this.hasWalkedThrough = hasWalkedThrough;

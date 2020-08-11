@@ -81,6 +81,15 @@ const UserProfile = (props) => {
         />
 
         <Title style={userProfileStyles.title}>{currentProfile.profileName}</Title>
+        {currentProfile.location ? (
+          <Title
+            style={{
+              fontFamily: 'roboto-bold-italic',
+              ...userProfileStyles.subtitle,
+            }}>
+            {currentProfile.location}
+          </Title>
+        ) : null}
         {currentProfile.profileDescription ? (
           <Title style={userProfileStyles.subtitle}>{currentProfile.profileDescription}</Title>
         ) : null}

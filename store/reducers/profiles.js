@@ -43,6 +43,7 @@ export default (state = initialState, action) => {
         action.profileData.email,
         action.profileData.phone,
         action.profileData.address,
+        action.profileData.location,
         action.profileData.defaultPickupDetails,
         action.profileData.image
       );
@@ -65,6 +66,7 @@ export default (state = initialState, action) => {
         action.profileData.email,
         action.profileData.phone,
         action.profileData.address,
+        action.profileData.location,
         action.profileData.defaultPickupDetails,
         action.profileData.image,
         state.allProfiles[profileIndex].hasWalkedThrough,
@@ -107,6 +109,7 @@ export default (state = initialState, action) => {
         state.allProfiles[profileIndex].email,
         state.allProfiles[profileIndex].phone,
         state.allProfiles[profileIndex].address,
+        state.allProfiles[profileIndex].location,
         state.allProfiles[profileIndex].defaultPickupDetails,
         state.allProfiles[profileIndex].image,
         state.allProfiles[profileIndex].hasWalkedThrough,

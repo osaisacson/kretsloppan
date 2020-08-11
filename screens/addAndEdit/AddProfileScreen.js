@@ -49,6 +49,7 @@ const AddProfileScreen = (props) => {
       email: '',
       phone: '',
       address: '',
+      location: '',
       defaultPickupDetails: '',
       image: '',
     },
@@ -58,6 +59,7 @@ const AddProfileScreen = (props) => {
       email: false,
       phone: false,
       address: false,
+      location: false,
       defaultPickupDetails: false,
       image: false,
     },
@@ -80,6 +82,7 @@ const AddProfileScreen = (props) => {
           formState.inputValues.email,
           formState.inputValues.phone,
           formState.inputValues.address,
+          formState.inputValues.location,
           formState.inputValues.defaultPickupDetails,
           formState.inputValues.image
         )
@@ -183,6 +186,17 @@ const AddProfileScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.address}
           onChangeText={textChangeHandler.bind(this, 'address')}
+          keyboardType="default"
+          autoCapitalize="none"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper prompt="Skriv in din ort">
+        <TextInput
+          placeholder="Ort"
+          style={formStyles.input}
+          value={formState.inputValues.location}
+          onChangeText={textChangeHandler.bind(this, 'location')}
           keyboardType="default"
           autoCapitalize="none"
           returnKeyType="next"

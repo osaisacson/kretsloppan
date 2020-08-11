@@ -122,6 +122,16 @@ const UserSpotlightScreen = (props) => {
           <Title style={{ color: '#fff', ...userProfileStyles.title }}>
             {currentProfile.profileName}
           </Title>
+          {currentProfile.location ? (
+            <Title
+              style={{
+                color: '#fff',
+                fontFamily: 'roboto-bold-italic',
+                ...userProfileStyles.subtitle,
+              }}>
+              {currentProfile.location}
+            </Title>
+          ) : null}
           {currentProfile.profileDescription ? (
             <Title style={{ color: '#fff', ...userProfileStyles.subtitle }}>
               {currentProfile.profileDescription}

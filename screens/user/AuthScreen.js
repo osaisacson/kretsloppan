@@ -98,6 +98,7 @@ const AuthScreen = () => {
       profileDescription: '',
       phone: '',
       address: '',
+      location: '',
       defaultPickupDetails: '',
       image: '',
     },
@@ -108,6 +109,7 @@ const AuthScreen = () => {
       profileDescription: true,
       phone: !isSignup,
       address: !isSignup,
+      location: !isSignup,
       defaultPickupDetails: true,
       image: !!(!isSignup && selectedImage),
     },
@@ -142,6 +144,7 @@ const AuthScreen = () => {
         formState.inputValues.profileDescription,
         formState.inputValues.phone,
         formState.inputValues.address,
+        formState.inputValues.location,
         formState.inputValues.defaultPickupDetails,
         selectedImage
       );
@@ -267,7 +270,6 @@ const AuthScreen = () => {
                     onInputChange={inputChangeHandler}
                     initialValue=""
                   />
-
                   <Input
                     id="address"
                     placeholder="Address"
@@ -275,6 +277,16 @@ const AuthScreen = () => {
                     required
                     autoCapitalize="none"
                     errorText="Skriv in addressen återbruket vanligtvis kan hämtas på"
+                    onInputChange={inputChangeHandler}
+                    initialValue=""
+                  />
+                  <Input
+                    id="location"
+                    placeholder="Ort"
+                    keyboardType="default"
+                    required
+                    autoCapitalize="none"
+                    errorText="Skriv in din ort"
                     onInputChange={inputChangeHandler}
                     initialValue=""
                   />

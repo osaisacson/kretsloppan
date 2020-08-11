@@ -29,6 +29,7 @@ export const signup = (
   profileDescription,
   phone,
   address,
+  location,
   defaultPickupDetails,
   image
 ) => {
@@ -49,13 +50,15 @@ export const signup = (
       updateExpoTokens(uid);
 
       console.log('store/actions/auth: attempting to create a profile with this data:', authData);
-      // console.log('profileName: ', profileName);
-      // console.log('profileDescription: ', profileDescription);
-      // console.log('email: ', email);
-      // console.log('phone: ', phone);
-      // console.log('address: ', address);
-      // console.log('defaultPickupDetails: ', defaultPickupDetails);
-      // console.log('image.length: ', image.length);
+      console.log({
+        profileName,
+        profileDescription,
+        email,
+        phone,
+        address,
+        location,
+        defaultPickupDetails,
+      });
 
       try {
         console.log('Attempting to create profile');
@@ -66,6 +69,7 @@ export const signup = (
             email,
             phone,
             address,
+            location,
             defaultPickupDetails,
             image
           )
