@@ -173,13 +173,14 @@ const ProductDetailScreen = (props) => {
           ) : null}
 
           {/* General description */}
-          <Title>{title}</Title>
           {location ? (
             <>
               <Divider style={{ marginVertical: 5 }} />
               <Paragraph>{location}</Paragraph>
             </>
           ) : null}
+          <Title>{title}</Title>
+
           {description ? (
             <>
               <Divider style={{ marginVertical: 10 }} />

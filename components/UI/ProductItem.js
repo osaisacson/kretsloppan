@@ -73,6 +73,7 @@ const ProductItem = ({
             }}
           />
         </View>
+        {itemData.location ? <Text style={styles.location}>{itemData.location}</Text> : null}
         {showSmallStatusIcons ? (
           <Ionicons
             style={{
@@ -107,6 +108,7 @@ const ProductItem = ({
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
         {itemData.title}
       </Text>
+
       {showBackgroundText ? (
         <Text numberOfLines={5} ellipsizeMode="tail" style={styles.backgroundText}>
           {itemData.background}
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 4,
     width: 200,
-    fontFamily: 'roboto-bold',
+    fontFamily: 'roboto-regular',
     fontSize: 16,
     marginLeft: 15,
   },
@@ -193,6 +195,17 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-light-italic',
     fontSize: 14,
   },
+  location: {
+    padding: 5,
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    zIndex: 100,
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    fontFamily: 'roboto-bold',
+    fontSize: 15,
+    textAlign: 'right',
+  },
+
   price: {
     position: 'absolute',
     right: -9,
