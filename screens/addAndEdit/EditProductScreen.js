@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { Alert, TextInput, View } from 'react-native';
+import { Alert, TextInput, View, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
@@ -64,6 +64,7 @@ const EditProductScreen = (props) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: editedProduct ? editedProduct.title : '',
+      amount: editedProduct ? editedProduct.amount : '',
       description: editedProduct ? editedProduct.description : '',
       background: editedProduct ? editedProduct.background : '',
       internalComments: editedProduct ? editedProduct.internalComments : '',
@@ -85,6 +86,7 @@ const EditProductScreen = (props) => {
     },
     inputValidities: {
       title: !!editedProduct,
+      amount: true,
       description: true,
       background: true,
       internalComments: true,
@@ -135,6 +137,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.material,
             formState.inputValues.color,
             formState.inputValues.title,
+            formState.inputValues.amount,
             formState.inputValues.image,
             formState.inputValues.address,
             formState.inputValues.location,
@@ -161,6 +164,7 @@ const EditProductScreen = (props) => {
             formState.inputValues.material,
             formState.inputValues.color,
             formState.inputValues.title,
+            formState.inputValues.amount,
             formState.inputValues.image,
             formState.inputValues.address,
             formState.inputValues.location,
@@ -220,8 +224,8 @@ const EditProductScreen = (props) => {
       </FormFieldWrapper>
       <FormFieldWrapper prompt="Skriv in en titel">
         <TextInput
-          placeholder="Titel (max 30 bokstäver)"
-          maxLength={30}
+          placeholder="Titel (max 40 bokstäver)"
+          maxLength={40}
           style={formStyles.input}
           value={formState.inputValues.title}
           onChangeText={textChangeHandler.bind(this, 'title')}
@@ -230,31 +234,43 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper
-        prompt="Lägg in ett pris (det kan vara 0)"
-        highlightedSubLabel="Notera att betalning hanteras utanför appen."
-        subLabel="Skippa detta fält om pris inte är aktuellt">
+      <FormFieldWrapper prompt="Skriv in antal produkter">
         <TextInput
-          placeholder="Styckpris. För företag: ange pris inklusive moms"
+          placeholder="Antal"
+          maxLength={40}
           style={formStyles.input}
+          value={formState.inputValues.amount.toString()}
+          onChangeText={textChangeHandler.bind(this, 'amount')}
+          keyboardType="number-pad"
+          returnKeyType="next"
+        />
+      </FormFieldWrapper>
+      <Text style={{ fontFamily: 'roboto-bold' }}>
+        Notera att betalning hanteras utanför appen.
+      </Text>
+      <Text style={{ fontFamily: 'roboto-light-italic' }}>
+        För företag: ange pris inklusive moms
+      </Text>
+
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <TextInput
+          placeholder="Styckpris"
+          style={{ ...formStyles.input, width: 100 }}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
           keyboardType="number-pad"
           returnKeyType="next"
         />
-      </FormFieldWrapper>
-      <FormFieldWrapper
-        prompt="Alternativt pris"
-        subLabel="ALTERNATIV: Är priset förhandlingsbart eller vill du hellre ha ett tjog ägg som betalning? - Inga problem! Skriv då istället 'Förhandlingsbart' eller 'Ett tjog ägg' här.">
+        <Text style={{ marginTop: 20, fontFamily: 'roboto-light-italic', padding: 5 }}>Eller</Text>
         <TextInput
-          placeholder="Alternativt pris"
+          placeholder="Alternativt pris - eg 'ett tjog ägg"
           style={formStyles.input}
           value={formState.inputValues.priceText}
           onChangeText={textChangeHandler.bind(this, 'priceText')}
           keyboardType="default"
           returnKeyType="next"
         />
-      </FormFieldWrapper>
+      </View>
       <FormFieldWrapper prompt="Skriv in eventuella kommentarer">
         <TextInput
           placeholder="Kommentarer"

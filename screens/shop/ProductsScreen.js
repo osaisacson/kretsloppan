@@ -47,6 +47,7 @@ const ProductsScreen = (props) => {
     'material',
     'color',
     'title',
+    'amount',
     'description',
     'background',
     'length',

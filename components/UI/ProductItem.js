@@ -18,9 +18,24 @@ const ProductItem = ({
   showSmallStatusIcons,
   onSelect,
 }) => {
-  const isReserved = itemData.status === 'reserverad';
-  const isOrganised = itemData.status === 'ordnad';
-  const isPickedUp = itemData.status === 'hämtad';
+  const {
+    status,
+    collectedDate,
+    organisedDate,
+    reservedDate,
+    ownerId,
+    location,
+    image,
+    priceText,
+    price,
+    background,
+    amount,
+    title,
+  } = itemData;
+
+  const isReserved = status === 'reserverad';
+  const isOrganised = status === 'ordnad';
+  const isPickedUp = status === 'hämtad';
 
   let icon;
   let bgColor;
@@ -40,12 +55,12 @@ const ProductItem = ({
     bgColor = Colors.completed;
   }
 
-  const relevantDate = itemData.collectedDate
-    ? `Hämtad ${Moment(itemData.collectedDate).locale('sv').format('D MMMM YYYY')}`
-    : itemData.organisedDate
-    ? `Hämtas ${Moment(itemData.organisedDate).locale('sv').format('D MMMM YYYY')}`
-    : itemData.reservedDate
-    ? `Reserverad till ${Moment(itemData.reservedDate).locale('sv').format('D MMMM YYYY')}`
+  const relevantDate = collectedDate
+    ? `Hämtad ${Moment(collectedDate).locale('sv').format('D MMMM YYYY')}`
+    : organisedDate
+    ? `Hämtas ${Moment(organisedDate).locale('sv').format('D MMMM YYYY')}`
+    : reservedDate
+    ? `Reserverad till ${Moment(reservedDate).locale('sv').format('D MMMM YYYY')}`
     : 'Inget relevant datum';
 
   return (
@@ -64,16 +79,16 @@ const ProductItem = ({
           }}>
           <UserAvatar
             size={30}
-            userId={itemData.ownerId}
+            userId={ownerId}
             showBadge={false}
             actionOnPress={() => {
               navigation.navigate('Användare', {
-                detailId: itemData.ownerId,
+                detailId: ownerId,
               });
             }}
           />
         </View>
-        {itemData.location ? <Text style={styles.location}>{itemData.location}</Text> : null}
+        {location ? <Text style={styles.location}>{location}</Text> : null}
         {showSmallStatusIcons ? (
           <Ionicons
             style={{
@@ -93,25 +108,21 @@ const ProductItem = ({
         <View style={styles.touchable}>
           <TouchableCmp onPress={onSelect} useForeground>
             <View style={styles.imageContainer}>
-              <CachedImage style={styles.image} uri={itemData.image} />
+              <CachedImage style={styles.image} uri={image} />
             </View>
-            {itemData.priceText && !itemData.price ? (
-              <Text style={styles.price}>{itemData.priceText}</Text>
-            ) : null}
-
-            {itemData.price && !itemData.priceText ? (
-              <Text style={styles.price}>{itemData.price ? itemData.price : 0} kr</Text>
-            ) : null}
+            {amount ? <Text style={styles.amount}>{amount} st à</Text> : null}
+            {priceText && !price ? <Text style={styles.price}>{priceText}</Text> : null}
+            {price && !priceText ? <Text style={styles.price}>{price ? price : 0} kr</Text> : null}
           </TouchableCmp>
         </View>
       </Card>
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-        {itemData.title}
+        {title}
       </Text>
 
       {showBackgroundText ? (
         <Text numberOfLines={5} ellipsizeMode="tail" style={styles.backgroundText}>
-          {itemData.background}
+          {background}
         </Text>
       ) : null}
     </View>
@@ -205,7 +216,18 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'right',
   },
-
+  amount: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    padding: 5,
+    zIndex: 99,
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    fontFamily: 'roboto-bold',
+    fontSize: 15,
+    textAlign: 'right',
+    marginRight: 8,
+  },
   price: {
     position: 'absolute',
     right: -9,

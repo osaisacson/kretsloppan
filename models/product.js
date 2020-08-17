@@ -13,6 +13,7 @@ class Product {
     material,
     color,
     title,
+    amount,
     image,
     address,
     location,
@@ -49,6 +50,7 @@ class Product {
     this.material = material;
     this.color = color;
     this.title = title;
+    this.amount = amount;
     this.image = image;
     this.address = address;
     this.location = location;

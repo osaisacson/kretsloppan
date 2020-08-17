@@ -17,23 +17,6 @@ export function fetchProducts() {
       data ? JSON.parse(data) : {}
     );
     const uid = userData.userId;
-    // const uid = getState().auth.userId;
-    // console.log(
-    //   '****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************'
-    // );
-    // console.log(
-    //   'PROBLEM: const uid = getState().auth.userId... wherever we use this line it returns: ',
-    //   getState().auth.userId
-    // );
-    // console.log(
-    //   'Updating all places where we used to have this to instead be: '
-    // );
-    // console.log(
-    //   'const userData = await AsyncStorage.getItem('userData').then((data) => data ? JSON.parse(data) : {}); const uid = userData.userId;'
-    // );
-    // console.log(
-    //   '****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************'
-    // );
 
     try {
       console.log('Fetching products...');
@@ -59,6 +42,7 @@ export function fetchProducts() {
             product.material,
             product.color,
             product.title,
+            product.amount,
             product.image,
             product.address,
             product.location,
@@ -200,6 +184,7 @@ export function createProduct(
   material,
   color,
   title,
+  amount,
   image,
   address,
   location,
@@ -238,6 +223,7 @@ export function createProduct(
         material,
         color,
         title,
+        amount,
         image: convertedImage.image,
         address,
         location,
@@ -289,6 +275,7 @@ export function copyProduct(
   material,
   color,
   title,
+  amount,
   image,
   address,
   location,
@@ -325,6 +312,7 @@ export function copyProduct(
         material,
         color,
         title,
+        amount,
         image,
         address,
         location,
@@ -377,6 +365,7 @@ export function updateProduct(
   material = '',
   color = '',
   title,
+  amount,
   image,
   address = '',
   location = '',
@@ -404,6 +393,7 @@ export function updateProduct(
         material,
         color,
         title,
+        amount,
         image,
         address,
         location,
@@ -430,6 +420,7 @@ export function updateProduct(
           material,
           color,
           title,
+          amount,
           image: convertedImage.image,
           address,
           location,
