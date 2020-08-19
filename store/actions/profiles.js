@@ -51,7 +51,8 @@ export function fetchProfiles() {
             profile.image,
             profile.hasWalkedThrough,
             profile.hasReadNews,
-            profile.expoTokens
+            profile.expoTokens,
+            profile.basket
           );
 
           allProfiles.push(newProfile);
@@ -154,7 +155,8 @@ export function updateProfile(
   address = '',
   location = '',
   defaultPickupDetails = '',
-  image
+  image,
+  basket
 ) {
   return async (dispatch) => {
     const userData = await AsyncStorage.getItem('userData').then((data) =>
@@ -174,6 +176,7 @@ export function updateProfile(
         location,
         defaultPickupDetails,
         image,
+        basket,
       };
 
       //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
@@ -188,6 +191,7 @@ export function updateProfile(
           location,
           defaultPickupDetails,
           image: convertedImage.image, //This is how we link to the image we store above
+          basket,
         };
       }
 

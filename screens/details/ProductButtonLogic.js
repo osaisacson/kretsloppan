@@ -1,6 +1,6 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { View, Alert, Text, StyleSheet } from 'react-native';
+import { View, Alert, Text, StyleSheet, Picker, Button } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
@@ -20,6 +20,7 @@ import UserAvatar from '../../components/UI/UserAvatar';
 import { detailStyles } from '../../components/wrappers/DetailWrapper';
 import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
+import * as ordersActions from '../../store/actions/orders';
 
 const ProductButtonLogic = (props) => {
   const dispatch = useDispatch();
@@ -35,6 +36,8 @@ const ProductButtonLogic = (props) => {
   const [showUserProjects, setShowUserProjects] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [suggestedDateLocal, setSuggestedDateLocal] = useState();
+  const [setOrderProject, orderProject] = useState('000');
+  const [setOrderQuantity, orderQuantity] = useState(1);
 
   //Get all projects from state, and then return the ones that matches the id of the current product
   const availableProjects = useSelector((state) => state.projects.availableProjects);
@@ -42,6 +45,7 @@ const ProductButtonLogic = (props) => {
 
   const {
     id,
+    amount,
     projectId,
     status,
     ownerId,
@@ -116,9 +120,7 @@ const ProductButtonLogic = (props) => {
     setShowTimePicker(false);
   };
 
-  const reserveHandler = (clickedProjectId) => {
-    const checkedProjectId = clickedProjectId ? clickedProjectId : '000';
-
+  const reserveHandler = (id, ownerId, orderProjectId, quantity) => {
     Alert.alert(
       'Kom ihåg',
       'Denna reservation gäller i fyra dagar. Nästa steg är att föreslå en upphämtningstid och om det behövs kontakta säljaren för att diskutera detaljer. Du hittar alltid reservationen under din profil.',
@@ -128,7 +130,7 @@ const ProductButtonLogic = (props) => {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
-            dispatch(productsActions.changeProductStatus(id, 'reserverad', checkedProjectId));
+            dispatch(ordersActions.createOrder(id, ownerId, orderProjectId, quantity));
             setShowOptions(true);
             setShowUserProjects(false);
           },
@@ -364,30 +366,37 @@ const ProductButtonLogic = (props) => {
             />
 
             <HorizontalScrollContainer>
-              <RoundItem
-                itemData={{
-                  image: './../../assets/avatar-placeholder-image.png',
-                  title: 'Inget projekt',
-                }}
-                key="000"
-                isHorizontal
-                onSelect={() => {
-                  reserveHandler('000');
-                }}
-              />
               {userProjects.map((item) => (
                 <RoundItem
                   itemData={item}
                   key={item.id}
                   isHorizontal
                   onSelect={() => {
-                    reserveHandler(item.id);
+                    setOrderProject(item.id);
                   }}
                 />
               ))}
+              {amount.length > 1 ? (
+                //TBD: only show available number of items here
+                <Picker
+                  selectedValue={orderQuantity}
+                  style={{ height: 50, width: 150 }}
+                  onValueChange={(itemValue, itemIndex) => setOrderQuantity(itemValue)}>
+                  <Picker.Item label="1" value={1} />
+                  <Picker.Item label="2" value={2} />
+                  <Picker.Item label="2" value={3} />
+                  <Picker.Item label="4" value={4} />
+                </Picker>
+              ) : null}
             </HorizontalScrollContainer>
           </>
         ) : null}
+        <ButtonAction
+          onSelect={() => {
+            reserveHandler(id, ownerId, orderProject, orderQuantity);
+          }}
+          title="reservera"
+        />
 
         {/* Details about the item, and options for the logistics */}
         {showOptions ? (

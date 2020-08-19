@@ -12,7 +12,8 @@ class Profile {
     image,
     hasWalkedThrough,
     hasReadNews,
-    expoTokens = []
+    expoTokens = [],
+    basket = []
   ) {
     this.id = id;
     this.profileId = profileId;
@@ -27,6 +28,7 @@ class Profile {
     this.hasWalkedThrough = hasWalkedThrough;
     this.hasReadNews = hasReadNews;
     this.expoTokens = expoTokens;
+    this.basket = basket;
   }
 }
 

@@ -1,16 +1,28 @@
-import moment from 'moment';
-
 class Order {
-  constructor(id, items, date, image) {
-    //when creating a new order this is what the New Order() expect to receive
+  constructor(
+    id,
+    productId,
+    buyerId,
+    sellerId,
+    projectId,
+    quantity,
+    reservedUntil,
+    suggestedDate,
+    buyerAgreed,
+    sellerAgreed,
+    isCollected
+  ) {
     this.id = id;
-    this.items = items;
-    this.date = date;
-    this.image = image;
-  }
-
-  get readableDate() {
-    return moment(this.date).format('MMMM Do YYYY, hh:mm');
+    this.productId = productId;
+    this.buyerId = buyerId;
+    this.sellerId = sellerId;
+    this.projectId = projectId;
+    this.quantity = quantity;
+    this.reservedUntil = reservedUntil;
+    this.suggestedDate = suggestedDate;
+    this.buyerAgreed = buyerAgreed;
+    this.sellerAgreed = sellerAgreed;
+    this.isCollected = isCollected;
   }
 }
 
