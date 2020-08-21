@@ -5,16 +5,17 @@ import { View, Alert, Text } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ButtonAction from '../../components/UI/ButtonAction';
-import ButtonIcon from '../../components/UI/ButtonIcon';
-import CachedImage from '../../components/UI/CachedImage';
-import FilterLine from '../../components/UI/FilterLine';
-import HeaderThree from '../../components/UI/HeaderThree';
-import SectionCard from '../../components/UI/SectionCard';
-import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWrapper';
-import Colors from '../../constants/Colors';
-import * as productsActions from '../../store/actions/products';
-import ProductButtonLogic from './ProductButtonLogic';
+import ButtonIcon from '../../../components/UI/ButtonIcon';
+import CachedImage from '../../../components/UI/CachedImage';
+import FilterLine from '../../../components/UI/FilterLine';
+import HeaderThree from '../../../components/UI/HeaderThree';
+import SectionCard from '../../../components/UI/SectionCard';
+import { DetailWrapper, detailStyles } from '../../../components/wrappers/DetailWrapper';
+import Colors from '../../../constants/Colors';
+import * as productsActions from '../../../store/actions/products';
+import CollectionInformation from './CollectionInformation';
+import Logistics from './Logistics';
+import Orders from './Orders';
 
 const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
@@ -53,12 +54,8 @@ const ProductDetailScreen = (props) => {
     status,
     style,
     title,
-    amount,
     width,
-    address,
     location,
-    pickupDetails,
-    phone,
   } = selectedProduct;
 
   //Check status of product and privileges of user
@@ -87,56 +84,24 @@ const ProductDetailScreen = (props) => {
     );
   };
 
-  const copyHandler = () => {
-    Alert.alert(
-      'Kopiera återbruk?',
-      'Du kan sen redigera den tidigare posten till att vara säg 3 fönster och den nya till 2 fönster.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Ja, kopiera!',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              productsActions.copyProduct(
-                category,
-                condition,
-                style,
-                material,
-                color,
-                `${title} (Kopia)`,
-                amount,
-                image,
-                address,
-                location,
-                pickupDetails,
-                phone,
-                description,
-                background,
-                length,
-                height,
-                width,
-                price,
-                priceText,
-                internalComments
-              )
-            );
-            alert('Kopierad till ditt återbruksförråd! Uppdatera som det passar :)');
-            props.navigation.goBack();
-          },
-        },
-      ]
-    );
-  };
-
   return (
     <DetailWrapper>
       <View>
-        {/* Buttons for handling reservation, coordination and collection */}
-        <ProductButtonLogic
-          selectedProduct={selectedProduct}
+        {/* Buttons for handling reserving, collecting or changing an order */}
+        <Logistics
+          loggedInUserId={loggedInUserId}
+          navigation={navigation}
           hasEditPermission={hasEditPermission}
-          navigation={props.navigation}
+          selectedProduct={selectedProduct}
+        />
+        {/* Button showing the address and collection times for the product */}
+        <CollectionInformation selectedProduct={selectedProduct} />
+        {/* Displays a list of orders for the product */}
+        <Orders
+          loggedInUserId={loggedInUserId}
+          navigation={navigation}
+          hasEditPermission={hasEditPermission}
+          selectedProduct={selectedProduct}
         />
         <SectionCard>
           {/* Product image */}
@@ -154,16 +119,6 @@ const ProductDetailScreen = (props) => {
                 }}
               />
 
-              <ButtonAction
-                style={{ marginTop: 10 }}
-                disabled={isPickedUp}
-                buttonColor={Colors.approved}
-                buttonLabelStyle={{ color: '#fff' }}
-                title="Kopiera"
-                onSelect={() => {
-                  copyHandler();
-                }}
-              />
               <ButtonIcon
                 icon="pen"
                 color={Colors.neutral}

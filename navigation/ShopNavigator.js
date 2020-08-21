@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Colors from '../constants/Colors';
 import WalkthroughScreen from '../screens/WalkthroughScreen';
 import * as authActions from '../store/actions/auth';
+import * as ordersActions from '../store/actions/orders';
 import * as productsActions from '../store/actions/products';
 import * as profilesActions from '../store/actions/profiles';
 import * as projectsActions from '../store/actions/projects';
@@ -36,6 +37,7 @@ export const ShopNavigator = () => {
         dispatch(productsActions.fetchProducts()),
         dispatch(projectsActions.fetchProjects()),
         dispatch(proposalsActions.fetchProposals()),
+        dispatch(ordersActions.fetchOrders()),
       ]);
       return allPromises;
     } catch (error) {

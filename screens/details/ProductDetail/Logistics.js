@@ -8,27 +8,26 @@ import { Divider } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ButtonAction from '../../components/UI/ButtonAction';
-import HeaderThree from '../../components/UI/HeaderThree';
-import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
-import Loader from '../../components/UI/Loader';
-import RoundItem from '../../components/UI/RoundItem';
-import SmallRoundItem from '../../components/UI/SmallRoundItem';
-import UserAvatar from '../../components/UI/UserAvatar';
-import { detailStyles } from '../../components/wrappers/DetailWrapper';
-import Colors from '../../constants/Colors';
-import * as ordersActions from '../../store/actions/orders';
-import * as productsActions from '../../store/actions/products';
+import ButtonAction from '../../../components/UI/ButtonAction';
+import HeaderThree from '../../../components/UI/HeaderThree';
+import HorizontalScrollContainer from '../../../components/UI/HorizontalScrollContainer';
+import Loader from '../../../components/UI/Loader';
+import RoundItem from '../../../components/UI/RoundItem';
+import UserAvatar from '../../../components/UI/UserAvatar';
+import { detailStyles } from '../../../components/wrappers/DetailWrapper';
+import Colors from '../../../constants/Colors';
+import * as ordersActions from '../../../store/actions/orders';
+import * as productsActions from '../../../store/actions/products';
 
-const ProductDetailHeader = ({ navigation, hasEditPermission, selectedProduct }) => {
+const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const dispatch = useDispatch();
   const refRBSheet = useRef();
   const colorScheme = useColorScheme();
 
   //Set up state hooks
   const [isLoading, setIsLoading] = useState(false);
-  const [setOrderProject, orderProject] = useState('000');
-  const [setOrderQuantity, orderQuantity] = useState('1');
+  const [orderProject, setOrderProject] = useState('000');
+  const [orderQuantity, setOrderQuantity] = useState(1);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [suggestedDateLocal, setSuggestedDateLocal] = useState();
 
@@ -45,12 +44,6 @@ const ProductDetailHeader = ({ navigation, hasEditPermission, selectedProduct })
     collectingUserId,
     newOwnerId,
     suggestedDate,
-    collectingDate,
-    phone,
-    address,
-    sellerAgreed,
-    buyerAgreed,
-    pickupDetails,
   } = selectedProduct;
 
   ///////////////////////////////START TBD: REMOVE THIS WHEN WE HAVE MIGRATED TO ORDERS INSTEAD OF PRODUCTS
@@ -261,21 +254,6 @@ const ProductDetailHeader = ({ navigation, hasEditPermission, selectedProduct })
     );
   };
 
-  const HeaderAvatar = (props) => {
-    return (
-      <UserAvatar
-        userId={props.profileId}
-        style={[{ margin: 0 }, props.style]}
-        showBadge={false}
-        actionOnPress={() => {
-          props.navigation.navigate('Användare', {
-            detailId: props.profileId,
-          });
-        }}
-      />
-    );
-  };
-
   if (isLoading) {
     return <Loader />;
   }
@@ -284,7 +262,16 @@ const ProductDetailHeader = ({ navigation, hasEditPermission, selectedProduct })
     <>
       <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
         <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
-          <HeaderAvatar profileId={ownerId} navigation={navigation} />
+          <UserAvatar
+            userId={ownerId}
+            style={{ margin: 0 }}
+            showBadge={false}
+            actionOnPress={() => {
+              navigation.navigate('Användare', {
+                detailId: ownerId,
+              });
+            }}
+          />
           <View style={[styles.smallBadge, { backgroundColor: statusColor, left: -10 }]}>
             <Text style={styles.smallText}>säljare</Text>
           </View>
@@ -296,39 +283,11 @@ const ProductDetailHeader = ({ navigation, hasEditPermission, selectedProduct })
             position: 'absolute',
             right: 0,
           }}>
-          {receivingProfile ? (
-            <View style={[styles.textAndBadge, { justifyContent: 'flex-end' }]}>
-              <View style={[styles.smallBadge, { backgroundColor: statusColor, right: -10 }]}>
-                <Text style={styles.smallText}>köpare</Text>
-              </View>
-              <HeaderAvatar profileId={receivingId} navigation={navigation} />
-              {projectForProduct ? (
-                <>
-                  <View style={{ marginLeft: -20, zIndex: -1 }}>
-                    <SmallRoundItem
-                      detailPath="ProjectDetail"
-                      item={projectForProduct}
-                      navigation={navigation}
-                    />
-                  </View>
-                </>
-              ) : null}
-            </View>
-          ) : null}
-
           {/* Conditional buttons based on the state of the order - triggers different actions */}
 
           {/* Reserve item - visible to all except the creator of the item */}
-          {!hasEditPermission && !isReserved && !isPickedUp && !isOrganised ? (
-            <View
-              style={
-                {
-                  // flex: 1,
-                  // justifyContent: 'center',
-                  // alignItems: 'center',
-                  // backgroundColor: '#000',
-                }
-              }>
+          {!hasEditPermission && amount > 0 ? (
+            <View>
               <ButtonAction onSelect={toggleBottomModal} title="reservera" />
 
               <RBSheet
@@ -401,7 +360,7 @@ const ProductDetailHeader = ({ navigation, hasEditPermission, selectedProduct })
                     />
                     <HeaderThree
                       style={{ textAlign: 'center' }}
-                      text="...kontakta varandra via detaljerna ovan om ni har frågor, annars är det nedan tid och plats som gäller."
+                      text="...kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer som gäller - hitta dessa i 'upphämtningsdetaljer' ovan."
                     />
                     <View style={{ flex: 1 }}>
                       <CalendarStrip
@@ -533,4 +492,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductDetailHeader;
+export default Logistics;

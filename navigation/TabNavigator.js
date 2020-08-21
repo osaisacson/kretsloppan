@@ -14,7 +14,7 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen from '../screens/details/ProductDetailScreen';
+import ProductDetailScreen from '../screens/details/ProductDetail/ProductDetailScreen';
 import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
 import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import ProductsScreen from '../screens/shop/ProductsScreen';

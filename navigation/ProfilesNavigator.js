@@ -3,7 +3,7 @@ import React from 'react';
 
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetailScreen';
+} from '../screens/details/ProductDetail/ProductDetailScreen';
 import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions,
 } from '../screens/details/ProjectDetailScreen';

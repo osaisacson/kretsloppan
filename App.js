@@ -15,6 +15,7 @@ import env from './env';
 import AppNavigator from './navigation/AppNavigator';
 import checkExpiredToken from './store/middlewares/checkExpiredToken';
 import authReducer from './store/reducers/auth';
+import ordersReducer from './store/reducers/orders';
 import productsReducer from './store/reducers/products';
 import profilesReducer from './store/reducers/profiles';
 import projectsReducer from './store/reducers/projects';
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   projects: projectsReducer,
   profiles: profilesReducer,
   proposals: proposalsReducer,
+  orders: ordersReducer,
   auth: authReducer,
 });
 
