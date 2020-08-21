@@ -24,16 +24,13 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const refRBSheet = useRef();
   const colorScheme = useColorScheme();
 
-  //Set up state hooks
   const [isLoading, setIsLoading] = useState(false);
   const [orderProject, setOrderProject] = useState('000');
   const [orderQuantity, setOrderQuantity] = useState(1);
+  const [orderSuggestedDate, setOrderSuggestedDate] = useState();
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [suggestedDateLocal, setSuggestedDateLocal] = useState();
 
-  //Get all projects from state, and then return the ones that matches the id of the current product
-
-  console.log('selectedProduct: ', selectedProduct);
   const {
     id,
     amount,
@@ -42,45 +39,20 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     ownerId,
     reservedUserId,
     collectingUserId,
-    newOwnerId,
-    suggestedDate,
   } = selectedProduct;
 
   ///////////////////////////////START TBD: REMOVE THIS WHEN WE HAVE MIGRATED TO ORDERS INSTEAD OF PRODUCTS
   //Check status of product and privileges of user
   const isReserved = status === 'reserverad';
-  const isOrganised = status === 'ordnad';
   const isPickedUp = status === 'hämtad';
   const isReservedUser = reservedUserId === loggedInUserId;
   const isOrganisedUser = collectingUserId === loggedInUserId;
   const isSellerOrBuyer = hasEditPermission || isReservedUser || isOrganisedUser;
 
   //Will change based on where we are in the reservation process
-  let receivingId = '';
   const statusColor = Colors.darkPrimary;
 
-  if (isReserved) {
-    receivingId = reservedUserId;
-  }
-
-  if (isOrganised) {
-    receivingId = collectingUserId;
-  }
-
-  if (isPickedUp) {
-    receivingId = newOwnerId;
-  }
-
   /////////////////////////////// END
-
-  //Avatar logic
-  const profiles = useSelector((state) => state.profiles.allProfiles);
-
-  const receivingProfile = profiles.find((profile) => profile.profileId === receivingId);
-
-  const associatedProject = useSelector((state) => state.projects.availableProjects);
-
-  const projectForProduct = associatedProject.find((proj) => proj.id === projectId);
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
@@ -95,6 +67,10 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   };
 
   const reserveHandler = (id, ownerId, orderProjectId, quantity, suggestedDate) => {
+    console.log({ id, ownerId, orderProjectId, quantity, suggestedDate });
+    const newProductAmount = amount - quantity;
+    console.log('newProductAmount', newProductAmount);
+
     Alert.alert(
       'Kom ihåg',
       'Denna reservation gäller i fyra dagar. Kontakta säljaren om ni behöver diskutera fler detaljer. Du hittar alltid reservationen under din profil.',
@@ -105,8 +81,10 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
           style: 'destructive',
           onPress: () => {
             dispatch(
-              ordersActions.createOrder(id, ownerId, orderProjectId, quantity, suggestedDate)
+              ordersActions.createOrder(id, ownerId, orderProjectId, quantity, suggestedDate),
+              productsActions.updateProduct(id, newProductAmount)
             );
+            refRBSheet.current.close();
           },
         },
       ]
@@ -183,18 +161,13 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
               ) //by default resets the date to expire in four days, since the status is 'reserved'
             ).then(setIsLoading(false));
             setSuggestedDateLocal();
-            refRBSheet.current.close();
           },
         },
       ]
     );
   };
 
-  const sendSuggestedDT = (dateTime) => {
-    const checkedProjectId = projectId ? projectId : '000';
-    const sAgreed = !!hasEditPermission;
-    const bAgreed = !!(isReservedUser || isOrganisedUser);
-
+  const setSuggestedDT = (dateTime) => {
     Alert.alert(
       'Föreslå tid',
       `Genom att klicka här föreslår du ${moment(dateTime)
@@ -208,18 +181,8 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
-            dispatch(
-              productsActions.changeProductStatus(
-                id,
-                'ordnas',
-                checkedProjectId,
-                reservedUserId,
-                dateTime //sets product.suggestedDate
-              )
-            );
-            dispatch(productsActions.changeProductAgreement(id, sAgreed, bAgreed));
+            setOrderSuggestedDate(dateTime);
             hideTimePicker();
-            refRBSheet.current.close();
           },
         },
       ]
@@ -289,20 +252,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
           {!hasEditPermission && amount > 0 ? (
             <View>
               <ButtonAction onSelect={toggleBottomModal} title="reservera" />
-
-              <RBSheet
-                ref={refRBSheet}
-                height={500}
-                closeOnDragDown
-                closeOnPressMask
-                customStyles={{
-                  wrapper: {
-                    backgroundColor: 'transparent',
-                  },
-                  draggableIcon: {
-                    backgroundColor: '#000',
-                  },
-                }}>
+              <RBSheet ref={refRBSheet} height={500} closeOnDragDown closeOnPressMask>
                 {/* If the user has any projects, ask which project the item will be used in  */}
                 {userProjects.length ? (
                   <>
@@ -349,74 +299,60 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                   </>
                 ) : null}
 
-                {/* Show a prompt if the product has not yet sorted logistics, and if the viewer is any of the involved parties  */}
-
-                {!suggestedDate ? (
-                  <>
-                    <Divider style={{ marginBottom: 10 }} />
-                    <HeaderThree
-                      style={{ textAlign: 'center', marginBottom: 10 }}
-                      text="Föreslå tid för upphämtning nedan."
-                    />
-                    <HeaderThree
-                      style={{ textAlign: 'center' }}
-                      text="...kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer som gäller - hitta dessa i 'upphämtningsdetaljer' ovan."
-                    />
-                    <View style={{ flex: 1 }}>
-                      <CalendarStrip
-                        scrollable
-                        selectedDate={suggestedDateLocal}
-                        daySelectionAnimation={{
-                          type: 'border',
-                          borderWidth: 0.5,
-                          borderHighlightColor: Colors.darkPrimary,
-                          duration: 200,
-                        }}
-                        highlightDateNameStyle={{ color: Colors.darkPrimary }}
-                        highlightDateNumberStyle={{ color: Colors.darkPrimary }}
-                        styleWeekend
-                        onDateSelected={(date) => {
-                          handleTimePicker(date);
-                        }}
-                        style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-                        type="border"
-                        borderWidth={1}
-                        borderHighlightColor="#666"
-                      />
-                      <DateTimePickerModal
-                        date={new Date(suggestedDateLocal)}
-                        isDarkModeEnabled={colorScheme === 'dark'}
-                        cancelTextIOS="Avbryt"
-                        confirmTextIOS="Klar!"
-                        headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
-                          .locale('sv')
-                          .format('D MMMM')}. Välj tid:`}
-                        isVisible={showTimePicker}
-                        mode="time"
-                        locale="sv_SV" // Use "en_GB" here
-                        onConfirm={(dateTime) => {
-                          sendSuggestedDT(dateTime);
-                        }}
-                        onCancel={hideTimePicker}
-                      />
-                    </View>
-                  </>
-                ) : null}
-
-                {suggestedDate && hasEditPermission ? (
+                {/* Set a date and time for pickup */}
+                <>
+                  <Divider style={{ marginBottom: 10 }} />
                   <HeaderThree
-                    style={{
-                      textAlign: 'center',
-                      marginBottom: 20,
-                      marginTop: 10,
-                    }}
-                    text="TIPS: Om du vill ändra plats gör detta genom att redigera din produkt och uppdatera upphämtningsaddress där."
+                    style={{ textAlign: 'center', marginBottom: 10 }}
+                    text="Föreslå tid för upphämtning nedan."
                   />
-                ) : null}
+                  <HeaderThree
+                    style={{ textAlign: 'center' }}
+                    text="...kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer som gäller - hitta dessa i 'upphämtningsdetaljer' ovan."
+                  />
+                  <View style={{ flex: 1 }}>
+                    <CalendarStrip
+                      scrollable
+                      selectedDate={suggestedDateLocal}
+                      daySelectionAnimation={{
+                        type: 'border',
+                        borderWidth: 0.5,
+                        borderHighlightColor: Colors.darkPrimary,
+                        duration: 200,
+                      }}
+                      highlightDateNameStyle={{ color: Colors.darkPrimary }}
+                      highlightDateNumberStyle={{ color: Colors.darkPrimary }}
+                      styleWeekend
+                      onDateSelected={(date) => {
+                        handleTimePicker(date);
+                      }}
+                      style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+                      type="border"
+                      borderWidth={1}
+                      borderHighlightColor="#666"
+                    />
+                    <DateTimePickerModal
+                      date={new Date(suggestedDateLocal)}
+                      isDarkModeEnabled={colorScheme === 'dark'}
+                      cancelTextIOS="Avbryt"
+                      confirmTextIOS="Klar!"
+                      headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
+                        .locale('sv')
+                        .format('D MMMM')}. Välj tid:`}
+                      isVisible={showTimePicker}
+                      mode="time"
+                      locale="sv_SV" // Use "en_GB" here
+                      onConfirm={(dateTime) => {
+                        setSuggestedDT(dateTime);
+                      }}
+                      onCancel={hideTimePicker}
+                    />
+                  </View>
+                </>
 
                 <ButtonAction
                   onSelect={() => {
-                    reserveHandler(id, ownerId, orderProject, orderQuantity);
+                    reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
                   }}
                   title="reservera"
                 />

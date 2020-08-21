@@ -43,7 +43,7 @@ export function fetchOrders() {
 
           allOrders.push(newOrder);
 
-          if (order.sellerId === uid) {
+          if (order.buyerId === uid) {
             userOrders.push(newOrder);
           }
 
@@ -107,7 +107,7 @@ export const deleteOrder = (orderId) => {
 
 export function createOrder(productId, sellerId, projectId, quantity, suggestedDate) {
   return async (dispatch) => {
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date();
     const userData = await AsyncStorage.getItem('userData').then((data) =>
       data ? JSON.parse(data) : {}
     );
