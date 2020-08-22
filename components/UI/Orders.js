@@ -1,40 +1,22 @@
+import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import Card from '../../../components/UI/Card';
-import SmallRoundItem from '../../../components/UI/SmallRoundItem';
-import UserAvatar from '../../../components/UI/UserAvatar';
-import Colors from './../../../constants/Colors';
+import Card from './Card';
+import ProductStatusCopy from './ProductStatusCopy';
+import SmallRoundItem from './SmallRoundItem';
+import UserAvatar from './UserAvatar';
 
-const Orders = ({ selectedProduct, hasEditPermission, loggedInUserId, navigation }) => {
-  const { id } = selectedProduct;
-
+const Orders = ({ isSeller, isBuyer, orders, navigation }) => {
   const profiles = useSelector((state) => state.profiles.allProfiles);
   const projects = useSelector((state) => state.projects.availableProjects);
-  const allOrders = useSelector((state) => state.orders.availableOrders);
-  const userOrders = useSelector((state) => state.orders.userOrders);
 
-  const productOrders = allOrders.find((order) => order.productId === id);
-
-  if (!productOrders) {
+  if (!orders) {
     return null;
   }
-  let currentOrders = {};
 
-  console.log('allOrders', allOrders);
-  console.log('userOrders', userOrders);
-  console.log('productOrders', productOrders);
-
-  //If the logged in user is the creator of the product show all the orders for the product
-  if (hasEditPermission) {
-    currentOrders = productOrders;
-  }
-
-  //If the logged in user has any orders of the product, show these
-  if (userOrders) {
-    currentOrders = userOrders;
-  }
+  console.log('orders', orders);
 
   const Order = ({ buyerId, projectId, order, navigation }) => {
     const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
@@ -52,10 +34,7 @@ const Orders = ({ selectedProduct, hasEditPermission, loggedInUserId, navigation
             });
           }}
         />
-        <Text>{buyerProfile.profileName}</Text>
-        <Text>{buyerProfile.phone ? buyerProfile.phone : 'Ingen telefon angiven'}</Text>
-        <Text>{buyerProfile.address ? buyerProfile.address : 'Ingen address angiven'}</Text>
-        {order.comments ? <Text>{order.comments}</Text> : null}
+
         <View style={[styles.textAndBadge, { justifyContent: 'flex-end' }]}>
           {projectForProduct ? (
             <>
@@ -69,13 +48,26 @@ const Orders = ({ selectedProduct, hasEditPermission, loggedInUserId, navigation
             </>
           ) : null}
         </View>
+
+        <View style={{ paddingLeft: 10, width: 330 }}>
+          <Text>{order.quantity} st</Text>
+
+          <Text>Reserverad tills {moment(order.reservedUntil).locale('sv').calendar()}</Text>
+
+          <Text>{`Väntar på att ${
+            !order.buyerAgreed ? 'köparen' : 'säljaren'
+          } ska godkänna den föreslagna tiden`}</Text>
+
+          <ProductStatusCopy style={{ textAlign: 'left' }} selectedProduct={order} />
+          {order.comments ? <Text>Kommentarer: {order.comments}</Text> : null}
+        </View>
       </Card>
     );
   };
 
   return (
     <View>
-      {currentOrders.map((item) => (
+      {orders.map((item) => (
         <Order
           key={item.id}
           order={item}

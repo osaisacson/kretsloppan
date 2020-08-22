@@ -15,7 +15,7 @@ import Colors from '../../../constants/Colors';
 import * as productsActions from '../../../store/actions/products';
 import CollectionInformation from './CollectionInformation';
 import Logistics from './Logistics';
-import Orders from './Orders';
+import Orders from '../../../components/UI/Orders';
 
 const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
@@ -37,6 +37,8 @@ const ProductDetailScreen = (props) => {
   }
 
   const {
+    id,
+    amount,
     category,
     color,
     condition,
@@ -44,7 +46,6 @@ const ProductDetailScreen = (props) => {
     description,
     background,
     height,
-    id,
     image,
     internalComments,
     length,
@@ -57,6 +58,9 @@ const ProductDetailScreen = (props) => {
     width,
     location,
   } = selectedProduct;
+
+  const allOrders = useSelector((state) => state.orders.availableOrders);
+  const productOrders = allOrders.find((order) => order.productId === id);
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
@@ -96,13 +100,13 @@ const ProductDetailScreen = (props) => {
         />
         {/* Button showing the address and collection times for the product */}
         <CollectionInformation selectedProduct={selectedProduct} />
-        {/* Displays a list of orders for the product */}
-        <Orders
-          loggedInUserId={loggedInUserId}
-          navigation={navigation}
-          hasEditPermission={hasEditPermission}
-          selectedProduct={selectedProduct}
-        />
+        {/* Displays a list of orders for the product if the logged in user is the seller */}
+        {/* {hasEditPermission ? (
+          <Orders isSeller orders={productOrders} navigation={navigation} />
+        ) : null} */}
+
+        {/* TBD: use above conditional view, below only for testing */}
+        <Orders isSeller orders={productOrders} navigation={navigation} />
         <SectionCard>
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
@@ -137,7 +141,7 @@ const ProductDetailScreen = (props) => {
             </>
           ) : null}
           <Title>{title}</Title>
-
+          {amount > 1 ? <Paragraph>{amount} stycken tillgängliga</Paragraph> : null}
           {description ? (
             <>
               <Divider style={{ marginVertical: 10 }} />

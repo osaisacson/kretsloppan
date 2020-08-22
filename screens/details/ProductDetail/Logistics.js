@@ -68,8 +68,18 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
 
   const reserveHandler = (id, ownerId, orderProjectId, quantity, suggestedDate) => {
     console.log({ id, ownerId, orderProjectId, quantity, suggestedDate });
-    const newProductAmount = amount - quantity;
+    const quantityNum = Number(quantity);
+    const newProductAmount = amount - quantityNum;
     console.log('newProductAmount', newProductAmount);
+
+    if (!quantity || !suggestedDate) {
+      Alert.alert(
+        'Å Nej!',
+        'Det ser ut som du antingen inte valt hur många du vill boka eller inte föreslagit en upphämtningstid.',
+        [{ text: 'Ok' }]
+      );
+      return false;
+    }
 
     Alert.alert(
       'Kom ihåg',
@@ -81,7 +91,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
           style: 'destructive',
           onPress: () => {
             dispatch(
-              ordersActions.createOrder(id, ownerId, orderProjectId, quantity, suggestedDate),
+              ordersActions.createOrder(id, ownerId, orderProjectId, quantityNum, suggestedDate),
               productsActions.updateProduct(id, newProductAmount)
             );
             refRBSheet.current.close();
@@ -294,7 +304,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                         textAlign: 'center',
                       }}
                       onChangeText={(text) => setOrderQuantity(text)}
-                      value={orderQuantity}
+                      value={String(orderQuantity)}
                     />
                   </>
                 ) : null}
@@ -308,7 +318,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                   />
                   <HeaderThree
                     style={{ textAlign: 'center' }}
-                    text="...kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer som gäller - hitta dessa i 'upphämtningsdetaljer' ovan."
+                    text="Kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer (ovan) som gäller."
                   />
                   <View style={{ flex: 1 }}>
                     <CalendarStrip

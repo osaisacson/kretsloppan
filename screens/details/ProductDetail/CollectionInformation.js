@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 import AnimatedButton from '../../../components/UI/AnimatedButton';
 import HeaderThree from '../../../components/UI/HeaderThree';
-import ProductStatusCopy from '../../../components/UI/ProductStatusCopy';
 import Colors from '../../../constants/Colors';
 
 const CollectionInformation = ({ selectedProduct }) => {
@@ -33,7 +32,6 @@ const CollectionInformation = ({ selectedProduct }) => {
           padding: 5,
         }}>
         <View>
-          <ProductStatusCopy style={{ textAlign: 'center' }} selectedProduct={selectedProduct} />
           <AnimatedButton onPress={toggleShowOptions} text="Se upphämtningsdetaljer" />
         </View>
 
