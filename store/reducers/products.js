@@ -3,6 +3,7 @@ import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
+  UPDATE_PRODUCT_AMOUNT,
   CHANGE_PRODUCT_STATUS,
   SET_PRODUCTS,
   CHANGE_PRODUCT_AGREEMENT,
@@ -127,6 +128,62 @@ export default (state = initialState, action) => {
         ...state,
         availableProducts: updatedAvailableProducts,
         userProducts: updatedUserProducts,
+      };
+    }
+    case UPDATE_PRODUCT_AMOUNT: {
+      const availableProductsIndex = getIndex(state.availableProducts, action.pid);
+      const updatedProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
+        action.pid,
+        state.availableProducts[availableProductsIndex].ownerId,
+        state.availableProducts[availableProductsIndex].reservedUserId,
+        state.availableProducts[availableProductsIndex].collectingUserId,
+        state.availableProducts[availableProductsIndex].newOwnerId,
+        state.availableProducts[availableProductsIndex].category,
+        state.availableProducts[availableProductsIndex].condition,
+        state.availableProducts[availableProductsIndex].style,
+        state.availableProducts[availableProductsIndex].material,
+        state.availableProducts[availableProductsIndex].color,
+        state.availableProducts[availableProductsIndex].title,
+        action.productData.amount,
+        state.availableProducts[availableProductsIndex].image,
+        state.availableProducts[availableProductsIndex].address,
+        state.availableProducts[availableProductsIndex].location,
+        state.availableProducts[availableProductsIndex].pickupDetails,
+        state.availableProducts[availableProductsIndex].phone,
+        state.availableProducts[availableProductsIndex].description,
+        state.availableProducts[availableProductsIndex].background,
+        state.availableProducts[availableProductsIndex].length,
+        state.availableProducts[availableProductsIndex].height,
+        state.availableProducts[availableProductsIndex].width,
+        state.availableProducts[availableProductsIndex].price,
+        state.availableProducts[availableProductsIndex].priceText,
+        state.availableProducts[availableProductsIndex].date,
+        state.availableProducts[availableProductsIndex].status,
+        state.availableProducts[availableProductsIndex].readyDate,
+        state.availableProducts[availableProductsIndex].reservedDate,
+        state.availableProducts[availableProductsIndex].reservedUntil,
+        state.availableProducts[availableProductsIndex].suggestedDate,
+        state.availableProducts[availableProductsIndex].collectingDate,
+        state.availableProducts[availableProductsIndex].collectedDate,
+        state.availableProducts[availableProductsIndex].projectId,
+        state.availableProducts[availableProductsIndex].internalComments,
+        state.availableProducts[availableProductsIndex].sellerAgreed,
+        state.availableProducts[availableProductsIndex].buyerAgreed
+      );
+      console.log('store/reducers/products/UPDATE_PRODUCT, updated product: ', updatedProduct);
+
+      //Update state
+      const updatedAvailableProducts = updateCollection(
+        state.availableProducts,
+        action.pid,
+        updatedProduct
+      );
+      const updatedProducts = updateCollection(state.userProducts, action.pid, updatedProduct);
+
+      return {
+        ...state,
+        availableProducts: updatedAvailableProducts,
+        userProducts: updatedProducts,
       };
     }
     case CHANGE_PRODUCT_STATUS: {

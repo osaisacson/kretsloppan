@@ -9,13 +9,13 @@ import ButtonIcon from '../../../components/UI/ButtonIcon';
 import CachedImage from '../../../components/UI/CachedImage';
 import FilterLine from '../../../components/UI/FilterLine';
 import HeaderThree from '../../../components/UI/HeaderThree';
+import Orders from '../../../components/UI/Orders';
 import SectionCard from '../../../components/UI/SectionCard';
 import { DetailWrapper, detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
 import * as productsActions from '../../../store/actions/products';
 import CollectionInformation from './CollectionInformation';
 import Logistics from './Logistics';
-import Orders from '../../../components/UI/Orders';
 
 const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();

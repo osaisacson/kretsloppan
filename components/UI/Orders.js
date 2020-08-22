@@ -1,8 +1,11 @@
 import moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { Alert, View, Text, StyleSheet } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
+import * as ordersActions from '../../store/actions/orders';
+import Colors from './../../constants/Colors';
+import ButtonIcon from './ButtonIcon';
 import Card from './Card';
 import ProductStatusCopy from './ProductStatusCopy';
 import SmallRoundItem from './SmallRoundItem';
@@ -19,8 +22,28 @@ const Orders = ({ isSeller, isBuyer, orders, navigation }) => {
   console.log('orders', orders);
 
   const Order = ({ buyerId, projectId, order, navigation }) => {
+    const dispatch = useDispatch();
+
     const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
     const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
+
+    const deleteHandler = () => {
+      Alert.alert(
+        'Är du säker?',
+        'Vill du verkligen radera den här reservationen? Det går inte att gå ändra sig när det väl är gjort.',
+        [
+          { text: 'Nej', style: 'default' },
+          {
+            text: 'Ja, radera',
+            style: 'destructive',
+            onPress: () => {
+              // navigation.goBack();
+              dispatch(ordersActions.deleteOrder(order.id));
+            },
+          },
+        ]
+      );
+    };
 
     return (
       <Card style={styles.oneLineSpread}>
@@ -60,6 +83,15 @@ const Orders = ({ isSeller, isBuyer, orders, navigation }) => {
 
           <ProductStatusCopy style={{ textAlign: 'left' }} selectedProduct={order} />
           {order.comments ? <Text>Kommentarer: {order.comments}</Text> : null}
+        </View>
+        <View>
+          <ButtonIcon
+            icon="delete"
+            color={Colors.warning}
+            onSelect={() => {
+              deleteHandler(order.id);
+            }}
+          />
         </View>
       </Card>
     );
