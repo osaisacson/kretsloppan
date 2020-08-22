@@ -33,6 +33,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
 
   const {
     id,
+    image,
     amount,
     projectId,
     status,
@@ -68,6 +69,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
 
   const reserveHandler = (id, ownerId, orderProjectId, quantity, suggestedDate) => {
     console.log({ id, ownerId, orderProjectId, quantity, suggestedDate });
+    const imageUrl = image;
     const quantityNum = Number(quantity);
     const newProductAmount = amount - quantityNum;
     console.log('newProductAmount', newProductAmount);
@@ -91,8 +93,15 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
           style: 'destructive',
           onPress: () => {
             dispatch(
-              ordersActions.createOrder(id, ownerId, orderProjectId, quantityNum, suggestedDate),
-              productsActions.updateProduct(id, newProductAmount)
+              ordersActions.createOrder(
+                id,
+                ownerId,
+                orderProjectId,
+                imageUrl,
+                quantityNum,
+                suggestedDate
+              ),
+              productsActions.updateProductAmount(id, newProductAmount)
             );
             refRBSheet.current.close();
           },

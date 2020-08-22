@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/UI/SaferArea';
-import UserActions from '../user/UserActions';
 
 const SpotlightProductsScreen = (props) => {
   const allProducts = useSelector((state) => state.products.availableProducts);
@@ -52,7 +51,6 @@ const SpotlightProductsScreen = (props) => {
           text="NYHETER: Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0-beta3"
         />
       ) : null}
-      <UserActions navigation={props.navigation} falseAtStart={false} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
           textItem

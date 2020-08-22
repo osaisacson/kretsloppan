@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import Colors from '../../constants/Colors';
 import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
-import UserActions from './UserActions';
 import UserItems from './UserItems';
 import { userProfileStyles } from './UserProfile';
 
@@ -87,7 +86,6 @@ const UserSpotlightScreen = (props) => {
 
   return (
     <>
-      <UserActions navigation={props.navigation} />
       <ScrollViewToTop>
         <View style={userProfileStyles.userInfoSection}>
           <Image

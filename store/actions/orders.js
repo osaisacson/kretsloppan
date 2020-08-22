@@ -33,6 +33,7 @@ export function fetchOrders() {
             order.buyerId,
             order.sellerId,
             order.projectId,
+            order.image,
             order.quantity,
             order.reservedUntil,
             order.suggestedDate,
@@ -105,7 +106,7 @@ export const deleteOrder = (orderId) => {
   };
 };
 
-export function createOrder(productId, sellerId, projectId, quantity, suggestedDate) {
+export function createOrder(productId, sellerId, projectId, image, quantity, suggestedDate) {
   return async (dispatch) => {
     const currentDate = new Date();
     const userData = await AsyncStorage.getItem('userData').then((data) =>
@@ -125,11 +126,12 @@ export function createOrder(productId, sellerId, projectId, quantity, suggestedD
         buyerId,
         sellerId,
         projectId,
+        image,
         quantity,
         reservedUntil: fourDaysFromNow,
         suggestedDate,
-        buyerAgreed: false,
-        sellerAgreed: suggestedDate ? true : false,
+        buyerAgreed: true,
+        sellerAgreed: false,
         isCollected: false,
       };
 

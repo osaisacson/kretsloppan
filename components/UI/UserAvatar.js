@@ -16,25 +16,11 @@ const UserAvatar = ({ userId, actionOnPress, style, size, showBadge }) => {
 
   const loggedInUserId = currentProfile.profileId;
 
-  const availableProducts = useSelector((state) => state.products.availableProducts);
+  const allOrders = useSelector((state) => state.orders.availableOrders);
+  const ordersFromUser = allOrders.filter((order) => order.sellerId === loggedInUserId);
+  const ordersByUser = useSelector((state) => state.orders.userOrders);
 
-  const reservedProducts = availableProducts.filter((prod) => prod.status === 'reserverad');
-
-  //Get all products which are reserved by or from the logged in user
-  const reservedBy = reservedProducts.filter((prod) => prod.reservedUserId === loggedInUserId)
-    .length;
-
-  const reservedFrom = reservedProducts.filter((prod) => prod.ownerId === loggedInUserId).length;
-
-  //Get all products which have a time for collection set, and are pending collection by or for the user
-  const collectedProducts = availableProducts.filter((prod) => prod.status === 'ordnad');
-
-  const collectionBy = collectedProducts.filter((prod) => prod.collectingUserId === loggedInUserId)
-    .length;
-
-  const collectionFrom = collectedProducts.filter((prod) => prod.ownerId === loggedInUserId).length;
-
-  const badgeNumber = reservedBy + reservedFrom + collectionBy + collectionFrom;
+  const badgeNumber = ordersByUser.length + ordersFromUser.length;
 
   return (
     <TouchableCmp
