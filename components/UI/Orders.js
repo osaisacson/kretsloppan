@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as ordersActions from '../../store/actions/orders';
 import * as productsActions from '../../store/actions/products';
 import Colors from './../../constants/Colors';
+import ButtonAction from './ButtonAction';
 import ButtonIcon from './ButtonIcon';
 import Card from './Card';
 import SmallRoundItem from './SmallRoundItem';
@@ -40,6 +41,87 @@ const Orders = ({ isSeller, isBuyer, orders, navigation }) => {
 
     const toggleShowDetails = () => {
       setShowDetails((prevState) => !prevState);
+    };
+
+    const collectHandler = () => {
+      Alert.alert(
+        'Är produkten hämtad?',
+        'Genom att klicka här bekräftar du att produkten är hämtad.',
+        [
+          { text: 'Nej', style: 'default' },
+          {
+            text: 'Japp, den är hämtad!',
+            style: 'destructive',
+            onPress: () => {
+              console.log('IMPLEMENT CONFIRMING COLLECTION');
+              // dispatch(
+              //   productsActions.changeProductStatus(id, 'hämtad', projectId, collectingUserId)
+              // );
+              // navigation.goBack();
+            },
+          },
+        ]
+      );
+    };
+
+    const resetSuggestedDT = () => {
+      // const checkedProjectId = projectId ? projectId : '000';
+      // const prevReservedUser = reservedUserId ? reservedUserId : collectingUserId;
+
+      Alert.alert(
+        'Ändra tid',
+        'Genom att klicka här ställer du in den föreslagna tiden. Ni får då igen fyra dagar på er att komma överens om en tid.',
+        [
+          { text: 'Avbryt', style: 'default' },
+          {
+            text: 'Jag förstår',
+            style: 'destructive',
+            onPress: () => {
+              console.log('IMPLEMENT CHANGING TIME');
+
+              // setIsLoading(true);
+              // dispatch(
+              //   productsActions.changeProductStatus(
+              //     id,
+              //     'reserverad',
+              //     checkedProjectId,
+              //     prevReservedUser
+              //   ) //by default resets the date to expire in four days, since the status is 'reserved'
+              // ).then(setIsLoading(false));
+              // setSuggestedDateLocal();
+            },
+          },
+        ]
+      );
+    };
+
+    const approveSuggestedDateTime = (dateTime) => {
+      // const checkedProjectId = projectId ? projectId : '000';
+
+      Alert.alert(
+        'Bekräfta tid',
+        'Genom att klicka här godkänner du den föreslagna tiden, och åtar dig att vara på plats/komma till bestämd plats på denna tid. För frågor och andra detaljer, kontakta varandra via uppgifterna ovan.',
+        [
+          { text: 'Avbryt', style: 'default' },
+          {
+            text: 'Jag förstår',
+            style: 'destructive',
+            onPress: () => {
+              console.log('IMPLEMENT CONFIRMING TIME');
+              // dispatch(
+              //   productsActions.changeProductStatus(
+              //     id,
+              //     'ordnad',
+              //     checkedProjectId,
+              //     reservedUserId,
+              //     dateTime //if status is 'ordnad', set this to be product.collectingDate
+              //   )
+              // );
+              // refRBSheet.current.close();
+            },
+          },
+        ]
+      );
     };
 
     const deleteHandler = (orderId, orderQuantity) => {
@@ -109,12 +191,37 @@ const Orders = ({ isSeller, isBuyer, orders, navigation }) => {
               </>
             ) : null}
             {order.comments ? <Text>Kommentarer: {order.comments}</Text> : null}
-            <ButtonIcon
-              icon="delete"
-              color={Colors.warning}
+            {/* Buttons visible to the seller or buyer after reservation*/}
+            <ButtonAction
+              buttonColor={Colors.subtleGrey}
+              onSelect={() => {
+                resetSuggestedDT();
+              }}
+              title="ändra tid"
+            />
+            <ButtonAction
+              buttonColor={Colors.approved}
+              buttonLabelStyle={{ color: '#fff' }}
+              title="hämtad!"
+              onSelect={() => {
+                collectHandler();
+              }}
+            />
+            <ButtonAction
+              buttonLabelStyle={{ color: '#fff' }}
+              buttonColor={Colors.approved}
+              title="godkänn upphämtningstid"
+              onSelect={() => {
+                approveSuggestedDateTime(order.suggestedDate);
+              }}
+            />
+            <ButtonAction
+              buttonColor={Colors.warning}
+              buttonLabelStyle={{ color: '#fff' }}
               onSelect={() => {
                 deleteHandler(order.id, order.quantity);
               }}
+              title="avreservera"
             />
           </>
         ) : null}

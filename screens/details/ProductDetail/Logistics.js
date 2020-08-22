@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import ButtonAction from '../../../components/UI/ButtonAction';
 import HeaderThree from '../../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../../components/UI/HorizontalScrollContainer';
-import Loader from '../../../components/UI/Loader';
 import RoundItem from '../../../components/UI/RoundItem';
 import UserAvatar from '../../../components/UI/UserAvatar';
 import { detailStyles } from '../../../components/wrappers/DetailWrapper';
@@ -24,36 +23,13 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const refRBSheet = useRef();
   const colorScheme = useColorScheme();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [orderProject, setOrderProject] = useState('000');
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [suggestedDateLocal, setSuggestedDateLocal] = useState();
 
-  const {
-    id,
-    image,
-    amount,
-    projectId,
-    status,
-    ownerId,
-    reservedUserId,
-    collectingUserId,
-  } = selectedProduct;
-
-  ///////////////////////////////START TBD: REMOVE THIS WHEN WE HAVE MIGRATED TO ORDERS INSTEAD OF PRODUCTS
-  //Check status of product and privileges of user
-  const isReserved = status === 'reserverad';
-  const isPickedUp = status === 'hämtad';
-  const isReservedUser = reservedUserId === loggedInUserId;
-  const isOrganisedUser = collectingUserId === loggedInUserId;
-  const isSellerOrBuyer = hasEditPermission || isReservedUser || isOrganisedUser;
-
-  //Will change based on where we are in the reservation process
-  const statusColor = Colors.darkPrimary;
-
-  /////////////////////////////// END
+  const { id, image, amount, ownerId } = selectedProduct;
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
@@ -110,44 +86,6 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     );
   };
 
-  const unReserveHandler = () => {
-    Alert.alert(
-      'Avbryt reservation?',
-      'Om du avbryter reservationen kommer återbruket igen bli tillgängligt för andra.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Ja, ta bort',
-          style: 'destructive',
-          onPress: () => {
-            setIsLoading(true);
-            dispatch(productsActions.unReserveProduct(id)).then(setIsLoading(false));
-          },
-        },
-      ]
-    );
-  };
-
-  const collectHandler = () => {
-    Alert.alert(
-      'Är produkten hämtad?',
-      'Genom att klicka här bekräftar du att produkten är hämtad.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Japp, den är hämtad!',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              productsActions.changeProductStatus(id, 'hämtad', projectId, collectingUserId)
-            );
-            navigation.goBack();
-          },
-        },
-      ]
-    );
-  };
-
   const handleTimePicker = (date) => {
     setSuggestedDateLocal(date);
     setShowTimePicker(true);
@@ -155,35 +93,6 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
 
   const hideTimePicker = () => {
     setShowTimePicker(false);
-  };
-
-  const resetSuggestedDT = () => {
-    const checkedProjectId = projectId ? projectId : '000';
-    const prevReservedUser = reservedUserId ? reservedUserId : collectingUserId;
-
-    Alert.alert(
-      'Ändra tid',
-      'Genom att klicka här ställer du in den föreslagna tiden. Ni får då igen fyra dagar på er att komma överens om en tid.',
-      [
-        { text: 'Avbryt', style: 'default' },
-        {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            setIsLoading(true);
-            dispatch(
-              productsActions.changeProductStatus(
-                id,
-                'reserverad',
-                checkedProjectId,
-                prevReservedUser
-              ) //by default resets the date to expire in four days, since the status is 'reserved'
-            ).then(setIsLoading(false));
-            setSuggestedDateLocal();
-          },
-        },
-      ]
-    );
   };
 
   const setSuggestedDT = (dateTime) => {
@@ -208,38 +117,6 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     );
   };
 
-  const approveSuggestedDateTime = (dateTime) => {
-    const checkedProjectId = projectId ? projectId : '000';
-
-    Alert.alert(
-      'Bekräfta tid',
-      'Genom att klicka här godkänner du den föreslagna tiden, och åtar dig att vara på plats/komma till bestämd plats på denna tid. För frågor och andra detaljer, kontakta varandra via uppgifterna ovan.',
-      [
-        { text: 'Avbryt', style: 'default' },
-        {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              productsActions.changeProductStatus(
-                id,
-                'ordnad',
-                checkedProjectId,
-                reservedUserId,
-                dateTime //if status is 'ordnad', set this to be product.collectingDate
-              )
-            );
-            refRBSheet.current.close();
-          },
-        },
-      ]
-    );
-  };
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <>
       <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
@@ -254,7 +131,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
               });
             }}
           />
-          <View style={[styles.smallBadge, { backgroundColor: statusColor, left: -10 }]}>
+          <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -10 }]}>
             <Text style={styles.smallText}>säljare</Text>
           </View>
         </View>
@@ -265,9 +142,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
             position: 'absolute',
             right: 0,
           }}>
-          {/* Conditional buttons based on the state of the order - triggers different actions */}
-
-          {/* Reserve item - visible to all except the creator of the item */}
+          {/* Reserve item - visible to all except the creator of the item, as long as there are any left*/}
           {!hasEditPermission && amount > 0 ? (
             <View>
               <ButtonAction onSelect={toggleBottomModal} title="reservera" />
@@ -377,43 +252,6 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                 />
               </RBSheet>
             </View>
-          ) : null}
-
-          {/* Buttons visible to the seller or buyer after reservation*/}
-          {isReserved && isSellerOrBuyer ? (
-            <>
-              <ButtonAction
-                buttonColor={Colors.subtleGrey}
-                onSelect={() => {
-                  resetSuggestedDT();
-                }}
-                title="Ändra tid"
-              />
-
-              <ButtonAction
-                disabled={isPickedUp}
-                buttonColor={Colors.approved}
-                buttonLabelStyle={{ color: '#fff' }}
-                title="hämtad!"
-                onSelect={collectHandler.bind(this)}
-              />
-
-              <ButtonAction
-                buttonLabelStyle={{ color: '#fff' }}
-                buttonColor={Colors.approved}
-                title="Godkänn förslag"
-                onSelect={() => {
-                  approveSuggestedDateTime(suggestedDate);
-                }}
-              />
-              <ButtonAction
-                disabled={isPickedUp}
-                buttonColor={Colors.subtleGrey}
-                buttonLabelStyle={{ color: '#fff' }}
-                onSelect={unReserveHandler}
-                title="avreservera"
-              />
-            </>
           ) : null}
         </View>
       </View>
