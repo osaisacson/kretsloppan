@@ -6,7 +6,6 @@ import {
   UPDATE_PRODUCT_AMOUNT,
   CHANGE_PRODUCT_STATUS,
   SET_PRODUCTS,
-  CHANGE_PRODUCT_AGREEMENT,
 } from '../actions/products';
 import { getIndex, updateCollection } from '../helpers';
 
@@ -28,9 +27,6 @@ export default (state = initialState, action) => {
       const newProduct = new Product(
         action.productData.id,
         action.productData.ownerId,
-        action.productData.reservedUserId,
-        action.productData.collectingUserId,
-        action.productData.newOwnerId,
         action.productData.category,
         action.productData.condition,
         action.productData.style,
@@ -51,17 +47,7 @@ export default (state = initialState, action) => {
         action.productData.price,
         action.productData.priceText,
         action.productData.date,
-        action.productData.status,
-        action.productData.readyDate,
-        action.productData.reservedDate,
-        action.productData.reservedUntil,
-        action.productData.suggestedDate,
-        action.productData.collectingDate,
-        action.productData.collectedDate,
-        action.productData.projectId,
-        action.productData.internalComments,
-        action.productData.sellerAgreed,
-        action.productData.buyerAgreed
+        action.productData.internalComments
       );
       console.log('store/reducers/products/CREATE_PRODUCT, new product: ', newProduct);
       return {
@@ -75,9 +61,6 @@ export default (state = initialState, action) => {
       const updatedUserProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
         state.userProducts[userProductIndex].ownerId,
-        state.userProducts[userProductIndex].reservedUserId,
-        state.userProducts[userProductIndex].collectingUserId,
-        state.userProducts[userProductIndex].newOwnerId,
         action.productData.category,
         action.productData.condition,
         action.productData.style,
@@ -98,17 +81,7 @@ export default (state = initialState, action) => {
         action.productData.price,
         action.productData.priceText,
         action.productData.date,
-        state.userProducts[userProductIndex].status,
-        state.userProducts[userProductIndex].readyDate,
-        state.userProducts[userProductIndex].reservedDate,
-        state.userProducts[userProductIndex].reservedUntil,
-        state.userProducts[userProductIndex].suggestedDate,
-        state.userProducts[userProductIndex].collectingDate,
-        state.userProducts[userProductIndex].collectedDate,
-        state.userProducts[userProductIndex].projectId,
-        action.productData.internalComments,
-        state.userProducts[userProductIndex].sellerAgreed,
-        state.userProducts[userProductIndex].buyerAgreed
+        action.productData.internalComments
       );
       console.log('store/reducers/products/UPDATE_PRODUCT, updated product: ', updatedUserProduct);
 
@@ -135,9 +108,6 @@ export default (state = initialState, action) => {
       const updatedProduct = new Product( //Whenever we do a new product we have to pass the full params to match model
         action.pid,
         state.availableProducts[availableProductsIndex].ownerId,
-        state.availableProducts[availableProductsIndex].reservedUserId,
-        state.availableProducts[availableProductsIndex].collectingUserId,
-        state.availableProducts[availableProductsIndex].newOwnerId,
         state.availableProducts[availableProductsIndex].category,
         state.availableProducts[availableProductsIndex].condition,
         state.availableProducts[availableProductsIndex].style,
@@ -158,17 +128,7 @@ export default (state = initialState, action) => {
         state.availableProducts[availableProductsIndex].price,
         state.availableProducts[availableProductsIndex].priceText,
         state.availableProducts[availableProductsIndex].date,
-        state.availableProducts[availableProductsIndex].status,
-        state.availableProducts[availableProductsIndex].readyDate,
-        state.availableProducts[availableProductsIndex].reservedDate,
-        state.availableProducts[availableProductsIndex].reservedUntil,
-        state.availableProducts[availableProductsIndex].suggestedDate,
-        state.availableProducts[availableProductsIndex].collectingDate,
-        state.availableProducts[availableProductsIndex].collectedDate,
-        state.availableProducts[availableProductsIndex].projectId,
-        state.availableProducts[availableProductsIndex].internalComments,
-        state.availableProducts[availableProductsIndex].sellerAgreed,
-        state.availableProducts[availableProductsIndex].buyerAgreed
+        state.availableProducts[availableProductsIndex].internalComments
       );
       console.log('store/reducers/products/UPDATE_PRODUCT, updated product: ', updatedProduct);
 
@@ -184,134 +144,6 @@ export default (state = initialState, action) => {
         ...state,
         availableProducts: updatedAvailableProducts,
         userProducts: updatedProducts,
-      };
-    }
-    case CHANGE_PRODUCT_STATUS: {
-      const availableProductsIndexCPS = getIndex(state.availableProducts, action.pid);
-
-      const updatedProductCPS = new Product( //Whenever we do a new product we have to pass the full params to match model
-        action.pid,
-        state.availableProducts[availableProductsIndexCPS].ownerId,
-        action.productData.reservedUserId,
-        action.productData.collectingUserId,
-        action.productData.newOwnerId,
-        state.availableProducts[availableProductsIndexCPS].category,
-        state.availableProducts[availableProductsIndexCPS].condition,
-        state.availableProducts[availableProductsIndexCPS].style,
-        state.availableProducts[availableProductsIndexCPS].material,
-        state.availableProducts[availableProductsIndexCPS].color,
-        state.availableProducts[availableProductsIndexCPS].title,
-        state.availableProducts[availableProductsIndexCPS].amount,
-        state.availableProducts[availableProductsIndexCPS].image,
-        state.availableProducts[availableProductsIndexCPS].address,
-        state.availableProducts[availableProductsIndexCPS].location,
-        state.availableProducts[availableProductsIndexCPS].pickupDetails,
-        state.availableProducts[availableProductsIndexCPS].phone,
-        state.availableProducts[availableProductsIndexCPS].description,
-        state.availableProducts[availableProductsIndexCPS].background,
-        state.availableProducts[availableProductsIndexCPS].length,
-        state.availableProducts[availableProductsIndexCPS].height,
-        state.availableProducts[availableProductsIndexCPS].width,
-        state.availableProducts[availableProductsIndexCPS].price,
-        state.availableProducts[availableProductsIndexCPS].priceText,
-        state.availableProducts[availableProductsIndexCPS].date,
-        action.productData.status,
-        action.productData.readyDate,
-        action.productData.reservedDate,
-        action.productData.reservedUntil,
-        action.productData.suggestedDate,
-        action.productData.collectingDate,
-        action.productData.collectedDate,
-        action.productData.projectId,
-        state.availableProducts[availableProductsIndexCPS].internalComments,
-        state.availableProducts[availableProductsIndexCPS].sellerAgreed,
-        state.availableProducts[availableProductsIndexCPS].buyerAgreed
-      );
-
-      console.log(
-        'store/reducers/products/CHANGE_PRODUCT_STATUS, updated product: ',
-        updatedProductCPS
-      );
-      //Update state
-      const updatedAvailableProductsCPS = updateCollection(
-        state.availableProducts,
-        action.pid,
-        updatedProductCPS
-      );
-      const updatedUserProductsCPS = updateCollection(
-        state.userProducts,
-        action.pid,
-        updatedProductCPS
-      );
-
-      return {
-        ...state,
-        availableProducts: updatedAvailableProductsCPS,
-        userProducts: updatedUserProductsCPS,
-      };
-    }
-    case CHANGE_PRODUCT_AGREEMENT: {
-      const productIndexAg = getIndex(state.availableProducts, action.pid);
-
-      const updatedProductAgreement = new Product( //Whenever we do a new product we have to pass the full params to match model
-        action.pid,
-        state.availableProducts[productIndexAg].ownerId,
-        state.availableProducts[productIndexAg].reservedUserId,
-        state.availableProducts[productIndexAg].collectingUserId,
-        state.availableProducts[productIndexAg].newOwnerId,
-        state.availableProducts[productIndexAg].category,
-        state.availableProducts[productIndexAg].condition,
-        state.availableProducts[productIndexAg].style,
-        state.availableProducts[productIndexAg].material,
-        state.availableProducts[productIndexAg].color,
-        state.availableProducts[productIndexAg].title,
-        state.availableProducts[productIndexAg].amount,
-        state.availableProducts[productIndexAg].image,
-        state.availableProducts[productIndexAg].address,
-        state.availableProducts[productIndexAg].location,
-        state.availableProducts[productIndexAg].pickupDetails,
-        state.availableProducts[productIndexAg].phone,
-        state.availableProducts[productIndexAg].description,
-        state.availableProducts[productIndexAg].background,
-        state.availableProducts[productIndexAg].length,
-        state.availableProducts[productIndexAg].height,
-        state.availableProducts[productIndexAg].width,
-        state.availableProducts[productIndexAg].price,
-        state.availableProducts[productIndexAg].priceText,
-        state.availableProducts[productIndexAg].date,
-        state.availableProducts[productIndexAg].status,
-        state.availableProducts[productIndexAg].readyDate,
-        state.availableProducts[productIndexAg].reservedDate,
-        state.availableProducts[productIndexAg].reservedUntil,
-        state.availableProducts[productIndexAg].suggestedDate,
-        state.availableProducts[productIndexAg].collectingDate,
-        state.availableProducts[productIndexAg].collectedDate,
-        state.availableProducts[productIndexAg].projectId,
-        state.availableProducts[productIndexAg].internalComments,
-        action.productData.sellerAgreed,
-        action.productData.buyerAgreed
-      );
-
-      console.log(
-        'store/reducers/products/CHANGE_PRODUCT_STATUS, updated product: ',
-        updatedProductAgreement
-      );
-      //Update state
-      const updatedAvailableProductsAgreement = updateCollection(
-        state.availableProducts,
-        action.pid,
-        updatedProductAgreement
-      );
-      const updatedUserProductsAgreement = updateCollection(
-        state.userProducts,
-        action.pid,
-        updatedProductAgreement
-      );
-
-      return {
-        ...state,
-        availableProducts: updatedAvailableProductsAgreement,
-        userProducts: updatedUserProductsAgreement,
       };
     }
     case DELETE_PRODUCT:

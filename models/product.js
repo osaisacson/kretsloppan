@@ -4,9 +4,6 @@ class Product {
   constructor(
     id,
     ownerId,
-    reservedUserId,
-    collectingUserId,
-    newOwnerId,
     category,
     condition,
     style,
@@ -27,23 +24,11 @@ class Product {
     price,
     priceText,
     date,
-    status,
     readyDate,
-    reservedDate,
-    reservedUntil,
-    suggestedDate,
-    collectingDate,
-    collectedDate,
-    projectId,
-    internalComments,
-    sellerAgreed,
-    buyerAgreed
+    internalComments
   ) {
     this.id = id;
     this.ownerId = ownerId;
-    this.reservedUserId = reservedUserId;
-    this.collectingUserId = collectingUserId;
-    this.newOwnerId = newOwnerId;
     this.category = category;
     this.condition = condition;
     this.style = style;
@@ -64,17 +49,8 @@ class Product {
     this.price = price;
     this.priceText = priceText;
     this.date = date;
-    this.status = status;
     this.readyDate = readyDate;
-    this.reservedDate = reservedDate;
-    this.reservedUntil = reservedUntil;
-    this.suggestedDate = suggestedDate;
-    this.collectingDate = collectingDate;
-    this.collectedDate = collectedDate;
-    this.projectId = projectId;
     this.internalComments = internalComments;
-    this.sellerAgreed = sellerAgreed;
-    this.buyerAgreed = buyerAgreed;
   }
   get readableDate() {
     return moment(this.date).format('MMMM Do YYYY, hh:mm');

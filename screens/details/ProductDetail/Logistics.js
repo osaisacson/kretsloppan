@@ -71,9 +71,9 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                 imageUrl,
                 quantityNum,
                 orderSuggestedDate
-              ),
-              dispatch(productsActions.updateProductAmount(id, newProductAmount))
+              )
             );
+            dispatch(productsActions.updateProductAmount(id, newProductAmount));
             refRBSheet.current.close();
           },
         },

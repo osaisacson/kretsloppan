@@ -14,6 +14,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   const {
     id,
+    productId,
     projectId,
     quantity,
     reservedUntil,
@@ -24,7 +25,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
   } = order;
 
   const products = useSelector((state) => state.products.availableProducts);
-  const currentProduct = products.filter((prod) => prod.id === id);
+  const currentProduct = products.find((prod) => prod.id === productId);
 
   const [showCalendar, setShowCalendar] = useState(false);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
@@ -147,11 +148,8 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
   };
 
   const deleteHandler = (orderId, orderQuantity) => {
-    console.log('deleteHandler, passed params:');
-    console.log({ orderId, orderQuantity });
     const updatedProductAmount = Number(currentProduct.amount) + Number(orderQuantity);
-    console.log('amount to update product to, after deleting order: ', updatedProductAmount);
-    console.log('---------------');
+
     Alert.alert(
       'Är du säker?',
       'Vill du verkligen radera den här reservationen? Det går inte att gå ändra sig när det väl är gjort.',
