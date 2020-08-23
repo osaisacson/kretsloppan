@@ -1,14 +1,10 @@
-import moment from 'moment/min/moment-with-locales';
 import React, { useState, useRef } from 'react';
 import { View, Alert, Text, StyleSheet, TextInput } from 'react-native';
-import { useColorScheme } from 'react-native-appearance';
-import CalendarStrip from 'react-native-calendar-strip';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { Divider } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonAction from '../../../components/UI/ButtonAction';
+import CalendarSelection from '../../../components/UI/CalendarSelection';
 import HeaderThree from '../../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../../components/UI/HorizontalScrollContainer';
 import RoundItem from '../../../components/UI/RoundItem';
@@ -21,15 +17,12 @@ import * as productsActions from '../../../store/actions/products';
 const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const dispatch = useDispatch();
   const refRBSheet = useRef();
-  const colorScheme = useColorScheme();
 
   const [orderProject, setOrderProject] = useState('000');
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [suggestedDateLocal, setSuggestedDateLocal] = useState();
 
-  const { id, image, amount, ownerId } = selectedProduct;
+  const { id, image, amount, ownerId, suggestedDate } = selectedProduct;
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
@@ -48,7 +41,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     const imageUrl = image;
     const quantityNum = Number(quantity);
     const newProductAmount = amount - quantityNum;
-    console.log('newProductAmount', newProductAmount);
+    console.log('Logistics/reserveHandler: newProductAmount', newProductAmount);
 
     if (!quantity || !suggestedDate) {
       Alert.alert(
@@ -86,35 +79,12 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     );
   };
 
-  const handleTimePicker = (date) => {
-    setSuggestedDateLocal(date);
-    setShowTimePicker(true);
-  };
-
-  const hideTimePicker = () => {
-    setShowTimePicker(false);
-  };
-
-  const setSuggestedDT = (dateTime) => {
-    Alert.alert(
-      'Föreslå tid',
-      `Genom att klicka här föreslår du ${moment(dateTime)
-        .locale('sv')
-        .format(
-          'HH:mm, D MMMM'
-        )} som tid för upphämtning. Om motparten godkänner tiden åtar du dig att vara på överenskommen plats vid denna tidpunkt.`,
-      [
-        { text: 'Avbryt', style: 'default' },
-        {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            setOrderSuggestedDate(dateTime);
-            hideTimePicker();
-          },
-        },
-      ]
+  const sendSuggestedTime = (dateTime) => {
+    console.log(
+      'Logistics/sendSuggestedTime: attempting to set the selected dateTime in parent to: ',
+      dateTime
     );
+    setOrderSuggestedDate(dateTime);
   };
 
   return (
@@ -193,55 +163,10 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
               ) : null}
 
               {/* Set a date and time for pickup */}
-              <>
-                <Divider style={{ marginBottom: 10 }} />
-                <HeaderThree
-                  style={{ textAlign: 'center', marginBottom: 10 }}
-                  text="Föreslå tid för upphämtning nedan."
-                />
-                <HeaderThree
-                  style={{ textAlign: 'center' }}
-                  text="Kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer (ovan) som gäller."
-                />
-                <View style={{ flex: 1 }}>
-                  <CalendarStrip
-                    scrollable
-                    selectedDate={suggestedDateLocal}
-                    daySelectionAnimation={{
-                      type: 'border',
-                      borderWidth: 0.5,
-                      borderHighlightColor: Colors.darkPrimary,
-                      duration: 200,
-                    }}
-                    highlightDateNameStyle={{ color: Colors.darkPrimary }}
-                    highlightDateNumberStyle={{ color: Colors.darkPrimary }}
-                    styleWeekend
-                    onDateSelected={(date) => {
-                      handleTimePicker(date);
-                    }}
-                    style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-                    type="border"
-                    borderWidth={1}
-                    borderHighlightColor="#666"
-                  />
-                  <DateTimePickerModal
-                    date={new Date(suggestedDateLocal)}
-                    isDarkModeEnabled={colorScheme === 'dark'}
-                    cancelTextIOS="Avbryt"
-                    confirmTextIOS="Klar!"
-                    headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
-                      .locale('sv')
-                      .format('D MMMM')}. Välj tid:`}
-                    isVisible={showTimePicker}
-                    mode="time"
-                    locale="sv_SV" // Use "en_GB" here
-                    onConfirm={(dateTime) => {
-                      setSuggestedDT(dateTime);
-                    }}
-                    onCancel={hideTimePicker}
-                  />
-                </View>
-              </>
+              <CalendarSelection
+                suggestedDate={suggestedDate}
+                sendSuggestedTime={sendSuggestedTime}
+              />
 
               <ButtonAction
                 onSelect={() => {

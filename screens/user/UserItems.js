@@ -5,9 +5,7 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Orders from '../../components/UI/Orders';
 
-const UserItems = (props) => {
-  const { userProjects, userProposals, userUploads, userProducts, navigation } = props;
-
+const UserItems = ({ userProjects, userProposals, userProducts, navigation }) => {
   const activeUserProposals = userProposals.filter((proposal) => proposal.status !== 'löst');
 
   const userOrders = useSelector((state) => state.orders.userOrders);

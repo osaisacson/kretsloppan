@@ -64,10 +64,13 @@ const ProductDetailScreen = (props) => {
     location,
   } = selectedProduct;
 
-  const productIsAvailable = amount > 1;
+  const productIsAvailable = amount > 0;
 
-  const allOrders = useSelector((state) => state.orders.availableOrders);
-  const productOrders = allOrders.find((order) => order.productId === id);
+  const productOrders = useSelector((state) =>
+    state.orders.availableOrders.filter((order) => order.productId === id)
+  );
+
+  console.log('productOrders from ProductDetailScreen: ', productOrders);
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
@@ -124,7 +127,7 @@ const ProductDetailScreen = (props) => {
         ) : null} */}
 
         {/* TBD: use above conditional view, below only for testing */}
-        <Orders isSeller orders={productOrders} navigation={navigation} />
+        <Orders isSeller orders={productOrders ? productOrders : []} navigation={navigation} />
 
         <SectionCard>
           {productIsAvailable ? (
@@ -223,7 +226,6 @@ const ProductDetailScreen = (props) => {
           <Divider style={{ marginTop: 10 }} />
           <HeaderThree style={{ marginVertical: 10 }} text="Upphämtningsdetaljer" />
           <Paragraph>{ownerProfile.profileName}</Paragraph>
-
           <Paragraph>{phone ? `0${phone}` : 'Ingen telefon angiven'}</Paragraph>
           <Paragraph>{address ? address : 'Ingen address angiven'}</Paragraph>
           <Paragraph>{pickupDetails}</Paragraph>

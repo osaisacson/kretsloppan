@@ -47,16 +47,6 @@ const UserSpotlightScreen = (props) => {
   //FROM USER
   const givenByUser = collectedItemsUser.filter((product) => product.newOwnerId !== loggedInUserId);
 
-  //READY: Gets all products where the ownerId matches the id of our currently logged in user
-  const userUploadsRaw = userProducts.filter(
-    (product) => product.status === 'redo' || product.status === ''
-  );
-  const userUploads = userUploadsRaw.sort(function (a, b) {
-    a = new Date(a.readyDate);
-    b = new Date(b.readyDate);
-    return a > b ? -1 : a < b ? 1 : 0;
-  });
-
   //Get all projects, return only the ones which matches the logged in id
   const userProjects = useSelector((state) => state.projects.availableProjects).filter(
     (proj) => proj.ownerId === loggedInUserId
@@ -166,7 +156,6 @@ const UserSpotlightScreen = (props) => {
         <UserItems
           userProjects={userProjects}
           userProposals={userProposals}
-          userUploads={userUploads}
           userProducts={userProducts}
           navigation={props.navigation}
         />
