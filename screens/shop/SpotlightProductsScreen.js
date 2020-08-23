@@ -62,7 +62,7 @@ const SpotlightProductsScreen = (props) => {
           showMoreLink={
             allProposals.length > 1 ? () => props.navigation.navigate('Efterlysningar') : false
           }
-          showMoreLinkName={`Se alla efterlysningar (${allProposals.length})`}
+          showMoreNr={allProposals.length}
           scrollData={recentProposals}
           navigation={props.navigation}
           icon={
@@ -81,7 +81,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Senast tillgängliga återbruket"
           showAddLink={() => props.navigation.navigate('EditProduct')}
           showMoreLink={() => props.navigation.navigate('Återbruk')}
-          showMoreLinkName={`Se allt återbruk (${allProducts.length})`}
+          showMoreNr={allProducts.length}
           scrollData={recentProducts}
           navigation={props.navigation}
           icon={
@@ -101,7 +101,7 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Projekt som byggs med återbruk"
           showAddLink={() => props.navigation.navigate('EditProject')}
           showMoreLink={() => props.navigation.navigate('Projekt')}
-          showMoreLinkName={`Se alla projekt (${allProjects.length})`}
+          showMoreNr={allProjects.length}
           scrollData={recentProjects}
           navigation={props.navigation}
           icon={

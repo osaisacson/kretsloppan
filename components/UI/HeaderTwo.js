@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Badge } from 'react-native-paper';
+import { Badge, Button } from 'react-native-paper';
 
 import Colors from './../../constants/Colors';
 import ButtonAdd from './ButtonAdd';
@@ -16,6 +16,8 @@ const HeaderTwo = ({
   buttonOnPress,
   simpleCount,
   showAddLink,
+  showMoreLink,
+  showMoreNr,
   showNotificationBadge,
   isSearch,
 }) => {
@@ -39,11 +41,21 @@ const HeaderTwo = ({
         {extraSubTitle ? <Text style={styles.extraSubTitle}>{extraSubTitle}</Text> : null}
       </View>
       <View style={styles.indicatorSection}>
-        {showAddLink ? (
-          <View style={{ alignSelf: 'flex-end', paddingBottom: subTitle ? 20 : 2 }}>
+        <View
+          style={{ flexDirection: 'row', alignSelf: 'flex-end', paddingBottom: subTitle ? 20 : 2 }}>
+          {showMoreLink ? (
+            <ButtonIcon
+              icon="menu-right"
+              badge={showMoreNr}
+              onSelect={showMoreLink}
+              color={Colors.darkPrimary}
+            />
+          ) : null}
+          {showAddLink ? (
             <ButtonIcon icon="plus" onSelect={showAddLink} color={Colors.darkPrimary} />
-          </View>
-        ) : null}
+          ) : null}
+        </View>
+
         {buttonText ? <ButtonAdd title={buttonText} onPress={buttonOnPress} /> : null}
       </View>
     </View>

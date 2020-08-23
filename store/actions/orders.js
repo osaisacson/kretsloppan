@@ -76,13 +76,14 @@ export function fetchOrders() {
               : ', moving on with our lives...'
           }`
         );
+        //TBD: The below needs to also update the total available amount in the relevant product
         //If the order has expired, call a function which passes correct new fields and then push the updated order to the reservedItems array
-        if (expiredOrders.length) {
-          expiredOrders.forEach(function (item) {
-            dispatch(deleteOrder(item.id));
-            console.log(`...'${item.id}' order was expired and is now deleted.`);
-          });
-        }
+        // if (expiredOrders.length) {
+        //   expiredOrders.forEach(function (item) {
+        //     dispatch(deleteOrder(item.id));
+        //     console.log(`...'${item.id}' order was expired and is now deleted.`);
+        //   });
+        // }
       }
     } catch (error) {
       console.log('Error in actions/orders/fetchOrders: ', error);

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Alert, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Alert, Text, StyleSheet, Slider } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -21,6 +21,8 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const [orderProject, setOrderProject] = useState('000');
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
+  console.log('ORDER QUANTITY: ', orderQuantity);
+  console.log('ORDER SUGGESTED DATE: ', orderSuggestedDate);
 
   const { id, image, amount, ownerId, suggestedDate } = selectedProduct;
 
@@ -68,9 +70,9 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                 orderProjectId,
                 imageUrl,
                 quantityNum,
-                suggestedDate
+                orderSuggestedDate
               ),
-              productsActions.updateProductAmount(id, newProductAmount)
+              dispatch(productsActions.updateProductAmount(id, newProductAmount))
             );
             refRBSheet.current.close();
           },
@@ -145,20 +147,22 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                     text="Hur många vill du reservera?"
                     style={detailStyles.centeredHeader}
                   />
-                  <TextInput
-                    placeholder={`1 - ${amount}`}
+                  <View
                     style={{
-                      margin: 10,
-                      height: 40,
-                      borderColor: 'gray',
-                      borderWidth: 1,
-                      width: 100,
-                      alignSelf: 'center',
-                      textAlign: 'center',
-                    }}
-                    onChangeText={(text) => setOrderQuantity(text)}
-                    value={String(orderQuantity)}
-                  />
+                      alignItems: 'center',
+                    }}>
+                    <Text style={{ fontSize: 20, paddingTop: 5 }}>{orderQuantity}</Text>
+                    <Slider
+                      style={{ width: 200, height: 40 }}
+                      minimumValue={1}
+                      step={1}
+                      maximumValue={amount}
+                      minimumTrackTintColor={Colors.subtleGreen}
+                      maximumTrackTintColor="#000000"
+                      value={String(orderQuantity)}
+                      onSlidingComplete={(value) => setOrderQuantity(value)}
+                    />
+                  </View>
                 </>
               ) : null}
 
@@ -167,8 +171,8 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                 suggestedDate={suggestedDate}
                 sendSuggestedTime={sendSuggestedTime}
               />
-
               <ButtonAction
+                style={{ marginBottom: 80 }}
                 onSelect={() => {
                   reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
                 }}

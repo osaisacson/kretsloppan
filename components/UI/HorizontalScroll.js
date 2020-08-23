@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { Divider, Button } from 'react-native-paper';
 
-import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
 import HeaderTwo from './HeaderTwo';
 import LargeImageItem from './LargeImageItem';
@@ -66,6 +65,8 @@ const HorizontalScroll = (props) => {
             extraSubTitle={props.extraSubTitle}
             buttonOnPress={props.buttonOnPress}
             showAddLink={props.showAddLink}
+            showMoreLink={props.showMoreLink}
+            showMoreNr={props.showMoreNr}
             buttonText={props.buttonText}
             icon={props.icon}
             simpleCount={props.simpleCount}
@@ -130,20 +131,6 @@ const HorizontalScroll = (props) => {
         </View>
         {!props.showMoreLink ? <Divider /> : null}
       </ScrollView>
-      {props.showMoreLink ? (
-        <>
-          <Button
-            animated
-            mode="contained"
-            style={{ marginHorizontal: 10, marginBottom: 20, alignSelf: 'center' }}
-            labelStyle={{ fontSize: 10 }}
-            color={Colors.darkPrimary}
-            onPress={props.showMoreLink}>
-            {props.showMoreLinkName}
-          </Button>
-          <Divider />
-        </>
-      ) : null}
     </>
   );
 };

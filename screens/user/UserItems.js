@@ -1,9 +1,11 @@
 import React from 'react';
+import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Orders from '../../components/UI/Orders';
+import Colors from '../../constants/Colors';
 
 const UserItems = ({ userProjects, userProposals, userProducts, navigation }) => {
   const activeUserProposals = userProposals.filter((proposal) => proposal.status !== 'löst');
@@ -22,6 +24,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, navigation }) =>
           <Orders isBuyer orders={userOrders} navigation={navigation} />
         </>
       ) : null}
+      <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
       <HorizontalScroll
         textItem
         scrollData={activeUserProposals}
@@ -29,24 +32,22 @@ const UserItems = ({ userProjects, userProposals, userProducts, navigation }) =>
         title="Mina Aktiva Efterlysningar"
         simpleCount={activeUserProposals.length}
         navigation={navigation}
-        showAddLink={() => props.navigation.navigate('EditProposal')}
+        showAddLink={() => navigation.navigate('EditProposal')}
         showMoreLink={
-          userProposals.length > 1
-            ? () => props.navigation.navigate('Alla mina efterlysningar')
-            : false
+          userProposals.length > 1 ? () => navigation.navigate('Alla mina efterlysningar') : false
         }
-        showMoreLinkName={`Se alla mina efterlysningar(${userProposals.length})`}
+        showMoreNr={userProposals.length}
       />
       <HorizontalScroll
         title="Mitt upplagda återbruk"
         scrollData={userProducts}
         simpleCount={userProducts.length}
         navigation={navigation}
-        showAddLink={() => props.navigation.navigate('EditProduct')}
+        showAddLink={() => navigation.navigate('EditProduct')}
         showMoreLink={
-          userProducts.length ? () => props.navigation.navigate('Mitt upplagda återbruk') : false
+          userProducts.length ? () => navigation.navigate('Mitt upplagda återbruk') : false
         }
-        showMoreLinkName={`Se hela mitt förråd (${userProducts.length})`}
+        showMoreNr={userProducts.length}
       />
       <HorizontalScroll
         largeImageItem
@@ -55,7 +56,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, navigation }) =>
         scrollData={userProjects}
         simpleCount={userProjects.length}
         navigation={navigation}
-        showAddLink={() => props.navigation.navigate('EditProject')}
+        showAddLink={() => navigation.navigate('EditProject')}
       />
     </>
   );
