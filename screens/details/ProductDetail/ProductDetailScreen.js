@@ -108,6 +108,11 @@ const ProductDetailScreen = (props) => {
         {/* TBD: use above conditional view, below only for testing */}
         <Orders isSeller orders={productOrders} navigation={navigation} />
         <SectionCard>
+          {amount ? <Text style={detailStyles.amount}>{amount} st à</Text> : null}
+          {priceText && !price ? <Text style={detailStyles.price}>{priceText}</Text> : null}
+          {(price || price === 0) && !priceText ? (
+            <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
+          ) : null}
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
 

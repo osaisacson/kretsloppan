@@ -8,13 +8,11 @@ import HeaderThree from '../../../components/UI/HeaderThree';
 import Colors from '../../../constants/Colors';
 
 const CollectionInformation = ({ selectedProduct }) => {
-  //Set up state hooks
   const [showOptions, setShowOptions] = useState(false);
 
   const { ownerId, phone, address, pickupDetails } = selectedProduct;
 
   const profiles = useSelector((state) => state.profiles.allProfiles);
-
   const ownerProfile = profiles.find((profile) => profile.profileId === ownerId);
 
   const toggleShowOptions = () => {

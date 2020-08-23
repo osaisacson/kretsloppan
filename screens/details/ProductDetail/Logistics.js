@@ -118,144 +118,142 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   };
 
   return (
-    <>
-      <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
-        <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
-          <UserAvatar
-            userId={ownerId}
-            style={{ margin: 0 }}
-            showBadge={false}
-            actionOnPress={() => {
-              navigation.navigate('Användare', {
-                detailId: ownerId,
-              });
-            }}
-          />
-          <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -10 }]}>
-            <Text style={styles.smallText}>säljare</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            position: 'absolute',
-            right: 0,
-          }}>
-          {/* Reserve item - visible to all except the creator of the item, as long as there are any left*/}
-          {!hasEditPermission && amount > 0 ? (
-            <View>
-              <ButtonAction onSelect={toggleBottomModal} title="reservera" />
-              <RBSheet ref={refRBSheet} height={500} closeOnDragDown closeOnPressMask>
-                {/* If the user has any projects, ask which project the item will be used in  */}
-                {userProjects.length ? (
-                  <>
-                    <HeaderThree
-                      text="Vilket projekt ska återbruket användas i?"
-                      style={detailStyles.centeredHeader}
-                    />
-                    <HorizontalScrollContainer>
-                      {userProjects.map((item) => (
-                        <RoundItem
-                          itemData={item}
-                          key={item.id}
-                          isHorizontal
-                          onSelect={() => {
-                            setOrderProject(item.id);
-                          }}
-                        />
-                      ))}
-                    </HorizontalScrollContainer>
-                  </>
-                ) : null}
-
-                {/* If there are multiple items available to reserve, ask how many the user wants to reserve */}
-                {amount > 1 ? (
-                  <>
-                    <HeaderThree
-                      text="Hur många vill du reservera?"
-                      style={detailStyles.centeredHeader}
-                    />
-                    <TextInput
-                      placeholder={`1 - ${amount}`}
-                      style={{
-                        margin: 10,
-                        height: 40,
-                        borderColor: 'gray',
-                        borderWidth: 1,
-                        width: 100,
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                      }}
-                      onChangeText={(text) => setOrderQuantity(text)}
-                      value={String(orderQuantity)}
-                    />
-                  </>
-                ) : null}
-
-                {/* Set a date and time for pickup */}
-                <>
-                  <Divider style={{ marginBottom: 10 }} />
-                  <HeaderThree
-                    style={{ textAlign: 'center', marginBottom: 10 }}
-                    text="Föreslå tid för upphämtning nedan."
-                  />
-                  <HeaderThree
-                    style={{ textAlign: 'center' }}
-                    text="Kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer (ovan) som gäller."
-                  />
-                  <View style={{ flex: 1 }}>
-                    <CalendarStrip
-                      scrollable
-                      selectedDate={suggestedDateLocal}
-                      daySelectionAnimation={{
-                        type: 'border',
-                        borderWidth: 0.5,
-                        borderHighlightColor: Colors.darkPrimary,
-                        duration: 200,
-                      }}
-                      highlightDateNameStyle={{ color: Colors.darkPrimary }}
-                      highlightDateNumberStyle={{ color: Colors.darkPrimary }}
-                      styleWeekend
-                      onDateSelected={(date) => {
-                        handleTimePicker(date);
-                      }}
-                      style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-                      type="border"
-                      borderWidth={1}
-                      borderHighlightColor="#666"
-                    />
-                    <DateTimePickerModal
-                      date={new Date(suggestedDateLocal)}
-                      isDarkModeEnabled={colorScheme === 'dark'}
-                      cancelTextIOS="Avbryt"
-                      confirmTextIOS="Klar!"
-                      headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
-                        .locale('sv')
-                        .format('D MMMM')}. Välj tid:`}
-                      isVisible={showTimePicker}
-                      mode="time"
-                      locale="sv_SV" // Use "en_GB" here
-                      onConfirm={(dateTime) => {
-                        setSuggestedDT(dateTime);
-                      }}
-                      onCancel={hideTimePicker}
-                    />
-                  </View>
-                </>
-
-                <ButtonAction
-                  onSelect={() => {
-                    reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
-                  }}
-                  title="reservera"
-                />
-              </RBSheet>
-            </View>
-          ) : null}
+    <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
+      <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
+        <UserAvatar
+          userId={ownerId}
+          style={{ margin: 0 }}
+          showBadge={false}
+          actionOnPress={() => {
+            navigation.navigate('Användare', {
+              detailId: ownerId,
+            });
+          }}
+        />
+        <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -10 }]}>
+          <Text style={styles.smallText}>säljare</Text>
         </View>
       </View>
-    </>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          position: 'absolute',
+          right: 0,
+        }}>
+        {/* Reserve item - visible to all except the creator of the item, as long as there are any left*/}
+        {!hasEditPermission && amount > 0 ? (
+          <View>
+            <ButtonAction onSelect={toggleBottomModal} title="reservera" />
+            <RBSheet ref={refRBSheet} height={500} closeOnDragDown closeOnPressMask>
+              {/* If the user has any projects, ask which project the item will be used in  */}
+              {userProjects.length ? (
+                <>
+                  <HeaderThree
+                    text="Vilket projekt ska återbruket användas i?"
+                    style={detailStyles.centeredHeader}
+                  />
+                  <HorizontalScrollContainer>
+                    {userProjects.map((item) => (
+                      <RoundItem
+                        itemData={item}
+                        key={item.id}
+                        isHorizontal
+                        onSelect={() => {
+                          setOrderProject(item.id);
+                        }}
+                      />
+                    ))}
+                  </HorizontalScrollContainer>
+                </>
+              ) : null}
+
+              {/* If there are multiple items available to reserve, ask how many the user wants to reserve */}
+              {amount > 1 ? (
+                <>
+                  <HeaderThree
+                    text="Hur många vill du reservera?"
+                    style={detailStyles.centeredHeader}
+                  />
+                  <TextInput
+                    placeholder={`1 - ${amount}`}
+                    style={{
+                      margin: 10,
+                      height: 40,
+                      borderColor: 'gray',
+                      borderWidth: 1,
+                      width: 100,
+                      alignSelf: 'center',
+                      textAlign: 'center',
+                    }}
+                    onChangeText={(text) => setOrderQuantity(text)}
+                    value={String(orderQuantity)}
+                  />
+                </>
+              ) : null}
+
+              {/* Set a date and time for pickup */}
+              <>
+                <Divider style={{ marginBottom: 10 }} />
+                <HeaderThree
+                  style={{ textAlign: 'center', marginBottom: 10 }}
+                  text="Föreslå tid för upphämtning nedan."
+                />
+                <HeaderThree
+                  style={{ textAlign: 'center' }}
+                  text="Kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtingsdetaljer (ovan) som gäller."
+                />
+                <View style={{ flex: 1 }}>
+                  <CalendarStrip
+                    scrollable
+                    selectedDate={suggestedDateLocal}
+                    daySelectionAnimation={{
+                      type: 'border',
+                      borderWidth: 0.5,
+                      borderHighlightColor: Colors.darkPrimary,
+                      duration: 200,
+                    }}
+                    highlightDateNameStyle={{ color: Colors.darkPrimary }}
+                    highlightDateNumberStyle={{ color: Colors.darkPrimary }}
+                    styleWeekend
+                    onDateSelected={(date) => {
+                      handleTimePicker(date);
+                    }}
+                    style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+                    type="border"
+                    borderWidth={1}
+                    borderHighlightColor="#666"
+                  />
+                  <DateTimePickerModal
+                    date={new Date(suggestedDateLocal)}
+                    isDarkModeEnabled={colorScheme === 'dark'}
+                    cancelTextIOS="Avbryt"
+                    confirmTextIOS="Klar!"
+                    headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
+                      .locale('sv')
+                      .format('D MMMM')}. Välj tid:`}
+                    isVisible={showTimePicker}
+                    mode="time"
+                    locale="sv_SV" // Use "en_GB" here
+                    onConfirm={(dateTime) => {
+                      setSuggestedDT(dateTime);
+                    }}
+                    onCancel={hideTimePicker}
+                  />
+                </View>
+              </>
+
+              <ButtonAction
+                onSelect={() => {
+                  reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
+                }}
+                title="reservera"
+              />
+            </RBSheet>
+          </View>
+        ) : null}
+      </View>
+    </View>
   );
 };
 

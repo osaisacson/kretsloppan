@@ -40,9 +40,9 @@ const UserItems = (props) => {
         showMoreLinkName={`Se alla mina efterlysningar(${userProposals.length})`}
       />
       <HorizontalScroll
-        title="Mitt tillgängliga återbruk"
-        scrollData={userUploads}
-        simpleCount={userUploads.length}
+        title="Mitt upplagda återbruk"
+        scrollData={userProducts}
+        simpleCount={userProducts.length}
         navigation={navigation}
         showAddLink={() => props.navigation.navigate('EditProduct')}
         showMoreLink={
