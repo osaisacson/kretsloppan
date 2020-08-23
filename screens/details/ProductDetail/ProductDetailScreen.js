@@ -11,10 +11,10 @@ import FilterLine from '../../../components/UI/FilterLine';
 import HeaderThree from '../../../components/UI/HeaderThree';
 import Orders from '../../../components/UI/Orders';
 import SectionCard from '../../../components/UI/SectionCard';
+import StatusBadge from '../../../components/UI/StatusBadge';
 import { DetailWrapper, detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
 import * as productsActions from '../../../store/actions/products';
-import CollectionInformation from './CollectionInformation';
 import Logistics from './Logistics';
 
 const ProductDetailScreen = (props) => {
@@ -26,6 +26,8 @@ const ProductDetailScreen = (props) => {
   const ownerId = props.route.params.ownerId;
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const loggedInUserId = currentProfile.profileId;
+  const profiles = useSelector((state) => state.profiles.allProfiles);
+  const ownerProfile = profiles.find((profile) => profile.profileId === ownerId);
 
   //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>
@@ -52,12 +54,17 @@ const ProductDetailScreen = (props) => {
     material,
     price,
     priceText,
+    phone,
+    address,
+    pickupDetails,
     status,
     style,
     title,
     width,
     location,
   } = selectedProduct;
+
+  const productIsAvailable = amount > 1;
 
   const allOrders = useSelector((state) => state.orders.availableOrders);
   const productOrders = allOrders.find((order) => order.productId === id);
@@ -91,15 +98,26 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        {/* Buttons for handling reserving, collecting or changing an order */}
-        <Logistics
-          loggedInUserId={loggedInUserId}
-          navigation={navigation}
-          hasEditPermission={hasEditPermission}
-          selectedProduct={selectedProduct}
-        />
-        {/* Button showing the address and collection times for the product */}
-        <CollectionInformation selectedProduct={selectedProduct} />
+        {productIsAvailable ? (
+          <Logistics
+            navigation={navigation}
+            hasEditPermission={hasEditPermission}
+            selectedProduct={selectedProduct}
+          />
+        ) : (
+          <StatusBadge
+            style={{
+              position: 'absolute',
+              zIndex: 10,
+              marginTop: 13,
+              marginLeft: 5,
+              alignSelf: 'left',
+              width: 200,
+            }}
+            text="Alla är för närvarande reserverade"
+            backgroundColor={Colors.darkPrimary}
+          />
+        )}
         {/* Displays a list of orders for the product if the logged in user is the seller */}
         {/* {hasEditPermission ? (
           <Orders isSeller orders={productOrders} navigation={navigation} />
@@ -107,11 +125,16 @@ const ProductDetailScreen = (props) => {
 
         {/* TBD: use above conditional view, below only for testing */}
         <Orders isSeller orders={productOrders} navigation={navigation} />
+
         <SectionCard>
-          {amount ? <Text style={detailStyles.amount}>{amount} st à</Text> : null}
-          {priceText && !price ? <Text style={detailStyles.price}>{priceText}</Text> : null}
-          {(price || price === 0) && !priceText ? (
-            <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
+          {productIsAvailable ? (
+            <>
+              {amount ? <Text style={detailStyles.amount}>{amount} st à</Text> : null}
+              {priceText && !price ? <Text style={detailStyles.price}>{priceText}</Text> : null}
+              {(price || price === 0) && !priceText ? (
+                <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
+              ) : null}
+            </>
           ) : null}
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
@@ -196,6 +219,14 @@ const ProductDetailScreen = (props) => {
               <Paragraph>{width}mm</Paragraph>
             </View>
           ) : null}
+
+          <Divider style={{ marginTop: 10 }} />
+          <HeaderThree style={{ marginVertical: 10 }} text="Upphämtningsdetaljer" />
+          <Paragraph>{ownerProfile.profileName}</Paragraph>
+
+          <Paragraph>{phone ? `0${phone}` : 'Ingen telefon angiven'}</Paragraph>
+          <Paragraph>{address ? address : 'Ingen address angiven'}</Paragraph>
+          <Paragraph>{pickupDetails}</Paragraph>
           <Divider style={{ marginTop: 10 }} />
 
           {/* Only show filter badges if we have any filters */}
@@ -203,23 +234,13 @@ const ProductDetailScreen = (props) => {
             <>
               <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
                 {category === 'Ingen' ? null : <FilterLine filter={category} />}
-                {condition === 'Inget' ? null : <FilterLine filter={`${condition} skick`} />}
+                {condition === 'Inget' ? null : <FilterLine filter={condition} />}
                 {style === 'Ingen' ? null : <FilterLine filter={style} />}
-                {material === 'Inget' ? null : <FilterLine filter={material} />}
+                {material === 'Inget' ? null : <FilterLine filter={`${material} material`} />}
                 {color === 'Ingen' ? null : <FilterLine filter={color} />}
               </View>
               <Divider style={{ marginBottom: 10 }} />
             </>
-          ) : null}
-
-          {/* Price */}
-          {price || priceText ? (
-            <View style={detailStyles.spaceBetweenRow}>
-              <Title>Pris:</Title>
-              <Paragraph style={{ textAlign: 'right', padding: 20 }}>
-                {price ? `${price} kr` : priceText}
-              </Paragraph>
-            </View>
           ) : null}
         </SectionCard>
         <Text style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
