@@ -7,24 +7,38 @@ import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Orders from '../../components/UI/Orders';
 import Colors from '../../constants/Colors';
 
-const UserItems = ({ userProjects, userProposals, userProducts, navigation }) => {
+const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, navigation }) => {
   const activeUserProposals = userProposals.filter((proposal) => proposal.status !== 'löst');
 
-  const userOrders = useSelector((state) => state.orders.userOrders);
+  const ordersByUser = useSelector((state) => state.orders.userOrders);
+  const ordersFromUser = useSelector((state) => state.orders.availableOrders).filter(
+    (order) => order.ownerId === loggedInUserId
+  );
 
   return (
     <>
-      {userOrders.length ? (
+      {ordersByUser.length ? (
         <>
           <HeaderTwo
             title="Mina pågående reservationer"
-            indicator={userOrders.length}
+            indicator={ordersByUser.length}
             showNotificationBadge
           />
-          <Orders isBuyer orders={userOrders} navigation={navigation} />
+          <Orders isBuyer orders={ordersByUser} navigation={navigation} />
+          <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
         </>
       ) : null}
-      <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
+      {ordersFromUser.length ? (
+        <>
+          <HeaderTwo
+            title="Mina pågående beställningar"
+            indicator={ordersFromUser.length}
+            showNotificationBadge
+          />
+          <Orders isBuyer orders={ordersFromUser} navigation={navigation} />
+          <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
+        </>
+      ) : null}
       <HorizontalScroll
         textItem
         scrollData={activeUserProposals}

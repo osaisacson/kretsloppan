@@ -1,11 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
-import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 import CachedImage from '../../components/UI/CachedImage';
 import UserAvatar from '../../components/UI/UserAvatar';
-import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
@@ -18,58 +15,10 @@ const ProductItem = ({
   showSmallStatusIcons,
   onSelect,
 }) => {
-  const {
-    status,
-    collectedDate,
-    organisedDate,
-    reservedDate,
-    ownerId,
-    location,
-    image,
-    priceText,
-    price,
-    background,
-    amount,
-    title,
-  } = itemData;
-
-  const isReserved = status === 'reserverad';
-  const isOrganised = status === 'ordnad';
-  const isPickedUp = status === 'hämtad';
-
-  let icon;
-  let bgColor;
-
-  if (isReserved) {
-    icon = 'bookmark';
-    bgColor = Colors.primary;
-  }
-
-  if (isOrganised) {
-    icon = 'star';
-    bgColor = Colors.subtleGreen;
-  }
-
-  if (isPickedUp) {
-    icon = 'checkmark';
-    bgColor = Colors.completed;
-  }
-
-  const relevantDate = collectedDate
-    ? `Hämtad ${Moment(collectedDate).locale('sv').format('D MMMM YYYY')}`
-    : organisedDate
-    ? `Hämtas ${Moment(organisedDate).locale('sv').format('D MMMM YYYY')}`
-    : reservedDate
-    ? `Reserverad till ${Moment(reservedDate).locale('sv').format('D MMMM YYYY')}`
-    : 'Inget relevant datum';
+  const { ownerId, location, image, priceText, price, background, amount, title } = itemData;
 
   return (
     <View style={styles.container}>
-      {showBackgroundText ? (
-        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.date}>
-          {relevantDate}
-        </Text>
-      ) : null}
       <Card style={isHorizontal ? styles.horizontalProduct : styles.product}>
         <View
           style={{
@@ -89,21 +38,6 @@ const ProductItem = ({
           />
         </View>
         {location ? <Text style={styles.location}>{location}</Text> : null}
-        {showSmallStatusIcons ? (
-          <Ionicons
-            style={{
-              position: 'absolute',
-              alignSelf: 'flex-end',
-              textAlign: 'center',
-              zIndex: 100,
-              backgroundColor: bgColor,
-              color: '#fff',
-              width: 30,
-            }}
-            name={icon ? (Platform.OS === 'android' ? `md-${icon}` : `ios-${icon}`) : null}
-            size={23}
-          />
-        ) : null}
 
         <View style={styles.touchable}>
           <TouchableCmp onPress={onSelect} useForeground>
@@ -145,10 +79,6 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     marginTop: 15,
   },
-  statusBadge: {
-    marginLeft: 12,
-    fontSize: 13,
-  },
   horizontalProduct: {
     height: Styles.productItemHeight,
     width: 200,
@@ -168,22 +98,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
     overflow: 'hidden', //To make sure any child (in this case the image) cannot overlap what we set in the image container
   },
-  icon: {
-    position: 'absolute',
-    padding: 5,
-    zIndex: 99,
-    shadowColor: 'black',
-    shadowOpacity: 0.12,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 2, //Because shadow only work on iOS, elevation is same thing but for android.
-  },
   image: {
     width: '100%',
     height: '100%',
-  },
-  details: {
-    color: '#000',
   },
   title: {
     paddingLeft: 4,

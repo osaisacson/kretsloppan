@@ -57,7 +57,6 @@ const ProductDetailScreen = (props) => {
     phone,
     address,
     pickupDetails,
-    status,
     style,
     title,
     width,
@@ -74,7 +73,6 @@ const ProductDetailScreen = (props) => {
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
-  const isPickedUp = status === 'hämtad';
 
   const editProductHandler = (id) => {
     navigation.navigate('EditProduct', { detailId: id });
@@ -107,27 +105,14 @@ const ProductDetailScreen = (props) => {
             hasEditPermission={hasEditPermission}
             selectedProduct={selectedProduct}
           />
-        ) : (
-          <StatusBadge
-            style={{
-              position: 'absolute',
-              zIndex: 10,
-              marginTop: 13,
-              marginLeft: 5,
-              alignSelf: 'left',
-              width: 200,
-            }}
-            text="Alla är för närvarande reserverade"
-            backgroundColor={Colors.darkPrimary}
-          />
-        )}
+        ) : null}
         {/* Displays a list of orders for the product if the logged in user is the seller */}
-        {/* {hasEditPermission ? (
-          <Orders isSeller orders={productOrders} navigation={navigation} />
-        ) : null} */}
-
-        {/* TBD: use above conditional view, below only for testing */}
-        <Orders isSeller orders={productOrders ? productOrders : []} navigation={navigation} />
+        {hasEditPermission && productOrders.length ? (
+          <>
+            <Orders isSeller orders={productOrders} navigation={navigation} />
+            <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
+          </>
+        ) : null}
 
         <SectionCard>
           {productIsAvailable ? (
@@ -138,13 +123,26 @@ const ProductDetailScreen = (props) => {
                 <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
               ) : null}
             </>
-          ) : null}
+          ) : (
+            <StatusBadge
+              style={{
+                position: 'absolute',
+                zIndex: 10,
+                top: -5,
+                left: -3,
+                alignSelf: 'left',
+                width: 200,
+              }}
+              text="Alla är för närvarande reserverade"
+              backgroundColor={Colors.darkPrimary}
+            />
+          )}
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
 
           {/* Show delete and edit buttons if the user has editing 
         permissions and the product is not yet picked up */}
-          {hasEditPermission && !isPickedUp ? (
+          {hasEditPermission ? (
             <View style={detailStyles.editOptions}>
               <ButtonIcon
                 icon="delete"

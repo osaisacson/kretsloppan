@@ -26,7 +26,6 @@ export function fetchProducts() {
         const normalizedProductData = productSnapshot.val();
         const allProducts = [];
         const userProducts = [];
-        const expiredProducts = [];
 
         for (const key in normalizedProductData) {
           const product = normalizedProductData[key];

@@ -19,14 +19,15 @@ const UserProfile = (props) => {
   //Gets all products which are not booked or organised for the user we are currently visiting
   const allProducts = useSelector((state) => state.products.availableProducts);
   const userProducts = allProducts.filter((product) => product.ownerId === visitedUserId);
-  const availableUserProductsRaw = userProducts.filter(
-    (product) => product.status === 'redo' || product.status === ''
-  );
-  const availableUserProducts = availableUserProductsRaw.sort(function (a, b) {
+
+  const availableUserProducts = userProducts.sort(function (a, b) {
     a = new Date(a.readyDate);
     b = new Date(b.readyDate);
     return b > a ? -1 : b < a ? 1 : 0;
   });
+
+  //Gets all orders by the logged in user
+  const userOrders = useSelector((state) => state.orders.userOrders);
 
   //Gets all proposals for the user we are currently visiting
   const availableProposals = useSelector((state) => state.proposals.availableProposals);
@@ -44,21 +45,9 @@ const UserProfile = (props) => {
     (proj) => proj.ownerId === visitedUserId
   );
 
-  //COLLECTED: Gets all collected products from all products
-  const collectedItemsRawAll = userProducts.filter((product) => product.status === 'hämtad');
-  const collectedByUser = collectedItemsRawAll.filter(
-    (product) => product.newOwnerId === visitedUserId
-  );
-
-  //COLLECTED: Gets all collected products from user products
-  const collectedFromUser = collectedItemsRawAll.filter(
-    (product) => product.newOwnerId !== visitedUserId
-  );
-
   //Sets indicator numbers
   const added = userProducts.length;
-  const collected = collectedByUser.length;
-  const given = collectedFromUser.length;
+  const collected = userOrders.length;
   const nrOfProjects = userProjects.length;
 
   return (
@@ -100,12 +89,6 @@ const UserProfile = (props) => {
               {added ? added : 0}
             </Paragraph>
             <Caption style={userProfileStyles.caption}>Upplagda</Caption>
-          </View>
-          <View style={userProfileStyles.section}>
-            <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>
-              {given ? given : 0}
-            </Paragraph>
-            <Caption style={userProfileStyles.caption}>Sålda</Caption>
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>

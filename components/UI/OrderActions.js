@@ -71,15 +71,17 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
-            ordersActions.updateOrder(
-              id,
-              projectId,
-              quantity,
-              newReservedUntil, //updated date until which the product is reserved
-              orderSuggestedDate, //updated suggested pickup date
-              buyerHasAgreed, //if user changing the time is the buyer, set as true
-              sellerHasAgreed, //if user changing the time is the seller, set as true
-              isCollected
+            dispatch(
+              ordersActions.updateOrder(
+                id,
+                projectId,
+                quantity,
+                newReservedUntil, //updated date until which the product is reserved
+                orderSuggestedDate, //updated suggested pickup date
+                buyerHasAgreed, //if user changing the time is the buyer, set as true
+                sellerHasAgreed, //if user changing the time is the seller, set as true
+                isCollected
+              )
             );
             toggleShowCalendar();
           },
@@ -95,22 +97,28 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
     Alert.alert(
       'Bekräfta tid',
-      'Genom att klicka här godkänner du den föreslagna tiden, och åtar dig att vara på plats/komma till bestämd plats på denna tid. För frågor och andra detaljer, kontakta varandra via uppgifterna ovan.',
+      `Genom att klicka här godkänner du ${moment(suggestedDate)
+        .locale('sv')
+        .format(
+          'D MMMM YYYY, HH:00'
+        )} som upphämtningstid och åtar dig att på denna tid vara på plats/komma till platsen som står i posten under "upphämtningsdetaljer".`,
       [
         { text: 'Avbryt', style: 'default' },
         {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
-            ordersActions.updateOrder(
-              id,
-              projectId,
-              quantity,
-              reservedUntil,
-              suggestedDate,
-              buyerJustAgreed, //if the user agreeing to the time is the buyer, set as true
-              sellerJustAgreed, //if the user agreeing to the time is the seller, set as true
-              isCollected
+            dispatch(
+              ordersActions.updateOrder(
+                id,
+                projectId,
+                quantity,
+                reservedUntil,
+                suggestedDate,
+                buyerJustAgreed, //if the user agreeing to the time is the buyer, set as true
+                sellerJustAgreed, //if the user agreeing to the time is the seller, set as true
+                isCollected
+              )
             );
           },
         },
@@ -160,7 +168,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
           style: 'destructive',
           onPress: () => {
             dispatch(ordersActions.deleteOrder(orderId));
-            dispatch(productsActions.updateProductAmount(orderId, updatedProductAmount));
+            dispatch(productsActions.updateProductAmount(productId, updatedProductAmount));
           },
         },
       ]
@@ -201,7 +209,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
             buttonColor={Colors.warning}
             buttonLabelStyle={{ color: '#fff' }}
             onSelect={() => {
-              deleteHandler(id, quantity);
+              deleteHandler(id, productId, quantity);
             }}
             title="avreservera"
           />

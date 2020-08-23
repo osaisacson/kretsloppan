@@ -23,29 +23,8 @@ const UserSpotlightScreen = (props) => {
   //Gets all products by the logged in user
   const userProducts = availableProducts.filter((prod) => prod.ownerId === loggedInUserId);
 
-  //COLLECTED: Gets all collected products from all products
-  const collectedItemsRawAll = availableProducts.filter((product) => product.status === 'hämtad');
-  const collectedItemsAll = collectedItemsRawAll.sort(function (a, b) {
-    a = new Date(a.collectedDate);
-    b = new Date(b.collectedDate);
-    return a > b ? -1 : a < b ? 1 : 0;
-  });
-
-  //COLLECTED: Gets all collected products from user products
-  const collectedItemsRawUser = userProducts.filter((product) => product.status === 'hämtad');
-  const collectedItemsUser = collectedItemsRawUser.sort(function (a, b) {
-    a = new Date(a.collectedDate);
-    b = new Date(b.collectedDate);
-    return a > b ? -1 : a < b ? 1 : 0;
-  });
-
-  //BY USER
-  const collectedByUser = collectedItemsAll.filter(
-    (product) => product.newOwnerId === loggedInUserId
-  );
-
-  //FROM USER
-  const givenByUser = collectedItemsUser.filter((product) => product.newOwnerId !== loggedInUserId);
+  //Gets all orders by the logged in user
+  const userOrders = useSelector((state) => state.orders.userOrders);
 
   //Get all projects, return only the ones which matches the logged in id
   const userProjects = useSelector((state) => state.projects.availableProjects).filter(
@@ -65,8 +44,7 @@ const UserSpotlightScreen = (props) => {
 
   //Sets indicator numbers
   const added = userProducts.length;
-  const collected = collectedByUser.length;
-  const sold = givenByUser.length;
+  const collected = userOrders.length;
   const nrOfProjects = userProjects.length;
 
   //Navigate to the edit screen and forward the product id
@@ -138,12 +116,7 @@ const UserSpotlightScreen = (props) => {
               </Paragraph>
               <Caption style={{ color: '#fff' }}>Köpta</Caption>
             </View>
-            <View style={userProfileStyles.section}>
-              <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
-                {sold ? sold : 0}
-              </Paragraph>
-              <Caption style={{ color: '#fff' }}>Sålda</Caption>
-            </View>
+
             <View style={userProfileStyles.section}>
               <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
                 {nrOfProjects ? nrOfProjects : 0}
@@ -157,6 +130,7 @@ const UserSpotlightScreen = (props) => {
           userProjects={userProjects}
           userProposals={userProposals}
           userProducts={userProducts}
+          loggedInUserId={loggedInUserId}
           navigation={props.navigation}
         />
       </ScrollViewToTop>

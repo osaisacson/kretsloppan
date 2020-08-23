@@ -13,12 +13,7 @@ const SpotlightProductsScreen = (props) => {
   const allProposals = useSelector((state) => state.proposals.availableProposals);
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
 
-  //Filters all products with the tag 'redo'
-  const recentProductsRaw = allProducts.filter(
-    (product) => product.status === 'redo' || product.status === ''
-  );
-
-  const recentProductsSorted = recentProductsRaw.sort(function (a, b) {
+  const recentProductsSorted = allProducts.sort(function (a, b) {
     a = new Date(a.readyDate);
     b = new Date(b.readyDate);
     return a > b ? -1 : a < b ? 1 : 0;

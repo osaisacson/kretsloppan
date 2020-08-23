@@ -42,7 +42,7 @@ const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => 
   };
 
   return (
-    <Card>
+    <Card style={{ marginTop: 4 }}>
       <TouchableCmp onPress={toggleShowDetails}>
         <View style={styles.oneLineSpread}>
           {isBuyer ? (

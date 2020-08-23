@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { Divider, Button } from 'react-native-paper';
 
 import Styles from './../../constants/Styles';
@@ -112,17 +112,16 @@ const HorizontalScroll = (props) => {
                       justifyContent: 'center',
                       height: scrollHeight,
                     }}>
-                    <Button
-                      animated
-                      icon="chevron-right"
-                      color="#000"
-                      contentStyle={{
-                        width: 40,
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
                         paddingLeft: 35,
                         height: scrollHeight,
-                      }}
-                      onPress={props.showMoreLink}
-                    />
+                      }}>
+                      <Text style={{ fontSize: 12 }}>SE ALLA</Text>
+                      <Button animated icon="chevron-right" color="#000" />
+                    </View>
                   </TouchableCmp>
                 ) : null}
               </ScrollView>
