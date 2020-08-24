@@ -9,8 +9,8 @@ import { Divider } from 'react-native-paper';
 import Colors from '../../constants/Colors';
 import HeaderThree from './HeaderThree';
 
-const Logistics = ({ suggestedDate, sendSuggestedTime }) => {
-  console.log('CalendarSection, passed params:');
+const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
+  console.log('CalendarSelection, passed params:');
   console.log({ suggestedDate, sendSuggestedTime });
   console.log('------------');
 
@@ -18,7 +18,7 @@ const Logistics = ({ suggestedDate, sendSuggestedTime }) => {
 
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [suggestedDateLocal, setSuggestedDateLocal] = useState(suggestedDate ? suggestedDate : []); //If we already have a date suggested, use this as the original state
-  const [suggestedDateTime, setSuggestedDateTime] = useState();
+  const [suggestedDateTime, setSuggestedDateTime] = useState(suggestedDate ? suggestedDate : []);
 
   const handleTimePicker = (date) => {
     setSuggestedDateLocal(date);
@@ -61,13 +61,7 @@ const Logistics = ({ suggestedDate, sendSuggestedTime }) => {
 
       <HeaderThree
         style={{ textAlign: 'center', marginBottom: 10 }}
-        text={
-          suggestedDate
-            ? `Tidigare föreslagen upphämtningstid: ${moment(
-                suggestedDate
-              )}. Föreslå en ny tid nedan.`
-            : 'Föreslå en tid för upphämtning nedan.'
-        }
+        text={suggestedDate ? 'Föreslå en ny tid nedan.' : 'Föreslå en tid för upphämtning nedan.'}
       />
       <HeaderThree
         style={{ textAlign: 'center' }}
@@ -119,11 +113,11 @@ const Logistics = ({ suggestedDate, sendSuggestedTime }) => {
             marginTop: 5,
             marginBottom: 20,
           }}>
-          {moment(suggestedDateTime).locale('sv').format('D MMM YYYY, HH:mm')}
+          {moment(suggestedDateTime).locale('sv').format('D MMMM YYYY, HH:mm')}
         </Text>
       </View>
     </>
   );
 };
 
-export default Logistics;
+export default CalendarSelection;

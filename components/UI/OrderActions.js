@@ -146,7 +146,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
                 suggestedDate,
                 true, // buyer has agreed
                 true, // seller has agreed
-                true // order is collected
+                new Date() // order is collected
               )
             );
           },

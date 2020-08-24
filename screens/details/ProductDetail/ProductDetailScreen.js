@@ -99,13 +99,11 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        {productIsAvailable ? (
-          <Logistics
-            navigation={navigation}
-            hasEditPermission={hasEditPermission}
-            selectedProduct={selectedProduct}
-          />
-        ) : null}
+        <Logistics
+          navigation={navigation}
+          hasEditPermission={hasEditPermission}
+          selectedProduct={selectedProduct}
+        />
         {/* Displays a list of orders for the product if the logged in user is the seller */}
         {hasEditPermission && productOrders.length ? (
           <>

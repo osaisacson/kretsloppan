@@ -1,15 +1,17 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const StatusText = ({ style, label, text }) => {
+const StatusText = ({ style, label, text, noTextFormatting }) => {
   const statusText = text.toLowerCase(); //Make moment() text lowercase
-  const statusTextFormatted = statusText.charAt(0).toUpperCase() + statusText.slice(1); //Make first letter of sentence uppercase
+  const statusTextFormatted = noTextFormatting
+    ? text
+    : statusText.charAt(0).toUpperCase() + statusText.slice(1); //Make first letter of sentence uppercase
   return (
     <View
       style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flex: style ? null : 1,
+        flexDirection: style ? null : 'row',
+        justifyContent: style ? null : 'space-between',
         marginVertical: 4,
         marginHorizontal: 10,
       }}>
@@ -26,7 +28,7 @@ const StatusText = ({ style, label, text }) => {
         style={[
           style,
           {
-            fontFamily: 'roboto-light-italic',
+            fontFamily: 'roboto-bold-italic',
           },
         ]}>
         {statusTextFormatted}

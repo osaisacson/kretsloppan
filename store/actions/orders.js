@@ -35,6 +35,7 @@ export function fetchOrders() {
             order.projectId,
             order.image,
             order.quantity,
+            order.createdOn,
             order.reservedUntil,
             order.suggestedDate,
             order.buyerAgreed,
@@ -46,18 +47,6 @@ export function fetchOrders() {
 
           if (order.buyerId === uid) {
             userOrders.push(newOrder);
-          }
-
-          //Is the order reservation expired?
-          if (
-            !order.isCollected &&
-            new Date(order.reservedUntil) instanceof Date &&
-            new Date(order.reservedUntil) <= new Date()
-          ) {
-            console.log(
-              `...order with the id '${key}' has an expired reservation date. Pushing it to expiredOrders array.`
-            );
-            expiredOrders.push(newOrder);
           }
         }
 
@@ -129,6 +118,7 @@ export function createOrder(productId, sellerId, projectId, image, quantity, sug
         projectId,
         image,
         quantity,
+        createdOn: currentDate,
         reservedUntil: fourDaysFromNow,
         suggestedDate,
         buyerAgreed: true,

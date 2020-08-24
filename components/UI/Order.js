@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-paper';
 
+import Colors from './../../constants/Colors';
 import Card from './Card';
 import OrderActions from './OrderActions';
 import SmallRoundItem from './SmallRoundItem';
@@ -23,6 +24,7 @@ const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => 
     reservedUntil,
     comments,
     suggestedDate,
+    isCollected,
     buyerAgreed,
     sellerAgreed,
   } = order;
@@ -32,6 +34,11 @@ const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => 
 
   const waitingForYouAsSeller = isSeller && !sellerAgreed;
   const waitingForYouAsBuyer = isBuyer && !buyerAgreed;
+
+  const orderIsExpired =
+    !isCollected &&
+    new Date(reservedUntil) instanceof Date &&
+    new Date(reservedUntil) <= new Date();
 
   const toggleShowDetails = () => {
     setShowDetails((prevState) => !prevState);
@@ -101,17 +108,44 @@ const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => 
             </>
           ) : null}
           <View style={{ paddingVertical: 20 }}>
-            <StatusText
-              label="Reserverad till:"
-              text={moment(reservedUntil).locale('sv').calendar()}
-            />
-            {!buyerAgreed || !sellerAgreed ? (
+            {!orderIsExpired && !isCollected ? (
+              <>
+                <StatusText
+                  label="Reserverad till:"
+                  text={moment(reservedUntil).locale('sv').calendar()}
+                />
+                {!buyerAgreed || !sellerAgreed ? (
+                  <StatusText
+                    label="Föreslagen upphämtningstid:"
+                    text={moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+                  />
+                ) : null}
+                {comments ? <Text>Kommentarer: {comments}</Text> : null}
+              </>
+            ) : null}
+            {orderIsExpired ? (
               <StatusText
-                label="Föreslagen upphämtningstid:"
-                text={moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+                style={{ color: Colors.warning, textAlign: 'center' }}
+                noTextFormatting
+                text={`Reservationen gick ut ${moment(suggestedDate)
+                  .locale('sv')
+                  .format(
+                    'D MMMM YYYY, HH:mm'
+                  )}. Antingen markera som 'hämtad' om den är hämtad, föreslå en ny upphämtningstid, eller ta bort beställningen nedan. Notera att både säljaren och köparen kan ta bort beställningen när reservationen är slut.`}
               />
             ) : null}
-            {comments ? <Text>Kommentarer: {comments}</Text> : null}
+            {isCollected ? (
+              <StatusText
+                style={{
+                  color: Colors.subtleGreen,
+                  textAlign: 'center',
+                }}
+                noTextFormatting
+                text={`Beställning klar! Produkten hämtades ${moment(isCollected)
+                  .locale('sv')
+                  .format('D MMMM YYYY, HH:mm')}`}
+              />
+            ) : null}
           </View>
 
           <OrderActions order={order} isBuyer={isBuyer} isSeller={isSeller} />
