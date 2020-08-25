@@ -110,7 +110,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                   styles.statusText,
                   { fontFamily: 'roboto-bold-italic', color: Colors.subtleGreen },
                 ]}>
-                {`Såld ${moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}`}
+                {`Hämtad ${moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}`}
               </Text>
             ) : null}
           </View>

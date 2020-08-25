@@ -22,9 +22,11 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
     (order) => order.sellerId === loggedInUserId && !order.isCollected
   );
 
-  const soldOrders = allOrders.filter((order) => order.isCollected);
+  const soldOrders = allOrders.filter(
+    (order) => order.isCollected && loggedInUserId === order.sellerId
+  );
   const boughtOrders = userOrders.filter(
-    (order) => order.sellerId === loggedInUserId && order.isCollected
+    (order) => order.buyerId === loggedInUserId && order.isCollected
   );
 
   return (

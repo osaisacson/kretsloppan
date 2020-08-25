@@ -1,9 +1,10 @@
+import moment from 'moment/min/moment-with-locales';
 import React, { useState, useRef } from 'react';
 import { View, Alert, Text, StyleSheet, Slider, Dimensions } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Divider } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSelector, useDispatch } from 'react-redux';
-import { Divider } from 'react-native-paper';
-import moment from 'moment/min/moment-with-locales';
 
 import ButtonAction from '../../../components/UI/ButtonAction';
 import CalendarSelection from '../../../components/UI/CalendarSelection';
@@ -16,7 +17,6 @@ import { detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
 import * as ordersActions from '../../../store/actions/orders';
 import * as productsActions from '../../../store/actions/products';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const dispatch = useDispatch();
@@ -179,7 +179,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                         maximumValue={amount}
                         minimumTrackTintColor={Colors.subtleGreen}
                         maximumTrackTintColor="#000000"
-                        value={String(orderQuantity)}
+                        value={orderQuantity.toString()}
                         onSlidingComplete={(value) => setOrderQuantity(value)}
                       />
                     </View>

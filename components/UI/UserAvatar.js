@@ -17,10 +17,15 @@ const UserAvatar = ({ userId, actionOnPress, style, size, showBadge }) => {
   const loggedInUserId = currentProfile.profileId;
 
   const allOrders = useSelector((state) => state.orders.availableOrders);
-  const ordersFromUser = allOrders.filter((order) => order.sellerId === loggedInUserId);
-  const ordersByUser = useSelector((state) => state.orders.userOrders);
+  const toSell = allOrders.filter(
+    (order) => order.sellerId === loggedInUserId && !order.isCollected
+  );
+  const userOrders = useSelector((state) => state.orders.userOrders);
+  const toBuy = userOrders.filter(
+    (order) => order.buyerId === loggedInUserId && !order.isCollected
+  );
 
-  const badgeNumber = ordersByUser.length + ordersFromUser.length;
+  const badgeNumber = toBuy.length + toSell.length;
 
   return (
     <TouchableCmp
