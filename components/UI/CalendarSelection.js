@@ -1,6 +1,6 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -33,26 +33,6 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
     setSuggestedDateTime(dateTime);
     sendSuggestedTime(dateTime);
     hideTimePicker();
-
-    // Alert.alert(
-    //   'Föreslå tid',
-    //   `Genom att klicka här föreslår du ${moment(dateTime)
-    //     .locale('sv')
-    //     .format(
-    //       'HH:mm, D MMMM'
-    //     )} som tid för upphämtning. Om motparten godkänner tiden åtar du dig att vara på överenskommen plats vid denna tidpunkt.`,
-    //   [
-    //     { text: 'Avbryt', style: 'default' },
-    //     {
-    //       text: 'Jag förstår',
-    //       style: 'destructive',
-    //       onPress: () => {
-    //         setOrderSuggestedDate(dateTime);
-    //         hideTimePicker();
-    //       },
-    //     },
-    //   ]
-    // );
   };
 
   return (
@@ -60,13 +40,14 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
       <Divider style={{ marginBottom: 10 }} />
 
       <HeaderThree
-        style={{ textAlign: 'center', marginBottom: 10 }}
-        text={suggestedDate ? 'Föreslå en ny tid nedan.' : 'Föreslå en tid för upphämtning nedan.'}
-      />
-      <HeaderThree
         style={{ textAlign: 'center' }}
-        text="Kontakta varandra om ni har frågor, annars är det nedan tid och säljarens givna upphämtningsplats som gäller."
+        text={
+          suggestedDate
+            ? 'Föreslå en ny upphämtningstid nedan.'
+            : 'Föreslå en tid för upphämtning nedan.'
+        }
       />
+
       <View style={{ flex: 1 }}>
         <CalendarStrip
           scrollable
@@ -104,17 +85,6 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
           }}
           onCancel={hideTimePicker}
         />
-        <HeaderThree style={{ textAlign: 'center' }} text="Föreslagen tid för upphämtning:" />
-        <Text
-          style={{
-            textAlign: 'center',
-            fontFamily: 'roboto-bold',
-            fontSize: 15,
-            marginTop: 5,
-            marginBottom: 20,
-          }}>
-          {moment(suggestedDateTime).locale('sv').format('D MMMM YYYY, HH:mm')}
-        </Text>
       </View>
     </>
   );

@@ -49,6 +49,11 @@ const ProductItem = ({
             {(price || price === 0) && !priceText ? (
               <Text style={styles.price}>{price ? price : 0} kr</Text>
             ) : null}
+            {price && priceText ? (
+              <Text style={styles.price}>
+                {price}kr eller {priceText}
+              </Text>
+            ) : null}
           </TouchableCmp>
         </View>
       </Card>

@@ -140,6 +140,7 @@ export function createProduct(
         priceText,
         readyDate: currentDate,
         internalComments,
+        sold: 0,
       };
 
       const { key } = await firebase.database().ref('products').push(productData);
@@ -288,6 +289,7 @@ export function updateProductAmount(id, amount) {
 
 export function updateProductSoldAmount(id, soldAmount) {
   return async (dispatch) => {
+    console.log('soldAmount from updateProductSoldAmount', soldAmount);
     try {
       console.log(`Attempting to update product with id: ${id}...`);
 

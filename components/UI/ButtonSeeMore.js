@@ -11,6 +11,7 @@ const ButtonSeeMore = ({ onSelect }) => {
       compact
       style={{
         marginTop: 5,
+        marginBottom: 8,
         borderColor: Colors.darkPrimary,
       }}
       contentStyle={{

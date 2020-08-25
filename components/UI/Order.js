@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import Colors from './../../constants/Colors';
 import Card from './Card';
 import OrderActions from './OrderActions';
-import SmallRoundItem from './SmallRoundItem';
+import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
 import UserAvatar from './UserAvatar';
@@ -82,24 +82,37 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
           ) : (
             <TouchableOpacity onPress={goToItem}>
               <Image
-                style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                style={{ borderRadius: 3, width: 100, height: 100, resizeMode: 'contain' }}
                 source={{ uri: image }}
               />
             </TouchableOpacity>
           )}
           <View style={{ paddingLeft: 10, flex: 1 }}>
+            <Text>{currentProduct.title}</Text>
             <Text>{quantity} st</Text>
 
             {!bothHaveAgreedOnTime ? (
               <Text style={styles.statusText}>{`Väntar på att ${
                 waitingForYou ? 'du' : nameOfThumberOuterGetter
               } ska godkänna den föreslagna upphämtningstiden`}</Text>
-            ) : (
+            ) : null}
+
+            {bothHaveAgreedOnTime && !isCollected ? (
               <Text style={styles.statusText}>
                 Upphämtningstid överenskommen! Hämtas{' '}
                 {moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
               </Text>
-            )}
+            ) : null}
+
+            {isCollected ? (
+              <Text
+                style={[
+                  styles.statusText,
+                  { fontFamily: 'roboto-bold-italic', color: Colors.subtleGreen },
+                ]}>
+                {`Såld ${moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}`}
+              </Text>
+            ) : null}
           </View>
         </View>
         <AntDesign
@@ -113,16 +126,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
       {showDetails ? (
         <>
           <Divider />
-          {projectForProduct ? (
-            <>
-              <Text>Till projekt:</Text>
-              <SmallRoundItem
-                detailPath="ProjectDetail"
-                item={projectForProduct}
-                navigation={navigation}
-              />
-            </>
-          ) : null}
+
           <View style={{ paddingVertical: 20 }}>
             {!orderIsExpired && !isCollected ? (
               <>
@@ -181,6 +185,20 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                   .locale('sv')
                   .format('D MMMM YYYY, HH:mm')}`}
               />
+            ) : null}
+            {projectForProduct ? (
+              <View style={styles.oneLineSpread}>
+                <Text style={{ fontFamily: 'roboto-light-italic', marginLeft: 8 }}>
+                  Till projekt:
+                </Text>
+                <View>
+                  <SmallRectangularItem
+                    detailPath="ProjectDetail"
+                    item={projectForProduct}
+                    navigation={navigation}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
 

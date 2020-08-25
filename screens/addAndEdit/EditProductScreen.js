@@ -64,13 +64,13 @@ const EditProductScreen = (props) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: editedProduct ? editedProduct.title : '',
-      amount: editedProduct ? editedProduct.amount : '',
+      amount: editedProduct ? editedProduct.amount : 1,
       description: editedProduct ? editedProduct.description : '',
       background: editedProduct ? editedProduct.background : '',
       internalComments: editedProduct ? editedProduct.internalComments : '',
-      length: editedProduct ? editedProduct.length : '',
-      height: editedProduct ? editedProduct.height : '',
-      width: editedProduct ? editedProduct.width : '',
+      length: editedProduct ? editedProduct.length : 0,
+      height: editedProduct ? editedProduct.height : 0,
+      width: editedProduct ? editedProduct.width : 0,
       price: editedProduct ? editedProduct.price : '',
       priceText: editedProduct ? editedProduct.priceText : '',
       address: editedProduct ? editedProduct.address : defaultAddress, //set current address as default if have one
@@ -241,7 +241,7 @@ const EditProductScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.amount.toString()}
           onChangeText={textChangeHandler.bind(this, 'amount')}
-          keyboardType="number-pad"
+          keyboardType="default"
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -258,7 +258,7 @@ const EditProductScreen = (props) => {
           style={{ ...formStyles.input, width: 100 }}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
-          keyboardType="number-pad"
+          keyboardType="default"
           returnKeyType="next"
         />
         <Text style={{ marginTop: 20, fontFamily: 'roboto-light-italic', padding: 5 }}>Eller</Text>
@@ -318,7 +318,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.length}
             onChangeText={textChangeHandler.bind(this, 'length')}
-            keyboardType="number-pad"
+            keyboardType="default"
             returnKeyType="next"
           />
           <TextInput
@@ -326,7 +326,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.height}
             onChangeText={textChangeHandler.bind(this, 'height')}
-            keyboardType="number-pad"
+            keyboardType="default"
             returnKeyType="next"
           />
           <TextInput
@@ -334,7 +334,7 @@ const EditProductScreen = (props) => {
             style={formStyles.input}
             value={formState.inputValues.width}
             onChangeText={textChangeHandler.bind(this, 'width')}
-            keyboardType="number-pad"
+            keyboardType="default"
             returnKeyType="next"
           />
         </View>
@@ -375,7 +375,7 @@ const EditProductScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.phone.toString()}
           onChangeText={textChangeHandler.bind(this, 'phone')}
-          keyboardType="number-pad"
+          keyboardType="default"
           returnKeyType="done"
         />
       </FormFieldWrapper>

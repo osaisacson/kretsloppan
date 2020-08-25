@@ -187,7 +187,7 @@ const EditProfileScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.phone.toString()}
           onChangeText={textChangeHandler('phone')}
-          keyboardType="number-pad"
+          keyboardType="default"
           returnKeyType="next"
         />
       </FormFieldWrapper>

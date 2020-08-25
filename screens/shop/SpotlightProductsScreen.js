@@ -51,8 +51,10 @@ const SpotlightProductsScreen = (props) => {
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
           title="Återbruk"
-          subTitle="Senast tillgängliga återbruket"
           showAddLink={() => props.navigation.navigate('EditProduct')}
+          showMoreLink={
+            allProducts.length > 1 ? () => props.navigation.navigate('Återbruk') : false
+          }
           scrollData={recentProducts}
           navigation={props.navigation}
           icon={
@@ -70,7 +72,6 @@ const SpotlightProductsScreen = (props) => {
           scrollHeight={55}
           detailPath="ProposalDetail"
           title="Efterlysningar"
-          subTitle="Kontakta efterlysaren om du sitter på svaret"
           showAddLink={() => props.navigation.navigate('EditProposal')}
           showMoreLink={
             allProposals.length > 1 ? () => props.navigation.navigate('Efterlysningar') : false
@@ -92,9 +93,8 @@ const SpotlightProductsScreen = (props) => {
           largeImageItem
           detailPath="ProjectDetail"
           title="Projekt"
-          subTitle="Projekt som byggs med återbruk"
           showAddLink={() => props.navigation.navigate('EditProject')}
-          showMoreLink={() => props.navigation.navigate('Projekt')}
+          showMoreLink={allProjects.length > 1 ? () => props.navigation.navigate('Projekt') : false}
           scrollData={recentProjects}
           navigation={props.navigation}
           icon={

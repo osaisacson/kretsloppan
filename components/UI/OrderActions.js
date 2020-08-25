@@ -97,15 +97,25 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   //Approve suggested pickup time
   const approveSuggestedDateTime = () => {
-    const buyerJustAgreed = isBuyer ? true : buyerAgreed;
-    const sellerJustAgreed = isSeller ? true : sellerAgreed;
+    const buyerJustAgreed = isBuyer ? true : buyerAgreed; //if the user agreeing to the time is the buyer, set as true
+    const sellerJustAgreed = isSeller ? true : sellerAgreed; //if the user agreeing to the time is the seller, set as true
+    console.log({
+      id,
+      projectId,
+      quantity,
+      reservedUntil,
+      suggestedDate,
+      buyerJustAgreed,
+      sellerJustAgreed,
+      isCollected,
+    });
 
     Alert.alert(
       'Bekräfta tid',
       `Genom att klicka här godkänner du ${moment(suggestedDate)
         .locale('sv')
         .format(
-          'D MMMM YYYY, HH:00'
+          'D MMMM YYYY, HH:mm'
         )} som upphämtningstid och åtar dig att på denna tid vara på plats/komma till platsen som står i posten under "upphämtningsdetaljer".`,
       [
         { text: 'Avbryt', style: 'default' },
@@ -120,8 +130,8 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
                 quantity,
                 reservedUntil,
                 suggestedDate,
-                buyerJustAgreed, //if the user agreeing to the time is the buyer, set as true
-                sellerJustAgreed, //if the user agreeing to the time is the seller, set as true
+                buyerJustAgreed,
+                sellerJustAgreed,
                 isCollected
               )
             );
@@ -133,18 +143,17 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   //Set order as completed
   const collectHandler = () => {
-    const originalSoldProducts = currentProduct.sold;
-    const totalSoldProducts = currentProduct.sold + quantity; //Existing sold items plus the quantity of the currently completed order
+    const originalSoldProducts = currentProduct.sold ? currentProduct.sold : 0;
+    const totalSoldProducts = originalSoldProducts + quantity; //Existing sold items plus the quantity of the currently completed order
     console.log({ originalSoldProducts, quantity, totalSoldProducts });
 
     Alert.alert(
       'Är produkten levererad till beställaren?',
       'Genom att klicka här bekräftar du att ordern är klar.',
       [
-        { text: 'Nej', style: 'default' },
         {
           text: 'Japp, den är klar!',
-          style: 'destructive',
+          style: 'default',
           onPress: () => {
             dispatch(
               ordersActions.updateOrder(
@@ -158,9 +167,10 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
                 new Date() // order is collected
               )
             );
-            dispatch(productsActions.updateProductSoldAmount(id, totalSoldProducts));
+            dispatch(productsActions.updateProductSoldAmount(productId, totalSoldProducts));
           },
         },
+        { text: 'Nej', style: 'destructive' },
       ]
     );
   };
@@ -188,69 +198,76 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   return (
     <>
-      {/* Show button to approve the suggested pickup time if either 
-        the seller or buyer has not agreed to the suggested time yet */}
-      {(!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller) ? (
-        <ButtonAction
-          style={{ width: '95%' }}
-          buttonLabelStyle={{ color: '#fff' }}
-          buttonColor={Colors.approved}
-          title="godkänn upphämtningstid"
-          onSelect={() => {
-            approveSuggestedDateTime();
-          }}
-        />
-      ) : null}
-      {bothAgreedOnTime ? (
-        <ButtonAction
-          style={{ width: '95%' }}
-          buttonColor={Colors.approved}
-          buttonLabelStyle={{ color: '#fff' }}
-          title="hämtad!"
-          onSelect={() => {
-            collectHandler();
-          }}
-        />
-      ) : null}
-      <View style={styles.oneLineSpread}>
-        <ButtonAction
-          buttonColor={Colors.subtleGrey}
-          onSelect={toggleShowCalendar}
-          title="ändra tid"
-        />
-
-        {/* Show button to cancel the order if the viewer is the buyer */}
-        {isBuyer || isSeller ? (
-          <ButtonAction
-            buttonColor={Colors.warning}
-            buttonLabelStyle={{ color: '#fff' }}
-            onSelect={() => {
-              deleteHandler(id, productId, quantity);
-            }}
-            disabled={isSeller && !reservedDateHasExpired}
-            title={
-              isSeller && !reservedDateHasExpired
-                ? `Avreservera från ${moment(reservedUntil)
-                    .locale('sv')
-                    .format('D MMM YYYY, HH:mm')}`
-                : 'Avreservera'
-            }
-          />
-        ) : null}
-      </View>
-      {showCalendar ? (
+      {!isCollected ? (
         <>
-          <CalendarSelection suggestedDate={suggestedDate} sendSuggestedTime={sendSuggestedTime} />
-          <ButtonAction
-            style={{ marginBottom: 20 }}
-            buttonColor={Colors.darkPrimary}
-            onSelect={() => {
-              resetSuggestedDT(suggestedDate);
-            }}
-            title={`Ändra föreslagen tid till ${moment(orderSuggestedDate)
-              .locale('sv')
-              .format('D MMMM YYYY, HH:mm')}`}
-          />
+          {/* Show button to approve the suggested pickup time if either 
+        the seller or buyer has not agreed to the suggested time yet */}
+          {(!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller) ? (
+            <ButtonAction
+              style={{ width: '95%' }}
+              buttonLabelStyle={{ color: '#fff' }}
+              buttonColor={Colors.approved}
+              title="godkänn upphämtningstid"
+              onSelect={() => {
+                approveSuggestedDateTime();
+              }}
+            />
+          ) : null}
+          {bothAgreedOnTime ? (
+            <ButtonAction
+              style={{ width: '95%' }}
+              buttonColor={Colors.approved}
+              buttonLabelStyle={{ color: '#fff' }}
+              title="hämtad!"
+              onSelect={() => {
+                collectHandler();
+              }}
+            />
+          ) : null}
+          <View style={styles.oneLineSpread}>
+            <ButtonAction
+              buttonColor={Colors.subtleGrey}
+              onSelect={toggleShowCalendar}
+              title="ändra tid"
+            />
+
+            {/* Show button to cancel the order if the viewer is the buyer */}
+            {isBuyer || isSeller ? (
+              <ButtonAction
+                buttonColor={Colors.warning}
+                buttonLabelStyle={{ color: '#fff' }}
+                onSelect={() => {
+                  deleteHandler(id, productId, quantity);
+                }}
+                disabled={isSeller && !reservedDateHasExpired}
+                title={
+                  isSeller && !reservedDateHasExpired
+                    ? `Avreservera från ${moment(reservedUntil)
+                        .locale('sv')
+                        .format('D MMM YYYY, HH:mm')}`
+                    : 'Avreservera'
+                }
+              />
+            ) : null}
+          </View>
+          {showCalendar ? (
+            <>
+              <CalendarSelection
+                suggestedDate={suggestedDate}
+                sendSuggestedTime={sendSuggestedTime}
+              />
+              <ButtonAction
+                style={{ marginBottom: 20 }}
+                buttonColor={Colors.darkPrimary}
+                onSelect={() => {
+                  resetSuggestedDT(suggestedDate);
+                }}
+                title={`Ändra föreslagen tid till ${moment(orderSuggestedDate)
+                  .locale('sv')
+                  .format('D MMMM YYYY, HH:mm')}`}
+              />
+            </>
+          ) : null}
         </>
       ) : null}
     </>

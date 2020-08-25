@@ -175,7 +175,7 @@ const EditProposalScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
-          keyboardType="number-pad"
+          keyboardType="default"
           returnKeyType="next"
         />
       </FormFieldWrapper>

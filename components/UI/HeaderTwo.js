@@ -38,7 +38,7 @@ const HeaderTwo = ({
       </View>
       <View style={styles.indicatorSection}>
         <View
-          style={{ flexDirection: 'row', alignSelf: 'flex-end', paddingBottom: subTitle ? 20 : 2 }}>
+          style={{ flexDirection: 'row', alignSelf: 'flex-end', paddingBottom: subTitle ? 20 : 0 }}>
           {showMoreLink ? <ButtonSeeMore onSelect={showMoreLink} /> : null}
           {showAddLink ? (
             <ButtonIcon icon="plus" compact onSelect={showAddLink} color={Colors.darkPrimary} />
@@ -52,13 +52,14 @@ const HeaderTwo = ({
 const styles = StyleSheet.create({
   headerContainer: {
     paddingTop: 15,
-    paddingBottom: 10,
+    paddingBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
   },
   textSection: {
+    textAlignVertical: 'center',
     paddingLeft: 15,
     paddingRight: 10,
     flexGrow: 3,

@@ -263,7 +263,7 @@ const AuthScreen = () => {
                   <Input
                     id="phone"
                     placeholder="Telefonnummer"
-                    keyboardType="number-pad"
+                    keyboardType="default"
                     required
                     autoCapitalize="none"
                     errorText="Lägg in ett kontaktnummer"

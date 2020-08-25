@@ -49,8 +49,7 @@ export default (state = initialState, action) => {
         action.profileData.image,
         action.profileData.hasWalkedThrough,
         action.profileData.hasReadNews,
-        action.profileData.expoTokens,
-        action.profileData.basket
+        action.profileData.expoTokens
       );
 
       return {
@@ -76,8 +75,7 @@ export default (state = initialState, action) => {
         action.profileData.image,
         state.allProfiles[profileIndex].hasWalkedThrough,
         state.allProfiles[profileIndex].hasReadNews,
-        action.profileData.expoTokens,
-        action.profileData.basket
+        action.profileData.expoTokens
       );
       console.log('store/reducers/profiles/UPDATE_PROFILE, updated profile: ', updatedProfile);
       const updatedProfiles = [...state.allProfiles];
@@ -120,8 +118,7 @@ export default (state = initialState, action) => {
         state.allProfiles[profileIndex].image,
         state.allProfiles[profileIndex].hasWalkedThrough,
         action.profileData.hasReadNews,
-        state.allProfiles[profileIndex].expoTokens,
-        state.allProfiles[profileIndex].basket
+        state.allProfiles[profileIndex].expoTokens
       );
       console.log(
         'store/reducers/profiles/UPDATE_READNEWS, updated profile: ',

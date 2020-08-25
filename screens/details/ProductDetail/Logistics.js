@@ -1,24 +1,29 @@
 import React, { useState, useRef } from 'react';
-import { View, Alert, Text, StyleSheet, Slider } from 'react-native';
+import { View, Alert, Text, StyleSheet, Slider, Dimensions } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSelector, useDispatch } from 'react-redux';
+import { Divider } from 'react-native-paper';
+import moment from 'moment/min/moment-with-locales';
 
 import ButtonAction from '../../../components/UI/ButtonAction';
 import CalendarSelection from '../../../components/UI/CalendarSelection';
 import HeaderThree from '../../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../../components/UI/HorizontalScrollContainer';
 import RoundItem from '../../../components/UI/RoundItem';
+import RoundItemEmpty from '../../../components/UI/RoundItemEmpty';
 import UserAvatar from '../../../components/UI/UserAvatar';
 import { detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
 import * as ordersActions from '../../../store/actions/orders';
 import * as productsActions from '../../../store/actions/products';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const dispatch = useDispatch();
   const refRBSheet = useRef();
+  const windowHeight = Dimensions.get('window').height;
 
-  const [orderProject, setOrderProject] = useState('000');
+  const [orderProject, setOrderProject] = useState('');
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
@@ -115,67 +120,95 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
         {!hasEditPermission && amount > 0 ? (
           <View>
             <ButtonAction onSelect={toggleBottomModal} title="reservera" />
-            <RBSheet ref={refRBSheet} height={500} closeOnDragDown closeOnPressMask>
-              {/* If the user has any projects, ask which project the item will be used in  */}
-              {userProjects.length ? (
-                <>
-                  <HeaderThree
-                    text="Vilket projekt ska återbruket användas i?"
-                    style={detailStyles.centeredHeader}
-                  />
-                  <HorizontalScrollContainer>
-                    {userProjects.map((item) => (
-                      <RoundItem
-                        itemData={item}
-                        key={item.id}
+            <RBSheet
+              ref={refRBSheet}
+              height={windowHeight - 80}
+              closeOnPressBack
+              closeOnDragDown
+              closeOnPressMask>
+              <ScrollView>
+                {/* If the user has any projects, ask which project the item will be used in  */}
+                {userProjects.length ? (
+                  <>
+                    <HeaderThree
+                      text="Vilket projekt ska återbruket användas i?"
+                      style={detailStyles.centeredHeader}
+                    />
+                    <HorizontalScrollContainer scrollHeight={120}>
+                      <RoundItemEmpty
+                        isSelected={orderProject === ''}
+                        title="Inget"
+                        key="1"
                         isHorizontal
                         onSelect={() => {
-                          setOrderProject(item.id);
+                          setOrderProject('');
                         }}
                       />
-                    ))}
-                  </HorizontalScrollContainer>
-                </>
-              ) : null}
+                      {userProjects.map((item) => (
+                        <RoundItem
+                          isSelected={orderProject === item.id}
+                          itemData={item}
+                          key={item.id}
+                          isHorizontal
+                          onSelect={() => {
+                            setOrderProject(item.id);
+                          }}
+                        />
+                      ))}
+                    </HorizontalScrollContainer>
+                    <Divider />
+                  </>
+                ) : null}
 
-              {/* If there are multiple items available to reserve, ask how many the user wants to reserve */}
-              {amount > 1 ? (
-                <>
-                  <HeaderThree
-                    text="Hur många vill du reservera?"
-                    style={detailStyles.centeredHeader}
-                  />
-                  <View
-                    style={{
-                      alignItems: 'center',
-                    }}>
-                    <Text style={{ fontSize: 20, paddingTop: 5 }}>{orderQuantity}</Text>
-                    <Slider
-                      style={{ width: 200, height: 40 }}
-                      minimumValue={1}
-                      step={1}
-                      maximumValue={amount}
-                      minimumTrackTintColor={Colors.subtleGreen}
-                      maximumTrackTintColor="#000000"
-                      value={String(orderQuantity)}
-                      onSlidingComplete={(value) => setOrderQuantity(value)}
+                {/* If there are multiple items available to reserve, ask how many the user wants to reserve */}
+                {amount > 1 ? (
+                  <>
+                    <HeaderThree
+                      text="Hur många vill du reservera?"
+                      style={detailStyles.centeredHeader}
                     />
-                  </View>
-                </>
-              ) : null}
+                    <View
+                      style={{
+                        alignItems: 'center',
+                      }}>
+                      <Text style={{ fontSize: 20, paddingTop: 5 }}>{orderQuantity}</Text>
+                      <Slider
+                        style={{ width: 200, height: 40 }}
+                        minimumValue={1}
+                        step={1}
+                        maximumValue={amount}
+                        minimumTrackTintColor={Colors.subtleGreen}
+                        maximumTrackTintColor="#000000"
+                        value={String(orderQuantity)}
+                        onSlidingComplete={(value) => setOrderQuantity(value)}
+                      />
+                    </View>
+                  </>
+                ) : null}
 
-              {/* Set a date and time for pickup */}
-              <CalendarSelection
-                suggestedDate={suggestedDate}
-                sendSuggestedTime={sendSuggestedTime}
-              />
-              <ButtonAction
-                style={{ marginBottom: 80 }}
-                onSelect={() => {
-                  reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
-                }}
-                title="reservera"
-              />
+                {/* Set a date and time for pickup */}
+                <CalendarSelection
+                  suggestedDate={suggestedDate}
+                  sendSuggestedTime={sendSuggestedTime}
+                />
+                <View style={{ alignItems: 'center', marginBottom: 15 }}>
+                  <Text>{orderQuantity ? `Antal: ${orderQuantity}` : null}</Text>
+                  <Text>
+                    {orderSuggestedDate
+                      ? `Föreslaget upphämtningsdatum: ${moment(orderSuggestedDate)
+                          .locale('sv')
+                          .format('D MMM YYYY, HH:mm')}`
+                      : null}
+                  </Text>
+                </View>
+                <ButtonAction
+                  style={{ marginBottom: 80 }}
+                  onSelect={() => {
+                    reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
+                  }}
+                  title="reservera"
+                />
+              </ScrollView>
             </RBSheet>
           </View>
         ) : null}
@@ -191,7 +224,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
   textAndBadge: {
     flex: 1,
     flexDirection: 'row',

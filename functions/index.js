@@ -158,7 +158,7 @@ exports.sendPushNotifications = functions.database
             body: `${suggestedBy.profileName} föreslog precis ${moment(afterSuggestedDate)
               .locale('sv')
               .format(
-                'MMMM Do, HH:MM'
+                'MMMM Do, HH:mm'
               )} som upphämtningstid för ditt återbruk: "${productName}". Gå in och godkänn eller föreslå en annan tid.`,
             _displayInForeground: true,
           };

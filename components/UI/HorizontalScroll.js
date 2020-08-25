@@ -1,14 +1,15 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import { Divider, Button } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 
+import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
+import ButtonSeeMore from './ButtonSeeMore';
 import HeaderTwo from './HeaderTwo';
 import LargeImageItem from './LargeImageItem';
 import ProductItem from './ProductItem';
 import RoundItem from './RoundItem';
 import TextItem from './TextItem';
-import ButtonSeeMore from './ButtonSeeMore';
 
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
@@ -117,7 +118,7 @@ const HorizontalScroll = (props) => {
             </View>
           ) : null}
         </View>
-        {!props.showMoreLink ? <Divider /> : null}
+        <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
       </ScrollView>
     </>
   );

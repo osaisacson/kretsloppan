@@ -182,7 +182,7 @@ export default (state = initialState, action) => {
         state.availableProducts[availablePIndex].priceText,
         state.availableProducts[availablePIndex].date,
         state.availableProducts[availablePIndex].internalComments,
-        action.productData.amount.sold
+        action.productData.sold
       );
       console.log(
         'store/reducers/products/UPDATE_PRODUCT_SOLD_AMOUNT, updated product: ',

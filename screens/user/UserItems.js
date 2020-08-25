@@ -10,34 +10,62 @@ import Colors from '../../constants/Colors';
 const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, navigation }) => {
   const activeUserProposals = userProposals.filter((proposal) => proposal.status !== 'löst');
 
-  const ordersByUser = useSelector((state) => state.orders.userOrders);
-  const ordersFromUser = useSelector((state) => state.orders.availableOrders).filter(
-    (order) => order.sellerId === loggedInUserId
+  const availableUserProducts = userProducts.filter(
+    (product) => !(product.amount === product.sold)
+  );
+
+  const userOrders = useSelector((state) => state.orders.userOrders);
+  const allOrders = useSelector((state) => state.orders.availableOrders);
+
+  const ordersToSell = userOrders.filter((order) => !order.isCollected);
+  const ordersToBuy = allOrders.filter(
+    (order) => order.sellerId === loggedInUserId && !order.isCollected
+  );
+
+  const soldOrders = allOrders.filter((order) => order.isCollected);
+  const boughtOrders = userOrders.filter(
+    (order) => order.sellerId === loggedInUserId && order.isCollected
   );
 
   return (
     <>
-      {ordersByUser.length ? (
+      {ordersToSell.length ? (
         <>
-          <HeaderTwo title="Att köpa" indicator={ordersByUser.length} showNotificationBadge />
-          <Orders loggedInUserId={loggedInUserId} orders={ordersByUser} navigation={navigation} />
+          <HeaderTwo title="Att köpa" indicator={ordersToSell.length} showNotificationBadge />
+          <Orders loggedInUserId={loggedInUserId} orders={ordersToSell} navigation={navigation} />
           <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
         </>
       ) : null}
-      {ordersFromUser.length ? (
+      {ordersToBuy.length ? (
         <>
-          <HeaderTwo title="Att sälja" indicator={ordersFromUser.length} showNotificationBadge />
-          <Orders loggedInUserId={loggedInUserId} orders={ordersFromUser} navigation={navigation} />
+          <HeaderTwo title="Att sälja" indicator={ordersToBuy.length} showNotificationBadge />
+          <Orders loggedInUserId={loggedInUserId} orders={ordersToBuy} navigation={navigation} />
+          <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
+        </>
+      ) : null}
+      {boughtOrders.length ? (
+        <>
+          <HeaderTwo title="Köpt" />
+          <Orders loggedInUserId={loggedInUserId} orders={boughtOrders} navigation={navigation} />
+          <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
+        </>
+      ) : null}
+      {soldOrders.length ? (
+        <>
+          <HeaderTwo title="Sålt" />
+          <Orders loggedInUserId={loggedInUserId} orders={soldOrders} navigation={navigation} />
           <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
         </>
       ) : null}
       <HorizontalScroll
         title="Mitt återbruk"
-        scrollData={userProducts}
-        simpleCount={userProducts.length}
+        scrollData={availableUserProducts}
+        simpleCount={availableUserProducts.length}
         navigation={navigation}
         showAddLink={() => navigation.navigate('EditProduct')}
-        showMoreLink={userProducts.length ? () => navigation.navigate('Mitt återbruk') : false}
+        showMoreLink={
+          availableUserProducts.length ? () => navigation.navigate('Mitt återbruk') : false
+        }
       />
       <HorizontalScroll
         textItem
