@@ -66,7 +66,6 @@ const HorizontalScroll = (props) => {
             buttonOnPress={props.buttonOnPress}
             showAddLink={props.showAddLink}
             showMoreLink={props.showMoreLink}
-            showMoreNr={props.showMoreNr}
             icon={props.icon}
             simpleCount={props.simpleCount}
             indicator={scrollData.length ? scrollData.length : 0}

@@ -4,15 +4,18 @@ import { Button } from 'react-native-paper';
 
 import Colors from './../../constants/Colors';
 
-const ButtonSeeMore = ({ itemNr, onSelect }) => {
+const ButtonSeeMore = ({ onSelect }) => {
   return (
     <Button
       mode="outlined"
       compact
       style={{
         marginTop: 5,
-        height: 30,
         borderColor: Colors.darkPrimary,
+      }}
+      contentStyle={{
+        height: 30,
+        marginTop: 2,
       }}
       labelStyle={{
         fontFamily: 'roboto-regular',
@@ -20,7 +23,7 @@ const ButtonSeeMore = ({ itemNr, onSelect }) => {
       }}
       onPress={onSelect}
       color={Colors.darkPrimary}>
-      Se alla {itemNr} <Feather name="arrow-right" />
+      Se alla <Feather name="arrow-right" />
     </Button>
   );
 };

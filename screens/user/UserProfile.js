@@ -19,9 +19,13 @@ const UserProfile = (props) => {
   //Gets all products which are not booked or organised for the user we are currently visiting
   const allProducts = useSelector((state) => state.products.availableProducts);
   const userProducts = allProducts.filter((product) => product.ownerId === visitedUserId);
-  const soldUserProducts = allProducts.filter((product) => product.amount === product.sold);
+  const availableUserProducts = userProducts.filter(
+    (product) => product.amount > 0 && !(product.amount === product.sold)
+  );
+  const soldUserProducts = userProducts.filter((product) => product.amount === product.sold);
+  const reservedUserProducts = userProducts.filter((product) => product.amount === 0);
 
-  const availableUserProducts = userProducts.sort(function (a, b) {
+  const availableUserProductsSorted = availableUserProducts.sort(function (a, b) {
     a = new Date(a.readyDate);
     b = new Date(b.readyDate);
     return b > a ? -1 : b < a ? 1 : 0;
@@ -45,6 +49,8 @@ const UserProfile = (props) => {
   const userProjects = useSelector((state) => state.projects.availableProjects).filter(
     (proj) => proj.ownerId === visitedUserId
   );
+
+  const userHasNoContent = !userProducts && !userOrders && !userProposals && !userProjects;
 
   //Sets indicator numbers
   const added = userProducts.length;
@@ -113,52 +119,53 @@ const UserProfile = (props) => {
           buttonText="kontaktdetaljer"
         />
       </View>
-      {userProposals.length ||
-      availableUserProducts.length ||
-      soldUserProducts.length ||
-      userProjects.length ? (
-        <>
-          {userProposals.length ? (
-            <HorizontalScroll
-              textIte
-              detailPath="ProposalDetail"
-              title="Efterlysningar"
-              simpleCount={userProposals.length}
-              scrollData={userProposals}
-              navigation={props.navigation}
-            />
-          ) : null}
-          {availableUserProducts.length ? (
-            <HorizontalScroll
-              title="Till Salu"
-              simpleCount={availableUserProducts.length}
-              scrollData={availableUserProducts}
-              navigation={props.navigation}
-            />
-          ) : null}
 
-          {soldUserProducts.length ? (
-            <HorizontalScroll
-              title="Sålt"
-              simpleCount={soldUserProducts.length}
-              scrollData={soldUserProducts}
-              navigation={props.navigation}
-            />
-          ) : null}
-          {userProjects.length ? (
-            <HorizontalScroll
-              largeImageItem
-              detailPath="ProjectDetail"
-              title="Återbruksprojekt"
-              simpleCount={userProjects.length}
-              scrollData={userProjects}
-              navigation={props.navigation}
-            />
-          ) : null}
-        </>
-      ) : (
-        <EmptyState>Användaren har inte lagt upp något ännu</EmptyState>
-      )}
+      {userHasNoContent ? <EmptyState>Användaren har inte lagt upp något ännu</EmptyState> : null}
+
+      {availableUserProductsSorted.length ? (
+        <HorizontalScroll
+          title="Till Salu"
+          simpleCount={availableUserProductsSorted.length}
+          scrollData={availableUserProductsSorted}
+          navigation={props.navigation}
+        />
+      ) : null}
+      {reservedUserProducts.length ? (
+        <HorizontalScroll
+          title="Reserverat"
+          simpleCount={reservedUserProducts.length}
+          scrollData={reservedUserProducts}
+          navigation={props.navigation}
+        />
+      ) : null}
+      {soldUserProducts.length ? (
+        <HorizontalScroll
+          title="Sålt"
+          simpleCount={soldUserProducts.length}
+          scrollData={soldUserProducts}
+          navigation={props.navigation}
+        />
+      ) : null}
+      {userProposals.length ? (
+        <HorizontalScroll
+          textIte
+          detailPath="ProposalDetail"
+          title="Efterlysningar"
+          simpleCount={userProposals.length}
+          scrollData={userProposals}
+          navigation={props.navigation}
+        />
+      ) : null}
+      {userProjects.length ? (
+        <HorizontalScroll
+          largeImageItem
+          detailPath="ProjectDetail"
+          title="Återbruksprojekt"
+          simpleCount={userProjects.length}
+          scrollData={userProjects}
+          navigation={props.navigation}
+        />
+      ) : null}
     </ScrollViewToTop>
   );
 };

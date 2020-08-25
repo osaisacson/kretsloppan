@@ -71,7 +71,11 @@ const ProductDetailScreen = (props) => {
     state.orders.availableOrders.filter((order) => order.productId === id)
   );
 
-  console.log('productOrders from ProductDetailScreen: ', productOrders);
+  //Check if the current user has any orders for the product
+  const userOrders = useSelector((state) => state.orders.userOrders);
+  const currentUserOrdersOfProduct = userOrders.filter(
+    (order) => order.productId === id && order.buyerId === loggedInUserId
+  );
 
   //Check status of product and privileges of user
   const hasEditPermission = ownerId === loggedInUserId;
@@ -110,8 +114,22 @@ const ProductDetailScreen = (props) => {
         {hasEditPermission && productOrders.length ? (
           <>
             <Orders
+              isProductDetail
               loggedInUserId={loggedInUserId}
               orders={productOrders}
+              navigation={navigation}
+            />
+            <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
+          </>
+        ) : null}
+
+        {/* Displays a list of orders for the product if the logged in user is the seller */}
+        {currentUserOrdersOfProduct.length ? (
+          <>
+            <Orders
+              isProductDetail
+              loggedInUserId={loggedInUserId}
+              orders={currentUserOrdersOfProduct}
               navigation={navigation}
             />
             <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
@@ -128,6 +146,7 @@ const ProductDetailScreen = (props) => {
               ) : null}
             </>
           ) : null}
+
           {allReserved ? (
             <StatusBadge
               style={{
@@ -268,6 +287,12 @@ const ProductDetailScreen = (props) => {
       </View>
     </DetailWrapper>
   );
+};
+
+export const screenOptions = (navData) => {
+  return {
+    headerTitle: '',
+  };
 };
 
 export default ProductDetailScreen;

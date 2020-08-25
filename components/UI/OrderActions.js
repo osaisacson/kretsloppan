@@ -32,6 +32,8 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   const bothAgreedOnTime = buyerAgreed && sellerAgreed;
 
+  const reservedDateHasExpired = false;
+
   //Show and reset time/date for pickup
   const toggleShowCalendar = () => {
     setShowCalendar((prevState) => !prevState);
@@ -163,8 +165,9 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
     );
   };
 
-  const deleteHandler = (orderId, orderQuantity) => {
+  const deleteHandler = (orderId, productId, orderQuantity) => {
     const updatedProductAmount = Number(currentProduct.amount) + Number(orderQuantity);
+    console.log({ orderId, productId, orderQuantity, updatedProductAmount });
 
     Alert.alert(
       'Är du säker?',
@@ -185,43 +188,53 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   return (
     <>
+      {/* Show button to approve the suggested pickup time if either 
+        the seller or buyer has not agreed to the suggested time yet */}
+      {(!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller) ? (
+        <ButtonAction
+          style={{ width: '95%' }}
+          buttonLabelStyle={{ color: '#fff' }}
+          buttonColor={Colors.approved}
+          title="godkänn upphämtningstid"
+          onSelect={() => {
+            approveSuggestedDateTime();
+          }}
+        />
+      ) : null}
+      {bothAgreedOnTime ? (
+        <ButtonAction
+          style={{ width: '95%' }}
+          buttonColor={Colors.approved}
+          buttonLabelStyle={{ color: '#fff' }}
+          title="hämtad!"
+          onSelect={() => {
+            collectHandler();
+          }}
+        />
+      ) : null}
       <View style={styles.oneLineSpread}>
         <ButtonAction
           buttonColor={Colors.subtleGrey}
           onSelect={toggleShowCalendar}
           title="ändra tid"
         />
-        {bothAgreedOnTime ? (
-          <ButtonAction
-            buttonColor={Colors.approved}
-            buttonLabelStyle={{ color: '#fff' }}
-            title="hämtad!"
-            onSelect={() => {
-              collectHandler();
-            }}
-          />
-        ) : null}
-        {/* Show button to approve the suggested pickup time if either 
-        the seller or buyer has not agreed to the suggested time yet */}
-        {(!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller) ? (
-          <ButtonAction
-            buttonLabelStyle={{ color: '#fff' }}
-            buttonColor={Colors.approved}
-            title="godkänn upphämtningstid"
-            onSelect={() => {
-              approveSuggestedDateTime();
-            }}
-          />
-        ) : null}
+
         {/* Show button to cancel the order if the viewer is the buyer */}
-        {isBuyer ? (
+        {isBuyer || isSeller ? (
           <ButtonAction
             buttonColor={Colors.warning}
             buttonLabelStyle={{ color: '#fff' }}
             onSelect={() => {
               deleteHandler(id, productId, quantity);
             }}
-            title="avreservera"
+            disabled={isSeller && !reservedDateHasExpired}
+            title={
+              isSeller && !reservedDateHasExpired
+                ? `Avreservera från ${moment(reservedUntil)
+                    .locale('sv')
+                    .format('D MMM YYYY, HH:mm')}`
+                : 'Avreservera'
+            }
           />
         ) : null}
       </View>
@@ -230,7 +243,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
           <CalendarSelection suggestedDate={suggestedDate} sendSuggestedTime={sendSuggestedTime} />
           <ButtonAction
             style={{ marginBottom: 20 }}
-            buttonColor={Colors.subtleGrey}
+            buttonColor={Colors.darkPrimary}
             onSelect={() => {
               resetSuggestedDT(suggestedDate);
             }}

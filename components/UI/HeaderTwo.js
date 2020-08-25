@@ -15,7 +15,6 @@ const HeaderTwo = ({
   simpleCount,
   showAddLink,
   showMoreLink,
-  showMoreNr,
   showNotificationBadge,
   isSearch,
 }) => {
@@ -40,7 +39,7 @@ const HeaderTwo = ({
       <View style={styles.indicatorSection}>
         <View
           style={{ flexDirection: 'row', alignSelf: 'flex-end', paddingBottom: subTitle ? 20 : 2 }}>
-          {showMoreLink ? <ButtonSeeMore itemNr={showMoreNr} onSelect={showMoreLink} /> : null}
+          {showMoreLink ? <ButtonSeeMore onSelect={showMoreLink} /> : null}
           {showAddLink ? (
             <ButtonIcon icon="plus" compact onSelect={showAddLink} color={Colors.darkPrimary} />
           ) : null}

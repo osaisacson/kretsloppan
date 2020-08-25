@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import Order from './Order';
 
-const Orders = ({ orders, navigation, loggedInUserId }) => {
+const Orders = ({ orders, navigation, loggedInUserId, isProductDetail }) => {
   const profiles = useSelector((state) => state.profiles.allProfiles);
   const projects = useSelector((state) => state.projects.availableProjects);
 
@@ -22,6 +22,7 @@ const Orders = ({ orders, navigation, loggedInUserId }) => {
           loggedInUserId={loggedInUserId}
           profiles={profiles}
           projects={projects}
+          isProductDetail={isProductDetail}
         />
       ))}
     </View>

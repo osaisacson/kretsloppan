@@ -13,7 +13,7 @@ import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
 import UserAvatar from './UserAvatar';
 
-const Order = ({ order, navigation, profiles, projects, loggedInUserId }) => {
+const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProductDetail }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const {
@@ -31,13 +31,24 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId }) => {
     sellerAgreed,
   } = order;
 
+  const products = useSelector((state) => state.products.availableProducts);
+  const currentProduct = products.find((product) => product.id === productId);
+
   const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
   const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
 
+  const theOneWeAreWaitingFor = profiles.find(
+    (profile) => profile.profileId === (!sellerAgreed ? sellerId : buyerId)
+  );
+
   const isBuyer = buyerId === loggedInUserId; //The currently logged in user matches the buyerId in the order
   const isSeller = sellerId === loggedInUserId; //The currently logged in user matches the sellerId in the order
+
   const waitingForYouAsSeller = isSeller && !sellerAgreed;
   const waitingForYouAsBuyer = isBuyer && !buyerAgreed;
+  const waitingForYou = waitingForYouAsSeller || waitingForYouAsBuyer;
+  const nameOfThumberOuterGetter = theOneWeAreWaitingFor.profileName;
+
   const bothHaveAgreedOnTime = buyerAgreed && sellerAgreed;
 
   const orderIsExpired =
@@ -57,14 +68,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId }) => {
     <Card style={{ marginTop: 4 }}>
       <TouchableCmp onPress={toggleShowDetails}>
         <View style={styles.oneLineSpread}>
-          {isBuyer ? (
-            <TouchableOpacity onPress={goToItem}>
-              <Image
-                style={{ width: 100, height: 100, resizeMode: 'contain' }}
-                source={{ uri: image }}
-              />
-            </TouchableOpacity>
-          ) : (
+          {isProductDetail ? (
             <UserAvatar
               userId={buyerProfile.profileId}
               style={{ margin: 0 }}
@@ -75,18 +79,25 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId }) => {
                 });
               }}
             />
+          ) : (
+            <TouchableOpacity onPress={goToItem}>
+              <Image
+                style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                source={{ uri: image }}
+              />
+            </TouchableOpacity>
           )}
           <View style={{ paddingLeft: 10, flex: 1 }}>
             <Text>{quantity} st</Text>
 
             {!bothHaveAgreedOnTime ? (
-              <Text>{`Väntar på att ${
-                waitingForYouAsBuyer || waitingForYouAsSeller ? 'du' : 'säljaren'
+              <Text style={styles.statusText}>{`Väntar på att ${
+                waitingForYou ? 'du' : nameOfThumberOuterGetter
               } ska godkänna den föreslagna upphämtningstiden`}</Text>
             ) : (
-              <Text>
-                Överenskommen upphämtningstid:{' '}
-                {moment(suggestedDate).locale('sv').format('DD MMMM YYYY, HH:mm')}
+              <Text style={styles.statusText}>
+                Upphämtningstid överenskommen! Hämtas{' '}
+                {moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
               </Text>
             )}
           </View>
@@ -121,14 +132,28 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId }) => {
                 />
                 {!bothHaveAgreedOnTime ? (
                   <StatusText
+                    noTextFormatting
                     label="Föreslagen upphämtningstid:"
-                    text={moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+                    text={moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
                   />
                 ) : null}
                 {bothHaveAgreedOnTime ? (
                   <StatusText
+                    noTextFormatting
                     label="Överenskommen upphämtningstid:"
-                    text={moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+                    text={moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
+                  />
+                ) : null}
+                <StatusText
+                  noTextFormatting
+                  label="Upphämtningsaddress:"
+                  text={currentProduct.address}
+                />
+                {currentProduct.pickupDetails ? (
+                  <StatusText
+                    noTextFormatting
+                    label="Detaljer om hämtning:"
+                    text={currentProduct.pickupDetails}
                   />
                 ) : null}
                 {comments ? <Text>Kommentarer: {comments}</Text> : null}
@@ -142,7 +167,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId }) => {
                   .locale('sv')
                   .format(
                     'D MMMM YYYY, HH:mm'
-                  )}. Antingen markera som 'hämtad' om den är hämtad, föreslå en ny upphämtningstid, eller ta bort beställningen nedan. Notera att både säljaren och köparen kan ta bort beställningen när reservationen är slut.`}
+                  )}. Antingen markera som 'hämtad' om den är hämtad, föreslå en ny upphämtningstid, eller avreservera beställningen nedan. Notera att både säljaren och köparen kan avreservera när reservationen är slut.`}
               />
             ) : null}
             {isCollected ? (
@@ -173,6 +198,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  statusText: {
+    color: Colors.darkPrimary,
+    fontFamily: 'roboto-light-italic',
   },
 });
 

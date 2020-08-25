@@ -92,7 +92,7 @@ export const SpotlightNavigator = ({ navigation }) => {
         options={mainPageOptionsNoUser}
       />
       <SpotlightStackNavigator.Screen
-        name="Mitt upplagda återbruk"
+        name="Mitt återbruk"
         component={UserProductsScreen}
         options={mainPageOptionsNoUser}
       />

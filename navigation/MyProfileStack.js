@@ -30,7 +30,7 @@ const MyProfileStack = ({ navigation }) => {
       />
       {/* User product screens  */}
       <DetailsStack.Screen
-        name="Mitt upplagda återbruk"
+        name="Mitt återbruk"
         component={UserProductsScreen}
         options={mainPageOptionsNoUser}
       />

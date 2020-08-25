@@ -14,19 +14,35 @@ const ButtonAction = ({
   title,
 }) => {
   return (
-    <TouchableCmp style={{ ...styles.container, ...style }}>
-      <Button
-        color={buttonColor}
-        disabled={disabled ? disabled : false}
-        mode="contained"
-        compact
-        style={{ ...styles.button, ...style }}
-        labelStyle={[styles.label, buttonLabelStyle]}
-        onPress={onSelect}
-        icon={icon}>
-        {title}
-      </Button>
-    </TouchableCmp>
+    <>
+      {disabled ? (
+        <Button
+          color={buttonColor}
+          disabled={disabled ? disabled : false}
+          mode="contained"
+          compact
+          style={{ ...styles.button, ...style }}
+          labelStyle={[styles.label, buttonLabelStyle]}
+          onPress={onSelect}
+          icon={icon}>
+          {title}
+        </Button>
+      ) : (
+        <TouchableCmp style={{ ...styles.container, ...style }}>
+          <Button
+            color={buttonColor}
+            disabled={disabled ? disabled : false}
+            mode="contained"
+            compact
+            style={{ ...styles.button, ...style }}
+            labelStyle={[styles.label, buttonLabelStyle]}
+            onPress={onSelect}
+            icon={icon}>
+            {title}
+          </Button>
+        </TouchableCmp>
+      )}
+    </>
   );
 };
 

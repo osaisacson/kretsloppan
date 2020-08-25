@@ -8,10 +8,12 @@ import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/UI/SaferArea';
 
 const SpotlightProductsScreen = (props) => {
-  const allProducts = useSelector((state) => state.products.availableProducts);
+  const allProductsRaw = useSelector((state) => state.products.availableProducts);
   const allProjects = useSelector((state) => state.projects.availableProjects);
   const allProposals = useSelector((state) => state.proposals.availableProposals);
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+
+  const allProducts = allProductsRaw.filter((product) => !(product.amount === product.sold));
 
   const recentProductsSorted = allProducts.sort(function (a, b) {
     a = new Date(a.readyDate);
@@ -51,8 +53,6 @@ const SpotlightProductsScreen = (props) => {
           title="Återbruk"
           subTitle="Senast tillgängliga återbruket"
           showAddLink={() => props.navigation.navigate('EditProduct')}
-          showMoreLink={() => props.navigation.navigate('Återbruk')}
-          showMoreNr={allProducts.length}
           scrollData={recentProducts}
           navigation={props.navigation}
           icon={
@@ -75,7 +75,6 @@ const SpotlightProductsScreen = (props) => {
           showMoreLink={
             allProposals.length > 1 ? () => props.navigation.navigate('Efterlysningar') : false
           }
-          showMoreNr={allProposals.length}
           scrollData={recentProposals}
           navigation={props.navigation}
           icon={
@@ -96,7 +95,6 @@ const SpotlightProductsScreen = (props) => {
           subTitle="Projekt som byggs med återbruk"
           showAddLink={() => props.navigation.navigate('EditProject')}
           showMoreLink={() => props.navigation.navigate('Projekt')}
-          showMoreNr={allProjects.length}
           scrollData={recentProjects}
           navigation={props.navigation}
           icon={

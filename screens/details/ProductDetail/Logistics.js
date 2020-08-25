@@ -21,8 +21,6 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const [orderProject, setOrderProject] = useState('000');
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
-  console.log('ORDER QUANTITY: ', orderQuantity);
-  console.log('ORDER SUGGESTED DATE: ', orderSuggestedDate);
 
   const { id, image, amount, ownerId, suggestedDate } = selectedProduct;
 
