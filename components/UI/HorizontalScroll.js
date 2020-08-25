@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Divider, Button } from 'react-native-paper';
 
 import Styles from './../../constants/Styles';
@@ -8,7 +8,7 @@ import LargeImageItem from './LargeImageItem';
 import ProductItem from './ProductItem';
 import RoundItem from './RoundItem';
 import TextItem from './TextItem';
-import TouchableCmp from './TouchableCmp';
+import ButtonSeeMore from './ButtonSeeMore';
 
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
@@ -67,7 +67,6 @@ const HorizontalScroll = (props) => {
             showAddLink={props.showAddLink}
             showMoreLink={props.showMoreLink}
             showMoreNr={props.showMoreNr}
-            buttonText={props.buttonText}
             icon={props.icon}
             simpleCount={props.simpleCount}
             indicator={scrollData.length ? scrollData.length : 0}
@@ -104,25 +103,16 @@ const HorizontalScroll = (props) => {
                   />
                 ))}
                 {props.showMoreLink && scrollData.length > 1 ? (
-                  <TouchableCmp
-                    onPress={props.showMoreLink}
+                  <View
                     style={{
-                      flex: 1,
+                      flexDirection: 'row',
                       alignItems: 'center',
-                      justifyContent: 'center',
+                      paddingLeft: 20,
+                      paddingRight: 30,
                       height: scrollHeight,
                     }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        paddingLeft: 35,
-                        height: scrollHeight,
-                      }}>
-                      <Text style={{ fontSize: 12 }}>SE ALLA</Text>
-                      <Button animated icon="chevron-right" color="#000" />
-                    </View>
-                  </TouchableCmp>
+                    <ButtonSeeMore itemNr={scrollData.length} onSelect={props.showMoreLink} />
+                  </View>
                 ) : null}
               </ScrollView>
             </View>

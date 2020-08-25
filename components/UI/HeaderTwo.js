@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Badge, Button } from 'react-native-paper';
+import { Badge } from 'react-native-paper';
 
 import Colors from './../../constants/Colors';
-import ButtonAdd from './ButtonAdd';
 import ButtonIcon from './ButtonIcon';
+import ButtonSeeMore from './ButtonSeeMore';
 
 const HeaderTwo = ({
   icon,
@@ -12,8 +12,6 @@ const HeaderTwo = ({
   subTitle,
   extraSubTitle,
   indicator,
-  buttonText,
-  buttonOnPress,
   simpleCount,
   showAddLink,
   showMoreLink,
@@ -21,10 +19,9 @@ const HeaderTwo = ({
   showNotificationBadge,
   isSearch,
 }) => {
-  const extraStyle = buttonText ? { maxWidth: '80%' } : { maxWidth: '99%' };
   return (
     <View style={styles.headerContainer}>
-      <View style={[styles.textSection, extraStyle]}>
+      <View style={styles.textSection}>
         <View style={styles.textAndBadge}>
           {icon ? icon : null}
           <Text style={styles.contentHeader}>{title}</Text>
@@ -43,20 +40,11 @@ const HeaderTwo = ({
       <View style={styles.indicatorSection}>
         <View
           style={{ flexDirection: 'row', alignSelf: 'flex-end', paddingBottom: subTitle ? 20 : 2 }}>
-          {showMoreLink ? (
-            <ButtonIcon
-              icon="menu-right"
-              badge={showMoreNr}
-              onSelect={showMoreLink}
-              color={Colors.darkPrimary}
-            />
-          ) : null}
+          {showMoreLink ? <ButtonSeeMore itemNr={showMoreNr} onSelect={showMoreLink} /> : null}
           {showAddLink ? (
-            <ButtonIcon icon="plus" onSelect={showAddLink} color={Colors.darkPrimary} />
+            <ButtonIcon icon="plus" compact onSelect={showAddLink} color={Colors.darkPrimary} />
           ) : null}
         </View>
-
-        {buttonText ? <ButtonAdd title={buttonText} onPress={buttonOnPress} /> : null}
       </View>
     </View>
   );
@@ -86,7 +74,7 @@ const styles = StyleSheet.create({
   },
   contentHeader: {
     fontFamily: 'bebas-neue-bold',
-    fontSize: 24,
+    fontSize: 31,
     marginRight: 6,
   },
   simpleCount: {

@@ -19,6 +19,7 @@ const UserProfile = (props) => {
   //Gets all products which are not booked or organised for the user we are currently visiting
   const allProducts = useSelector((state) => state.products.availableProducts);
   const userProducts = allProducts.filter((product) => product.ownerId === visitedUserId);
+  const soldUserProducts = allProducts.filter((product) => product.amount === product.sold);
 
   const availableUserProducts = userProducts.sort(function (a, b) {
     a = new Date(a.readyDate);
@@ -114,12 +115,12 @@ const UserProfile = (props) => {
       </View>
       {userProposals.length ||
       availableUserProducts.length ||
-      collectedFromUser.length ||
+      soldUserProducts.length ||
       userProjects.length ? (
         <>
           {userProposals.length ? (
             <HorizontalScroll
-              textItem
+              textIte
               detailPath="ProposalDetail"
               title="Efterlysningar"
               simpleCount={userProposals.length}
@@ -136,11 +137,11 @@ const UserProfile = (props) => {
             />
           ) : null}
 
-          {collectedFromUser.length ? (
+          {soldUserProducts.length ? (
             <HorizontalScroll
               title="Sålt"
-              simpleCount={collectedFromUser.length}
-              scrollData={collectedFromUser}
+              simpleCount={soldUserProducts.length}
+              scrollData={soldUserProducts}
               navigation={props.navigation}
             />
           ) : null}
