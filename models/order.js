@@ -7,6 +7,7 @@ class Order {
     projectId,
     image,
     quantity,
+    createdOn,
     reservedUntil,
     suggestedDate,
     buyerAgreed,
@@ -20,6 +21,7 @@ class Order {
     this.projectId = projectId;
     this.image = image;
     this.quantity = quantity;
+    this.createdOn = createdOn;
     this.reservedUntil = reservedUntil;
     this.suggestedDate = suggestedDate;
     this.buyerAgreed = buyerAgreed;

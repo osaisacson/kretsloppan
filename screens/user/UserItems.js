@@ -24,7 +24,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
             indicator={ordersByUser.length}
             showNotificationBadge
           />
-          <Orders isBuyer orders={ordersByUser} navigation={navigation} />
+          <Orders loggedInUserId={loggedInUserId} orders={ordersByUser} navigation={navigation} />
           <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
         </>
       ) : null}
@@ -35,7 +35,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
             indicator={ordersFromUser.length}
             showNotificationBadge
           />
-          <Orders isBuyer orders={ordersFromUser} navigation={navigation} />
+          <Orders loggedInUserId={loggedInUserId} orders={ordersFromUser} navigation={navigation} />
           <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
         </>
       ) : null}

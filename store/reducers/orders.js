@@ -40,6 +40,7 @@ export default (state = initialState, action) => {
         userOrders: state.userOrders.concat(newOrder),
       };
     }
+
     case UPDATE_ORDER: {
       const availableOrderIndex = getIndex(state.availableOrders, action.pid);
       const updatedUserOrder = new Order( //Whenever we do a new order we have to pass the full params to match model

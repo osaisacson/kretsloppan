@@ -8,6 +8,8 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const UPDATE_PRODUCT_AMOUNT = 'UPDATE_PRODUCT_AMOUNT';
+export const UPDATE_PRODUCT_SOLD_AMOUNT = 'UPDATE_PRODUCT_SOLD_AMOUNT';
+
 export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
@@ -53,7 +55,8 @@ export function fetchProducts() {
             product.priceText,
             product.date,
             product.readyDate,
-            product.internalComments
+            product.internalComments,
+            product.sold
           );
 
           allProducts.push(newProduct);
@@ -278,6 +281,34 @@ export function updateProductAmount(id, amount) {
       });
     } catch (error) {
       console.log('Error in actions/products/updateProductAmount: ', error);
+      throw error;
+    }
+  };
+}
+
+export function updateProductSoldAmount(id, soldAmount) {
+  return async (dispatch) => {
+    try {
+      console.log(`Attempting to update product with id: ${id}...`);
+
+      const dataToUpdate = {
+        sold: soldAmount,
+      };
+
+      const returnedProductData = await firebase
+        .database()
+        .ref(`products/${id}`)
+        .update(dataToUpdate);
+
+      console.log(`...updated product with id ${id}:`, returnedProductData);
+
+      dispatch({
+        type: UPDATE_PRODUCT_SOLD_AMOUNT,
+        pid: id,
+        productData: dataToUpdate,
+      });
+    } catch (error) {
+      console.log('Error in actions/products/updateProductSoldAmount: ', error);
       throw error;
     }
   };

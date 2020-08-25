@@ -23,7 +23,8 @@ class Product {
     priceText,
     date,
     readyDate,
-    internalComments
+    internalComments,
+    sold
   ) {
     this.id = id;
     this.ownerId = ownerId;
@@ -49,6 +50,7 @@ class Product {
     this.date = date;
     this.readyDate = readyDate;
     this.internalComments = internalComments;
+    this.sold = sold;
   }
 }
 

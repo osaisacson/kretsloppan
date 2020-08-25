@@ -48,6 +48,24 @@ const SpotlightProductsScreen = (props) => {
       ) : null}
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
+          title="Senaste Återbruket"
+          subTitle="Senast tillgängliga återbruket"
+          showAddLink={() => props.navigation.navigate('EditProduct')}
+          showMoreLink={() => props.navigation.navigate('Återbruk')}
+          showMoreNr={allProducts.length}
+          scrollData={recentProducts}
+          navigation={props.navigation}
+          icon={
+            <FontAwesome5
+              name="recycle"
+              size={21}
+              style={{
+                marginRight: 5,
+              }}
+            />
+          }
+        />
+        <HorizontalScroll
           textItem
           scrollHeight={55}
           detailPath="ProposalDetail"
@@ -67,24 +85,6 @@ const SpotlightProductsScreen = (props) => {
               style={{
                 marginRight: 3,
                 marginBottom: 2,
-              }}
-            />
-          }
-        />
-        <HorizontalScroll
-          title="Senaste Återbruket"
-          subTitle="Senast tillgängliga återbruket"
-          showAddLink={() => props.navigation.navigate('EditProduct')}
-          showMoreLink={() => props.navigation.navigate('Återbruk')}
-          showMoreNr={allProducts.length}
-          scrollData={recentProducts}
-          navigation={props.navigation}
-          icon={
-            <FontAwesome5
-              name="recycle"
-              size={21}
-              style={{
-                marginRight: 5,
               }}
             />
           }

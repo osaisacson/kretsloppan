@@ -3,6 +3,7 @@ import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
 import Colors from './../../constants/Colors';
 import Card from './Card';
@@ -12,12 +13,13 @@ import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
 import UserAvatar from './UserAvatar';
 
-const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => {
+const Order = ({ order, navigation, profiles, projects, loggedInUserId }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const {
     productId,
     buyerId,
+    sellerId,
     projectId,
     image,
     quantity,
@@ -32,8 +34,11 @@ const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => 
   const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
   const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
 
+  const isBuyer = buyerId === loggedInUserId; //The currently logged in user matches the buyerId in the order
+  const isSeller = sellerId === loggedInUserId; //The currently logged in user matches the sellerId in the order
   const waitingForYouAsSeller = isSeller && !sellerAgreed;
   const waitingForYouAsBuyer = isBuyer && !buyerAgreed;
+  const bothHaveAgreedOnTime = buyerAgreed && sellerAgreed;
 
   const orderIsExpired =
     !isCollected &&
@@ -74,7 +79,7 @@ const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => 
           <View style={{ paddingLeft: 10, flex: 1 }}>
             <Text>{quantity} st</Text>
 
-            {!buyerAgreed || !sellerAgreed ? (
+            {!bothHaveAgreedOnTime ? (
               <Text>{`Väntar på att ${
                 waitingForYouAsBuyer || waitingForYouAsSeller ? 'du' : 'säljaren'
               } ska godkänna den föreslagna upphämtningstiden`}</Text>
@@ -114,9 +119,15 @@ const Order = ({ order, navigation, profiles, projects, isSeller, isBuyer }) => 
                   label="Reserverad till:"
                   text={moment(reservedUntil).locale('sv').calendar()}
                 />
-                {!buyerAgreed || !sellerAgreed ? (
+                {!bothHaveAgreedOnTime ? (
                   <StatusText
                     label="Föreslagen upphämtningstid:"
+                    text={moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+                  />
+                ) : null}
+                {bothHaveAgreedOnTime ? (
+                  <StatusText
+                    label="Överenskommen upphämtningstid:"
                     text={moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
                   />
                 ) : null}

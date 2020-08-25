@@ -61,9 +61,11 @@ const ProductDetailScreen = (props) => {
     title,
     width,
     location,
+    sold,
   } = selectedProduct;
 
-  const productIsAvailable = amount > 0;
+  const allSold = amount === sold;
+  const allReserved = amount < 1 && !allSold;
 
   const productOrders = useSelector((state) =>
     state.orders.availableOrders.filter((order) => order.productId === id)
@@ -107,13 +109,17 @@ const ProductDetailScreen = (props) => {
         {/* Displays a list of orders for the product if the logged in user is the seller */}
         {hasEditPermission && productOrders.length ? (
           <>
-            <Orders isSeller orders={productOrders} navigation={navigation} />
+            <Orders
+              loggedInUserId={loggedInUserId}
+              orders={productOrders}
+              navigation={navigation}
+            />
             <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
           </>
         ) : null}
 
         <SectionCard>
-          {productIsAvailable ? (
+          {!allSold && !allReserved ? (
             <>
               {amount ? <Text style={detailStyles.amount}>{amount} st à</Text> : null}
               {priceText && !price ? <Text style={detailStyles.price}>{priceText}</Text> : null}
@@ -121,7 +127,8 @@ const ProductDetailScreen = (props) => {
                 <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
               ) : null}
             </>
-          ) : (
+          ) : null}
+          {allReserved ? (
             <StatusBadge
               style={{
                 position: 'absolute',
@@ -131,10 +138,24 @@ const ProductDetailScreen = (props) => {
                 alignSelf: 'left',
                 width: 200,
               }}
-              text="Alla är för närvarande reserverade"
+              text={amount > 1 ? 'För närvarande reserverad' : 'Alla för närvarande reserverade'}
               backgroundColor={Colors.darkPrimary}
             />
-          )}
+          ) : null}
+          {allSold ? (
+            <StatusBadge
+              style={{
+                position: 'absolute',
+                zIndex: 10,
+                top: -5,
+                left: -3,
+                alignSelf: 'left',
+                width: 200,
+              }}
+              text={amount > 1 ? 'Såld!' : 'Alla sålda!'}
+              backgroundColor={Colors.subtleGreen}
+            />
+          ) : null}
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
 

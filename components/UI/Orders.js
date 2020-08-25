@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import Order from './Order';
 
-const Orders = ({ isSeller, isBuyer, orders, navigation }) => {
+const Orders = ({ orders, navigation, loggedInUserId }) => {
   const profiles = useSelector((state) => state.profiles.allProfiles);
   const projects = useSelector((state) => state.projects.availableProjects);
 
@@ -19,8 +19,7 @@ const Orders = ({ isSeller, isBuyer, orders, navigation }) => {
           key={item.id}
           order={item}
           navigation={navigation}
-          isSeller={isSeller}
-          isBuyer={isBuyer}
+          loggedInUserId={loggedInUserId}
           profiles={profiles}
           projects={projects}
         />

@@ -30,6 +30,8 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
+  const bothAgreedOnTime = buyerAgreed && sellerAgreed;
+
   //Show and reset time/date for pickup
   const toggleShowCalendar = () => {
     setShowCalendar((prevState) => !prevState);
@@ -44,8 +46,9 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
   };
 
   const resetSuggestedDT = () => {
-    const buyerHasAgreed = !!isBuyer;
-    const sellerHasAgreed = !!isSeller;
+    //set these according to who's trying to change the time. Should be true for the one changing time, false for the other.
+    const buyerHasAgreed = isBuyer ? true : false;
+    const sellerHasAgreed = isSeller ? true : false;
     const currentDate = new Date();
     const newReservedUntil = new Date(
       currentDate.getTime() + 4 * 24 * 60 * 60 * 1000
@@ -128,6 +131,10 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   //Set order as completed
   const collectHandler = () => {
+    const originalSoldProducts = currentProduct.sold;
+    const totalSoldProducts = currentProduct.sold + quantity; //Existing sold items plus the quantity of the currently completed order
+    console.log({ originalSoldProducts, quantity, totalSoldProducts });
+
     Alert.alert(
       'Är produkten levererad till beställaren?',
       'Genom att klicka här bekräftar du att ordern är klar.',
@@ -149,6 +156,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
                 new Date() // order is collected
               )
             );
+            dispatch(productsActions.updateProductSoldAmount(id, totalSoldProducts));
           },
         },
       ]
@@ -183,14 +191,16 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
           onSelect={toggleShowCalendar}
           title="ändra tid"
         />
-        <ButtonAction
-          buttonColor={Colors.approved}
-          buttonLabelStyle={{ color: '#fff' }}
-          title="hämtad!"
-          onSelect={() => {
-            collectHandler();
-          }}
-        />
+        {bothAgreedOnTime ? (
+          <ButtonAction
+            buttonColor={Colors.approved}
+            buttonLabelStyle={{ color: '#fff' }}
+            title="hämtad!"
+            onSelect={() => {
+              collectHandler();
+            }}
+          />
+        ) : null}
         {/* Show button to approve the suggested pickup time if either 
         the seller or buyer has not agreed to the suggested time yet */}
         {(!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller) ? (
