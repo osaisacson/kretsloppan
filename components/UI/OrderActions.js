@@ -30,7 +30,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
-  const bothAgreedOnTime = buyerAgreed && sellerAgreed;
+  const bothAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
 
   const reservedDateHasExpired = false;
 

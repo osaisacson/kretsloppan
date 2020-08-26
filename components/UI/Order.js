@@ -49,7 +49,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
   const waitingForYou = waitingForYouAsSeller || waitingForYouAsBuyer;
   const nameOfThumberOuterGetter = theOneWeAreWaitingFor.profileName;
 
-  const bothHaveAgreedOnTime = buyerAgreed && sellerAgreed;
+  const bothHaveAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
 
   const orderIsExpired =
     !isCollected &&
@@ -146,7 +146,11 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                 {!bothHaveAgreedOnTime ? (
                   <StatusText
                     label="Föreslagen upphämtningstid:"
-                    text={moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
+                    text={
+                      suggestedDate
+                        ? `${moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}`
+                        : 'Inget tidsförslag angivet'
+                    }
                   />
                 ) : null}
                 {bothHaveAgreedOnTime ? (
@@ -173,7 +177,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
             {orderIsExpired ? (
               <StatusText
                 style={{ color: Colors.warning, textAlign: 'center' }}
-                text={`Reservationen gick ut ${moment(suggestedDate)
+                text={`Reservationen gick ut ${moment(reservedUntil)
                   .locale('sv')
                   .format(
                     'D MMMM YYYY, HH:mm'
