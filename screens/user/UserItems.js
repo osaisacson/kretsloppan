@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
@@ -100,7 +101,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         </TouchableCmp>
       </Card>
       {showArchive ? (
-        <>
+        <View style={{ backgroundColor: '#fff' }}>
           {boughtOrders.length ? (
             <>
               <HeaderTwo title="Köpt" simpleCount={boughtOrders.length} />
@@ -123,7 +124,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
               />
             </>
           ) : null}
-        </>
+        </View>
       ) : null}
     </>
   );
