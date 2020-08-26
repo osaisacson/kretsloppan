@@ -115,12 +115,21 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
             ) : null}
           </View>
         </View>
-        <AntDesign
-          style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
-          name="caretdown"
-          size={16}
-          color="#666"
-        />
+        {isCollected ? (
+          <AntDesign
+            style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
+            name="checkcircle"
+            size={20}
+            color={Colors.subtleGreen}
+          />
+        ) : (
+          <AntDesign
+            style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
+            name="caretdown"
+            size={16}
+            color="#666"
+          />
+        )}
       </TouchableCmp>
 
       {showDetails ? (
@@ -136,26 +145,24 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                 />
                 {!bothHaveAgreedOnTime ? (
                   <StatusText
-                    noTextFormatting
                     label="Föreslagen upphämtningstid:"
                     text={moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
                   />
                 ) : null}
                 {bothHaveAgreedOnTime ? (
                   <StatusText
-                    noTextFormatting
                     label="Överenskommen upphämtningstid:"
                     text={moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
                   />
                 ) : null}
                 <StatusText
-                  noTextFormatting
+                  textStyle={{ width: 200, textAlign: 'right' }}
                   label="Upphämtningsaddress:"
                   text={currentProduct.address}
                 />
                 {currentProduct.pickupDetails ? (
                   <StatusText
-                    noTextFormatting
+                    textStyle={{ width: 200, textAlign: 'right' }}
                     label="Detaljer om hämtning:"
                     text={currentProduct.pickupDetails}
                   />
@@ -166,7 +173,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
             {orderIsExpired ? (
               <StatusText
                 style={{ color: Colors.warning, textAlign: 'center' }}
-                noTextFormatting
                 text={`Reservationen gick ut ${moment(suggestedDate)
                   .locale('sv')
                   .format(
@@ -175,21 +181,34 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
               />
             ) : null}
             {isCollected ? (
-              <StatusText
-                style={{
-                  color: Colors.subtleGreen,
-                  textAlign: 'center',
-                }}
-                noTextFormatting
-                text={`Beställning klar! Produkten hämtades ${moment(isCollected)
-                  .locale('sv')
-                  .format('D MMMM YYYY, HH:mm')}`}
-              />
+              <>
+                <StatusText
+                  label="Datum hämtades"
+                  text={moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}
+                />
+
+                <View style={styles.oneLineSpread}>
+                  <StatusText label="Köpare" style={{ marginLeft: -10 }} />
+                  <>
+                    <StatusText text={buyerProfile.profileName} />
+                    <UserAvatar
+                      userId={buyerProfile.profileId}
+                      style={{ margin: 0, textAlign: 'right' }}
+                      showBadge={false}
+                      actionOnPress={() => {
+                        navigation.navigate('Användare', {
+                          detailId: buyerProfile.profileId,
+                        });
+                      }}
+                    />
+                  </>
+                </View>
+              </>
             ) : null}
-            {projectForProduct ? (
+            {projectForProduct && !projectForProduct === '000' ? (
               <View style={styles.oneLineSpread}>
                 <Text style={{ fontFamily: 'roboto-light-italic', marginLeft: 8 }}>
-                  Till projekt:
+                  Att användas i projekt:
                 </Text>
                 <View>
                   <SmallRectangularItem

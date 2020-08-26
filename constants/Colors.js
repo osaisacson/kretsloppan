@@ -15,7 +15,7 @@ export default {
 
   //Buttons
   approved: '#3d9891',
-  completed: '#3cb371',
+  completed: '#2f8d59',
   warning: '#cc0000',
   neutral: '#8c8c8c',
 

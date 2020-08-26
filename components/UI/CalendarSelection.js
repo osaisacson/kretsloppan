@@ -10,10 +10,6 @@ import Colors from '../../constants/Colors';
 import HeaderThree from './HeaderThree';
 
 const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
-  console.log('CalendarSelection, passed params:');
-  console.log({ suggestedDate, sendSuggestedTime });
-  console.log('------------');
-
   const colorScheme = useColorScheme();
 
   const [showTimePicker, setShowTimePicker] = useState(false);

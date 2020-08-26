@@ -9,7 +9,7 @@ import CachedImage from '../../components/UI/CachedImage';
 import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import ProductItem from '../../components/UI/ProductItem';
+import ProjectProductItem from '../../components/UI/ProjectProductItem';
 import SaferArea from '../../components/UI/SaferArea';
 import SectionCard from '../../components/UI/SectionCard';
 import UserLine from '../../components/UI/UserLine';
@@ -30,7 +30,7 @@ const ProjectDetailScreen = (props) => {
   }); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
   const associatedProducts = useSelector((state) =>
-    state.products.availableProducts.filter((prod) => prod.projectId === projectId)
+    state.orders.availableOrders.filter((order) => order.projectId === projectId)
   );
 
   const associatedProposals = useSelector((state) =>
@@ -159,13 +159,17 @@ const ProjectDetailScreen = (props) => {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={projectHeader}
         renderItem={(itemData) => (
-          <ProductItem
+          <ProjectProductItem
             showBackgroundText
             navigation={props.navigation}
             showSmallStatusIcons
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+              selectItemHandler(
+                itemData.item.productId,
+                itemData.item.sellerId,
+                itemData.item.title
+              );
             }}
           />
         )}

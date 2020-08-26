@@ -33,6 +33,7 @@ const UserProfile = (props) => {
 
   //Gets all orders by the logged in user
   const userOrders = useSelector((state) => state.orders.userOrders);
+  const collectedUserOrders = userOrders.filter((order) => order.isCollected);
 
   //Gets all proposals for the user we are currently visiting
   const availableProposals = useSelector((state) => state.proposals.availableProposals);
@@ -54,7 +55,7 @@ const UserProfile = (props) => {
 
   //Sets indicator numbers
   const added = userProducts.length;
-  const collected = userOrders.length;
+  const collected = collectedUserOrders.length;
   const nrOfProjects = userProjects.length;
 
   return (
@@ -132,7 +133,7 @@ const UserProfile = (props) => {
       ) : null}
       {reservedUserProducts.length ? (
         <HorizontalScroll
-          title="Reserverat"
+          title="För närvarande reserverat"
           simpleCount={reservedUserProducts.length}
           scrollData={reservedUserProducts}
           navigation={props.navigation}
@@ -148,7 +149,7 @@ const UserProfile = (props) => {
       ) : null}
       {userProposals.length ? (
         <HorizontalScroll
-          textIte
+          textItem
           detailPath="ProposalDetail"
           title="Efterlysningar"
           simpleCount={userProposals.length}

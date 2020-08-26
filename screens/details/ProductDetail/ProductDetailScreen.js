@@ -169,7 +169,7 @@ const ProductDetailScreen = (props) => {
                 top: -5,
                 left: -3,
                 alignSelf: 'left',
-                width: 200,
+                width: 80,
               }}
               text={amount > 1 ? 'Såld!' : 'Alla sålda!'}
               backgroundColor={Colors.subtleGreen}

@@ -25,6 +25,7 @@ const UserSpotlightScreen = (props) => {
 
   //Gets all orders by the logged in user
   const userOrders = useSelector((state) => state.orders.userOrders);
+  const collectedUserOrders = userOrders.filter((order) => order.isCollected);
 
   //Get all projects, return only the ones which matches the logged in id
   const userProjects = useSelector((state) => state.projects.availableProjects).filter(
@@ -44,7 +45,7 @@ const UserSpotlightScreen = (props) => {
 
   //Sets indicator numbers
   const added = userProducts.length;
-  const collected = userOrders.length;
+  const collected = collectedUserOrders.length;
   const nrOfProjects = userProjects.length;
 
   //Navigate to the edit screen and forward the product id

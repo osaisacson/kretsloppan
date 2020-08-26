@@ -1,13 +1,18 @@
-import React from 'react';
+import { AntDesign } from '@expo/vector-icons';
+import React, { useState } from 'react';
 import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
+import Card from '../../components/UI/Card';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Orders from '../../components/UI/Orders';
+import TouchableCmp from '../../components/UI/TouchableCmp';
 import Colors from '../../constants/Colors';
 
 const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, navigation }) => {
+  const [showArchive, setShowArchive] = useState(false);
+
   const activeUserProposals = userProposals.filter((proposal) => proposal.status !== 'löst');
 
   const availableUserProducts = userProducts.filter(
@@ -29,6 +34,10 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
     (order) => order.buyerId === loggedInUserId && order.isCollected
   );
 
+  const toggleShowArchive = () => {
+    setShowArchive((prevState) => !prevState);
+  };
+
   return (
     <>
       {ordersToSell.length ? (
@@ -45,20 +54,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
           <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
         </>
       ) : null}
-      {boughtOrders.length ? (
-        <>
-          <HeaderTwo title="Köpt" />
-          <Orders loggedInUserId={loggedInUserId} orders={boughtOrders} navigation={navigation} />
-          <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
-        </>
-      ) : null}
-      {soldOrders.length ? (
-        <>
-          <HeaderTwo title="Sålt" />
-          <Orders loggedInUserId={loggedInUserId} orders={soldOrders} navigation={navigation} />
-          <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
-        </>
-      ) : null}
+
       <HorizontalScroll
         title="Mitt återbruk"
         scrollData={availableUserProducts}
@@ -90,6 +86,45 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         navigation={navigation}
         showAddLink={() => navigation.navigate('EditProject')}
       />
+
+      <Card style={{ marginTop: 4 }}>
+        <TouchableCmp onPress={toggleShowArchive}>
+          <HeaderTwo title="Se arkiv" simpleCount={boughtOrders.length + soldOrders.length} />
+
+          <AntDesign
+            style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
+            name="caretdown"
+            size={16}
+            color="#666"
+          />
+        </TouchableCmp>
+      </Card>
+      {showArchive ? (
+        <>
+          {boughtOrders.length ? (
+            <>
+              <HeaderTwo title="Köpt" simpleCount={boughtOrders.length} />
+              <Orders
+                loggedInUserId={loggedInUserId}
+                orders={boughtOrders}
+                navigation={navigation}
+              />
+              <Divider
+                style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }}
+              />
+            </>
+          ) : null}
+          {soldOrders.length ? (
+            <>
+              <HeaderTwo title="Sålt" simpleCount={soldOrders.length} />
+              <Orders loggedInUserId={loggedInUserId} orders={soldOrders} navigation={navigation} />
+              <Divider
+                style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }}
+              />
+            </>
+          ) : null}
+        </>
+      ) : null}
     </>
   );
 };
