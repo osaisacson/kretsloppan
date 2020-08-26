@@ -100,14 +100,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
     const buyerJustAgreed = isBuyer ? true : buyerAgreed; //if the user agreeing to the time is the buyer, set as true
     const sellerJustAgreed = isSeller ? true : sellerAgreed; //if the user agreeing to the time is the seller, set as true
     console.log({
-      id,
-      projectId,
-      quantity,
-      reservedUntil,
-      suggestedDate,
-      buyerJustAgreed,
-      sellerJustAgreed,
-      isCollected,
+      order,
     });
 
     Alert.alert(

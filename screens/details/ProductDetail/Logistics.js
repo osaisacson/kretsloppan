@@ -41,14 +41,14 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     refRBSheet.current.open();
   };
 
-  const reserveHandler = (id, ownerId, orderProjectId, quantity, suggestedDate) => {
-    console.log({ id, ownerId, orderProjectId, quantity, suggestedDate });
+  const reserveHandler = (id, ownerId, orderProjectId, quantity, orderSuggestedDate) => {
+    console.log({ id, ownerId, orderProjectId, quantity, orderSuggestedDate });
     const imageUrl = image;
     const quantityNum = Number(quantity);
     const newProductAmount = amount - quantityNum;
     console.log('Logistics/reserveHandler: newProductAmount', newProductAmount);
 
-    if (!quantity || !suggestedDate) {
+    if (!quantity || !orderSuggestedDate) {
       Alert.alert(
         'Å Nej!',
         'Det ser ut som du antingen inte valt hur många du vill boka eller inte föreslagit en upphämtningstid.',

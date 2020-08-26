@@ -64,12 +64,14 @@ const ProductDetailScreen = (props) => {
     sold,
   } = selectedProduct;
 
-  const allSold = amount === sold;
-  const allReserved = amount < 1 && !allSold;
-
   const productOrders = useSelector((state) =>
     state.orders.availableOrders.filter((order) => order.productId === id)
   );
+
+  const allOrdersCollected = productOrders.every((order) => order.isCollected);
+
+  const allSold = amount === sold && allOrdersCollected;
+  const allReserved = amount < 1 && !allSold;
 
   //Check if the current user has any orders for the product
   const userOrders = useSelector((state) => state.orders.userOrders);
