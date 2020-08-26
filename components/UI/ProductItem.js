@@ -1,21 +1,35 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import CachedImage from '../../components/UI/CachedImage';
 import UserAvatar from '../../components/UI/UserAvatar';
+import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
-const ProductItem = ({
-  navigation,
-  itemData,
-  showBackgroundText,
-  isHorizontal,
-  showSmallStatusIcons,
-  onSelect,
-}) => {
-  const { ownerId, location, image, priceText, price, background, amount, title } = itemData;
+const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, onSelect }) => {
+  const {
+    id,
+    ownerId,
+    location,
+    image,
+    priceText,
+    price,
+    background,
+    amount,
+    sold,
+    title,
+  } = itemData;
+
+  const productOrders = useSelector((state) => state.orders.availableOrders);
+
+  const ordersForProduct = productOrders.filter((order) => order.productId === id); //All orders for the product
+
+  const allReserved = amount === sold;
+
+  const allSold = allReserved && ordersForProduct.every((order) => order.isCollected);
 
   return (
     <View style={styles.container}>
@@ -37,6 +51,15 @@ const ProductItem = ({
             }}
           />
         </View>
+        {allSold ? (
+          <Text style={{ ...styles.status, backgroundColor: Colors.subtleGreen }}>Alla sålda</Text>
+        ) : null}
+        {allReserved ? (
+          <Text style={{ ...styles.status, backgroundColor: Colors.darkPrimary }}>
+            Alla Reserverade
+          </Text>
+        ) : null}
+
         {location ? <Text style={styles.location}>{location}</Text> : null}
 
         <View style={styles.touchable}>
@@ -139,6 +162,18 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-bold',
     fontSize: 15,
     textAlign: 'right',
+  },
+  status: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    position: 'absolute',
+    left: 50,
+    top: 80,
+    zIndex: 100,
+    fontFamily: 'roboto-light-italic',
+    fontSize: 13,
+    color: '#fff',
+    textAlign: 'center',
   },
   amount: {
     position: 'absolute',

@@ -16,10 +16,6 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
 
   const activeUserProposals = userProposals.filter((proposal) => proposal.status !== 'löst');
 
-  const availableUserProducts = userProducts.filter(
-    (product) => !(product.amount === product.sold)
-  );
-
   const userOrders = useSelector((state) => state.orders.userOrders);
   const allOrders = useSelector((state) => state.orders.availableOrders);
 
@@ -58,13 +54,11 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
 
       <HorizontalScroll
         title="Mitt återbruk"
-        scrollData={availableUserProducts}
-        simpleCount={availableUserProducts.length}
+        scrollData={userProducts}
+        simpleCount={userProducts.length}
         navigation={navigation}
         showAddLink={() => navigation.navigate('EditProduct')}
-        showMoreLink={
-          availableUserProducts.length ? () => navigation.navigate('Mitt återbruk') : false
-        }
+        showMoreLink={userProducts.length ? () => navigation.navigate('Mitt återbruk') : false}
       />
       <HorizontalScroll
         textItem

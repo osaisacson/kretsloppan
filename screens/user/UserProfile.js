@@ -32,7 +32,9 @@ const UserProfile = (props) => {
   });
 
   //Gets all orders by the logged in user
-  const userOrders = useSelector((state) => state.orders.userOrders);
+  const userOrders = useSelector((state) => state.orders.availableOrders).filter(
+    (order) => order.buyerId === visitedUserId
+  );
   const collectedUserOrders = userOrders.filter((order) => order.isCollected);
 
   //Gets all proposals for the user we are currently visiting
@@ -96,13 +98,17 @@ const UserProfile = (props) => {
             <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>
               {added ? added : 0}
             </Paragraph>
-            <Caption style={userProfileStyles.caption}>Upplagda</Caption>
+            <Caption style={userProfileStyles.caption}>
+              {added === 1 ? 'Upplagd' : 'Upplagda'}
+            </Caption>
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>
               {collected ? collected : 0}
             </Paragraph>
-            <Caption style={userProfileStyles.caption}>Köpta</Caption>
+            <Caption style={userProfileStyles.caption}>
+              {collected === 1 ? 'Köpt' : 'Köpta'}
+            </Caption>
           </View>
           <View style={userProfileStyles.section}>
             <Paragraph style={[userProfileStyles.paragraph, userProfileStyles.caption]}>

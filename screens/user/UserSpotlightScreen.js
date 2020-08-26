@@ -109,13 +109,13 @@ const UserSpotlightScreen = (props) => {
               <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
                 {added ? added : 0}
               </Paragraph>
-              <Caption style={{ color: '#fff' }}>Upplagda</Caption>
+              <Caption style={{ color: '#fff' }}>{added === 1 ? 'Upplagd' : 'Upplagda'}</Caption>
             </View>
             <View style={userProfileStyles.section}>
               <Paragraph style={{ color: '#fff', ...userProfileStyles.paragraph }}>
                 {collected ? collected : 0}
               </Paragraph>
-              <Caption style={{ color: '#fff' }}>Köpta</Caption>
+              <Caption style={{ color: '#fff' }}>{collected === 1 ? 'Köpt' : 'Köpta'}</Caption>
             </View>
 
             <View style={userProfileStyles.section}>
