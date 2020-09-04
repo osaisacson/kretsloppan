@@ -32,7 +32,8 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   const bothAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
 
-  const reservedDateHasExpired = false;
+  const reservedDateHasExpired =
+    new Date(reservedUntil) instanceof Date && new Date(reservedUntil) <= new Date();
 
   //Show and reset time/date for pickup
   const toggleShowCalendar = () => {
@@ -195,7 +196,8 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
         <>
           {/* Show button to approve the suggested pickup time if either 
         the seller or buyer has not agreed to the suggested time yet */}
-          {(!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate) ? (
+          {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate)) &&
+          !reservedDateHasExpired ? (
             <ButtonAction
               style={{ width: '95%' }}
               buttonLabelStyle={{ color: '#fff' }}
