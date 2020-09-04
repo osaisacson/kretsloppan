@@ -1,21 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import CachedImage from './CachedImage';
-import UserAvatar from './UserAvatar';
 import Styles from '../../constants/Styles';
+import CachedImage from './CachedImage';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
+import UserAvatar from './UserAvatar';
 
-const ProjectProductItem = ({
-  navigation,
-  itemData,
-  showBackgroundText,
-  isHorizontal,
-  showSmallStatusIcons,
-  onSelect,
-}) => {
-  const { ownerId, location, image, priceText, price, background, amount, title } = itemData;
+const ProjectProductItem = ({ navigation, itemData, isHorizontal, onSelect }) => {
+  const { productId, ownerId, image, quantity } = itemData;
+
+  const products = useSelector((state) => state.products.availableProducts);
+  const currentProduct = products.find((prod) => prod.id === productId);
+
+  const { background, title, location } = currentProduct;
 
   return (
     <View style={styles.container}>
@@ -44,23 +43,14 @@ const ProjectProductItem = ({
             <View style={styles.imageContainer}>
               <CachedImage style={styles.image} uri={image} />
             </View>
-            {amount ? <Text style={styles.amount}>{amount} st à</Text> : null}
-            {priceText && !price ? <Text style={styles.price}>{priceText}</Text> : null}
-            {(price || price === 0) && !priceText ? (
-              <Text style={styles.price}>{price ? price : 0} kr</Text>
-            ) : null}
-            {price && priceText ? (
-              <Text style={styles.price}>
-                {price}kr eller {priceText}
-              </Text>
-            ) : null}
+            {quantity ? <Text style={styles.amount}>{quantity} st</Text> : null}
           </TouchableCmp>
         </View>
       </Card>
+
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
         {title}
       </Text>
-
       <Text numberOfLines={5} ellipsizeMode="tail" style={styles.backgroundText}>
         {background}
       </Text>
@@ -106,17 +96,18 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
+    paddingTop: 18,
     paddingLeft: 4,
     width: 200,
-    fontFamily: 'roboto-regular',
-    fontSize: 16,
-    marginLeft: 15,
+    fontFamily: 'roboto-bold',
+    fontSize: 17,
+    marginHorizontal: 10,
   },
   backgroundText: {
     paddingLeft: 4,
     fontFamily: 'roboto-light-italic',
     fontSize: 16,
-    marginLeft: 15,
+    marginHorizontal: 10,
     marginBottom: 20,
   },
   date: {

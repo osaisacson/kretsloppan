@@ -27,7 +27,16 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
-  const { id, image, amount, ownerId, suggestedDate } = selectedProduct;
+  const { id, image, amount, ownerId, suggestedDate, sold } = selectedProduct;
+
+  const productOrders = useSelector((state) =>
+    state.orders.availableOrders.filter((order) => order.productId === id)
+  );
+
+  const allOrdersCollected = productOrders.every((order) => order.isCollected);
+  const allSold = amount === sold && allOrdersCollected;
+  const allReserved = amount > sold && !allOrdersCollected;
+  const canBeReserved = !allReserved && !allSold;
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
@@ -117,7 +126,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
           right: 0,
         }}>
         {/* Reserve item - visible to all except the creator of the item, as long as there are any left*/}
-        {!hasEditPermission && amount > 0 ? (
+        {!hasEditPermission && canBeReserved ? (
           <View>
             <ButtonAction onSelect={toggleBottomModal} title="reservera" />
             <RBSheet

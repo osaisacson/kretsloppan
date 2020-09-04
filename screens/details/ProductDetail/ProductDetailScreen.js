@@ -69,9 +69,8 @@ const ProductDetailScreen = (props) => {
   );
 
   const allOrdersCollected = productOrders.every((order) => order.isCollected);
-
   const allSold = amount === sold && allOrdersCollected;
-  const allReserved = amount < 1 && !allSold;
+  const allReserved = amount > sold && !allOrdersCollected;
 
   //Check if the current user has any orders for the product
   const userOrders = useSelector((state) => state.orders.userOrders);
@@ -159,7 +158,7 @@ const ProductDetailScreen = (props) => {
                 alignSelf: 'left',
                 width: 200,
               }}
-              text={amount > 1 ? 'För närvarande reserverad' : 'Alla för närvarande reserverade'}
+              text={amount === 1 ? 'För närvarande reserverad' : 'Alla för närvarande reserverade'}
               backgroundColor={Colors.darkPrimary}
             />
           ) : null}
@@ -173,7 +172,7 @@ const ProductDetailScreen = (props) => {
                 alignSelf: 'left',
                 width: 80,
               }}
-              text={amount > 1 ? 'Såld!' : 'Alla sålda!'}
+              text={amount === 1 ? 'Såld!' : 'Alla sålda!'}
               backgroundColor={Colors.subtleGreen}
             />
           ) : null}
