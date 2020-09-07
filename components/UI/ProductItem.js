@@ -30,6 +30,10 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
   const allSold = amount === sold && allOrdersCollected;
   const allReserved = amount > sold && !allOrdersCollected;
 
+  const InfoBadge = ({ text, style }) => {
+    return <Text style={{ ...styles.infoBadge, ...style }}>{text}</Text>;
+  };
+
   return (
     <View style={styles.container}>
       <Card style={isHorizontal ? styles.horizontalProduct : styles.product}>
@@ -59,22 +63,20 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
           </Text>
         ) : null}
 
-        {location ? <Text style={styles.location}>{location}</Text> : null}
+        {location ? <InfoBadge text={location} style={styles.location} /> : null}
 
         <View style={styles.touchable}>
           <TouchableCmp onPress={onSelect} useForeground>
             <View style={styles.imageContainer}>
               <CachedImage style={styles.image} uri={image} />
             </View>
-            {amount ? <Text style={styles.amount}>{amount} st à</Text> : null}
-            {priceText && !price ? <Text style={styles.price}>{priceText}</Text> : null}
+            {amount ? <InfoBadge text={`${amount} st à`} style={styles.amount} /> : null}
+            {priceText && !price ? <InfoBadge text={priceText} style={styles.price} /> : null}
             {(price || price === 0) && !priceText ? (
-              <Text style={styles.price}>{price ? price : 0} kr</Text>
+              <InfoBadge text={`${price ? price : 0} kr`} style={styles.price} />
             ) : null}
             {price && priceText ? (
-              <Text style={styles.price}>
-                {price}kr eller {priceText}
-              </Text>
+              <InfoBadge text={`${price}kr eller ${priceText}`} style={styles.price} />
             ) : null}
           </TouchableCmp>
         </View>
@@ -130,16 +132,16 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    paddingLeft: 4,
-    width: 200,
-    fontFamily: 'roboto-regular',
-    fontSize: 16,
-    marginLeft: 15,
+    width: 190,
+    fontFamily: 'roboto-light-italic',
+    fontSize: 15,
+    paddingVertical: 5,
+    marginLeft: 12,
   },
   backgroundText: {
     paddingLeft: 4,
     fontFamily: 'roboto-light-italic',
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: 15,
     marginBottom: 20,
   },
@@ -152,15 +154,31 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-light-italic',
     fontSize: 14,
   },
-  location: {
-    padding: 5,
+  infoBadge: {
+    paddingHorizontal: 5,
+    paddingVertical: 2,
     position: 'absolute',
-    alignSelf: 'flex-end',
     zIndex: 100,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    fontFamily: 'roboto-bold',
-    fontSize: 15,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    fontFamily: 'roboto-light',
+    fontSize: 13,
+  },
+  location: {
+    alignSelf: 'flex-end',
     textAlign: 'right',
+  },
+  amount: {
+    left: 0,
+    bottom: 0,
+    textAlign: 'right',
+    marginRight: 8,
+  },
+  price: {
+    fontFamily: 'roboto-bold',
+    right: -9,
+    bottom: 0,
+    textAlign: 'right',
+    marginRight: 8,
   },
   status: {
     paddingVertical: 4,
@@ -173,30 +191,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#fff',
     textAlign: 'center',
-  },
-  amount: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    padding: 5,
-    zIndex: 99,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    fontFamily: 'roboto-bold',
-    fontSize: 15,
-    textAlign: 'right',
-    marginRight: 8,
-  },
-  price: {
-    position: 'absolute',
-    right: -9,
-    bottom: 0,
-    padding: 5,
-    zIndex: 99,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    fontFamily: 'roboto-bold',
-    fontSize: 15,
-    textAlign: 'right',
-    marginRight: 8,
   },
 });
 
