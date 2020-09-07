@@ -24,12 +24,11 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
   } = itemData;
 
   const productOrders = useSelector((state) => state.orders.availableOrders);
-
   const ordersForProduct = productOrders.filter((order) => order.productId === id); //All orders for the product
 
-  const allReserved = amount === sold;
-
-  const allSold = allReserved && ordersForProduct.every((order) => order.isCollected);
+  const allOrdersCollected = ordersForProduct.every((order) => order.isCollected);
+  const allSold = amount === sold && allOrdersCollected;
+  const allReserved = amount > sold && !allOrdersCollected;
 
   return (
     <View style={styles.container}>

@@ -182,7 +182,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                   margin: 10,
                   fontFamily: 'roboto-light-italic',
                 }}>
-                Reservationen gick ut $
+                Reservationen gick ut den{' '}
                 {moment(reservedUntil).locale('sv').format('D MMMM YYYY, HH:mm')}. Antingen markera
                 som 'hämtad' om den är hämtad, föreslå en ny upphämtningstid, eller avreservera
                 beställningen nedan. Notera att både säljaren och köparen kan avreservera när
