@@ -174,4 +174,10 @@ const ProposalDetailScreen = (props) => {
   );
 };
 
+export const screenOptions = (navData) => {
+  return {
+    headerTitle: '',
+  };
+};
+
 export default ProposalDetailScreen;

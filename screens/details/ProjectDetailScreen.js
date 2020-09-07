@@ -211,4 +211,10 @@ const styles = StyleSheet.create({
   },
 });
 
+export const screenOptions = (navData) => {
+  return {
+    headerTitle: '',
+  };
+};
+
 export default ProjectDetailScreen;
