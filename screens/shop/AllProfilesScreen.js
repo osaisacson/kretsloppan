@@ -10,6 +10,7 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import RoundItem from '../../components/UI/RoundItem';
 import SearchBar from '../../components/UI/SearchBar';
+import SaferArea from '../../components/wrappers/SaferArea';
 import * as profilesActions from '../../store/actions/profiles';
 
 const AllProfilesScreen = (props) => {
@@ -74,7 +75,7 @@ const AllProfilesScreen = (props) => {
   }
 
   return (
-    <View>
+    <SaferArea>
       <SearchBar
         placeholder="Leta bland användare: namn, beskrivning, address..."
         onChangeText={(term) => setSearchQuery(term)}
@@ -120,7 +121,7 @@ const AllProfilesScreen = (props) => {
           />
         }
       />
-    </View>
+    </SaferArea>
   );
 };
 

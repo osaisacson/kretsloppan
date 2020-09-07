@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -9,6 +9,7 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import SearchBar from '../../components/UI/SearchBar';
 import TextItem from '../../components/UI/TextItem';
+import SaferArea from '../../components/wrappers/SaferArea';
 import * as proposalsActions from '../../store/actions/proposals';
 
 const ProposalsScreen = (props) => {
@@ -69,7 +70,7 @@ const ProposalsScreen = (props) => {
   }
 
   return (
-    <View>
+    <SaferArea>
       <SearchBar
         placeholder="Leta bland efterlysningar: titel, beskrivning..."
         onChangeText={(term) => setSearchQuery(term.length ? term : '')}
@@ -99,7 +100,7 @@ const ProposalsScreen = (props) => {
           />
         }
       />
-    </View>
+    </SaferArea>
   );
 };
 

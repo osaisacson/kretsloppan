@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -9,6 +9,7 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import ProjectItem from '../../components/UI/ProjectItem';
 import SearchBar from '../../components/UI/SearchBar';
+import SaferArea from '../../components/wrappers/SaferArea';
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectsScreen = (props) => {
@@ -69,7 +70,7 @@ const ProjectsScreen = (props) => {
   }
 
   return (
-    <View>
+    <SaferArea>
       <SearchBar
         placeholder="Leta bland projekt: titel, plats..."
         onChangeText={(term) => setSearchQuery(term.length ? term : '')}
@@ -99,7 +100,7 @@ const ProjectsScreen = (props) => {
           />
         }
       />
-    </View>
+    </SaferArea>
   );
 };
 

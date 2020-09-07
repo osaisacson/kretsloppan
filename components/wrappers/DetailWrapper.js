@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import SaferArea from '../UI/SaferArea';
+import SaferArea from './SaferArea';
 import ScrollViewToTop from './ScrollViewToTop';
 
 export const DetailWrapper = ({ children }) => {

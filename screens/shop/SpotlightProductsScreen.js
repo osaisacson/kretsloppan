@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Introduction from '../../components/UI/Introduction';
-import SaferArea from '../../components/UI/SaferArea';
+import SaferArea from '../../components/wrappers/SaferArea';
 
 const SpotlightProductsScreen = (props) => {
   const allProductsRaw = useSelector((state) => state.products.availableProducts);

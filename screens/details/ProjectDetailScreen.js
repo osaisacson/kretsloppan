@@ -10,9 +10,9 @@ import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import ProjectProductItem from '../../components/UI/ProjectProductItem';
-import SaferArea from '../../components/UI/SaferArea';
 import SectionCard from '../../components/UI/SectionCard';
 import UserLine from '../../components/UI/UserLine';
+import SaferArea from '../../components/wrappers/SaferArea';
 import Colors from '../../constants/Colors';
 import * as projectsActions from '../../store/actions/projects';
 

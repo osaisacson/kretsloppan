@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -9,6 +9,7 @@ import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import ProductItem from '../../components/UI/ProductItem';
 import SearchBar from '../../components/UI/SearchBar';
+import SaferArea from '../../components/wrappers/SaferArea';
 import * as productsActions from '../../store/actions/products';
 
 const ProductsScreen = (props) => {
@@ -88,7 +89,7 @@ const ProductsScreen = (props) => {
   }
 
   return (
-    <View>
+    <SaferArea>
       <SearchBar
         placeholder="Leta bland återbruk: titel, skick, mått..."
         onChangeText={(term) => setSearchQuery(term)}
@@ -119,7 +120,7 @@ const ProductsScreen = (props) => {
           />
         }
       />
-    </View>
+    </SaferArea>
   );
 };
 

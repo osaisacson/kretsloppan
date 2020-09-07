@@ -6,9 +6,9 @@ import EmptyState from '../../components/UI/EmptyState';
 import Error from '../../components/UI/Error';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
-import SaferArea from '../../components/UI/SaferArea';
 import SearchBar from '../../components/UI/SearchBar';
 import TextItem from '../../components/UI/TextItem';
+import SaferArea from '../../components/wrappers/SaferArea';
 import * as proposalsActions from '../../store/actions/proposals';
 
 const UserProposalsScreen = (props) => {
