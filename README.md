@@ -2,11 +2,25 @@
   <img src="https://user-images.githubusercontent.com/3785147/90018981-11d7d880-dcae-11ea-82ee-d01a7449581e.jpg" width="190" title="kretsloppan">
 </p>
 
-# kretsloppan
+# Kretsloppan
 
-iOS/Android app supporting sustainable reuse of building materials
+iOS/Android app supporting local sustainable reuse of building materials.
+In collaboration with Egnahemsfabriken - (https://coompanion.se/2020/11/10/egnahemsfabriken-blir-arets-kooperativ-2020/ "Swedish Cooperative of the Year 2020"). The project was developed with the support of Vinnova - Swedens innovation agency.
 
-## get started
+Kretsloppan serves as a tool for the residents of Tjörns Kommun to manage local logistics of bartering, buying and selling of used building materials. The heart of this work is the center for reused materials located at Egnahemsfabriken.
+
+The app allows the user to:
+
+- Upload their own materials
+- Browse available materials
+- Book and confirm pick up of materials
+- Freely advertise for needed materials
+- Create projects
+- Associate collected materials to projects, providing follow up to where the materials end up in their second (third, fourth...) lives.
+
+Kretsloppan is a local, non-profit initiative which welcomes collaborations. We work according to decentralised principles and believe in tech adjusting to local conditions, not the other way around. If you wish to setup similar initiatives in your vicinity feel welcome to contact us through asaisacson@gmail.com for support.
+
+## Get started
 
 Make sure you first have installed:
 
@@ -24,51 +38,63 @@ Then...
 `npm start`
 ...and start apple and android simulators
 
-## When using as a template
+## Workflow
 
-- clone the project
-- create a new firebase db: https://console.firebase.google.com/
-- change the name of example-env in the root of your project to env.js and (IMPORTANT) include it in your gitignore file.
-- in firebase, go to project settings and find your project details. Update the account details in env.js
-- delete all specific firebase files in root, these will be generated in the next step
-- `firebase init` - select installing all options. Follow all defaults apart for functions, do not overwrite these.
-- In firebase project settings download the google-services.json file from your apps/android and the GoogleService-Info.plist from your apps/iOS, add these to the root of your project
-- In firebase/auth set up your authentication
+- `git checkout master`
+- `git pull`
+- `git checkout -b 'name-of-new-branch'`
+- Work work work
+- When you have made changes worthy of a commit, do a commit `git commit -m '...'`. Don't make huge commits. Do make legible and focused ones.
 
-## Setup
+## Release new version on the App store/Google Play store
 
-### Prerequisites
+- Read info here: https://docs.expo.io/distribution/app-stores/
+- `expo publish` background on this here: https://docs.expo.io/workflow/publishing/
+- To upload the previously built standalone app to the appropriate app store, you simply run `expo upload:android` or `expo upload:ios` more on this here: https://docs.expo.io/distribution/uploading-apps/
+
+## Original setup
 
 Install the below:
 
-#### XCode
+### Required:
+
+##### Node/NPM
+
+- Check if you have Node.js: `node -v`
+- Check if you have npm installed `npm -v`
+- Install from scratch: https://nodejs.org/en/
+- To update to latest version of npm `npm install npm@latest -g`
+
+##### XCode
 
 Get it through app store
 
-#### Android Studio
+##### Android Studio
 
 Follow instructions here: https://docs.expo.io/versions/v36.0.0/workflow/android-studio-emulator/
 
-#### Visual Studio Code
-
-Google it
-
-#### Chrome
-
-…uh, altavista it.
-
-#### Expo
+##### Expo
 
 https://docs.expo.io/versions/latest/get-started/installation/
 Tip if need to upgrade Expo:
 `npm i -g expo-cli`
 `expo upgrade`
 
-#### Brew
+### Recommended:
+
+##### Visual Studio Code
+
+Google it
+
+##### Chrome
+
+…uh, altavista it.
+
+##### Brew
 
 https://brew.sh/
 
-#### React Native Debugger
+##### React Native Debugger
 
 `brew update && brew cask install react-native-debugger`
 This will install react native debugger in your applications folder.
@@ -87,7 +113,7 @@ Once done, open by going to applications and clicking the react native debugger.
 
 ### Run on iPhone simulator
 
-- Install Xcode
+- Open Xcode
 - Go to Xcode > preferences > locations > check that the command line tools are installed (they are if there is a version listed)
 - Xcode > open developer tools > simulator
 - As with android: go to your terminal. If you’re not already running write `npm start` then with that process running `i` to launch the expo project on iPhone.
@@ -96,17 +122,28 @@ Once done, open by going to applications and clicking the react native debugger.
 
 - From your phone download Expo on App store or the Google Play store
 - Scan the QR code from your terminal in order to log in
-- boyaa
+- Boyaa
 
 ## FAQ
 
-### Debugging
+### How do I debug?
 
 Android: in the simulator press cmd + m
 iOS: in the simulator press cmd + d
 Make sure in your original browser window (the one that opened when you ran npm start) you’ve set lan or local, not tunnel. Otherwise it will be super slow.
 
-### Reloading simulators
+### How do I reload simulators?
 
 Android: RR
 iOS: CMD + R
+
+### How do I use this repo as a template for a new project?
+
+- Clone the project
+- Create a new firebase db: https://console.firebase.google.com/
+- Change the name of example-env in the root of your project to env.js and (IMPORTANT) include it in your gitignore file.
+- In firebase, go to project settings and find your project details. Update the account details in env.js
+- Delete all specific firebase files in root, these will be generated in the next step
+- `firebase init` - select installing all options. Follow all defaults apart for functions, do not overwrite these.
+- In firebase project settings download the google-services.json file from your apps/android and the GoogleService-Info.plist from your apps/iOS, add these to the root of your project
+- In firebase/auth set up your authentication
