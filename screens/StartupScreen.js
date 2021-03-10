@@ -1,8 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Notifications } from 'expo';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import React, { useEffect, useRef } from 'react';
-import { Platform, View, ActivityIndicator, StyleSheet, AsyncStorage } from 'react-native';
+import { Platform, View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Colors from '../constants/Colors';
