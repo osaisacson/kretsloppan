@@ -1,7 +1,8 @@
 import I18n from 'ex-react-native-i18n';
-import { AppLoading, Notifications } from 'expo';
+import AppLoading from 'expo-app-loading';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
+import * as Notifications from 'expo-notifications'
 import * as firebase from 'firebase';
 import React, { useState } from 'react';
 import { Vibration } from 'react-native';
@@ -37,7 +38,8 @@ if (!firebase.apps.length) {
   firebase.initializeApp(env.firebaseConfig);
 }
 
-Notifications.addListener(() => Vibration.vibrate());
+//The below broke as part of updating to SDK 40. TODO - Add new listeners according to https://docs.expo.io/versions/latest/sdk/notifications/
+//Notifications.addListener(() => Vibration.vibrate());
 
 const AppWrapper = () => {
   console.log('Calling AppWrapper, creating store and provider');
@@ -81,6 +83,7 @@ const App = () => {
       console.log('Error in attempting to load all resources, App.js', error);
     } finally {
       console.log('.........all assets and fonts loaded from App.js!');
+      console.log('hiding SplashsScreen');
     }
   };
 
@@ -94,6 +97,7 @@ const App = () => {
           setDataLoaded(true);
           enableScreens(); //optimise navigation
         }}
+        onError={console.warn}
       />
     );
   }

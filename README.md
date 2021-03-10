@@ -35,8 +35,11 @@ Then...
 `git clone https://github.com/osaisacson/kretsloppan.git`
 `git init`
 `npm install`
-`npm start`
-...and start apple and android simulators
+Start apple and android simulators, see details in 'Simulators' below
+`expo start`
+Select 'Run on iOS simulator' and 'Run on Android simulator' in you browser
+With the Expo app in your phone scan QR code to see it on your device
+
 
 ## Workflow
 
@@ -109,14 +112,14 @@ Once done, open by going to applications and clicking the react native debugger.
 - SDK Platforms > install the top first three in the list.
 - SDK Tools > install Android build tools, emulator, sdk platform tools and sdk tools, google play services and intel emulator
 - Configure > AVD manager > create virtual device > select a phone that has play store icon > choose and download OS > once created click the green play button under actions to launch the device
-- Go to your terminal. If you’re not already running write `npm start` then with that process running `a` to launch the Expo project on android. It’ll first need to install some stuff so patience, young one.
+- Go to your terminal. If you’re not already running write `expo start` then with that process running `a` to launch the Expo project on android. It’ll first need to install some stuff so patience, young one.
 
 ### Run on iPhone simulator
 
 - Open Xcode
 - Go to Xcode > preferences > locations > check that the command line tools are installed (they are if there is a version listed)
 - Xcode > open developer tools > simulator
-- As with android: go to your terminal. If you’re not already running write `npm start` then with that process running `i` to launch the expo project on iPhone.
+- As with android: go to your terminal. If you’re not already running write `expo start` then with that process running `i` to launch the expo project on iPhone.
 
 ### Run on your phone (Android or iPhone)
 
