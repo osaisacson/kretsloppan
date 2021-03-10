@@ -77,7 +77,7 @@ Follow instructions here: https://docs.expo.io/versions/v36.0.0/workflow/android
 
 https://docs.expo.io/versions/latest/get-started/installation/
 Tip if need to upgrade Expo:
-`npm i -g expo-cli`
+`sudo npm i -g expo-cli` Enter your password.
 `expo upgrade`
 
 ### Recommended:
