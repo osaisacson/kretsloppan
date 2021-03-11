@@ -77,7 +77,7 @@ const ContactDetails = (props) => {
           )}
           {/* TBD: In-app messaging - Button for passing an object 
             reference to the in-app messaging screen */}
-          {/* <ButtonAction
+          {/* <ButtonRound
               large={true}
               icon="email"
               title={'Skicka meddelande'} //Send message

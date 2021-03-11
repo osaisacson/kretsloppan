@@ -1,12 +1,14 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { Alert, View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import * as ordersActions from '../../store/actions/orders';
 import * as productsActions from '../../store/actions/products';
-import ButtonAction from './ButtonAction';
+import ButtonConfirm from './ButtonConfirm';
+import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
 
 const OrderActions = ({ order, isSeller, isBuyer }) => {
@@ -194,23 +196,22 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
     <>
       {!isCollected ? (
         <>
+        <View View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10}}>
           {/* Show button to approve the suggested pickup time if either 
         the seller or buyer has not agreed to the suggested time yet */}
-          {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate))  ? (
-            <ButtonAction
-              style={{ width: '95%' }}
+          {/* {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate))  ? ( */}
+            <ButtonRound
+              style={{ backgroundColor: Colors.approved  }}
               buttonLabelStyle={{ color: '#fff' }}
-              buttonColor={Colors.approved}
-              title="godkänn upphämtningstid"
+              title="godkänn föreslagen tid"
               onSelect={() => {
                 approveSuggestedDateTime();
               }}
             />
-          ) : null}
+          {/* ) : null} */}
           {bothAgreedOnTime ? (
-            <ButtonAction
-              style={{ width: '95%' }}
-              buttonColor={Colors.approved}
+            <ButtonRound
+            style={{ backgroundColor: Colors.approved  }}
               buttonLabelStyle={{ color: '#fff' }}
               title="hämtad!"
               onSelect={() => {
@@ -218,17 +219,16 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
               }}
             />
           ) : null}
-          <View style={styles.oneLineSpread}>
-            <ButtonAction
-              buttonColor={Colors.subtleGrey}
+            <ButtonRound
+              style={{ backgroundColor: Colors.subtleBlue  }}
               onSelect={toggleShowCalendar}
               title="ändra tid"
             />
 
             {/* Show button to cancel the order if the viewer is the buyer */}
             {isBuyer || isSeller ? (
-              <ButtonAction
-                buttonColor={Colors.warning}
+              <ButtonRound
+              style={{ backgroundColor: Colors.warning  }}
                 buttonLabelStyle={{ color: '#fff' }}
                 onSelect={() => {
                   deleteHandler(id, productId, quantity);
@@ -250,16 +250,16 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
                 suggestedDate={suggestedDate}
                 sendSuggestedTime={sendSuggestedTime}
               />
-              <ButtonAction
-                style={{ marginBottom: 20 }}
-                buttonColor={Colors.darkPrimary}
+              <ButtonConfirm
+              mode="contained"
+              style={{ backgroundColor: Colors.darkPrimary  }}
                 onSelect={() => {
                   resetSuggestedDT(suggestedDate);
                 }}
                 title={`Ändra föreslagen tid till ${moment(orderSuggestedDate)
-                  .locale('sv')
-                  .format('D MMMM YYYY, HH:mm')}`}
-              />
+                .locale('sv')
+                .format('D MMMM YYYY, HH:mm')}`}
+            />
             </>
           ) : null}
         </>

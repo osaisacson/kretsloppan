@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 
 import TouchableCmp from './TouchableCmp';
 
-const ButtonAction = ({
+const ButtonConfirm = ({
   style,
   buttonColor,
   disabled,
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ButtonAction;
+export default ButtonConfirm;
