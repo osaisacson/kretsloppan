@@ -5,7 +5,7 @@ import { View, Text, Alert, Platform } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ButtonAction from '../../components/UI/ButtonAction';
+import ButtonRound from '../../components/UI/ButtonRound';
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import ContactDetails from '../../components/UI/ContactDetails';
 import HeaderThree from '../../components/UI/HeaderThree';
@@ -147,8 +147,9 @@ const ProposalDetailScreen = (props) => {
               }}
             />
             {!isResolved ? (
-              <ButtonAction
-                disabled={isResolved} //disable/enable base on true/false of these params
+              <ButtonRound
+              style={{ backgroundColor: Colors.approved  }}
+                              disabled={isResolved} //disable/enable base on true/false of these params
                 onSelect={() => {
                   collectHandler(selectedProposal.id);
                 }}

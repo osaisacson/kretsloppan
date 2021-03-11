@@ -2,8 +2,9 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, Alert } from 'react-native';
+import Colors from '../../constants/Colors'
 
-import ButtonAction from '../../components/UI/ButtonAction';
+import ButtonConfirm from '../../components/UI/ButtonConfirm';
 
 const ImgPicker = ({ passedImage, onImageTaken }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -77,13 +78,13 @@ const ImgPicker = ({ passedImage, onImageTaken }) => {
         )}
       </View>
       <View style={styles.centered}>
-        <ButtonAction
+        <ButtonConfirm
           icon="camera"
           title="Kamera"
           onSelect={takePhoto}
           style={{ marginRight: 8 }}
         />
-        <ButtonAction icon="image" title="Galleri" onSelect={pickImage} />
+        <ButtonConfirm icon="image" title="Galleri" onSelect={pickImage}/>
       </View>
     </View>
   );

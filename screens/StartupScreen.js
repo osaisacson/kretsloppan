@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Notifications } from 'expo';
 import Constants from 'expo-constants';
+// import * as Notifications from 'expo-notifications'
 import * as Permissions from 'expo-permissions';
 import React, { useEffect, useRef } from 'react';
 import { Platform, View, ActivityIndicator, StyleSheet } from 'react-native';
@@ -32,14 +32,15 @@ const StartupScreen = () => {
       alert('Must use physical device for Push Notifications');
     }
 
-    if (Platform.OS === 'android') {
-      Notifications.createChannelAndroidAsync('default', {
-        name: 'default',
-        sound: true,
-        priority: 'max',
-        vibrate: [0, 250, 250, 250],
-      });
-    }
+    //The below broke as part of updating to SDK 40. TODO - Add new listeners according to https://docs.expo.io/versions/latest/sdk/notifications/
+    // if (Platform.OS === 'android') {
+    //   Notifications.createChannelAndroidAsync('default', {
+    //     name: 'default',
+    //     sound: true,
+    //     priority: 'max',
+    //     vibrate: [0, 250, 250, 250],
+    //   });
+    // }
   }, []);
 
   useEffect(() => {

@@ -61,6 +61,15 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         showMoreLink={userProducts.length ? () => navigation.navigate('Mitt återbruk') : false}
       />
       <HorizontalScroll
+        largeImageItem
+        detailPath="ProjectDetail"
+        title="Mina återbruksprojekt"
+        scrollData={userProjects}
+        simpleCount={userProjects.length}
+        navigation={navigation}
+        showAddLink={() => navigation.navigate('EditProject')}
+      />
+      <HorizontalScroll
         textItem
         scrollData={activeUserProposals}
         detailPath="ProposalDetail"
@@ -71,15 +80,6 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         showMoreLink={
           userProposals.length > 1 ? () => navigation.navigate('Alla mina efterlysningar') : false
         }
-      />
-      <HorizontalScroll
-        largeImageItem
-        detailPath="ProjectDetail"
-        title="Mina återbruksprojekt"
-        scrollData={userProjects}
-        simpleCount={userProjects.length}
-        navigation={navigation}
-        showAddLink={() => navigation.navigate('EditProject')}
       />
 
       <Card style={{ marginTop: 4 }}>

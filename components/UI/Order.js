@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
@@ -23,7 +23,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
     projectId,
     image,
     quantity,
-    reservedUntil,
     comments,
     suggestedDate,
     isCollected,
@@ -51,82 +50,51 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
 
   const bothHaveAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
 
-  const orderIsExpired =
-    !isCollected &&
-    new Date(reservedUntil) instanceof Date &&
-    new Date(reservedUntil) <= new Date();
-
   const toggleShowDetails = () => {
     setShowDetails((prevState) => !prevState);
-  };
-
-  const goToItem = () => {
-    navigation.navigate('ProductDetail', { detailId: productId });
   };
 
   return (
     <Card style={{ marginTop: 4 }}>
       <TouchableCmp onPress={toggleShowDetails}>
         <View style={styles.oneLineSpread}>
-          {isProductDetail ? (
-            <UserAvatar
-              userId={buyerProfile.profileId}
-              style={{ margin: 0 }}
-              showBadge={false}
-              actionOnPress={() => {
-                navigation.navigate('Användare', {
-                  detailId: buyerProfile.profileId,
-                });
-              }}
-            />
-          ) : (
-            <TouchableOpacity onPress={goToItem}>
-              <Image
-                style={{ borderRadius: 3, width: 100, height: 100, resizeMode: 'contain' }}
-                source={{ uri: image }}
-              />
-            </TouchableOpacity>
-          )}
-          <View style={{ paddingLeft: 10, flex: 1 }}>
-            <Text>{currentProduct.title}</Text>
-            <Text>{quantity} st</Text>
-
-            {!bothHaveAgreedOnTime ? (
-              <Text style={styles.statusText}>{`Väntar på att ${
-                waitingForYou ? 'du' : nameOfThumberOuterGetter
-              } ska godkänna den föreslagna upphämtningstiden`}</Text>
-            ) : null}
-
-            {bothHaveAgreedOnTime && !isCollected ? (
-              <Text style={styles.statusText}>
-                Upphämtningstid överenskommen! Hämtas{' '}
-                {moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
-              </Text>
-            ) : null}
-
-            {isCollected ? (
-              <Text
-                style={[
-                  styles.statusText,
-                  { fontFamily: 'roboto-bold-italic', color: Colors.subtleGreen },
-                ]}>
-                {`Hämtad ${moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}`}
-              </Text>
-            ) : null}
-          </View>
+          <Text style={{ fontSize: 18, fontFamily: 'roboto-bold' }}>{currentProduct.title}</Text>
+          <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>{quantity} st</Text>
         </View>
+        <Divider />
+
+        {/* Image, buttonlogic and buyershortcut */}
+        <OrderActions
+          navigation={navigation}
+          loggedInUserId={loggedInUserId}
+          order={order}
+          isBuyer={isBuyer}
+          isSeller={isSeller}
+          productImage={image}
+          isProductDetail={isProductDetail}
+        />
         {isCollected ? (
           <AntDesign
-            style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
+            style={{
+              textAlign: 'right',
+              paddingRight: 10,
+              paddingBottom: 10,
+              marginTop: isProductDetail ? 10 : 0,
+            }}
             name="checkcircle"
             size={20}
             color={Colors.subtleGreen}
           />
         ) : (
           <AntDesign
-            style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
+            style={{
+              textAlign: 'right',
+              paddingRight: 10,
+              paddingBottom: 10,
+              marginTop: isProductDetail ? 10 : 0,
+            }}
             name="caretdown"
-            size={16}
+            size={18}
             color="#666"
           />
         )}
@@ -137,83 +105,55 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
           <Divider />
 
           <View style={{ paddingVertical: 20 }}>
-            {!orderIsExpired && !isCollected ? (
-              <>
-                <StatusText
-                  label="Reserverad till:"
-                  text={moment(reservedUntil).locale('sv').calendar()}
-                />
-                {!bothHaveAgreedOnTime ? (
-                  <StatusText
-                    label="Föreslagen upphämtningstid:"
-                    text={
-                      suggestedDate
-                        ? `${moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}`
-                        : 'Inget tidsförslag angivet'
-                    }
-                  />
-                ) : null}
-                {bothHaveAgreedOnTime ? (
-                  <StatusText
-                    label="Överenskommen upphämtningstid:"
-                    text={moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
-                  />
-                ) : null}
-                <StatusText
-                  textStyle={{ width: 200, textAlign: 'right' }}
-                  label="Upphämtningsaddress:"
-                  text={currentProduct.address}
-                />
-                {currentProduct.pickupDetails ? (
+            <>
+              <StatusText
+                textStyle={{ width: 200, textAlign: 'right' }}
+                label="Upphämtningsaddress:"
+                text={currentProduct.address}
+              />
+              <Divider />
+              {currentProduct.pickupDetails ? (
+                <>
                   <StatusText
                     textStyle={{ width: 200, textAlign: 'right' }}
                     label="Detaljer om hämtning:"
                     text={currentProduct.pickupDetails}
                   />
-                ) : null}
-                {comments ? <Text>Kommentarer: {comments}</Text> : null}
-              </>
-            ) : null}
-            {orderIsExpired ? (
-              <Text
-                style={{
-                  color: '#000',
-                  textAlign: 'center',
-                  margin: 10,
-                  fontFamily: 'roboto-light-italic',
-                }}>
-                Reservationen gick ut den{' '}
-                {moment(reservedUntil).locale('sv').format('D MMMM YYYY, HH:mm')}. Antingen markera
-                som 'hämtad' om den är hämtad, föreslå en ny upphämtningstid, eller avreservera
-                beställningen nedan. Notera att både säljaren och köparen kan avreservera när
-                reservationen är slut.
-              </Text>
-            ) : null}
-            {isCollected ? (
-              <>
-                <StatusText
-                  label="Datum hämtades"
-                  text={moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}
-                />
+                  <Divider />
+                </>
+              ) : null}
+              {currentProduct.phone ? (
+                <>
+                  <StatusText
+                    textStyle={{ width: 200, textAlign: 'right' }}
+                    label="Säljarens telefon:"
+                    text={`0${currentProduct.phone}`}
+                  />
+                  <Divider />
+                </>
+              ) : null}
+              {comments ? <Text>Kommentarer: {comments}</Text> : null}
+            </>
 
-                <View style={styles.oneLineSpread}>
-                  <StatusText label="Köpare" style={{ marginLeft: -10 }} />
-                  <>
-                    <StatusText text={buyerProfile.profileName} />
-                    <UserAvatar
-                      userId={buyerProfile.profileId}
-                      style={{ margin: 0, textAlign: 'right' }}
-                      showBadge={false}
-                      actionOnPress={() => {
-                        navigation.navigate('Användare', {
-                          detailId: buyerProfile.profileId,
-                        });
-                      }}
-                    />
-                  </>
-                </View>
+            {!isCollected && suggestedDate ? (
+              <>
+                {!isCollected ? (
+                  <StatusText
+                    textStyle={{ textAlign: 'right' }}
+                    label={!bothHaveAgreedOnTime ? 'Föreslagen upphämtningstid' : 'Hämtas'}
+                    text={moment(suggestedDate).locale('sv').format('HH:mm, D MMMM YYYY')}
+                  />
+                ) : (
+                  <StatusText
+                    textStyle={{ textAlign: 'right' }}
+                    label="Hämtades"
+                    text={moment(isCollected).locale('sv').format('HH:mm, D MMMM YYYY')}
+                  />
+                )}
+                <Divider />
               </>
             ) : null}
+
             {projectForProduct && !projectForProduct === '000' ? (
               <View style={styles.oneLineSpread}>
                 <Text style={{ fontFamily: 'roboto-light-italic', marginLeft: 8 }}>
@@ -229,8 +169,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
               </View>
             ) : null}
           </View>
-
-          <OrderActions order={order} isBuyer={isBuyer} isSeller={isSeller} />
         </>
       ) : null}
     </Card>
@@ -239,15 +177,33 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
 
 const styles = StyleSheet.create({
   oneLineSpread: {
-    padding: 10,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 8,
   },
   statusText: {
     color: Colors.darkPrimary,
     fontFamily: 'roboto-light-italic',
+  },
+  textAndBadge: {
+    marginLeft: 30,
+    marginBottom: 20,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  smallBadge: {
+    zIndex: 10,
+    paddingHorizontal: 2,
+    borderRadius: 5,
+    height: 17,
+  },
+  smallText: {
+    textTransform: 'uppercase',
+    fontSize: 10,
+    padding: 2,
+    color: '#fff',
   },
 });
 

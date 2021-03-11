@@ -1,19 +1,35 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { Alert, View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
+import { AntDesign } from '@expo/vector-icons';
+import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Divider } from 'react-native-paper';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import * as ordersActions from '../../store/actions/orders';
 import * as productsActions from '../../store/actions/products';
-import ButtonAction from './ButtonAction';
+import ButtonConfirm from './ButtonConfirm';
+import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
+import UserAvatar from './UserAvatar';
 
-const OrderActions = ({ order, isSeller, isBuyer }) => {
+const OrderActions = ({
+  order,
+  isSeller,
+  isBuyer,
+  productImage,
+  isProductDetail,
+  navigation,
+  loggedInUserId,
+}) => {
   const dispatch = useDispatch();
 
   const {
     id,
+    buyerId,
+    sellerId,
     productId,
     projectId,
     quantity,
@@ -32,8 +48,15 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   const bothAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
 
+  const userIsBuyer = loggedInUserId === buyerId;
+  const infoUserId = loggedInUserId === buyerId ? sellerId : buyerId;
+
   const reservedDateHasExpired =
     new Date(reservedUntil) instanceof Date && new Date(reservedUntil) <= new Date();
+
+  const goToItem = () => {
+    navigation.navigate('ProductDetail', { detailId: productId });
+  };
 
   //Show and reset time/date for pickup
   const toggleShowCalendar = () => {
@@ -106,11 +129,11 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
     Alert.alert(
       'Bekräfta tid',
-      `Genom att klicka här godkänner du ${moment(suggestedDate)
+      `Genom att klicka här lovar du att vara på addressen för upphämtning den ${moment(
+        suggestedDate
+      )
         .locale('sv')
-        .format(
-          'D MMMM YYYY, HH:mm'
-        )} som upphämtningstid och åtar dig att på denna tid vara på plats/komma till platsen som står i posten under "upphämtningsdetaljer".`,
+        .format('D MMMM YYYY, HH:mm')}`,
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -192,78 +215,141 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   return (
     <>
-      {!isCollected ? (
-        <>
-          {/* Show button to approve the suggested pickup time if either 
-        the seller or buyer has not agreed to the suggested time yet */}
-          {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate)) &&
-          !reservedDateHasExpired ? (
-            <ButtonAction
-              style={{ width: '95%' }}
-              buttonLabelStyle={{ color: '#fff' }}
-              buttonColor={Colors.approved}
-              title="godkänn upphämtningstid"
+      <View style={styles.oneLineSpread}>
+        {/* Show image of item */}
+        {isProductDetail ? (
+          <View style={styles.textAndBadge}>
+            <UserAvatar
+              userId={buyerId}
+              size={70}
+              style={{ margin: 0 }}
+              showBadge={false}
+              actionOnPress={() => {
+                navigation.navigate('Användare', {
+                  detailId: buyerId,
+                });
+              }}
+            />
+            <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
+              <Text style={styles.smallText}>Köpare</Text>
+            </View>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={goToItem}>
+            <Image
+              style={{
+                borderRadius: 5,
+                width: 140,
+                height: 140,
+                resizeMode: 'contain',
+              }}
+              source={{ uri: productImage }}
+            />
+          </TouchableOpacity>
+        )}
+
+        <Divider style={{ width: 1, height: '100%', marginHorizontal: 8 }} />
+
+        {/* Show buttons for actions  */}
+        <View>
+          {/* When the buyer are seller are in the process of agreeing on a pickup time, show a button for agreeing or suggesting a time */}
+          {!bothAgreedOnTime ? (
+            <ButtonRound
+              style={{ backgroundColor: suggestedDate ? Colors.darkPrimary : Colors.primary }}
+              title={
+                suggestedDate
+                  ? `Godkänn ${moment(suggestedDate)
+                      .locale('sv')
+                      .format('HH:mm, D MMMM YYYY')} som tid för upphämtning`
+                  : 'Föreslå tid för upphämtning'
+              }
               onSelect={() => {
-                approveSuggestedDateTime();
+                suggestedDate ? approveSuggestedDateTime() : toggleShowCalendar();
               }}
             />
           ) : null}
+
+          {/* When both parties have agreed on a time show a button for marking the order as collected*/}
           {bothAgreedOnTime ? (
-            <ButtonAction
-              style={{ width: '95%' }}
-              buttonColor={Colors.approved}
-              buttonLabelStyle={{ color: '#fff' }}
-              title="hämtad!"
+            <ButtonRound
+              style={{ backgroundColor: Colors.completed }}
+              title="Klicka här när hämtad!"
               onSelect={() => {
                 collectHandler();
               }}
             />
           ) : null}
-          <View style={styles.oneLineSpread}>
-            <ButtonAction
-              buttonColor={Colors.subtleGrey}
-              onSelect={toggleShowCalendar}
-              title="ändra tid"
-            />
 
-            {/* Show button to cancel the order if the viewer is the buyer */}
-            {isBuyer || isSeller ? (
-              <ButtonAction
-                buttonColor={Colors.warning}
-                buttonLabelStyle={{ color: '#fff' }}
-                onSelect={() => {
+          {/* As long as the order has not been collected, show the options to edit the order */}
+          {!isCollected ? (
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+              {/* Show button to cancel the order */}
+              <Button
+                raised
+                buttonStyle={{ backgroundColor: 'transparent' }}
+                containerStyle={{ width: 45 }}
+                onPress={() => {
                   deleteHandler(id, productId, quantity);
                 }}
-                disabled={isSeller && !reservedDateHasExpired}
-                title={
-                  isSeller && !reservedDateHasExpired
-                    ? `Avreservera från ${moment(reservedUntil)
-                        .locale('sv')
-                        .format('D MMM YYYY, HH:mm')}`
-                    : 'Avreservera'
-                }
+                icon={<AntDesign name="close" size={17} color={Colors.warning} />}
               />
-            ) : null}
-          </View>
-          {showCalendar ? (
-            <>
-              <CalendarSelection
-                suggestedDate={suggestedDate}
-                sendSuggestedTime={sendSuggestedTime}
+              {/* Show button to change pickup time */}
+              <Button
+                raised
+                buttonStyle={{ backgroundColor: 'transparent' }}
+                containerStyle={{ marginLeft: 10, width: 45 }}
+                onPress={toggleShowCalendar}
+                icon={<AntDesign name="edit" size={17} color={Colors.subtleBlue} />}
               />
-              <ButtonAction
-                style={{ marginBottom: 20 }}
-                buttonColor={Colors.darkPrimary}
-                onSelect={() => {
-                  resetSuggestedDT(suggestedDate);
-                }}
-                title={`Ändra föreslagen tid till ${moment(orderSuggestedDate)
-                  .locale('sv')
-                  .format('D MMMM YYYY, HH:mm')}`}
-              />
-            </>
+            </View>
           ) : null}
-        </>
+        </View>
+
+        {/* Show a disabled button when the order has been collected */}
+        {isCollected ? <ButtonRound disabled title="Hämtad!" /> : null}
+
+        {!isProductDetail ? (
+          <>
+            {/* Show large user avatar of the buyer */}
+            <View style={styles.textAndBadge}>
+              <UserAvatar
+                userId={infoUserId}
+                size={70}
+                style={{ margin: 0 }}
+                showBadge={false}
+                actionOnPress={() => {
+                  navigation.navigate('Användare', {
+                    detailId: infoUserId,
+                  });
+                }}
+              />
+              <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
+                <Text style={styles.smallText}>{userIsBuyer ? 'Säljare' : 'Köpare'}</Text>
+              </View>
+            </View>
+          </>
+        ) : null}
+      </View>
+
+      {showCalendar ? (
+        <View style={{ flex: 1 }}>
+          <CalendarSelection suggestedDate={suggestedDate} sendSuggestedTime={sendSuggestedTime} />
+          {/* Show a section with the newly suggested time if it exists */}
+          {/* {orderSuggestedDate ? (
+            <Card>
+              <Card.Title>FÖRESLAGEN NY TID</Card.Title>
+              <Card.Title>
+                {moment(orderSuggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+              </Card.Title>
+            </Card>
+          ) : null} */}
+          <ButtonConfirm
+            onSelect={() => {
+              resetSuggestedDT(suggestedDate);
+            }}
+            title="Spara"
+          />
+        </View>
       ) : null}
     </>
   );
@@ -271,11 +357,29 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
 const styles = StyleSheet.create({
   oneLineSpread: {
-    padding: 10,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 8,
+  },
+  textAndBadge: {
+    marginLeft: 20,
+    marginBottom: 70,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  smallBadge: {
+    zIndex: 10,
+    paddingHorizontal: 2,
+    borderRadius: 5,
+    height: 17,
+  },
+  smallText: {
+    textTransform: 'uppercase',
+    fontSize: 10,
+    padding: 2,
+    color: '#fff',
   },
 });
 

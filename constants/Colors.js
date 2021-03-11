@@ -18,6 +18,7 @@ export default {
   completed: '#2f8d59',
   warning: '#cc0000',
   neutral: '#8c8c8c',
+  lightGrey: '#fafafa',
 
   //Badges
   indicator: '#f60056',

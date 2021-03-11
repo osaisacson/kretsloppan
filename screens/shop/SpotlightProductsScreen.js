@@ -68,6 +68,24 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
+          largeImageItem
+          detailPath="ProjectDetail"
+          title="Projekt"
+          showAddLink={() => props.navigation.navigate('EditProject')}
+          showMoreLink={allProjects.length > 1 ? () => props.navigation.navigate('Projekt') : false}
+          scrollData={recentProjects}
+          navigation={props.navigation}
+          icon={
+            <Entypo
+              name="tools"
+              size={21}
+              style={{
+                marginRight: 5,
+              }}
+            />
+          }
+        />
+        <HorizontalScroll
           textItem
           scrollHeight={55}
           detailPath="ProposalDetail"
@@ -85,24 +103,6 @@ const SpotlightProductsScreen = (props) => {
               style={{
                 marginRight: 3,
                 marginBottom: 2,
-              }}
-            />
-          }
-        />
-        <HorizontalScroll
-          largeImageItem
-          detailPath="ProjectDetail"
-          title="Projekt"
-          showAddLink={() => props.navigation.navigate('EditProject')}
-          showMoreLink={allProjects.length > 1 ? () => props.navigation.navigate('Projekt') : false}
-          scrollData={recentProjects}
-          navigation={props.navigation}
-          icon={
-            <Entypo
-              name="tools"
-              size={21}
-              style={{
-                marginRight: 5,
               }}
             />
           }
