@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../constants/Colors';
+import { Button } from 'react-native-elements';
 
 const ButtonRound = ({ style, disabled, small, onSelect, title }) => {
   return (
@@ -10,9 +11,14 @@ const ButtonRound = ({ style, disabled, small, onSelect, title }) => {
           <Text style={{ ...styles.disabledLabel, ...styles.label }}>{title}</Text>
         </View>
       ) : (
-        <TouchableOpacity onPress={onSelect} style={{ ...styles.button, ...style }}>
-          <Text style={{ ...styles.label }}>{title}</Text>
-        </TouchableOpacity>
+        <Button
+          raised
+          containerStyle={{ borderRadius: 10 }}
+          buttonStyle={{ ...styles.button, ...style }}
+          titleStyle={{ ...styles.label }}
+          title={title}
+          onPress={onSelect}
+        />
       )}
     </>
   );
@@ -30,16 +36,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    marginTop: 10,
     width: 100,
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
   },
   label: {
-    paddingTop: 8,
-    paddingHorizontal: 5,
     color: '#fff',
     justifyContent: 'center',
     alignItems: 'center',

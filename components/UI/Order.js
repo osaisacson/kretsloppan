@@ -23,7 +23,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
     projectId,
     image,
     quantity,
-    reservedUntil,
     comments,
     suggestedDate,
     isCollected,
@@ -51,11 +50,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
 
   const bothHaveAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
 
-  const orderIsExpired =
-    !isCollected &&
-    new Date(reservedUntil) instanceof Date &&
-    new Date(reservedUntil) <= new Date();
-
   const toggleShowDetails = () => {
     setShowDetails((prevState) => !prevState);
   };
@@ -73,25 +67,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
         </View>
         <Divider />
 
-        {!orderIsExpired && !isCollected && suggestedDate ? (
-          <>
-            <View style={styles.oneLineSpread}>
-              {!isCollected ? (
-                <>
-                  <Text>{!bothHaveAgreedOnTime ? 'Föreslagen upphämtningstid' : 'Hämtas'}</Text>
-                  <Text>{moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}</Text>
-                </>
-              ) : (
-                <>
-                  <Text>Hämtades</Text>
-                  <Text>{moment(isCollected).locale('sv').format('D MMM YYYY, HH:mm')}</Text>
-                </>
-              )}
-            </View>
-            <Divider />
-          </>
-        ) : null}
-
+        {/* Image, buttonlogic and buyershortcut */}
         <View style={styles.oneLineSpread}>
           {isProductDetail ? (
             <UserAvatar
@@ -107,7 +83,12 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
           ) : (
             <TouchableOpacity onPress={goToItem}>
               <Image
-                style={{ borderRadius: 3, width: 150, height: 150, resizeMode: 'contain' }}
+                style={{
+                  borderRadius: 5,
+                  width: 140,
+                  height: 140,
+                  resizeMode: 'contain',
+                }}
                 source={{ uri: image }}
               />
             </TouchableOpacity>
@@ -119,8 +100,8 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
             isBuyer={isBuyer}
             isSeller={isSeller}
           />
-
-          <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
+          {/* Large user avatar of the buyer */}
+          <View style={styles.textAndBadge}>
             <UserAvatar
               userId={buyerId}
               size={70}
@@ -132,7 +113,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                 });
               }}
             />
-            <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -10 }]}>
+            <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
               <Text style={styles.smallText}>köpare</Text>
             </View>
           </View>
@@ -159,70 +140,55 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
           <Divider />
 
           <View style={{ paddingVertical: 20 }}>
-            {!orderIsExpired && !isCollected ? (
-              <>
-                <StatusText
-                  textStyle={{ width: 200, textAlign: 'right' }}
-                  label="Upphämtningsaddress:"
-                  text={currentProduct.address}
-                />
-                {currentProduct.pickupDetails ? (
+            <>
+              <StatusText
+                textStyle={{ width: 200, textAlign: 'right' }}
+                label="Upphämtningsaddress:"
+                text={currentProduct.address}
+              />
+              <Divider />
+              {currentProduct.pickupDetails ? (
+                <>
                   <StatusText
                     textStyle={{ width: 200, textAlign: 'right' }}
                     label="Detaljer om hämtning:"
                     text={currentProduct.pickupDetails}
                   />
-                ) : null}
-                {currentProduct.phone ? (
+                  <Divider />
+                </>
+              ) : null}
+              {currentProduct.phone ? (
+                <>
                   <StatusText
                     textStyle={{ width: 200, textAlign: 'right' }}
                     label="Säljarens telefon:"
                     text={currentProduct.phone}
                   />
-                ) : null}
-                {comments ? <Text>Kommentarer: {comments}</Text> : null}
-              </>
-            ) : null}
-            {orderIsExpired ? (
-              <Text
-                style={{
-                  color: '#000',
-                  textAlign: 'center',
-                  margin: 10,
-                  fontFamily: 'roboto-light-italic',
-                }}>
-                Reservationen gick ut den{' '}
-                {moment(reservedUntil).locale('sv').format('D MMMM YYYY, HH:mm')}. Antingen markera
-                som 'hämtad' om den är hämtad, föreslå en ny upphämtningstid, eller avreservera
-                beställningen nedan. Notera att både säljaren och köparen kan avreservera när
-                reservationen är slut.
-              </Text>
-            ) : null}
-            {isCollected ? (
-              <>
-                <StatusText
-                  label="Datum hämtades"
-                  text={moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}
-                />
+                  <Divider />
+                </>
+              ) : null}
+              {comments ? <Text>Kommentarer: {comments}</Text> : null}
+            </>
 
-                <View style={styles.oneLineSpread}>
-                  <StatusText label="Köpare" style={{ marginLeft: -10 }} />
-                  <>
-                    <StatusText text={buyerProfile.profileName} />
-                    <UserAvatar
-                      userId={buyerProfile.profileId}
-                      style={{ margin: 0, textAlign: 'right' }}
-                      showBadge={false}
-                      actionOnPress={() => {
-                        navigation.navigate('Användare', {
-                          detailId: buyerProfile.profileId,
-                        });
-                      }}
-                    />
-                  </>
-                </View>
+            {!isCollected && suggestedDate ? (
+              <>
+                {!isCollected ? (
+                  <StatusText
+                    textStyle={{ textAlign: 'right' }}
+                    label={!bothHaveAgreedOnTime ? 'Föreslagen upphämtningstid' : 'Hämtas'}
+                    text={moment(suggestedDate).locale('sv').format('HH:mm, D MMMM YYYY')}
+                  />
+                ) : (
+                  <StatusText
+                    textStyle={{ textAlign: 'right' }}
+                    label="Hämtades"
+                    text={moment(isCollected).locale('sv').format('HH:mm, D MMMM YYYY')}
+                  />
+                )}
+                <Divider />
               </>
             ) : null}
+
             {projectForProduct && !projectForProduct === '000' ? (
               <View style={styles.oneLineSpread}>
                 <Text style={{ fontFamily: 'roboto-light-italic', marginLeft: 8 }}>
@@ -246,18 +212,19 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
 
 const styles = StyleSheet.create({
   oneLineSpread: {
-    paddingHorizontal: 8,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 8,
   },
   statusText: {
     color: Colors.darkPrimary,
     fontFamily: 'roboto-light-italic',
   },
   textAndBadge: {
-    paddingHorizontal: 8,
+    marginLeft: 30,
+    marginBottom: 20,
     flex: 1,
     flexDirection: 'row',
   },

@@ -196,7 +196,13 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
 
   return (
     <>
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginHorizontal: 10,
+        }}>
         <View>
           {/* When the buyer are seller are in the process of agreeing on a pickup time, show a button for agreeing or suggesting a time */}
           {!bothAgreedOnTime ? (
@@ -228,14 +234,14 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
 
           {/* As long as the order has not been collected, show the options to edit the order */}
           {!isCollected ? (
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 10 }}>
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
               {/* Show button to change pickup time */}
               <Button
                 raised
                 buttonStyle={{ backgroundColor: 'transparent' }}
                 containerStyle={{ width: '45%' }}
                 onPress={toggleShowCalendar}
-                icon={<AntDesign name="edit" size={18} color={Colors.subtleBlue} />}
+                icon={<AntDesign name="edit" size={17} color={Colors.subtleBlue} />}
               />
               {/* Show button to cancel the order */}
               <Button
@@ -245,7 +251,7 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
                 onPress={() => {
                   deleteHandler(id, productId, quantity);
                 }}
-                icon={<AntDesign name="delete" size={18} color={Colors.warning} />}
+                icon={<AntDesign name="delete" size={17} color={Colors.warning} />}
               />
             </View>
           ) : null}
