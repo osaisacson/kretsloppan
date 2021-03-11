@@ -68,6 +68,23 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
     <Card style={{ marginTop: 4 }}>
       <TouchableCmp onPress={toggleShowDetails}>
         <View style={styles.oneLineSpread}>
+          <Text>{currentProduct.title}</Text>
+          <Text>{quantity} st</Text>
+        </View>
+        {!orderIsExpired && !isCollected && suggestedDate ? (
+          <>
+            <View style={styles.oneLineSpread}>
+              <Text>
+                {!bothHaveAgreedOnTime
+                  ? 'Föreslagen upphämtningstid'
+                  : 'Överenskommen upphämtningstid'}
+              </Text>
+              <Text>{moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}</Text>
+            </View>
+          </>
+        ) : null}
+
+        <View style={styles.oneLineSpread}>
           {isProductDetail ? (
             <UserAvatar
               userId={buyerProfile.profileId}
@@ -87,10 +104,31 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
               />
             </TouchableOpacity>
           )}
-          <View style={{ paddingLeft: 10, flex: 1 }}>
-            <Text>{currentProduct.title}</Text>
-            <Text>{quantity} st</Text>
 
+          <OrderActions
+            order={order}
+            loggedInUserId={loggedInUserId}
+            isBuyer={isBuyer}
+            isSeller={isSeller}
+          />
+
+          <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
+            <UserAvatar
+              userId={buyerId}
+              style={{ margin: 0 }}
+              showBadge={false}
+              actionOnPress={() => {
+                navigation.navigate('Användare', {
+                  detailId: buyerId,
+                });
+              }}
+            />
+            <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -10 }]}>
+              <Text style={styles.smallText}>köpare</Text>
+            </View>
+          </View>
+          {/* 
+          <View style={{ paddingLeft: 10, flex: 1 }}>
             {!bothHaveAgreedOnTime ? (
               <Text style={styles.statusText}>{`Väntar på att ${
                 waitingForYou ? 'du' : nameOfThumberOuterGetter
@@ -113,7 +151,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                 {`Hämtad ${moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}`}
               </Text>
             ) : null}
-          </View>
+          </View> */}
         </View>
         {isCollected ? (
           <AntDesign
@@ -229,8 +267,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
               </View>
             ) : null}
           </View>
-
-          <OrderActions order={order} isBuyer={isBuyer} isSeller={isSeller} />
         </>
       ) : null}
     </Card>
@@ -239,7 +275,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
 
 const styles = StyleSheet.create({
   oneLineSpread: {
-    padding: 10,
+    paddingHorizontal: 8,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -248,6 +284,23 @@ const styles = StyleSheet.create({
   statusText: {
     color: Colors.darkPrimary,
     fontFamily: 'roboto-light-italic',
+  },
+  textAndBadge: {
+    paddingHorizontal: 8,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  smallBadge: {
+    zIndex: 10,
+    paddingHorizontal: 2,
+    borderRadius: 5,
+    height: 17,
+  },
+  smallText: {
+    textTransform: 'uppercase',
+    fontSize: 10,
+    padding: 2,
+    color: '#fff',
   },
 });
 

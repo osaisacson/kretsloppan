@@ -1,6 +1,6 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { Alert, View, StyleSheet } from 'react-native';
+import { Alert, View, StyleSheet, Text } from 'react-native';
 import { Card } from 'react-native-elements';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ import ButtonConfirm from './ButtonConfirm';
 import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
 
-const OrderActions = ({ order, isSeller, isBuyer }) => {
+const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
   const dispatch = useDispatch();
 
   const {
@@ -195,81 +195,79 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
 
   return (
     <>
-      {!isCollected ? (
-        <>
-          <View
-            View
-            style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
-            {/* Show button to approve the suggested pickup time if either 
-        the seller or buyer has not agreed to the suggested time yet */}
-            {/* {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate))  ? ( */}
-            <ButtonRound
-              style={{ backgroundColor: Colors.approved }}
-              buttonLabelStyle={{ color: '#fff' }}
-              title="godkänn föreslagen tid"
-              onSelect={() => {
-                approveSuggestedDateTime();
-              }}
-            />
-            {/* ) : null} */}
-            {bothAgreedOnTime ? (
-              <ButtonRound
-                style={{ backgroundColor: Colors.approved }}
-                buttonLabelStyle={{ color: '#fff' }}
-                title="hämtad!"
-                onSelect={() => {
-                  collectHandler();
-                }}
-              />
-            ) : null}
-            <ButtonRound
-              style={{ backgroundColor: Colors.subtleBlue }}
-              onSelect={toggleShowCalendar}
-              title="ändra tid"
-            />
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+        {/* If either buyer or seller has not agreed to a pickup time, show the currently suggested time and 'Confirm time' button */}
+        {!buyerAgreed || !sellerAgreed ? (
+          <>
+            {/* <View> */}
+            {/* Show button to change pickup time */}
+            {/* <ButtonConfirm
+                style={{ backgroundColor: Colors.subtleBlue }}
+                titleStyle={{ fontSize: 14 }}
+                onSelect={toggleShowCalendar}
+                title={'Ändra tid'}
+              /> */}
 
-            {/* Show button to cancel the order if the viewer is the buyer */}
-            {isBuyer || isSeller ? (
-              <ButtonRound
+            {/* Show button to cancel the order */}
+            {/* <ButtonConfirm
                 style={{ backgroundColor: Colors.warning }}
-                buttonLabelStyle={{ color: '#fff' }}
+                titleStyle={{ fontSize: 14 }}
                 onSelect={() => {
                   deleteHandler(id, productId, quantity);
                 }}
-                disabled={isSeller && !reservedDateHasExpired}
-                title={
-                  isSeller && !reservedDateHasExpired
-                    ? `Avreservera från ${moment(reservedUntil)
-                        .locale('sv')
-                        .format('D MMM YYYY, HH:mm')}`
-                    : 'Avreservera'
-                }
-              />
+                title={'Avreservera'}
+              /> */}
+            {/* </View> */}
+
+            {suggestedDate ? (
+              <>
+                {/* <Text>{moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}</Text> */}
+                <ButtonRound
+                  style={{ backgroundColor: Colors.approved }}
+                  title={
+                    suggestedDate ? 'Godkänn tid för upphämtning' : 'Föreslå tid för upphämtning'
+                  }
+                  onSelect={() => {
+                    suggestedDate ? approveSuggestedDateTime() : toggleShowCalendar();
+                  }}
+                />
+              </>
             ) : null}
-          </View>
-          {showCalendar ? (
-            <>
-              <CalendarSelection
-                suggestedDate={suggestedDate}
-                sendSuggestedTime={sendSuggestedTime}
-              />
-              {/* Show a section with the newly suggested time if it exists */}
-              {orderSuggestedDate ? (
-                <Card>
-                  <Card.Title>FÖRESLAGEN NY TID</Card.Title>´{' '}
-                  <Card.Title>
-                    {moment(orderSuggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
-                  </Card.Title>
-                </Card>
-              ) : null}
-              <ButtonConfirm
-                onSelect={() => {
-                  resetSuggestedDT(suggestedDate);
-                }}
-                title={`Ändra föreslagen tid`}
-              />
-            </>
+          </>
+        ) : null}
+
+        {/* If both buyer and seller have agreed on a time, show the agreed time and 'Confirm when collected' button */}
+        {bothAgreedOnTime ? (
+          <>
+            <Text>{moment(suggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}</Text>
+            <ButtonConfirm
+              style={{ backgroundColor: Colors.approved }}
+              title="klicka här när hämtad!"
+              onSelect={() => {
+                collectHandler();
+              }}
+            />
+          </>
+        ) : null}
+      </View>
+      {showCalendar ? (
+        <>
+          <CalendarSelection suggestedDate={suggestedDate} sendSuggestedTime={sendSuggestedTime} />
+          {/* Show a section with the newly suggested time if it exists */}
+          {orderSuggestedDate ? (
+            <Card>
+              <Card.Title>FÖRESLAGEN NY TID</Card.Title>
+              <Card.Title>
+                {moment(orderSuggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+              </Card.Title>
+            </Card>
           ) : null}
+          <ButtonConfirm
+            onSelect={() => {
+              resetSuggestedDT(suggestedDate);
+            }}
+            title="Spara"
+          />
         </>
       ) : null}
     </>

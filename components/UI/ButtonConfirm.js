@@ -5,13 +5,7 @@ import Colors from '../../constants/Colors';
 
 import TouchableCmp from './TouchableCmp';
 
-const ButtonConfirm = ({
-  style,
-  disabled,
-  onSelect,
-  icon,
-  title,
-}) => {
+const ButtonConfirm = ({ style, disabled, onSelect, icon, title, titleStyle }) => {
   return (
     <>
       {disabled ? (
@@ -21,16 +15,17 @@ const ButtonConfirm = ({
           titleStyle={[styles.label, styles.disabledLabel]}
           icon={icon}
           title={title}
-          />
+        />
       ) : (
         <TouchableCmp>
           <Button
             raised
-            buttonStyle={{ ...styles.button}}
-            titleStyle={[styles.label]}
+            buttonStyle={{ ...styles.button, ...style }}
+            titleStyle={{ ...styles.label, ...titleStyle }}
             onPress={onSelect}
             title={title}
-            icon={icon}/>
+            icon={icon}
+          />
         </TouchableCmp>
       )}
     </>
@@ -39,22 +34,22 @@ const ButtonConfirm = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.completed,
     width: '100%',
-    height: 50,
     justifyContent: 'center',
-    borderRadius: 0
+    alignItems: 'center',
+    minWidth: 100,
   },
   label: {
-      color: "#fff",
+    color: '#fff',
     fontFamily: 'bebas-neue-bold',
-    fontSize: 16,
+    marginTop: 3,
   },
   disabledButton: {
-    backgroundColor: Colors.neutral
+    backgroundColor: Colors.neutral,
   },
   disabledLabel: {
-    color: Colors.lightGrey
+    color: Colors.lightGrey,
   },
 });
 

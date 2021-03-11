@@ -1,31 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../constants/Colors';
 
-const ButtonRound = ({
-  style,
-  disabled,
-  onSelect,
-  title,
-}) => {
+const ButtonRound = ({ style, disabled, small, onSelect, title }) => {
   return (
     <>
       {disabled ? (
-                <View
-                onPress={onSelect}
-                style={{ ...styles.button, ...styles.disabledButton, ...style }}
-              >
-              <Text style={{...styles.disabledLabel, ...styles.label}}>{title}</Text>
-            </View>
-
-      
+        <View onPress={onSelect} style={{ ...styles.button, ...styles.disabledButton, ...style }}>
+          <Text style={{ ...styles.disabledLabel, ...styles.label }}>{title}</Text>
+        </View>
       ) : (
-        <TouchableOpacity
-          onPress={onSelect}
-          style={{ ...styles.button, ...style }}
-        >
-        <Text style={{...styles.label}}>{title}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={onSelect} style={{ ...styles.button, ...style }}>
+          <Text style={{ ...styles.label }}>{title}</Text>
+        </TouchableOpacity>
       )}
     </>
   );
@@ -50,9 +37,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
   },
-
   label: {
-    padding: 10,
+    paddingTop: 8,
+    paddingHorizontal: 5,
     color: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -63,10 +50,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   disabledButton: {
-    backgroundColor: Colors.neutral
+    backgroundColor: Colors.neutral,
   },
   disabledLabel: {
-    color: Colors.lightGrey
+    color: Colors.lightGrey,
   },
 });
 
