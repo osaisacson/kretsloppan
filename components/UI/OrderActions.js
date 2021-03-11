@@ -1,8 +1,9 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { Alert, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
+import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Divider } from 'react-native-paper';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -12,12 +13,22 @@ import * as productsActions from '../../store/actions/products';
 import ButtonConfirm from './ButtonConfirm';
 import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
+import UserAvatar from './UserAvatar';
 
-const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
+const OrderActions = ({
+  order,
+  isSeller,
+  isBuyer,
+  productImage,
+  buyerProfileId,
+  isProductDetail,
+  navigation,
+}) => {
   const dispatch = useDispatch();
 
   const {
     id,
+    buyerId,
     productId,
     projectId,
     quantity,
@@ -38,6 +49,10 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
 
   const reservedDateHasExpired =
     new Date(reservedUntil) instanceof Date && new Date(reservedUntil) <= new Date();
+
+  const goToItem = () => {
+    navigation.navigate('ProductDetail', { detailId: productId });
+  };
 
   //Show and reset time/date for pickup
   const toggleShowCalendar = () => {
@@ -196,13 +211,36 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
 
   return (
     <>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginHorizontal: 10,
-        }}>
+      <View style={styles.oneLineSpread}>
+        {/* Show image of item */}
+        {isProductDetail ? (
+          <UserAvatar
+            userId={buyerProfileId}
+            style={{ margin: 0 }}
+            showBadge={false}
+            actionOnPress={() => {
+              navigation.navigate('Användare', {
+                detailId: buyerProfileId,
+              });
+            }}
+          />
+        ) : (
+          <TouchableOpacity onPress={goToItem}>
+            <Image
+              style={{
+                borderRadius: 5,
+                width: 140,
+                height: 140,
+                resizeMode: 'contain',
+              }}
+              source={{ uri: productImage }}
+            />
+          </TouchableOpacity>
+        )}
+
+        <Divider style={{ width: 1, height: '100%', marginHorizontal: 8 }} />
+
+        {/* Show buttons for actions  */}
         <View>
           {/* When the buyer are seller are in the process of agreeing on a pickup time, show a button for agreeing or suggesting a time */}
           {!bothAgreedOnTime ? (
@@ -235,23 +273,23 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
           {/* As long as the order has not been collected, show the options to edit the order */}
           {!isCollected ? (
             <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-              {/* Show button to change pickup time */}
-              <Button
-                raised
-                buttonStyle={{ backgroundColor: 'transparent' }}
-                containerStyle={{ width: '45%' }}
-                onPress={toggleShowCalendar}
-                icon={<AntDesign name="edit" size={17} color={Colors.subtleBlue} />}
-              />
               {/* Show button to cancel the order */}
               <Button
                 raised
                 buttonStyle={{ backgroundColor: 'transparent' }}
-                containerStyle={{ marginLeft: 10, width: '45%' }}
+                containerStyle={{ width: 45 }}
                 onPress={() => {
                   deleteHandler(id, productId, quantity);
                 }}
-                icon={<AntDesign name="delete" size={17} color={Colors.warning} />}
+                icon={<AntDesign name="close" size={17} color={Colors.warning} />}
+              />
+              {/* Show button to change pickup time */}
+              <Button
+                raised
+                buttonStyle={{ backgroundColor: 'transparent' }}
+                containerStyle={{ marginLeft: 10, width: 45 }}
+                onPress={toggleShowCalendar}
+                icon={<AntDesign name="edit" size={17} color={Colors.subtleBlue} />}
               />
             </View>
           ) : null}
@@ -259,6 +297,24 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
 
         {/* Show a disabled button when the order has been collected */}
         {isCollected ? <ButtonRound disabled title="Hämtad!" /> : null}
+
+        {/* Show large user avatar of the buyer */}
+        <View style={styles.textAndBadge}>
+          <UserAvatar
+            userId={buyerId}
+            size={70}
+            style={{ margin: 0 }}
+            showBadge={false}
+            actionOnPress={() => {
+              navigation.navigate('Användare', {
+                detailId: buyerId,
+              });
+            }}
+          />
+          <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
+            <Text style={styles.smallText}>köpare</Text>
+          </View>
+        </View>
       </View>
 
       {showCalendar ? (
@@ -284,5 +340,33 @@ const OrderActions = ({ order, isSeller, isBuyer, loggedInUserId }) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  oneLineSpread: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 8,
+  },
+  textAndBadge: {
+    marginLeft: 20,
+    marginBottom: 70,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  smallBadge: {
+    zIndex: 10,
+    paddingHorizontal: 2,
+    borderRadius: 5,
+    height: 17,
+  },
+  smallText: {
+    textTransform: 'uppercase',
+    fontSize: 10,
+    padding: 2,
+    color: '#fff',
+  },
+});
 
 export default OrderActions;

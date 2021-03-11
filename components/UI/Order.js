@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
@@ -54,10 +54,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
     setShowDetails((prevState) => !prevState);
   };
 
-  const goToItem = () => {
-    navigation.navigate('ProductDetail', { detailId: productId });
-  };
-
   return (
     <Card style={{ marginTop: 4 }}>
       <TouchableCmp onPress={toggleShowDetails}>
@@ -68,56 +64,16 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
         <Divider />
 
         {/* Image, buttonlogic and buyershortcut */}
-        <View style={styles.oneLineSpread}>
-          {isProductDetail ? (
-            <UserAvatar
-              userId={buyerProfile.profileId}
-              style={{ margin: 0 }}
-              showBadge={false}
-              actionOnPress={() => {
-                navigation.navigate('Användare', {
-                  detailId: buyerProfile.profileId,
-                });
-              }}
-            />
-          ) : (
-            <TouchableOpacity onPress={goToItem}>
-              <Image
-                style={{
-                  borderRadius: 5,
-                  width: 140,
-                  height: 140,
-                  resizeMode: 'contain',
-                }}
-                source={{ uri: image }}
-              />
-            </TouchableOpacity>
-          )}
-
-          <OrderActions
-            order={order}
-            loggedInUserId={loggedInUserId}
-            isBuyer={isBuyer}
-            isSeller={isSeller}
-          />
-          {/* Large user avatar of the buyer */}
-          <View style={styles.textAndBadge}>
-            <UserAvatar
-              userId={buyerId}
-              size={70}
-              style={{ margin: 0 }}
-              showBadge={false}
-              actionOnPress={() => {
-                navigation.navigate('Användare', {
-                  detailId: buyerId,
-                });
-              }}
-            />
-            <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
-              <Text style={styles.smallText}>köpare</Text>
-            </View>
-          </View>
-        </View>
+        <OrderActions
+          navigation={navigation}
+          order={order}
+          loggedInUserId={loggedInUserId}
+          isBuyer={isBuyer}
+          isSeller={isSeller}
+          productImage={image}
+          buyerProfileId={buyerProfile.profileId}
+          isProductDetail={isProductDetail}
+        />
         {isCollected ? (
           <AntDesign
             style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
