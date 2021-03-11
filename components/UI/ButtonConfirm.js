@@ -1,14 +1,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button } from 'react-native-elements';
+import Colors from '../../constants/Colors';
 
 import TouchableCmp from './TouchableCmp';
 
 const ButtonConfirm = ({
   style,
-  buttonColor,
   disabled,
-  buttonLabelStyle,
   onSelect,
   icon,
   title,
@@ -17,29 +16,21 @@ const ButtonConfirm = ({
     <>
       {disabled ? (
         <Button
-          color={buttonColor}
-          disabled={disabled ? disabled : false}
-          mode="contained"
-          compact
-          style={{ ...styles.button, ...style }}
-          labelStyle={[styles.label, buttonLabelStyle]}
-          onPress={onSelect}
-          icon={icon}>
-          {title}
-        </Button>
+          disabled
+          buttonStyle={{ ...styles.button, ...styles.disabledButton }}
+          titleStyle={[styles.label, styles.disabledLabel]}
+          icon={icon}
+          title={title}
+          />
       ) : (
-        <TouchableCmp style={{ ...styles.container, ...style }}>
+        <TouchableCmp>
           <Button
-            color={buttonColor}
-            disabled={disabled ? disabled : false}
-            mode="contained"
-            compact
-            style={{ ...styles.button, ...style }}
-            labelStyle={[styles.label, buttonLabelStyle]}
+            raised
+            buttonStyle={{ ...styles.button}}
+            titleStyle={[styles.label]}
             onPress={onSelect}
-            icon={icon}>
-            {title}
-          </Button>
+            title={title}
+            icon={icon}/>
         </TouchableCmp>
       )}
     </>
@@ -47,23 +38,23 @@ const ButtonConfirm = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   button: {
-    minWidth: 100,
-    alignSelf: 'center',
+    backgroundColor: Colors.primary,
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    borderRadius: 0
   },
   label: {
-    fontFamily: 'roboto-regular',
-    fontSize: 9,
+      color: "#fff",
+    fontFamily: 'bebas-neue-bold',
+    fontSize: 16,
+  },
+  disabledButton: {
+    backgroundColor: Colors.neutral
+  },
+  disabledLabel: {
+    color: Colors.lightGrey
   },
 });
 

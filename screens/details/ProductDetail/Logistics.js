@@ -1,6 +1,7 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState, useRef } from 'react';
-import { View, Alert, Text, StyleSheet, Slider, Dimensions } from 'react-native';
+import { View, Alert, Text, StyleSheet, Dimensions } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Divider } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -128,7 +129,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
         {/* Reserve item - visible to all except the creator of the item, as long as there are any left*/}
         {!hasEditPermission && canBeReserved ? (
           <View>
-            <ButtonConfirm onSelect={toggleBottomModal} title="reservera" />
+            <ButtonConfirm onSelect={toggleBottomModal} title="reservera"/>
             <RBSheet
               ref={refRBSheet}
               height={windowHeight - 80}
@@ -211,11 +212,12 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                   </Text>
                 </View>
                 <ButtonConfirm
-                  style={{ marginBottom: 80, backgroundColor: Colors.primary }}
+                  disabled={allReserved}
+                  style={{ backgroundColor: Colors.primary, borderRadius: 5, padding: 20 }}
                   onSelect={() => {
                     reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
                   }}
-                  title="reservera"
+                  title={ allReserved ? "alla reserverade" : "reservera"}
                 />
               </ScrollView>
             </RBSheet>

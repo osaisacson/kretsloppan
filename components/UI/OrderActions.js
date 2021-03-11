@@ -1,7 +1,8 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { Alert, View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Card } from 'react-native-elements';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
@@ -196,31 +197,33 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
     <>
       {!isCollected ? (
         <>
-        <View View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10}}>
-          {/* Show button to approve the suggested pickup time if either 
+          <View
+            View
+            style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+            {/* Show button to approve the suggested pickup time if either 
         the seller or buyer has not agreed to the suggested time yet */}
-          {/* {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate))  ? ( */}
+            {/* {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate))  ? ( */}
             <ButtonRound
-              style={{ backgroundColor: Colors.approved  }}
+              style={{ backgroundColor: Colors.approved }}
               buttonLabelStyle={{ color: '#fff' }}
               title="godkänn föreslagen tid"
               onSelect={() => {
                 approveSuggestedDateTime();
               }}
             />
-          {/* ) : null} */}
-          {bothAgreedOnTime ? (
+            {/* ) : null} */}
+            {bothAgreedOnTime ? (
+              <ButtonRound
+                style={{ backgroundColor: Colors.approved }}
+                buttonLabelStyle={{ color: '#fff' }}
+                title="hämtad!"
+                onSelect={() => {
+                  collectHandler();
+                }}
+              />
+            ) : null}
             <ButtonRound
-            style={{ backgroundColor: Colors.approved  }}
-              buttonLabelStyle={{ color: '#fff' }}
-              title="hämtad!"
-              onSelect={() => {
-                collectHandler();
-              }}
-            />
-          ) : null}
-            <ButtonRound
-              style={{ backgroundColor: Colors.subtleBlue  }}
+              style={{ backgroundColor: Colors.subtleBlue }}
               onSelect={toggleShowCalendar}
               title="ändra tid"
             />
@@ -228,7 +231,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
             {/* Show button to cancel the order if the viewer is the buyer */}
             {isBuyer || isSeller ? (
               <ButtonRound
-              style={{ backgroundColor: Colors.warning  }}
+                style={{ backgroundColor: Colors.warning }}
                 buttonLabelStyle={{ color: '#fff' }}
                 onSelect={() => {
                   deleteHandler(id, productId, quantity);
@@ -250,16 +253,21 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
                 suggestedDate={suggestedDate}
                 sendSuggestedTime={sendSuggestedTime}
               />
+              {/* Show a section with the newly suggested time if it exists */}
+              {orderSuggestedDate ? (
+                <Card>
+                  <Card.Title>FÖRESLAGEN NY TID</Card.Title>´{' '}
+                  <Card.Title>
+                    {moment(orderSuggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+                  </Card.Title>
+                </Card>
+              ) : null}
               <ButtonConfirm
-              mode="contained"
-              style={{ backgroundColor: Colors.darkPrimary  }}
                 onSelect={() => {
                   resetSuggestedDT(suggestedDate);
                 }}
-                title={`Ändra föreslagen tid till ${moment(orderSuggestedDate)
-                .locale('sv')
-                .format('D MMMM YYYY, HH:mm')}`}
-            />
+                title={`Ändra föreslagen tid`}
+              />
             </>
           ) : null}
         </>

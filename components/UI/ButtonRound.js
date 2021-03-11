@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Colors from '../../../constants/Colors';
+import Colors from '../../constants/Colors';
 
 const ButtonRound = ({
   style,
