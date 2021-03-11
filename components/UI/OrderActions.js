@@ -196,8 +196,7 @@ const OrderActions = ({ order, isSeller, isBuyer }) => {
         <>
           {/* Show button to approve the suggested pickup time if either 
         the seller or buyer has not agreed to the suggested time yet */}
-          {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate)) &&
-          !reservedDateHasExpired ? (
+          {((!buyerAgreed && isBuyer) || (!sellerAgreed && isSeller && suggestedDate))  ? (
             <ButtonAction
               style={{ width: '95%' }}
               buttonLabelStyle={{ color: '#fff' }}

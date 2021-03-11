@@ -10,6 +10,8 @@ import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
+import * as SplashScreen from 'expo-splash-screen';
+
 
 import 'firebase/database';
 import env from './env';
@@ -38,7 +40,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(env.firebaseConfig);
 }
 
-//The below broke as part of updating to SDK 40. TODO - Add new listeners according to https://docs.expo.io/versions/latest/sdk/notifications/
+//The below Notifications broke as part of updating to SDK 40. TODO - Add new listeners according to https://docs.expo.io/versions/latest/sdk/notifications/
 //Notifications.addListener(() => Vibration.vibrate());
 
 const AppWrapper = () => {
@@ -58,6 +60,8 @@ const App = () => {
 
   const loadResourcesAsync = async () => {
     try {
+      console.log('Preventing autohiding of splashscreen');
+      await SplashScreen.preventAutoHideAsync();
       console.log('Initializing data loading.........');
       const allPromises = await Promise.all([
         // Load assets
@@ -83,7 +87,8 @@ const App = () => {
       console.log('Error in attempting to load all resources, App.js', error);
     } finally {
       console.log('.........all assets and fonts loaded from App.js!');
-      console.log('hiding SplashsScreen');
+      await SplashScreen.hideAsync();
+      console.log('Hiding SplashScreen');
     }
   };
 

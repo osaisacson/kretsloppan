@@ -1,4 +1,4 @@
-import { Notifications } from 'expo';
+import * as Notifications from 'expo-notifications'
 import firebase from 'firebase';
 
 export const getIndex = (stateSegment, matchId) => {
