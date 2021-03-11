@@ -68,19 +68,27 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
     <Card style={{ marginTop: 4 }}>
       <TouchableCmp onPress={toggleShowDetails}>
         <View style={styles.oneLineSpread}>
-          <Text>{currentProduct.title}</Text>
-          <Text>{quantity} st</Text>
+          <Text style={{ fontSize: 18, fontFamily: 'roboto-bold' }}>{currentProduct.title}</Text>
+          <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>{quantity} st</Text>
         </View>
+        <Divider />
+
         {!orderIsExpired && !isCollected && suggestedDate ? (
           <>
             <View style={styles.oneLineSpread}>
-              <Text>
-                {!bothHaveAgreedOnTime
-                  ? 'Föreslagen upphämtningstid'
-                  : 'Överenskommen upphämtningstid'}
-              </Text>
-              <Text>{moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}</Text>
+              {!isCollected ? (
+                <>
+                  <Text>{!bothHaveAgreedOnTime ? 'Föreslagen upphämtningstid' : 'Hämtas'}</Text>
+                  <Text>{moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}</Text>
+                </>
+              ) : (
+                <>
+                  <Text>Hämtades</Text>
+                  <Text>{moment(isCollected).locale('sv').format('D MMM YYYY, HH:mm')}</Text>
+                </>
+              )}
             </View>
+            <Divider />
           </>
         ) : null}
 
@@ -99,7 +107,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
           ) : (
             <TouchableOpacity onPress={goToItem}>
               <Image
-                style={{ borderRadius: 3, width: 100, height: 100, resizeMode: 'contain' }}
+                style={{ borderRadius: 3, width: 150, height: 150, resizeMode: 'contain' }}
                 source={{ uri: image }}
               />
             </TouchableOpacity>
@@ -115,6 +123,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
           <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
             <UserAvatar
               userId={buyerId}
+              size={70}
               style={{ margin: 0 }}
               showBadge={false}
               actionOnPress={() => {
@@ -127,31 +136,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
               <Text style={styles.smallText}>köpare</Text>
             </View>
           </View>
-          {/* 
-          <View style={{ paddingLeft: 10, flex: 1 }}>
-            {!bothHaveAgreedOnTime ? (
-              <Text style={styles.statusText}>{`Väntar på att ${
-                waitingForYou ? 'du' : nameOfThumberOuterGetter
-              } ska godkänna den föreslagna upphämtningstiden`}</Text>
-            ) : null}
-
-            {bothHaveAgreedOnTime && !isCollected ? (
-              <Text style={styles.statusText}>
-                Upphämtningstid överenskommen! Hämtas{' '}
-                {moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
-              </Text>
-            ) : null}
-
-            {isCollected ? (
-              <Text
-                style={[
-                  styles.statusText,
-                  { fontFamily: 'roboto-bold-italic', color: Colors.subtleGreen },
-                ]}>
-                {`Hämtad ${moment(isCollected).locale('sv').format('D MMMM YYYY, HH:mm')}`}
-              </Text>
-            ) : null}
-          </View> */}
         </View>
         {isCollected ? (
           <AntDesign
@@ -164,7 +148,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
           <AntDesign
             style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
             name="caretdown"
-            size={16}
+            size={18}
             color="#666"
           />
         )}
@@ -178,26 +162,6 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
             {!orderIsExpired && !isCollected ? (
               <>
                 <StatusText
-                  label="Reserverad till:"
-                  text={moment(reservedUntil).locale('sv').calendar()}
-                />
-                {!bothHaveAgreedOnTime ? (
-                  <StatusText
-                    label="Föreslagen upphämtningstid:"
-                    text={
-                      suggestedDate
-                        ? `${moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}`
-                        : 'Inget tidsförslag angivet'
-                    }
-                  />
-                ) : null}
-                {bothHaveAgreedOnTime ? (
-                  <StatusText
-                    label="Överenskommen upphämtningstid:"
-                    text={moment(suggestedDate).locale('sv').format('D MMM YYYY, HH:mm')}
-                  />
-                ) : null}
-                <StatusText
                   textStyle={{ width: 200, textAlign: 'right' }}
                   label="Upphämtningsaddress:"
                   text={currentProduct.address}
@@ -207,6 +171,13 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                     textStyle={{ width: 200, textAlign: 'right' }}
                     label="Detaljer om hämtning:"
                     text={currentProduct.pickupDetails}
+                  />
+                ) : null}
+                {currentProduct.phone ? (
+                  <StatusText
+                    textStyle={{ width: 200, textAlign: 'right' }}
+                    label="Säljarens telefon:"
+                    text={currentProduct.phone}
                   />
                 ) : null}
                 {comments ? <Text>Kommentarer: {comments}</Text> : null}
