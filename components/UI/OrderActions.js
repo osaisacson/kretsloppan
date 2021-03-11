@@ -20,15 +20,16 @@ const OrderActions = ({
   isSeller,
   isBuyer,
   productImage,
-  buyerProfileId,
   isProductDetail,
   navigation,
+  loggedInUserId,
 }) => {
   const dispatch = useDispatch();
 
   const {
     id,
     buyerId,
+    sellerId,
     productId,
     projectId,
     quantity,
@@ -46,6 +47,9 @@ const OrderActions = ({
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
   const bothAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
+
+  const userIsBuyer = loggedInUserId === buyerId;
+  const infoUserId = loggedInUserId === buyerId ? sellerId : buyerId;
 
   const reservedDateHasExpired =
     new Date(reservedUntil) instanceof Date && new Date(reservedUntil) <= new Date();
@@ -214,16 +218,22 @@ const OrderActions = ({
       <View style={styles.oneLineSpread}>
         {/* Show image of item */}
         {isProductDetail ? (
-          <UserAvatar
-            userId={buyerProfileId}
-            style={{ margin: 0 }}
-            showBadge={false}
-            actionOnPress={() => {
-              navigation.navigate('Användare', {
-                detailId: buyerProfileId,
-              });
-            }}
-          />
+          <View style={styles.textAndBadge}>
+            <UserAvatar
+              userId={buyerId}
+              size={70}
+              style={{ margin: 0 }}
+              showBadge={false}
+              actionOnPress={() => {
+                navigation.navigate('Användare', {
+                  detailId: buyerId,
+                });
+              }}
+            />
+            <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
+              <Text style={styles.smallText}>Köpare</Text>
+            </View>
+          </View>
         ) : (
           <TouchableOpacity onPress={goToItem}>
             <Image
@@ -245,7 +255,7 @@ const OrderActions = ({
           {/* When the buyer are seller are in the process of agreeing on a pickup time, show a button for agreeing or suggesting a time */}
           {!bothAgreedOnTime ? (
             <ButtonRound
-              style={{ backgroundColor: Colors.darkPrimary }}
+              style={{ backgroundColor: suggestedDate ? Colors.darkPrimary : Colors.primary }}
               title={
                 suggestedDate
                   ? `Godkänn ${moment(suggestedDate)
@@ -298,23 +308,27 @@ const OrderActions = ({
         {/* Show a disabled button when the order has been collected */}
         {isCollected ? <ButtonRound disabled title="Hämtad!" /> : null}
 
-        {/* Show large user avatar of the buyer */}
-        <View style={styles.textAndBadge}>
-          <UserAvatar
-            userId={buyerId}
-            size={70}
-            style={{ margin: 0 }}
-            showBadge={false}
-            actionOnPress={() => {
-              navigation.navigate('Användare', {
-                detailId: buyerId,
-              });
-            }}
-          />
-          <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
-            <Text style={styles.smallText}>köpare</Text>
-          </View>
-        </View>
+        {!isProductDetail ? (
+          <>
+            {/* Show large user avatar of the buyer */}
+            <View style={styles.textAndBadge}>
+              <UserAvatar
+                userId={infoUserId}
+                size={70}
+                style={{ margin: 0 }}
+                showBadge={false}
+                actionOnPress={() => {
+                  navigation.navigate('Användare', {
+                    detailId: infoUserId,
+                  });
+                }}
+              />
+              <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
+                <Text style={styles.smallText}>{userIsBuyer ? 'Säljare' : 'Köpare'}</Text>
+              </View>
+            </View>
+          </>
+        ) : null}
       </View>
 
       {showCalendar ? (

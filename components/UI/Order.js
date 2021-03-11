@@ -66,24 +66,33 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
         {/* Image, buttonlogic and buyershortcut */}
         <OrderActions
           navigation={navigation}
-          order={order}
           loggedInUserId={loggedInUserId}
+          order={order}
           isBuyer={isBuyer}
           isSeller={isSeller}
           productImage={image}
-          buyerProfileId={buyerProfile.profileId}
           isProductDetail={isProductDetail}
         />
         {isCollected ? (
           <AntDesign
-            style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
+            style={{
+              textAlign: 'right',
+              paddingRight: 10,
+              paddingBottom: 10,
+              marginTop: isProductDetail ? 10 : 0,
+            }}
             name="checkcircle"
             size={20}
             color={Colors.subtleGreen}
           />
         ) : (
           <AntDesign
-            style={{ textAlign: 'right', paddingRight: 10, paddingBottom: 10, marginTop: -20 }}
+            style={{
+              textAlign: 'right',
+              paddingRight: 10,
+              paddingBottom: 10,
+              marginTop: isProductDetail ? 10 : 0,
+            }}
             name="caretdown"
             size={18}
             color="#666"
@@ -118,7 +127,7 @@ const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProduc
                   <StatusText
                     textStyle={{ width: 200, textAlign: 'right' }}
                     label="Säljarens telefon:"
-                    text={currentProduct.phone}
+                    text={`0${currentProduct.phone}`}
                   />
                   <Divider />
                 </>
