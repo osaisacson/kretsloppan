@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Order from '../../models/order';
 
@@ -31,14 +31,14 @@ export function fetchOrders() {
             order.productId,
             order.buyerId,
             order.sellerId,
+            order.timeInitiatorId,
             order.projectId,
             order.image,
             order.quantity,
             order.createdOn,
             order.reservedUntil,
             order.suggestedDate,
-            order.buyerAgreed,
-            order.sellerAgreed,
+            order.isAgreed,
             order.isCollected
           );
 
@@ -99,14 +99,14 @@ export function createOrder(productId, sellerId, projectId, image, quantity, sug
         productId,
         buyerId,
         sellerId,
+        timeInitiatorId: null,
         projectId,
         image,
         quantity,
         createdOn: currentDate,
         reservedUntil: fourDaysFromNow,
         suggestedDate,
-        buyerAgreed: true,
-        sellerAgreed: false,
+        isAgreed: false,
         isCollected: false,
       };
 
@@ -131,12 +131,12 @@ export function createOrder(productId, sellerId, projectId, image, quantity, sug
 
 export function updateOrder(
   id,
+  timeInitiatorId,
   projectId,
   quantity,
   reservedUntil,
   suggestedDate,
-  buyerAgreed,
-  sellerAgreed,
+  isAgreed,
   isCollected
 ) {
   return async (dispatch) => {
@@ -144,12 +144,12 @@ export function updateOrder(
       console.log(`Attempting to update order with id: ${id}...`);
 
       const dataToUpdate = {
+        timeInitiatorId,
         projectId,
         quantity,
         reservedUntil,
         suggestedDate,
-        buyerAgreed,
-        sellerAgreed,
+        isAgreed,
         isCollected,
       };
 

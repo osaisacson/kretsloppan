@@ -23,14 +23,14 @@ export default (state = initialState, action) => {
         action.orderData.productId,
         action.orderData.buyerId,
         action.orderData.sellerId,
+        action.orderData.timeInitiatorId,
         action.orderData.projectId,
         action.orderData.image,
         action.orderData.quantity,
         action.orderData.createdOn,
         action.orderData.reservedUntil,
         action.orderData.suggestedDate,
-        action.orderData.buyerAgreed,
-        action.orderData.sellerAgreed,
+        action.orderData.isAgreed,
         action.orderData.isCollected
       );
       console.log('store/reducers/orders/CREATE_ORDER, new order: ', newOrder);
@@ -45,6 +45,7 @@ export default (state = initialState, action) => {
       const availableOrderIndex = getIndex(state.availableOrders, action.pid);
       const updatedUserOrder = new Order( //Whenever we do a new order we have to pass the full params to match model
         action.pid,
+        action.orderData.timeInitiatorId,
         state.availableOrders[availableOrderIndex].productId,
         state.availableOrders[availableOrderIndex].buyerId,
         state.availableOrders[availableOrderIndex].sellerId,
@@ -54,8 +55,7 @@ export default (state = initialState, action) => {
         state.availableOrders[availableOrderIndex].createdOn,
         action.orderData.reservedUntil,
         action.orderData.suggestedDate,
-        action.orderData.buyerAgreed,
-        action.orderData.sellerAgreed,
+        action.orderData.isAgreed,
         action.orderData.isCollected
       );
       console.log('store/reducers/orders/UPDATE_ORDER, updated order: ', updatedUserOrder);

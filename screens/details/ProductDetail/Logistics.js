@@ -79,8 +79,8 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
             dispatch(
               ordersActions.createOrder(
                 id,
-                ownerId,
-                orderProjectId,
+                ownerId, //becomes sellerId
+                orderProjectId, //becomes projectId
                 imageUrl,
                 quantityNum,
                 orderSuggestedDate
@@ -129,7 +129,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
         {/* Reserve item - visible to all except the creator of the item, as long as there are any left*/}
         {!hasEditPermission && canBeReserved ? (
           <View>
-            <ButtonConfirm onSelect={toggleBottomModal} title="reservera"/>
+            <ButtonConfirm onSelect={toggleBottomModal} title="reservera" />
             <RBSheet
               ref={refRBSheet}
               height={windowHeight - 80}
@@ -217,7 +217,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                   onSelect={() => {
                     reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
                   }}
-                  title={ allReserved ? "alla reserverade" : "reservera"}
+                  title={allReserved ? 'alla reserverade' : 'reservera'}
                 />
               </ScrollView>
             </RBSheet>

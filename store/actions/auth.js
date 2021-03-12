@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { updateExpoTokens } from '../helpers';
 import * as profilesActions from './profiles';
@@ -13,8 +13,15 @@ export const setDidTryAutoLogin = () => {
 };
 
 export const authenticate = (userId, token, expiryTime) => {
-  return (dispatch) => {
-    dispatch({ type: AUTHENTICATE, userId, token });
+  return async (dispatch) => {
+    try {
+      console.log('Attempting to authenticate...');
+      await dispatch({ type: AUTHENTICATE, userId, token });
+    } catch (err) {
+      console.log('store/actions/auth: Something went wrong when trying to authenticate: ', err);
+    } finally {
+      console.log('...this is an authenticated success!');
+    }
   };
 };
 

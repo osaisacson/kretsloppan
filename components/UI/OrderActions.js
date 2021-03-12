@@ -15,28 +15,21 @@ import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
 import UserAvatar from './UserAvatar';
 
-const OrderActions = ({
-  order,
-  isSeller,
-  isBuyer,
-  productImage,
-  isProductDetail,
-  navigation,
-  loggedInUserId,
-}) => {
+const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail }) => {
   const dispatch = useDispatch();
 
   const {
     id,
     buyerId,
     sellerId,
+    timeInitiatorId,
     productId,
     projectId,
     quantity,
+    image,
     reservedUntil,
     suggestedDate,
-    buyerAgreed,
-    sellerAgreed,
+    isAgreed,
     isCollected,
   } = order;
 
@@ -46,10 +39,15 @@ const OrderActions = ({
   const [showCalendar, setShowCalendar] = useState(false);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
-  const bothAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
+  // Identifies who is currently watching the order
+  const isBuyer = loggedInUserId === buyerId;
+  const isSeller = loggedInUserId === sellerId;
+  const isTimeInitiator = loggedInUserId === timeInitiatorId;
 
-  const userIsBuyer = loggedInUserId === buyerId;
-  const infoUserId = loggedInUserId === buyerId ? sellerId : buyerId;
+  // Identifies which user information is most relevant for the logged in user to see
+  const infoId = loggedInUserId === buyerId ? sellerId : buyerId;
+  const profiles = useSelector((state) => state.profiles.allProfiles);
+  const infoProfile = profiles.find((profile) => profile.profileId === buyerId);
 
   const reservedDateHasExpired =
     new Date(reservedUntil) instanceof Date && new Date(reservedUntil) <= new Date();
@@ -72,25 +70,23 @@ const OrderActions = ({
   };
 
   const resetSuggestedDT = () => {
-    //set these according to who's trying to change the time. Should be true for the one changing time, false for the other.
-    const buyerHasAgreed = isBuyer ? true : false;
-    const sellerHasAgreed = isSeller ? true : false;
     const currentDate = new Date();
     const newReservedUntil = new Date(
       currentDate.getTime() + 4 * 24 * 60 * 60 * 1000
     ).toISOString();
 
+    console.log('START-----------------');
     console.log('OrderActions/resetSuggestedDT, passed args');
-    console.log({
-      id,
-      projectId,
-      quantity,
-      newReservedUntil, //updated date until which the product is reserved
-      orderSuggestedDate, //updated suggested pickup date
-      buyerHasAgreed, //if user changing the time is the buyer, set as true
-      sellerHasAgreed, //if user changing the time is the seller, set as true
-      isCollected,
-    });
+    console.log('id', id);
+    console.log('timeInitiatorId/loggedInUserId:', loggedInUserId);
+    console.log('projectId', projectId);
+    console.log('quantity', quantity);
+    console.log('newReservedUntil', newReservedUntil);
+    console.log('orderSuggestedDate', orderSuggestedDate);
+    console.log('isAgreed should be false', false);
+    console.log('isCollected should be false', false);
+    console.log('-----------------END');
+
     Alert.alert(
       'Ändra tid',
       'Genom att klicka här ändrar du den föreslagna tiden. Ni får då igen fyra dagar på er att komma överens om en tid.',
@@ -103,13 +99,13 @@ const OrderActions = ({
             dispatch(
               ordersActions.updateOrder(
                 id,
+                loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
                 projectId,
                 quantity,
                 newReservedUntil, //updated date until which the product is reserved
                 orderSuggestedDate, //updated suggested pickup date
-                buyerHasAgreed, //if user changing the time is the buyer, set as true
-                sellerHasAgreed, //if user changing the time is the seller, set as true
-                isCollected
+                false, //isAgreed will be false as we are resetting the time
+                false //isCollected will be false as we are setting up a new time for collection
               )
             );
             toggleShowCalendar();
@@ -119,13 +115,24 @@ const OrderActions = ({
     );
   };
 
-  //Approve suggested pickup time
+  //Approve suggested pickup time: should only be available for the user who did not initiate the originally
+  //proposed time, which means once this is clicked the 'isAgreed' flag should be set to true.
   const approveSuggestedDateTime = () => {
-    const buyerJustAgreed = isBuyer ? true : buyerAgreed; //if the user agreeing to the time is the buyer, set as true
-    const sellerJustAgreed = isSeller ? true : sellerAgreed; //if the user agreeing to the time is the seller, set as true
     console.log({
       order,
     });
+
+    console.log('START-----------------');
+    console.log('OrderActions/approveSuggestedDateTime, passed args');
+    console.log('id', id);
+    console.log('timeInitiatorId:', timeInitiatorId);
+    console.log('projectId', projectId);
+    console.log('quantity', quantity);
+    console.log('reservedUntil', reservedUntil);
+    console.log('suggestedDate', suggestedDate);
+    console.log('isAgreed should be true', true);
+    console.log('isCollected should be false', false);
+    console.log('-----------------END');
 
     Alert.alert(
       'Bekräfta tid',
@@ -143,13 +150,13 @@ const OrderActions = ({
             dispatch(
               ordersActions.updateOrder(
                 id,
+                timeInitiatorId, //this stays the same as previously, only updates if we try to change the time
                 projectId,
                 quantity,
                 reservedUntil,
                 suggestedDate,
-                buyerJustAgreed,
-                sellerJustAgreed,
-                isCollected
+                true, //isAgreed will be true as the second party just confirmed the time
+                false //isCollected will be false as we just agreed on time for collection
               )
             );
           },
@@ -162,34 +169,50 @@ const OrderActions = ({
   const collectHandler = () => {
     const originalSoldProducts = currentProduct.sold ? currentProduct.sold : 0;
     const totalSoldProducts = originalSoldProducts + quantity; //Existing sold items plus the quantity of the currently completed order
-    console.log({ originalSoldProducts, quantity, totalSoldProducts });
+    console.log('START-----------------');
+    console.log('OrderActions/approveSuggestedDateTime, passed args');
+    console.log('-----');
+    console.log('For updateProductSoldAmount()');
+    console.log('Prep:');
+    console.log({ originalSoldProducts, quantity });
+    console.log('Passed:');
+    console.log('productId:', productId);
+    console.log('totalSoldProducts', totalSoldProducts);
+    console.log('-----');
+    console.log('For updateOrder()');
+    console.log('id', id);
+    console.log('timeInitiatorId:', timeInitiatorId);
+    console.log('projectId', projectId);
+    console.log('quantity', quantity);
+    console.log('reservedUntil', reservedUntil);
+    console.log('suggestedDate', suggestedDate);
+    console.log('isAgreed should be true', true);
+    console.log('isCollected should be false', false);
+    console.log('-----------------END');
 
-    Alert.alert(
-      'Är produkten levererad till beställaren?',
-      'Genom att klicka här bekräftar du att ordern är klar.',
-      [
-        {
-          text: 'Japp, den är klar!',
-          style: 'default',
-          onPress: () => {
-            dispatch(
-              ordersActions.updateOrder(
-                id,
-                projectId,
-                quantity,
-                reservedUntil,
-                suggestedDate,
-                true, // buyer has agreed
-                true, // seller has agreed
-                new Date() // order is collected
-              )
-            );
-            dispatch(productsActions.updateProductSoldAmount(productId, totalSoldProducts));
-          },
+    Alert.alert('Är produkten hämtad?', 'Genom att klicka här bekräftar du att ordern är klar.', [
+      {
+        text: 'Japp, den är klar!',
+        style: 'default',
+        onPress: () => {
+          dispatch(
+            ordersActions.updateOrder(
+              id,
+              timeInitiatorId, //this stays the same as previously, only updates if we try to change the time
+              projectId,
+              quantity,
+              reservedUntil,
+              suggestedDate,
+              true, //isAgreed will be true as nothing has changed with the pickup time
+              new Date() //isCollected will be set as today's date as the item was just confirmed as collected
+            )
+          );
+
+          dispatch(productsActions.updateProductSoldAmount(productId, totalSoldProducts));
         },
-        { text: 'Nej', style: 'destructive' },
-      ]
-    );
+      },
+      { text: 'Nej', style: 'destructive' },
+    ]);
   };
 
   const deleteHandler = (orderId, productId, orderQuantity) => {
@@ -216,7 +239,8 @@ const OrderActions = ({
   return (
     <>
       <View style={styles.oneLineSpread}>
-        {/* Show image of item */}
+        {/*  IMAGES */}
+        {/* If we are on the product detail screen show the user avatar amd always show 'buyer' as text...*/}
         {isProductDetail ? (
           <View style={styles.textAndBadge}>
             <UserAvatar
@@ -243,34 +267,50 @@ const OrderActions = ({
                 height: 140,
                 resizeMode: 'contain',
               }}
-              source={{ uri: productImage }}
+              source={{ uri: image }}
             />
           </TouchableOpacity>
         )}
+        {/* ...else show the product image  */}
 
         <Divider style={{ width: 1, height: '100%', marginHorizontal: 8 }} />
 
-        {/* Show buttons for actions  */}
+        {/* BUTTONS */}
         <View>
-          {/* When the buyer are seller are in the process of agreeing on a pickup time, show a button for agreeing or suggesting a time */}
-          {!bothAgreedOnTime ? (
+          {/* When we don't have a time suggested yet */}
+          {!suggestedDate ? (
             <ButtonRound
-              style={{ backgroundColor: suggestedDate ? Colors.darkPrimary : Colors.primary }}
-              title={
-                suggestedDate
-                  ? `Godkänn ${moment(suggestedDate)
-                      .locale('sv')
-                      .format('HH:mm, D MMMM YYYY')} som tid för upphämtning`
-                  : 'Föreslå tid för upphämtning'
-              }
+              style={{ backgroundColor: Colors.darkPrimary }}
+              title={'Föreslå tid för upphämtning'}
               onSelect={() => {
-                suggestedDate ? approveSuggestedDateTime() : toggleShowCalendar();
+                toggleShowCalendar();
               }}
             />
           ) : null}
-
+          {/* When we are waiting for the other to approve a suggested time */}
+          {suggestedDate && !isAgreed ? (
+            <>
+              {/* Show 'Waiting for x to approve time' or 'Approve x time'  */}
+              {isTimeInitiator ? (
+                <ButtonRound
+                  disabled
+                  title={`Väntar på att ${infoProfile.profileName} ska godkänna föreslagen tid`}
+                />
+              ) : (
+                <ButtonRound
+                  style={{ backgroundColor: Colors.primary }}
+                  title={`Godkänn ${moment(suggestedDate)
+                    .locale('sv')
+                    .format('HH:mm, D MMMM YYYY')} som tid för upphämtning`}
+                  onSelect={() => {
+                    approveSuggestedDateTime();
+                  }}
+                />
+              )}
+            </>
+          ) : null}
           {/* When both parties have agreed on a time show a button for marking the order as collected*/}
-          {bothAgreedOnTime ? (
+          {isAgreed ? (
             <ButtonRound
               style={{ backgroundColor: Colors.completed }}
               title="Klicka här när hämtad!"
@@ -279,7 +319,10 @@ const OrderActions = ({
               }}
             />
           ) : null}
+          {/* Show a disabled button when the order has been collected */}
+          {isCollected ? <ButtonRound disabled title="Hämtad!" /> : null}
 
+          {/* EDIT AND DELETE OPTIONS */}
           {/* As long as the order has not been collected, show the options to edit the order */}
           {!isCollected ? (
             <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
@@ -305,26 +348,23 @@ const OrderActions = ({
           ) : null}
         </View>
 
-        {/* Show a disabled button when the order has been collected */}
-        {isCollected ? <ButtonRound disabled title="Hämtad!" /> : null}
-
         {!isProductDetail ? (
           <>
             {/* Show large user avatar of the buyer */}
             <View style={styles.textAndBadge}>
               <UserAvatar
-                userId={infoUserId}
+                userId={infoId}
                 size={70}
                 style={{ margin: 0 }}
                 showBadge={false}
                 actionOnPress={() => {
                   navigation.navigate('Användare', {
-                    detailId: infoUserId,
+                    detailId: infoId,
                   });
                 }}
               />
               <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
-                <Text style={styles.smallText}>{userIsBuyer ? 'Säljare' : 'Köpare'}</Text>
+                <Text style={styles.smallText}>{infoId === buyerId ? 'Köpare' : 'Säljare'}</Text>
               </View>
             </View>
           </>

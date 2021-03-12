@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
 import { Button } from 'react-native-elements';
 
-const ButtonRound = ({ style, disabled, small, onSelect, title }) => {
+const ButtonRound = ({ style, disabled, onSelect, title }) => {
   return (
     <>
       {disabled ? (

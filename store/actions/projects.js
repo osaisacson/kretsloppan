@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Project from '../../models/project';
 import { convertImage } from '../helpers';
