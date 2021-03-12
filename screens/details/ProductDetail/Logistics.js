@@ -80,6 +80,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
               ordersActions.createOrder(
                 id,
                 ownerId, //becomes sellerId
+                loggedInUserId, //id of who initiated the time suggestion, becomes timeInitiatorId
                 orderProjectId, //becomes projectId
                 imageUrl,
                 quantityNum,
@@ -212,12 +213,11 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                   </Text>
                 </View>
                 <ButtonConfirm
-                  disabled={allReserved}
                   style={{ backgroundColor: Colors.primary, borderRadius: 5, padding: 20 }}
                   onSelect={() => {
                     reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
                   }}
-                  title={allReserved ? 'alla reserverade' : 'reservera'}
+                  title={'reservera'}
                 />
               </ScrollView>
             </RBSheet>

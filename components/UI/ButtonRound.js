@@ -3,23 +3,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
 import { Button } from 'react-native-elements';
 
-const ButtonRound = ({ style, disabled, onSelect, title }) => {
+const ButtonRound = ({ style, titleStyle, disabled, onSelect, title }) => {
   return (
     <>
-      {disabled ? (
-        <View onPress={onSelect} style={{ ...styles.button, ...styles.disabledButton, ...style }}>
-          <Text style={{ ...styles.disabledLabel, ...styles.label }}>{title}</Text>
-        </View>
-      ) : (
-        <Button
-          raised
-          containerStyle={{ borderRadius: 10 }}
-          buttonStyle={{ ...styles.button, ...style }}
-          titleStyle={{ ...styles.label }}
-          title={title}
-          onPress={onSelect}
-        />
-      )}
+      <Button
+        raised
+        disabled={disabled}
+        containerStyle={{ borderRadius: 10 }}
+        buttonStyle={{ ...styles.button, ...style }}
+        titleStyle={{ ...styles.label, ...titleStyle }}
+        title={title}
+        onPress={onSelect}
+      />
     </>
   );
 };
@@ -38,6 +33,7 @@ const styles = StyleSheet.create({
   button: {
     width: 100,
     height: 100,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

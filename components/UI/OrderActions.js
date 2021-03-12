@@ -2,6 +2,7 @@ import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { Button } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
+import ButtonIcon from '../../components/UI/ButtonIcon';
 import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
 
@@ -15,7 +16,7 @@ import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
 import UserAvatar from './UserAvatar';
 
-const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail }) => {
+const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail, products }) => {
   const dispatch = useDispatch();
 
   const {
@@ -33,21 +34,20 @@ const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail }) =>
     isCollected,
   } = order;
 
-  const products = useSelector((state) => state.products.availableProducts);
   const currentProduct = products.find((prod) => prod.id === productId);
 
   const [showCalendar, setShowCalendar] = useState(false);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
   // Identifies who is currently watching the order
-  const isBuyer = loggedInUserId === buyerId;
-  const isSeller = loggedInUserId === sellerId;
   const isTimeInitiator = loggedInUserId === timeInitiatorId;
+  const profiles = useSelector((state) => state.profiles.allProfiles);
+  const timeInitiatorProfile = profiles.find((profile) => profile.profileId === timeInitiatorId);
+  const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
+  const sellerProfile = profiles.find((profile) => profile.profileId === sellerId);
 
   // Identifies which user information is most relevant for the logged in user to see
   const infoId = loggedInUserId === buyerId ? sellerId : buyerId;
-  const profiles = useSelector((state) => state.profiles.allProfiles);
-  const infoProfile = profiles.find((profile) => profile.profileId === buyerId);
 
   const reservedDateHasExpired =
     new Date(reservedUntil) instanceof Date && new Date(reservedUntil) <= new Date();
@@ -136,11 +136,9 @@ const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail }) =>
 
     Alert.alert(
       'Bekräfta tid',
-      `Genom att klicka här lovar du att vara på addressen för upphämtning den ${moment(
-        suggestedDate
-      )
+      `Genom att klicka här lovar du att vara på addressen för upphämtning ${moment(suggestedDate)
         .locale('sv')
-        .format('D MMMM YYYY, HH:mm')}`,
+        .format('HH:mm, D MMMM')}`,
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -288,20 +286,24 @@ const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail }) =>
             />
           ) : null}
           {/* When we are waiting for the other to approve a suggested time */}
-          {suggestedDate && !isAgreed ? (
+          {suggestedDate && !isAgreed && !isCollected ? (
             <>
               {/* Show 'Waiting for x to approve time' or 'Approve x time'  */}
               {isTimeInitiator ? (
                 <ButtonRound
                   disabled
-                  title={`Väntar på att ${infoProfile.profileName} ska godkänna föreslagen tid`}
+                  title={`Tid föreslagen av dig, väntar på godkännande av ${
+                    timeInitiatorId === buyerId
+                      ? sellerProfile.profileName
+                      : buyerProfile.profileName
+                  }`}
                 />
               ) : (
                 <ButtonRound
                   style={{ backgroundColor: Colors.primary }}
-                  title={`Godkänn ${moment(suggestedDate)
+                  title={`${timeInitiatorProfile.profileName} föreslog ${moment(suggestedDate)
                     .locale('sv')
-                    .format('HH:mm, D MMMM YYYY')} som tid för upphämtning`}
+                    .format('HH:mm, D MMMM')}, godkänn?`}
                   onSelect={() => {
                     approveSuggestedDateTime();
                   }}
@@ -310,40 +312,56 @@ const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail }) =>
             </>
           ) : null}
           {/* When both parties have agreed on a time show a button for marking the order as collected*/}
-          {isAgreed ? (
+          {isAgreed && !isCollected ? (
             <ButtonRound
               style={{ backgroundColor: Colors.completed }}
-              title="Klicka här när hämtad!"
+              title={`Hämtas av ${
+                loggedInUserId === buyerId ? 'dig' : buyerProfile.profileName
+              } ${moment(suggestedDate)
+                .locale('sv')
+                .format('HH:mm, D MMMM')}. Klicka här när hämtad!`}
               onSelect={() => {
                 collectHandler();
               }}
             />
           ) : null}
           {/* Show a disabled button when the order has been collected */}
-          {isCollected ? <ButtonRound disabled title="Hämtad!" /> : null}
+          {isCollected ? (
+            <ButtonRound
+              disabled
+              style={{
+                backgroundColor: '#fff',
+
+                borderColor: Colors.completed,
+                borderSize: 1,
+              }}
+              titleStyle={{ color: Colors.completed }}
+              title={`Hämtad av ${
+                loggedInUserId === buyerId ? 'dig' : buyerProfile.profileName
+              } ${moment(isCollected).locale('sv').format('HH:mm, D MMMM YYYY')}`}
+            />
+          ) : null}
 
           {/* EDIT AND DELETE OPTIONS */}
           {/* As long as the order has not been collected, show the options to edit the order */}
           {!isCollected ? (
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 8,
+              }}>
               {/* Show button to cancel the order */}
-              <Button
-                raised
-                buttonStyle={{ backgroundColor: 'transparent' }}
-                containerStyle={{ width: 45 }}
-                onPress={() => {
+              <ButtonIcon
+                icon="close"
+                color={Colors.neutral}
+                onSelect={() => {
                   deleteHandler(id, productId, quantity);
                 }}
-                icon={<AntDesign name="close" size={17} color={Colors.warning} />}
               />
               {/* Show button to change pickup time */}
-              <Button
-                raised
-                buttonStyle={{ backgroundColor: 'transparent' }}
-                containerStyle={{ marginLeft: 10, width: 45 }}
-                onPress={toggleShowCalendar}
-                icon={<AntDesign name="edit" size={17} color={Colors.subtleBlue} />}
-              />
+              <ButtonIcon icon="pen" color={Colors.neutral} onSelect={toggleShowCalendar} />
             </View>
           ) : null}
         </View>
@@ -379,7 +397,7 @@ const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail }) =>
             <Card>
               <Card.Title>FÖRESLAGEN NY TID</Card.Title>
               <Card.Title>
-                {moment(orderSuggestedDate).locale('sv').format('D MMMM YYYY, HH:mm')}
+                {moment(orderSuggestedDate).locale('sv').format('HH:mm, D MMMM, ')}
               </Card.Title>
             </Card>
           ) : null} */}

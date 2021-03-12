@@ -43,8 +43,6 @@ export function denormalizeData(data) {
     console.log('...there is no data or the data is not an object.');
     return;
   }
-  console.log('...denormalized data.');
-
   const id = Object.keys(data).pop();
 
   return {
@@ -72,7 +70,6 @@ export function updateExpoTokens(userId, remove = false) {
 
           snapshot.forEach((action) => action.ref.update({ expoTokens: nextTokens }));
         }
-        console.log('...updated expo tokens');
       });
   } catch (error) {
     console.error('...updateExpoTokens failed', error.message);

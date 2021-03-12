@@ -158,7 +158,13 @@ const ProductDetailScreen = (props) => {
                 alignSelf: 'left',
                 width: 200,
               }}
-              text={amount === 1 ? 'För närvarande reserverad' : 'Alla för närvarande reserverade'}
+              text={
+                amount === 1
+                  ? 'För närvarande reserverad'
+                  : amount === 0
+                  ? 'Alla för närvarande reserverade'
+                  : `${amount} kvar`
+              }
               backgroundColor={Colors.darkPrimary}
             />
           ) : null}

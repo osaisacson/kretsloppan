@@ -45,10 +45,10 @@ export default (state = initialState, action) => {
       const availableOrderIndex = getIndex(state.availableOrders, action.pid);
       const updatedUserOrder = new Order( //Whenever we do a new order we have to pass the full params to match model
         action.pid,
-        action.orderData.timeInitiatorId,
         state.availableOrders[availableOrderIndex].productId,
         state.availableOrders[availableOrderIndex].buyerId,
         state.availableOrders[availableOrderIndex].sellerId,
+        action.orderData.timeInitiatorId,
         action.orderData.projectId,
         state.availableOrders[availableOrderIndex].image,
         action.orderData.quantity,

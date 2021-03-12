@@ -13,24 +13,8 @@ const StatusText = ({ label, text, textStyle }) => {
           marginVertical: 4,
           marginHorizontal: 10,
         }}>
-        <Text
-          style={[
-            style,
-            {
-              fontFamily: 'roboto-light-italic',
-            },
-          ]}>
-          {label}
-        </Text>
-        <Text
-          style={[
-            textStyle,
-            {
-              fontFamily: 'roboto-bold-italic',
-            },
-          ]}>
-          {text}
-        </Text>
+        <Text style={{ fontFamily: 'roboto-light-italic' }}>{label}</Text>
+        <Text style={[textStyle, { fontFamily: 'roboto-bold-italic' }]}>{text}</Text>
       </View>
       <Divider />
     </>

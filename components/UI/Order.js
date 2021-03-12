@@ -2,7 +2,6 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
-import { useSelector } from 'react-redux';
 
 import Card from './Card';
 import OrderActions from './OrderActions';
@@ -10,12 +9,11 @@ import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
 
-const Order = ({ order, navigation, projects, loggedInUserId, isProductDetail }) => {
+const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, products }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const { productId, projectId, quantity, comments } = order;
 
-  const products = useSelector((state) => state.products.availableProducts);
   const currentProduct = products.find((product) => product.id === productId);
 
   const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
@@ -28,8 +26,10 @@ const Order = ({ order, navigation, projects, loggedInUserId, isProductDetail })
     <Card style={{ marginTop: 4 }}>
       {/* Title and quantity */}
       <View style={styles.oneLineSpread}>
-        <Text style={{ fontSize: 18, fontFamily: 'roboto-bold' }}>{currentProduct.title}</Text>
-        <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>{quantity} st</Text>
+        {!isProductDetail ? (
+          <Text style={{ fontSize: 18, fontFamily: 'roboto-bold' }}>{currentProduct.title}</Text>
+        ) : null}
+        <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>{quantity} st reserverad</Text>
       </View>
       <Divider />
 
@@ -39,6 +39,7 @@ const Order = ({ order, navigation, projects, loggedInUserId, isProductDetail })
         loggedInUserId={loggedInUserId}
         order={order}
         isProductDetail={isProductDetail}
+        products={products}
       />
 
       {/* Trigger for showing  order details */}
