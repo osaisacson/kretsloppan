@@ -266,16 +266,13 @@ const OrderActions = ({
               </View>
             </View>
             {projectForProduct ? (
-              <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{ flex: 1, flexDirection: 'row', marginTop: 5 }}>
                 <TouchableCmp
                   activeOpacity={0.5}
                   onPress={() => {
-                    navigation.navigate('Projekt', {
+                    navigation.navigate('ProjectDetail', {
                       detailId: projectForProduct.id,
                     });
-                  }}
-                  style={{
-                    left: 10,
                   }}>
                   <Avatar.Image
                     style={{
@@ -285,7 +282,7 @@ const OrderActions = ({
                       borderColor: '#666',
                     }}
                     source={{ uri: projectForProduct.image }}
-                    size={90}
+                    size={80}
                   />
                 </TouchableCmp>
                 <View
@@ -431,15 +428,6 @@ const OrderActions = ({
       {showCalendar ? (
         <View style={{ flex: 1 }}>
           <CalendarSelection suggestedDate={suggestedDate} sendSuggestedTime={sendSuggestedTime} />
-          {/* Show a section with the newly suggested time if it exists */}
-          {/* {orderSuggestedDate ? (
-            <Card>
-              <Card.Title>FÖRESLAGEN NY TID</Card.Title>
-              <Card.Title>
-                {moment(orderSuggestedDate).locale('sv').format('HH:mm, D MMMM, ')}
-              </Card.Title>
-            </Card>
-          ) : null} */}
           <ButtonConfirm
             onSelect={() => {
               resetSuggestedDT(suggestedDate);

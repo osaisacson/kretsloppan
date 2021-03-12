@@ -44,20 +44,30 @@ const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, p
         products={products}
         projectForProduct={projectForProduct}
       />
+      <Divider />
 
       {/* Trigger for showing  order details */}
       <TouchableCmp onPress={toggleShowDetails}>
-        <AntDesign
+        <View
           style={{
-            textAlign: 'right',
-            paddingRight: 10,
-            paddingBottom: 10,
-            marginTop: isProductDetail ? 10 : 0,
-          }}
-          name="caretdown"
-          size={18}
-          color="#666"
-        />
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}>
+          <Text style={{ fontFamily: 'bebas-neue', color: '#666', fontSize: 20 }}>Detaljer </Text>
+          <AntDesign
+            style={{
+              textAlign: 'right',
+              paddingRight: 10,
+              paddingBottom: 10,
+              marginTop: 0,
+            }}
+            name="caretdown"
+            size={25}
+            color="#666"
+          />
+        </View>
       </TouchableCmp>
 
       {/* Collapsible section with order details */}
