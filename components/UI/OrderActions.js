@@ -1,7 +1,8 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { Button } from 'react-native-elements';
-import { AntDesign } from '@expo/vector-icons';
+import { Avatar, Badge } from 'react-native-paper';
+import TouchableCmp from '../../components/UI/TouchableCmp';
+
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
@@ -16,7 +17,14 @@ import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
 import UserAvatar from './UserAvatar';
 
-const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail, products }) => {
+const OrderActions = ({
+  navigation,
+  loggedInUserId,
+  order,
+  isProductDetail,
+  products,
+  projectForProduct,
+}) => {
   const dispatch = useDispatch();
 
   const {
@@ -240,21 +248,52 @@ const OrderActions = ({ navigation, loggedInUserId, order, isProductDetail, prod
         {/*  IMAGES */}
         {/* If we are on the product detail screen show the user avatar amd always show 'buyer' as text...*/}
         {isProductDetail ? (
-          <View style={styles.textAndBadge}>
-            <UserAvatar
-              userId={buyerId}
-              size={70}
-              style={{ margin: 0 }}
-              showBadge={false}
-              actionOnPress={() => {
-                navigation.navigate('Användare', {
-                  detailId: buyerId,
-                });
-              }}
-            />
-            <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -60 }]}>
-              <Text style={styles.smallText}>Köpare</Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <UserAvatar
+                userId={buyerId}
+                size={90}
+                style={{ margin: 0 }}
+                showBadge={false}
+                actionOnPress={() => {
+                  navigation.navigate('Användare', {
+                    detailId: buyerId,
+                  });
+                }}
+              />
+              <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -70 }]}>
+                <Text style={styles.smallText}>Köpare</Text>
+              </View>
             </View>
+            {projectForProduct ? (
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+                <TouchableCmp
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    navigation.navigate('Projekt', {
+                      detailId: projectForProduct.id,
+                    });
+                  }}
+                  style={{
+                    left: 10,
+                  }}>
+                  <Avatar.Image
+                    style={{
+                      color: '#fff',
+                      backgroundColor: '#fff',
+                      borderWidth: 0.5,
+                      borderColor: '#666',
+                    }}
+                    source={{ uri: projectForProduct.image }}
+                    size={90}
+                  />
+                </TouchableCmp>
+                <View
+                  style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -80 }]}>
+                  <Text style={styles.smallText}>Till projekt</Text>
+                </View>
+              </View>
+            ) : null}
           </View>
         ) : (
           <TouchableOpacity onPress={goToItem}>

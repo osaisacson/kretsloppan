@@ -27,8 +27,8 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
   const ordersForProduct = productOrders.filter((order) => order.productId === id); //All orders for the product
 
   const allOrdersCollected = ordersForProduct.every((order) => order.isCollected);
-  const allSold = amount === sold && allOrdersCollected;
-  const allReserved = amount > sold && !allOrdersCollected;
+  const cleanedUpSold = sold === undefined ? 0 : sold;
+  const allSold = cleanedUpSold === amount && allOrdersCollected;
 
   const InfoBadge = ({ text, style }) => {
     return <Text style={{ ...styles.infoBadge, ...style }}>{text}</Text>;
@@ -56,11 +56,6 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
         </View>
         {allSold ? (
           <Text style={{ ...styles.status, backgroundColor: Colors.subtleGreen }}>Alla sålda</Text>
-        ) : null}
-        {allReserved ? (
-          <Text style={{ ...styles.status, backgroundColor: Colors.darkPrimary }}>
-            Alla Reserverade
-          </Text>
         ) : null}
 
         {location ? <InfoBadge text={location} style={styles.location} /> : null}

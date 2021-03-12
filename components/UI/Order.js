@@ -29,7 +29,9 @@ const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, p
         {!isProductDetail ? (
           <Text style={{ fontSize: 18, fontFamily: 'roboto-bold' }}>{currentProduct.title}</Text>
         ) : null}
-        <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>{quantity} st reserverad</Text>
+        <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>
+          {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}
+        </Text>
       </View>
       <Divider />
 
@@ -40,6 +42,7 @@ const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, p
         order={order}
         isProductDetail={isProductDetail}
         products={products}
+        projectForProduct={projectForProduct}
       />
 
       {/* Trigger for showing  order details */}
