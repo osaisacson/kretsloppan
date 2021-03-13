@@ -146,7 +146,7 @@ export function createProduct(
         booked: originalBooked,
         sold: originalSold,
       };
-
+      console.log('productData sent to firebase: ', productData);
       const { key } = await firebase.database().ref('products').push(productData);
 
       const newProductData = {

@@ -29,6 +29,7 @@ const Order = ({
     quantity,
     comments,
     buyerId,
+    sellerId,
     suggestedDate,
     isAgreed,
     isCollected,
@@ -36,11 +37,13 @@ const Order = ({
 
   const currentProduct = productId ? products.find((product) => product.id === productId) : {};
   if (!currentProduct) {
-    console.log('FYI: A product that is associated with some orders has likely been deleted here');
+    console.log(
+      'FYI: A product that is associated with some orders has likely been deleted on this page'
+    );
     return null;
   }
   const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
-
+  const sellerProfile = sellerId ? profiles.find((profile) => profile.profileId === sellerId) : {};
   const buyerProfile = buyerId ? profiles.find((profile) => profile.profileId === buyerId) : {};
 
   const toggleShowDetails = () => {
@@ -148,7 +151,7 @@ const Order = ({
               />
               <StatusText
                 textStyle={{ width: 200, textAlign: 'right' }}
-                label="Säljarens telefon:"
+                label={`${sellerProfile.profileName}'s telefon:`}
                 text={currentProduct.phone}
               />
               <StatusText
