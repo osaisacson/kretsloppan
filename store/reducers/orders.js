@@ -28,7 +28,6 @@ export default (state = initialState, action) => {
         action.orderData.image,
         action.orderData.quantity,
         action.orderData.createdOn,
-        action.orderData.reservedUntil,
         action.orderData.suggestedDate,
         action.orderData.isAgreed,
         action.orderData.isCollected
@@ -53,7 +52,6 @@ export default (state = initialState, action) => {
         state.availableOrders[availableOrderIndex].image,
         action.orderData.quantity,
         state.availableOrders[availableOrderIndex].createdOn,
-        action.orderData.reservedUntil,
         action.orderData.suggestedDate,
         action.orderData.isAgreed,
         action.orderData.isCollected

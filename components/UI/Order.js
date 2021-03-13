@@ -1,3 +1,4 @@
+import moment from 'moment/min/moment-with-locales';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
@@ -8,6 +9,7 @@ import OrderActions from './OrderActions';
 import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
+import Colors from '../../constants/Colors';
 
 const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, products }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -29,9 +31,14 @@ const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, p
         {!isProductDetail ? (
           <Text style={{ fontSize: 18, fontFamily: 'roboto-bold' }}>{currentProduct.title}</Text>
         ) : null}
-        <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>
-          {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}
-        </Text>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>
+            {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}{' '}
+          </Text>
+          <Text style={{ fontSize: 16, fontFamily: 'roboto-italic' }}>
+            {moment(order.createdOn).locale('sv').format('D MMMM YYYY')}
+          </Text>
+        </View>
       </View>
       <Divider />
 
@@ -55,7 +62,9 @@ const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, p
             justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
-          <Text style={{ fontFamily: 'bebas-neue', color: '#666', fontSize: 20 }}>Detaljer </Text>
+          <Text style={{ fontFamily: 'bebas-neue', color: Colors.neutral, fontSize: 20 }}>
+            Detaljer{' '}
+          </Text>
           <AntDesign
             style={{
               textAlign: 'right',
@@ -65,7 +74,7 @@ const Order = ({ order, navigation, loggedInUserId, isProductDetail, projects, p
             }}
             name="caretdown"
             size={25}
-            color="#666"
+            color={Colors.neutral}
           />
         </View>
       </TouchableCmp>

@@ -36,7 +36,6 @@ export function fetchOrders() {
             order.image,
             order.quantity,
             order.createdOn,
-            order.reservedUntil,
             order.suggestedDate,
             order.isAgreed,
             order.isCollected
@@ -99,10 +98,6 @@ export function createOrder(
     try {
       console.log('Creating order...');
 
-      const fourDaysFromNow = new Date(
-        currentDate.getTime() + 4 * 24 * 60 * 60 * 1000
-      ).toISOString();
-
       const orderData = {
         productId,
         buyerId,
@@ -112,7 +107,6 @@ export function createOrder(
         image,
         quantity,
         createdOn: currentDate,
-        reservedUntil: fourDaysFromNow,
         suggestedDate,
         isAgreed: false,
         isCollected: false,
@@ -142,7 +136,6 @@ export function updateOrder(
   timeInitiatorId,
   projectId,
   quantity,
-  reservedUntil,
   suggestedDate,
   isAgreed,
   isCollected
@@ -155,7 +148,6 @@ export function updateOrder(
         timeInitiatorId,
         projectId,
         quantity,
-        reservedUntil,
         suggestedDate,
         isAgreed,
         isCollected,

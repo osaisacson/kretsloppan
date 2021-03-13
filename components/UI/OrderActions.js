@@ -36,7 +36,6 @@ const OrderActions = ({
     projectId,
     quantity,
     image,
-    reservedUntil,
     suggestedDate,
     isAgreed,
     isCollected,
@@ -57,9 +56,6 @@ const OrderActions = ({
   // Identifies which user information is most relevant for the logged in user to see
   const infoId = loggedInUserId === buyerId ? sellerId : buyerId;
 
-  const reservedDateHasExpired =
-    new Date(reservedUntil) instanceof Date && new Date(reservedUntil) <= new Date();
-
   const goToItem = () => {
     navigation.navigate('ProductDetail', { detailId: productId });
   };
@@ -78,18 +74,12 @@ const OrderActions = ({
   };
 
   const resetSuggestedDT = () => {
-    const currentDate = new Date();
-    const newReservedUntil = new Date(
-      currentDate.getTime() + 4 * 24 * 60 * 60 * 1000
-    ).toISOString();
-
     console.log('START-----------------');
     console.log('OrderActions/resetSuggestedDT, passed args');
     console.log('id', id);
     console.log('timeInitiatorId/loggedInUserId:', loggedInUserId);
     console.log('projectId', projectId);
     console.log('quantity', quantity);
-    console.log('newReservedUntil', newReservedUntil);
     console.log('orderSuggestedDate', orderSuggestedDate);
     console.log('isAgreed should be false', false);
     console.log('isCollected should be false', false);
@@ -110,7 +100,6 @@ const OrderActions = ({
                 loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
                 projectId,
                 quantity,
-                newReservedUntil, //updated date until which the product is reserved
                 orderSuggestedDate, //updated suggested pickup date
                 false, //isAgreed will be false as we are resetting the time
                 false //isCollected will be false as we are setting up a new time for collection
@@ -136,7 +125,6 @@ const OrderActions = ({
     console.log('timeInitiatorId:', timeInitiatorId);
     console.log('projectId', projectId);
     console.log('quantity', quantity);
-    console.log('reservedUntil', reservedUntil);
     console.log('suggestedDate', suggestedDate);
     console.log('isAgreed should be true', true);
     console.log('isCollected should be false', false);
@@ -159,7 +147,6 @@ const OrderActions = ({
                 timeInitiatorId, //this stays the same as previously, only updates if we try to change the time
                 projectId,
                 quantity,
-                reservedUntil,
                 suggestedDate,
                 true, //isAgreed will be true as the second party just confirmed the time
                 false //isCollected will be false as we just agreed on time for collection
@@ -190,7 +177,6 @@ const OrderActions = ({
     console.log('timeInitiatorId:', timeInitiatorId);
     console.log('projectId', projectId);
     console.log('quantity', quantity);
-    console.log('reservedUntil', reservedUntil);
     console.log('suggestedDate', suggestedDate);
     console.log('isAgreed should be true', true);
     console.log('isCollected should be false', false);
@@ -207,7 +193,6 @@ const OrderActions = ({
               timeInitiatorId, //this stays the same as previously, only updates if we try to change the time
               projectId,
               quantity,
-              reservedUntil,
               suggestedDate,
               true, //isAgreed will be true as nothing has changed with the pickup time
               new Date() //isCollected will be set as today's date as the item was just confirmed as collected

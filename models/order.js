@@ -9,7 +9,6 @@ class Order {
     image,
     quantity,
     createdOn,
-    reservedUntil,
     suggestedDate,
     isAgreed,
     isCollected
@@ -23,7 +22,6 @@ class Order {
     this.image = image;
     this.quantity = quantity;
     this.createdOn = createdOn;
-    this.reservedUntil = reservedUntil;
     this.suggestedDate = suggestedDate;
     this.isAgreed = isAgreed;
     this.isCollected = isCollected;
