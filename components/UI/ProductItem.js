@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { pure } from 'recompose';
 
 import CachedImage from '../../components/UI/CachedImage';
 import UserAvatar from '../../components/UI/UserAvatar';
@@ -189,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductItem;
+export default pure(ProductItem);

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Card } from 'react-native-paper';
+import { pure } from 'recompose';
 
 import ResolvedBadge from '../../components/UI/ResolvedBadge';
 import Colors from '../../constants/Colors';
@@ -69,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextItem;
+export default pure(TextItem);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Badge } from 'react-native-paper';
+import { pure } from 'recompose';
 
 import Colors from './../../constants/Colors';
 import ButtonIcon from './ButtonIcon';
@@ -101,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HeaderTwo;
+export default pure(HeaderTwo);

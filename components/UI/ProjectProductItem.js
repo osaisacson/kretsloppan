@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { pure } from 'recompose';
 
 import Styles from '../../constants/Styles';
 import CachedImage from './CachedImage';
@@ -155,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectProductItem;
+export default pure(ProjectProductItem);

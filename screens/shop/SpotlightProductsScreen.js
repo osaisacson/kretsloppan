@@ -16,8 +16,8 @@ const SpotlightProductsScreen = (props) => {
   const allProducts = allProductsRaw.filter((product) => !(product.amount === product.sold));
 
   const recentProductsSorted = allProducts.sort(function (a, b) {
-    a = new Date(a.readyDate);
-    b = new Date(b.readyDate);
+    a = new Date(a.date);
+    b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 

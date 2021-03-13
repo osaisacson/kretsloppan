@@ -1,13 +1,14 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
-import { Avatar, Badge } from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import TouchableCmp from '../../components/UI/TouchableCmp';
 
 import ButtonIcon from '../../components/UI/ButtonIcon';
 import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
+import { pure } from 'recompose';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import * as ordersActions from '../../store/actions/orders';
@@ -561,4 +562,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderActions;
+export default pure(OrderActions);

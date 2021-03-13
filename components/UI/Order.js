@@ -3,6 +3,7 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
+import { pure } from 'recompose';
 
 import Card from './Card';
 import OrderActions from './OrderActions';
@@ -35,7 +36,7 @@ const Order = ({
 
   const currentProduct = productId ? products.find((product) => product.id === productId) : {};
   if (!currentProduct) {
-    console.log('The product has likely been deleted');
+    console.log('FYI: A product that is associated with some orders has likely been deleted here');
     return null;
   }
   const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
@@ -189,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Order;
+export default pure(Order);

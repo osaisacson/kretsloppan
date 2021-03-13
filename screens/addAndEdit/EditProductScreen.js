@@ -151,8 +151,8 @@ const EditProductScreen = (props) => {
             +formState.inputValues.price,
             formState.inputValues.priceText,
             formState.inputValues.internalComments,
-            editedProduct.booked,
-            editedProduct.sold
+            +editedProduct.booked,
+            +editedProduct.sold
           )
         );
         props.navigation.navigate('ProductDetail', { detailId: prodId });
@@ -243,7 +243,7 @@ const EditProductScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.amount.toString()}
           onChangeText={textChangeHandler.bind(this, 'amount')}
-          keyboardType="default"
+          keyboardType="numeric"
           returnKeyType="next"
         />
       </FormFieldWrapper>
@@ -260,7 +260,7 @@ const EditProductScreen = (props) => {
           style={{ ...formStyles.input, width: 100 }}
           value={formState.inputValues.price.toString()}
           onChangeText={textChangeHandler.bind(this, 'price')}
-          keyboardType="default"
+          keyboardType="numeric"
           returnKeyType="next"
         />
         <Text style={{ marginTop: 20, fontFamily: 'roboto-light-italic', padding: 5 }}>Eller</Text>
@@ -318,25 +318,25 @@ const EditProductScreen = (props) => {
           <TextInput
             placeholder="Längd (mm)"
             style={formStyles.input}
-            value={formState.inputValues.length}
+            value={formState.inputValues.length.toString()}
             onChangeText={textChangeHandler.bind(this, 'length')}
-            keyboardType="default"
+            keyboardType="numeric"
             returnKeyType="next"
           />
           <TextInput
             placeholder="Höjd (mm)"
             style={formStyles.input}
-            value={formState.inputValues.height}
+            value={formState.inputValues.height.toString()}
             onChangeText={textChangeHandler.bind(this, 'height')}
-            keyboardType="default"
+            keyboardType="numeric"
             returnKeyType="next"
           />
           <TextInput
             placeholder="Bredd (mm)"
             style={formStyles.input}
-            value={formState.inputValues.width}
+            value={formState.inputValues.width.toString()}
             onChangeText={textChangeHandler.bind(this, 'width')}
-            keyboardType="default"
+            keyboardType="numeric"
             returnKeyType="next"
           />
         </View>
@@ -377,7 +377,7 @@ const EditProductScreen = (props) => {
           style={formStyles.input}
           value={formState.inputValues.phone.toString()}
           onChangeText={textChangeHandler.bind(this, 'phone')}
-          keyboardType="default"
+          keyboardType="numeric"
           returnKeyType="done"
         />
       </FormFieldWrapper>
