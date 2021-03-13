@@ -7,7 +7,7 @@ import { convertImage } from '../helpers';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
-export const UPDATE_PRODUCT_AMOUNT = 'UPDATE_PRODUCT_AMOUNT';
+export const UPDATE_BOOKED_PRODUCTS = 'UPDATE_BOOKED_PRODUCTS';
 export const UPDATE_PRODUCT_SOLD_AMOUNT = 'UPDATE_PRODUCT_SOLD_AMOUNT';
 
 export const CHANGE_PRODUCT_STATUS = 'CHANGE_PRODUCT_STATUS';
@@ -54,8 +54,8 @@ export function fetchProducts() {
             product.price,
             product.priceText,
             product.date,
-            product.readyDate,
             product.internalComments,
+            product.booked,
             product.sold
           );
 
@@ -72,6 +72,8 @@ export function fetchProducts() {
           userProducts,
         });
         console.log(`Products:`);
+        console.log('PRODUCTS: ', allProducts);
+
         console.log(`...${allProducts.length} total products found and loaded.`);
         console.log(`...${userProducts.length} products created by the user found and loaded.`);
       }
@@ -110,6 +112,8 @@ export function createProduct(
       data ? JSON.parse(data) : {}
     );
     const ownerId = userData.userId;
+    const originalBooked = 0;
+    const originalSold = 0;
 
     try {
       console.log('Creating product...');
@@ -138,9 +142,9 @@ export function createProduct(
         width,
         price,
         priceText,
-        readyDate: currentDate,
         internalComments,
-        sold: 0,
+        booked: originalBooked,
+        sold: originalSold,
       };
 
       const { key } = await firebase.database().ref('products').push(productData);
@@ -183,7 +187,9 @@ export function updateProduct(
   width = '',
   price = '',
   priceText = '',
-  internalComments = ''
+  internalComments = '',
+  booked = 0,
+  sold = 0
 ) {
   return async (dispatch) => {
     try {
@@ -211,6 +217,8 @@ export function updateProduct(
         price,
         priceText,
         internalComments,
+        booked,
+        sold,
       };
 
       //If we are getting a base64 image do an update that involves waiting for it to convert to a firebase url
@@ -237,6 +245,8 @@ export function updateProduct(
           price,
           priceText,
           internalComments,
+          booked,
+          sold,
         };
       }
 
@@ -259,62 +269,64 @@ export function updateProduct(
   };
 }
 
-export function updateProductAmount(id, amount) {
-  return async (dispatch) => {
-    try {
-      console.log(`Attempting to update product with id: ${id}...`);
+// export function updateBookedProducts(id, booked) {
+//   return async (dispatch) => {
+//     try {
+//       console.log(
+//         `Attempting to update product with id: ${id} to having ${booked} booked items...`
+//       );
 
-      const dataToUpdate = {
-        amount,
-      };
+//       const dataToUpdate = {
+//         booked,
+//       };
 
-      const returnedProductData = await firebase
-        .database()
-        .ref(`products/${id}`)
-        .update(dataToUpdate);
+//       const returnedProductData = await firebase
+//         .database()
+//         .ref(`products/${id}`)
+//         .update(dataToUpdate);
 
-      console.log(`...updated product with id ${id}:`, returnedProductData);
+//       console.log(`...updated product with id ${id}:`, returnedProductData);
 
-      dispatch({
-        type: UPDATE_PRODUCT_AMOUNT,
-        pid: id,
-        productData: dataToUpdate,
-      });
-    } catch (error) {
-      console.log('Error in actions/products/updateProductAmount: ', error);
-      throw error;
-    }
-  };
-}
+//       dispatch({
+//         type: UPDATE_BOOKED_PRODUCTS,
+//         pid: id,
+//         productData: dataToUpdate,
+//       });
+//     } catch (error) {
+//       console.log('Error in actions/products/updateBookedProducts: ', error);
+//       throw error;
+//     }
+//   };
+// }
 
-export function updateProductSoldAmount(id, soldAmount) {
-  return async (dispatch) => {
-    console.log('soldAmount from updateProductSoldAmount', soldAmount);
-    try {
-      console.log(`Attempting to update product with id: ${id}...`);
+// export function updateProductSoldAmount(id, soldAmount) {
+//   return async (dispatch) => {
+//     console.log('soldAmount from updateProductSoldAmount', soldAmount);
+//     try {
+//       console.log(`Attempting to update product with id: ${id}...`);
 
-      const dataToUpdate = {
-        sold: soldAmount,
-      };
+//       const dataToUpdate = {
+//         sold: soldAmount,
+//       };
 
-      const returnedProductData = await firebase
-        .database()
-        .ref(`products/${id}`)
-        .update(dataToUpdate);
+//       const returnedProductData = await firebase
+//         .database()
+//         .ref(`products/${id}`)
+//         .update(dataToUpdate);
 
-      console.log(`...updated product with id ${id}:`, returnedProductData);
+//       console.log(`...updated product with id ${id}:`, returnedProductData);
 
-      dispatch({
-        type: UPDATE_PRODUCT_SOLD_AMOUNT,
-        pid: id,
-        productData: dataToUpdate,
-      });
-    } catch (error) {
-      console.log('Error in actions/products/updateProductSoldAmount: ', error);
-      throw error;
-    }
-  };
-}
+//       dispatch({
+//         type: UPDATE_PRODUCT_SOLD_AMOUNT,
+//         pid: id,
+//         productData: dataToUpdate,
+//       });
+//     } catch (error) {
+//       console.log('Error in actions/products/updateProductSoldAmount: ', error);
+//       throw error;
+//     }
+//   };
+// }
 
 export const deleteProduct = (productId) => {
   return async (dispatch) => {

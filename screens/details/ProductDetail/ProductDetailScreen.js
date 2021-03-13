@@ -61,12 +61,15 @@ const ProductDetailScreen = (props) => {
     title,
     width,
     location,
+    booked,
     sold,
   } = selectedProduct;
 
   const productOrders = useSelector((state) =>
     state.orders.availableOrders.filter((order) => order.productId === id)
   );
+
+  console.log('productOrders: ', productOrders);
 
   const allOrdersCollected = productOrders.every((order) => order.isCollected);
   const allSold = amount === sold && allOrdersCollected;
@@ -140,7 +143,7 @@ const ProductDetailScreen = (props) => {
         <SectionCard>
           {!allSold && !allReserved ? (
             <>
-              {amount ? <Text style={detailStyles.amount}>{amount} st à</Text> : null}
+              {/* {amount ? <Text style={detailStyles.amount}>{amount} st à</Text> : null} */}
               {priceText && !price ? <Text style={detailStyles.price}>{priceText}</Text> : null}
               {(price || price === 0) && !priceText ? (
                 <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
@@ -148,26 +151,28 @@ const ProductDetailScreen = (props) => {
             </>
           ) : null}
 
-          {allReserved ? (
-            <StatusBadge
-              style={{
-                position: 'absolute',
-                zIndex: 10,
-                top: -5,
-                left: -3,
-                alignSelf: 'left',
-                width: 200,
-              }}
-              text={
-                amount === 1
-                  ? 'För närvarande reserverad'
-                  : amount === 0
-                  ? 'Alla för närvarande reserverade'
-                  : `${amount} kvar`
-              }
-              backgroundColor={Colors.darkPrimary}
-            />
-          ) : null}
+          <StatusBadge
+            style={{
+              position: 'absolute',
+              zIndex: 10,
+              top: -5,
+              left: -3,
+              alignSelf: 'left',
+              width: 200,
+            }}
+            text={
+              amount === booked //if original amount is the same as booked
+                ? 'Alla för närvarande reserverade' //then all are reserved
+                : amount === sold //if original amount is the same as sold
+                ? amount > 1
+                  ? 'Alla sålda'
+                  : 'Såld' //then all are sold
+                : amount > booked
+                ? `${amount - booked} kvar`
+                : `${amount} st à` //if original amount is more than booked, show how many are left
+            }
+            backgroundColor={Colors.darkPrimary}
+          />
           {allSold ? (
             <StatusBadge
               style={{
@@ -215,7 +220,7 @@ const ProductDetailScreen = (props) => {
             </>
           ) : null}
           <Title>{title}</Title>
-          {amount > 1 ? <Paragraph>{amount} stycken tillgängliga</Paragraph> : null}
+          {amount > 1 ? <Paragraph>{amount} stycken</Paragraph> : null}
           {description ? (
             <>
               <Divider style={{ marginVertical: 10 }} />
@@ -269,7 +274,7 @@ const ProductDetailScreen = (props) => {
           <Divider style={{ marginTop: 10 }} />
           <HeaderThree style={{ marginVertical: 10 }} text="Upphämtningsdetaljer" />
           <Paragraph>{ownerProfile.profileName}</Paragraph>
-          <Paragraph>{phone ? `0${phone}` : 'Ingen telefon angiven'}</Paragraph>
+          <Paragraph>{phone ? phone : 'Ingen telefon angiven'}</Paragraph>
           <Paragraph>{address ? address : 'Ingen address angiven'}</Paragraph>
           <Paragraph>{pickupDetails}</Paragraph>
           <Divider style={{ marginTop: 10 }} />

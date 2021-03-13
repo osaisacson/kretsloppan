@@ -23,6 +23,7 @@ const OrderActions = ({
   order,
   isProductDetail,
   products,
+  profiles,
   projectForProduct,
 }) => {
   const dispatch = useDispatch();
@@ -43,12 +44,35 @@ const OrderActions = ({
 
   const currentProduct = products.find((prod) => prod.id === productId);
 
+  const {
+    category,
+    condition,
+    style,
+    material,
+    color,
+    title,
+    amount,
+    address,
+    location,
+    pickupDetails,
+    phone,
+    description,
+    background,
+    length,
+    height,
+    width,
+    price,
+    priceText,
+    internalComments,
+    booked,
+    sold,
+  } = currentProduct;
+
   const [showCalendar, setShowCalendar] = useState(false);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
   // Identifies who is currently watching the order
   const isTimeInitiator = loggedInUserId === timeInitiatorId;
-  const profiles = useSelector((state) => state.profiles.allProfiles);
   const timeInitiatorProfile = profiles.find((profile) => profile.profileId === timeInitiatorId);
   const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
   const sellerProfile = profiles.find((profile) => profile.profileId === sellerId);
@@ -87,7 +111,9 @@ const OrderActions = ({
 
     Alert.alert(
       'Ändra tid',
-      'Genom att klicka här ändrar du den föreslagna tiden. Ni får då igen fyra dagar på er att komma överens om en tid.',
+      `Genom att klicka här ändrar du den föreslagna tiden till ${moment(orderSuggestedDate)
+        .locale('sv')
+        .format('HH:mm, D MMMM')}. Ni får då igen fyra dagar på er att komma överens om en tid.`,
       [
         { text: 'Avbryt', style: 'default' },
         {
@@ -160,12 +186,12 @@ const OrderActions = ({
 
   //Set order as completed
   const collectHandler = () => {
-    const originalSoldProducts = currentProduct.sold ? currentProduct.sold : 0;
+    const originalSoldProducts = sold ? sold : 0;
     const totalSoldProducts = originalSoldProducts + quantity; //Existing sold items plus the quantity of the currently completed order
     console.log('START-----------------');
     console.log('OrderActions/approveSuggestedDateTime, passed args');
     console.log('-----');
-    console.log('For updateProductSoldAmount()');
+    console.log('For updateProduct()');
     console.log('Prep:');
     console.log({ originalSoldProducts, quantity });
     console.log('Passed:');
@@ -199,7 +225,33 @@ const OrderActions = ({
             )
           );
 
-          dispatch(productsActions.updateProductSoldAmount(productId, totalSoldProducts));
+          dispatch(
+            productsActions.updateProduct(
+              productId,
+              category,
+              condition,
+              style,
+              material,
+              color,
+              title,
+              amount,
+              image,
+              address,
+              location,
+              pickupDetails,
+              phone,
+              description,
+              background,
+              length,
+              height,
+              width,
+              price,
+              priceText,
+              internalComments,
+              booked,
+              totalSoldProducts
+            )
+          );
         },
       },
       { text: 'Nej', style: 'destructive' },
@@ -207,8 +259,38 @@ const OrderActions = ({
   };
 
   const deleteHandler = (orderId, productId, orderQuantity) => {
-    const updatedProductAmount = Number(currentProduct.amount) + Number(orderQuantity);
-    console.log({ orderId, productId, orderQuantity, updatedProductAmount });
+    const updatedBookedProducts = Number(booked === undefined ? 0 : booked) - Number(orderQuantity);
+    console.log('START-----------------');
+    console.log('OrderActions/deleteHandler, passed args');
+    console.log('Prep:');
+    console.log({ orderId, orderQuantity });
+    console.log('To updateProduct:');
+    console.log({
+      productId,
+      category,
+      condition,
+      style,
+      material,
+      color,
+      title,
+      amount,
+      image,
+      address,
+      location,
+      pickupDetails,
+      phone,
+      description,
+      background,
+      length,
+      height,
+      width,
+      price,
+      priceText,
+      internalComments,
+      updatedBookedProducts, //updated number for how many products have been booked
+      sold,
+    });
+    console.log('-----------------END');
 
     Alert.alert(
       'Är du säker?',
@@ -220,7 +302,33 @@ const OrderActions = ({
           style: 'destructive',
           onPress: () => {
             dispatch(ordersActions.deleteOrder(orderId));
-            dispatch(productsActions.updateProductAmount(productId, updatedProductAmount));
+            dispatch(
+              productsActions.updateProduct(
+                productId,
+                category,
+                condition,
+                style,
+                material,
+                color,
+                title,
+                amount,
+                image,
+                address,
+                location,
+                pickupDetails,
+                phone,
+                description,
+                background,
+                length,
+                height,
+                width,
+                price,
+                priceText,
+                internalComments,
+                updatedBookedProducts, //updated number for how many products have been booked
+                sold
+              )
+            );
           },
         },
       ]
@@ -250,7 +358,7 @@ const OrderActions = ({
                 <Text style={styles.smallText}>Köpare</Text>
               </View>
             </View>
-            {projectForProduct ? (
+            {projectForProduct.id ? (
               <View style={{ flex: 1, flexDirection: 'row', marginTop: 5 }}>
                 <TouchableCmp
                   activeOpacity={0.5}

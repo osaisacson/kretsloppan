@@ -7,8 +7,9 @@ import Order from './Order';
 const Orders = ({ orders, navigation, loggedInUserId, isProductDetail }) => {
   const products = useSelector((state) => state.products.availableProducts);
   const projects = useSelector((state) => state.projects.availableProjects);
-
+  const profiles = useSelector((state) => state.profiles.allProfiles);
   if (!orders) {
+    console.log('No orders to show');
     return null;
   }
 
@@ -23,6 +24,7 @@ const Orders = ({ orders, navigation, loggedInUserId, isProductDetail }) => {
           isProductDetail={isProductDetail}
           projects={projects}
           products={products}
+          profiles={profiles}
         />
       ))}
     </View>

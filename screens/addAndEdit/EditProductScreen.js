@@ -150,7 +150,9 @@ const EditProductScreen = (props) => {
             +formState.inputValues.width,
             +formState.inputValues.price,
             formState.inputValues.priceText,
-            formState.inputValues.internalComments
+            formState.inputValues.internalComments,
+            editedProduct.booked,
+            editedProduct.sold
           )
         );
         props.navigation.navigate('ProductDetail', { detailId: prodId });

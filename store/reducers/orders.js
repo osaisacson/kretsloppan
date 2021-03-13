@@ -32,6 +32,7 @@ export default (state = initialState, action) => {
         action.orderData.isAgreed,
         action.orderData.isCollected
       );
+
       console.log('store/reducers/orders/CREATE_ORDER, new order: ', newOrder);
       return {
         ...state,
@@ -51,11 +52,12 @@ export default (state = initialState, action) => {
         action.orderData.projectId,
         state.availableOrders[availableOrderIndex].image,
         action.orderData.quantity,
-        state.availableOrders[availableOrderIndex].createdOn,
+        action.orderData.createdOn,
         action.orderData.suggestedDate,
         action.orderData.isAgreed,
         action.orderData.isCollected
       );
+
       console.log('store/reducers/orders/UPDATE_ORDER, updated order: ', updatedUserOrder);
 
       //Update state

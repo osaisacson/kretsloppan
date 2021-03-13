@@ -26,8 +26,8 @@ const UserProfile = (props) => {
   const reservedUserProducts = userProducts.filter((product) => product.amount === 0);
 
   const availableUserProductsSorted = availableUserProducts.sort(function (a, b) {
-    a = new Date(a.readyDate);
-    b = new Date(b.readyDate);
+    a = new Date(a.date);
+    b = new Date(b.date);
     return b > a ? -1 : b < a ? 1 : 0;
   });
 

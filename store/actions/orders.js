@@ -53,7 +53,7 @@ export function fetchOrders() {
           orders: allOrders,
           userOrders,
         });
-        console.log(`Orders:`);
+        console.log(`Orders:`, allOrders);
         console.log(`...${allOrders.length} total orders found and loaded.`);
         console.log(`...${userOrders.length} orders created by the user found and loaded.`);
       }
@@ -96,8 +96,6 @@ export function createOrder(
     const buyerId = userData.userId;
 
     try {
-      console.log('Creating order...');
-
       const orderData = {
         productId,
         buyerId,
@@ -111,6 +109,7 @@ export function createOrder(
         isAgreed: false,
         isCollected: false,
       };
+      console.log('Creating order with data: ', orderData);
 
       const { key } = await firebase.database().ref('orders').push(orderData);
 
@@ -141,6 +140,7 @@ export function updateOrder(
   isCollected
 ) {
   return async (dispatch) => {
+    const currentDate = new Date();
     try {
       console.log(`Attempting to update order with id: ${id}...`);
 
@@ -148,6 +148,7 @@ export function updateOrder(
         timeInitiatorId,
         projectId,
         quantity,
+        createdOn: currentDate,
         suggestedDate,
         isAgreed,
         isCollected,

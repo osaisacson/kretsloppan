@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Divider } from 'react-native-paper';
 
-const StatusText = ({ label, text, textStyle }) => {
-  return text ? (
+const StatusText = ({ label, text, textStyle, alwaysShow }) => {
+  return text || alwaysShow ? (
     <>
       <View
         style={{

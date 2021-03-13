@@ -22,8 +22,8 @@ class Product {
     price,
     priceText,
     date,
-    readyDate,
     internalComments,
+    booked,
     sold
   ) {
     this.id = id;
@@ -48,8 +48,8 @@ class Product {
     this.price = price;
     this.priceText = priceText;
     this.date = date;
-    this.readyDate = readyDate;
     this.internalComments = internalComments;
+    this.booked = booked;
     this.sold = sold;
   }
 }

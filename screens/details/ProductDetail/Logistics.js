@@ -28,7 +28,32 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
-  const { id, image, amount, ownerId, suggestedDate, sold } = selectedProduct;
+  const {
+    id,
+    image,
+    amount,
+    ownerId,
+    category,
+    condition,
+    style,
+    material,
+    color,
+    title,
+    address,
+    location,
+    pickupDetails,
+    phone,
+    description,
+    background,
+    length,
+    height,
+    width,
+    price,
+    priceText,
+    internalComments,
+    booked,
+    sold,
+  } = selectedProduct;
 
   const productOrders = useSelector((state) =>
     state.orders.availableOrders.filter((order) => order.productId === id)
@@ -36,7 +61,8 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
 
   const allOrdersCollected = productOrders.every((order) => order.isCollected);
   const allSold = amount === sold && allOrdersCollected;
-  const allReserved = amount > sold && !allOrdersCollected;
+  const allReserved = amount === booked;
+  console.log({ amount, sold, booked });
   const canBeReserved = !allReserved && !allSold;
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
@@ -52,11 +78,10 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   };
 
   const reserveHandler = (id, ownerId, orderProjectId, quantity, orderSuggestedDate) => {
-    console.log({ id, ownerId, orderProjectId, quantity, orderSuggestedDate });
     const imageUrl = image;
-    const quantityNum = Number(quantity);
-    const newProductAmount = amount - quantityNum;
-    console.log('Logistics/reserveHandler: newProductAmount', newProductAmount);
+    const quantityBooked = Number(quantity);
+    const newBookedProducts =
+      (selectedProduct.booked === undefined ? 0 : selectedProduct.booked) + quantityBooked;
 
     if (!quantity || !orderSuggestedDate) {
       Alert.alert(
@@ -76,6 +101,45 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
           text: 'Jag förstår',
           style: 'destructive',
           onPress: () => {
+            console.log('START-----------------');
+            console.log('Logistics/reserveHandler');
+            console.log('To ordersActions.createOrder:');
+            console.log({
+              id,
+              ownerId,
+              loggedInUserId,
+              orderProjectId,
+              imageUrl,
+              quantityBooked,
+              orderSuggestedDate,
+            });
+            console.log('To productsActions.updateProducts:');
+            console.log({
+              id,
+              category,
+              condition,
+              style,
+              material,
+              color,
+              title,
+              amount,
+              image,
+              address,
+              location,
+              pickupDetails,
+              phone,
+              description,
+              background,
+              length,
+              height,
+              width,
+              price,
+              priceText,
+              internalComments,
+              newBookedProducts, //updated number for how many products have been booked
+              sold,
+            });
+            console.log('-----------------END');
             dispatch(
               ordersActions.createOrder(
                 id,
@@ -83,11 +147,37 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                 loggedInUserId, //id of who initiated the time suggestion, becomes timeInitiatorId
                 orderProjectId, //becomes projectId
                 imageUrl,
-                quantityNum,
+                quantityBooked,
                 orderSuggestedDate
               )
             );
-            dispatch(productsActions.updateProductAmount(id, newProductAmount));
+            dispatch(
+              productsActions.updateProduct(
+                id,
+                category,
+                condition,
+                style,
+                material,
+                color,
+                title,
+                amount,
+                image,
+                address,
+                location,
+                pickupDetails,
+                phone,
+                description,
+                background,
+                length,
+                height,
+                width,
+                price,
+                priceText,
+                internalComments,
+                newBookedProducts, //updated number for how many products have been booked
+                sold
+              )
+            );
             refRBSheet.current.close();
           },
         },
@@ -172,7 +262,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                 ) : null}
 
                 {/* If there are multiple items available to reserve, ask how many the user wants to reserve */}
-                {amount > 1 ? (
+                {amount - booked > 1 ? (
                   <>
                     <HeaderThree
                       text="Hur många vill du reservera?"
@@ -187,7 +277,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                         style={{ width: 200, height: 40 }}
                         minimumValue={1}
                         step={1}
-                        maximumValue={amount}
+                        maximumValue={amount - booked}
                         minimumTrackTintColor={Colors.subtleGreen}
                         maximumTrackTintColor="#000000"
                         value={orderQuantity.toString()}
@@ -198,10 +288,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                 ) : null}
 
                 {/* Set a date and time for pickup */}
-                <CalendarSelection
-                  suggestedDate={suggestedDate}
-                  sendSuggestedTime={sendSuggestedTime}
-                />
+                <CalendarSelection suggestedDate={null} sendSuggestedTime={sendSuggestedTime} />
                 <View style={{ alignItems: 'center', marginBottom: 15 }}>
                   <Text>{orderQuantity ? `Antal: ${orderQuantity}` : null}</Text>
                   <Text>
@@ -213,7 +300,7 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                   </Text>
                 </View>
                 <ButtonConfirm
-                  style={{ backgroundColor: Colors.primary, borderRadius: 5, padding: 20 }}
+                  style={{ backgroundColor: Colors.completed, borderRadius: 5, padding: 20 }}
                   onSelect={() => {
                     reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
                   }}
