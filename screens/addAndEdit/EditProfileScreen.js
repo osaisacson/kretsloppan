@@ -95,7 +95,7 @@ const EditProfileScreen = (props) => {
             formState.inputValues.image
           )
         );
-        props.navigation.navigate('ProductDetail', { detailId: firebaseId });
+        props.navigation.navigate('Min Sida');
         setIsLoading(false);
       } else {
         await dispatch(
