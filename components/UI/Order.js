@@ -55,22 +55,25 @@ const Order = ({
   };
 
   return (
-    <Card style={{ marginTop: 4 }}>
+    <Card>
       {/* Title and quantity */}
       <View style={{ ...styles.oneLineSpread, alignItems: 'flex-end' }}>
-        {!isProductDetail ? (
-          <Text style={{ fontSize: 20, fontFamily: 'roboto-bold', width: '60%' }}>
-            {currentProduct.title}{' '}
-          </Text>
+        <Text style={{ fontSize: 20, fontFamily: 'roboto-bold', width: '60%' }}>
+          {currentProduct.title}{' '}
+        </Text>
+        {!isCollected ? (
+          <>
+            <View
+              style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', width: '40%' }}>
+              <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>
+                {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}
+              </Text>
+              <Text style={{ fontSize: 16 }}>
+                {moment(order.createdOn).locale('sv').format('D MMMM YYYY')}
+              </Text>
+            </View>
+          </>
         ) : null}
-        <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', width: '40%' }}>
-          <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>
-            {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}
-          </Text>
-          <Text style={{ fontSize: 16 }}>
-            {moment(order.createdOn).locale('sv').format('D MMMM YYYY')}
-          </Text>
-        </View>
       </View>
       <Divider />
 

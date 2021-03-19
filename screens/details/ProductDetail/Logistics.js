@@ -55,14 +55,13 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     sold,
   } = selectedProduct;
 
-  const productOrders = useSelector((state) =>
-    state.orders.availableOrders.filter((order) => order.productId === id)
-  );
+  const originalItems = amount === undefined ? 1 : amount;
+  const bookedItems = booked || 0;
+  const soldItems = sold || 0;
 
-  const allOrdersCollected = productOrders.every((order) => order.isCollected);
-  const allSold = amount === sold && allOrdersCollected;
-  const allReserved = amount === booked;
-  console.log({ amount, sold, booked });
+  const allSold = originalItems === soldItems;
+  const allReserved = originalItems === bookedItems;
+
   const canBeReserved = !allReserved && !allSold;
 
   //Get product and owner id from navigation params (from parent screen) and current user id from state
