@@ -72,7 +72,6 @@ export function fetchProducts() {
           userProducts,
         });
         console.log(`Products:`);
-        console.log('PRODUCTS: ', allProducts);
 
         console.log(`...${allProducts.length} total products found and loaded.`);
         console.log(`...${userProducts.length} products created by the user found and loaded.`);

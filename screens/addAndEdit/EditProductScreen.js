@@ -308,7 +308,7 @@ const EditProductScreen = (props) => {
           returnKeyType="next"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper prompt="Skriv in en längd, höjd och/eller bredd">
+      <FormFieldWrapper label="Skriv in en längd, höjd och/eller bredd">
         <View
           style={{
             flex: 1,

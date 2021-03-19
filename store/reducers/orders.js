@@ -33,6 +33,8 @@ export default (state = initialState, action) => {
         action.orderData.isCollected
       );
 
+      console.log('XXXXX SUGGESTED DATE in CREATE_ORDER....: ', action.orderData.suggestedDate);
+
       console.log('store/reducers/orders/CREATE_ORDER, new order: ', newOrder);
       return {
         ...state,

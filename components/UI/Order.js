@@ -38,7 +38,7 @@ const Order = ({
   const currentProduct = productId ? products.find((product) => product.id === productId) : {};
   if (!currentProduct) {
     console.log(
-      'FYI: A product that is associated with some orders has likely been deleted on this page'
+      'A product that is associated with some orders has likely been deleted on this page'
     );
     return null;
   }
@@ -59,11 +59,13 @@ const Order = ({
       {/* Title and quantity */}
       <View style={{ ...styles.oneLineSpread, alignItems: 'flex-end' }}>
         {!isProductDetail ? (
-          <Text style={{ fontSize: 20, fontFamily: 'roboto-bold' }}>{currentProduct.title} </Text>
+          <Text style={{ fontSize: 20, fontFamily: 'roboto-bold', width: '60%' }}>
+            {currentProduct.title}{' '}
+          </Text>
         ) : null}
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', width: '40%' }}>
           <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>
-            {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}{' '}
+            {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}
           </Text>
           <Text style={{ fontSize: 16 }}>
             {moment(order.createdOn).locale('sv').format('D MMMM YYYY')}
@@ -117,11 +119,6 @@ const Order = ({
             <>
               <StatusText
                 alwaysShow
-                textStyle={{
-                  width: suggestedDate ? 200 : '100%',
-                  color: suggestedDate ? '#000' : Colors.primary,
-                  textAlign: suggestedDate ? 'right' : 'center',
-                }}
                 label={
                   suggestedDate && isAgreed
                     ? 'Hämtas den:'
@@ -138,24 +135,15 @@ const Order = ({
                     ? formattedDate(isCollected)
                     : 'Inget förslag på upphämtningstid ännu'
                 }
+                textStyle={{ color: Colors.darkPrimary, fontSize: 17 }}
               />
+              <StatusText label="Upphämtningsaddress:" text={currentProduct.address} />
+              <StatusText label="Detaljer om hämtning:" text={currentProduct.pickupDetails} />
               <StatusText
-                textStyle={{ width: 200, textAlign: 'right' }}
-                label="Upphämtningsaddress:"
-                text={currentProduct.address}
-              />
-              <StatusText
-                textStyle={{ width: 200, textAlign: 'right' }}
-                label="Detaljer om hämtning:"
-                text={currentProduct.pickupDetails}
-              />
-              <StatusText
-                textStyle={{ width: 200, textAlign: 'right' }}
                 label={`${sellerProfile.profileName}'s telefon:`}
                 text={currentProduct.phone}
               />
               <StatusText
-                textStyle={{ width: 200, textAlign: 'right' }}
                 label={`${buyerProfile.profileName}'s telefon:`}
                 text={buyerProfile.phone}
               />

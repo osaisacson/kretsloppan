@@ -21,6 +21,7 @@ export function fetchOrders() {
 
       if (orderSnapshot.exists) {
         const normalizedOrderData = orderSnapshot.val();
+
         const allOrders = [];
         const userOrders = [];
 
@@ -109,7 +110,7 @@ export function createOrder(
         isAgreed: false,
         isCollected: false,
       };
-      console.log('Creating order with data: ', orderData);
+      console.log('Actions/createOrder attempting to create order with data: ', orderData);
 
       const { key } = await firebase.database().ref('orders').push(orderData);
 
@@ -117,6 +118,8 @@ export function createOrder(
         ...orderData,
         id: key,
       };
+
+      console.log('XXXXX SUGGESTED DATE in createOrder....: ', suggestedDate);
 
       dispatch({
         type: CREATE_ORDER,

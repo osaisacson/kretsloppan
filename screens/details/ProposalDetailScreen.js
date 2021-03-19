@@ -88,12 +88,7 @@ const ProposalDetailScreen = (props) => {
   return (
     <DetailWrapper>
       {isResolved ? (
-        <StatusBadge
-          style={{ alignSelf: 'flex-start', marginTop: 5 }}
-          text="Löst!"
-          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-          backgroundColor={Colors.completed}
-        />
+        <StatusBadge text="Löst!" style={{ backgroundColor: Colors.completed, color: '#fff' }} />
       ) : null}
 
       <SectionCard>
@@ -148,8 +143,8 @@ const ProposalDetailScreen = (props) => {
             />
             {!isResolved ? (
               <ButtonRound
-              style={{ backgroundColor: Colors.approved  }}
-                              disabled={isResolved} //disable/enable base on true/false of these params
+                style={{ backgroundColor: Colors.approved }}
+                disabled={isResolved} //disable/enable base on true/false of these params
                 onSelect={() => {
                   collectHandler(selectedProposal.id);
                 }}

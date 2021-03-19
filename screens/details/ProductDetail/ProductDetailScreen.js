@@ -74,7 +74,6 @@ const ProductDetailScreen = (props) => {
   );
 
   const hasAnyOrders = productOrders.length;
-
   const allSold = hasAnyOrders && originalItems === soldItems;
   const allReserved = hasAnyOrders && originalItems === bookedItems;
 
@@ -145,33 +144,31 @@ const ProductDetailScreen = (props) => {
 
         <SectionCard>
           {!allSold && !allReserved ? (
-            <>
-              {/* {originalItems ? <Text style={detailStyles.originalItems}>{originalItems} st à</Text> : null} */}
-              {priceText && !price ? <Text style={detailStyles.price}>{priceText}</Text> : null}
-              {(price || price === 0) && !priceText ? (
-                <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
-              ) : null}
-            </>
+            <View
+              style={{
+                position: 'absolute',
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                zIndex: 10,
+                width: '100%',
+              }}>
+              <StatusBadge
+                text={
+                  allReserved
+                    ? 'Alla för närvarande reserverade'
+                    : allSold
+                    ? 'Alla sålda'
+                    : `${originalItems - bookedItems} st à`
+                }
+                style={{ backgroundColor: Colors.darkPrimary, color: '#fff' }}
+              />
+              <StatusBadge
+                text={priceText ? priceText : `${price} kr`}
+                style={{ backgroundColor: '#fff', color: '#000' }}
+              />
+            </View>
           ) : null}
-
-          <StatusBadge
-            style={{
-              position: 'absolute',
-              zIndex: 10,
-              top: -5,
-              left: -3,
-              alignSelf: 'left',
-              width: 200,
-            }}
-            text={
-              allReserved
-                ? 'Alla för närvarande reserverade'
-                : allSold
-                ? 'Alla sålda'
-                : `${originalItems - soldItems} st à`
-            }
-            backgroundColor={allSold ? Colors.subtleGreen : Colors.darkPrimary}
-          />
 
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
