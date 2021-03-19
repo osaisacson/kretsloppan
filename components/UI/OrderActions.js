@@ -293,47 +293,43 @@ const OrderActions = ({
     });
     console.log('-----------------END');
 
-    Alert.alert(
-      'Är du säker?',
-      'Vill du verkligen radera den här reservationen? Det går inte att gå ändra sig när det väl är gjort.',
-      [
-        { text: 'Nej', style: 'default' },
-        {
-          text: 'Ja, radera',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(ordersActions.deleteOrder(orderId));
-            dispatch(
-              productsActions.updateProduct(
-                productId,
-                category,
-                condition,
-                style,
-                material,
-                color,
-                title,
-                amount,
-                image,
-                address,
-                location,
-                pickupDetails,
-                phone,
-                description,
-                background,
-                length,
-                height,
-                width,
-                price,
-                priceText,
-                internalComments,
-                updatedBookedProducts, //updated number for how many products have been booked
-                sold
-              )
-            );
-          },
+    Alert.alert('Är du säker?', 'Vill du verkligen ta bort den här reservationen?', [
+      { text: 'Nej', style: 'default' },
+      {
+        text: 'Ja, ta bort',
+        style: 'destructive',
+        onPress: () => {
+          dispatch(ordersActions.deleteOrder(orderId));
+          dispatch(
+            productsActions.updateProduct(
+              productId,
+              category,
+              condition,
+              style,
+              material,
+              color,
+              title,
+              amount,
+              image,
+              address,
+              location,
+              pickupDetails,
+              phone,
+              description,
+              background,
+              length,
+              height,
+              width,
+              price,
+              priceText,
+              internalComments,
+              updatedBookedProducts, //updated number for how many products have been booked
+              sold
+            )
+          );
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (

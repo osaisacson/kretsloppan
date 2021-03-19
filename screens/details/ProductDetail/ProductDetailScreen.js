@@ -65,15 +65,18 @@ const ProductDetailScreen = (props) => {
     sold,
   } = selectedProduct;
 
+  const originalItems = amount === undefined ? 1 : amount;
+  const bookedItems = booked || 0;
+  const soldItems = sold || 0;
+
   const productOrders = useSelector((state) =>
     state.orders.availableOrders.filter((order) => order.productId === id)
   );
 
-  console.log('productOrders: ', productOrders);
+  const hasAnyOrders = productOrders.length;
 
-  const allOrdersCollected = productOrders.every((order) => order.isCollected);
-  const allSold = amount === sold && allOrdersCollected;
-  const allReserved = amount > sold && !allOrdersCollected;
+  const allSold = hasAnyOrders && originalItems === soldItems;
+  const allReserved = hasAnyOrders && originalItems === bookedItems;
 
   //Check if the current user has any orders for the product
   const userOrders = useSelector((state) => state.orders.userOrders);
@@ -143,7 +146,7 @@ const ProductDetailScreen = (props) => {
         <SectionCard>
           {!allSold && !allReserved ? (
             <>
-              {/* {amount ? <Text style={detailStyles.amount}>{amount} st à</Text> : null} */}
+              {/* {originalItems ? <Text style={detailStyles.originalItems}>{originalItems} st à</Text> : null} */}
               {priceText && !price ? <Text style={detailStyles.price}>{priceText}</Text> : null}
               {(price || price === 0) && !priceText ? (
                 <Text style={detailStyles.price}>{price ? price : 0} kr</Text>
@@ -161,32 +164,15 @@ const ProductDetailScreen = (props) => {
               width: 200,
             }}
             text={
-              amount === booked //if original amount is the same as booked
-                ? 'Alla för närvarande reserverade' //then all are reserved
-                : amount === sold //if original amount is the same as sold
-                ? amount > 1
-                  ? 'Alla sålda'
-                  : 'Såld' //then all are sold
-                : amount > booked
-                ? `${amount - booked} kvar`
-                : `${amount} st à` //if original amount is more than booked, show how many are left
+              allReserved
+                ? 'Alla för närvarande reserverade'
+                : allSold
+                ? 'Alla sålda'
+                : `${originalItems - soldItems} st à`
             }
-            backgroundColor={Colors.darkPrimary}
+            backgroundColor={allSold ? Colors.subtleGreen : Colors.darkPrimary}
           />
-          {allSold ? (
-            <StatusBadge
-              style={{
-                position: 'absolute',
-                zIndex: 10,
-                top: -5,
-                left: -3,
-                alignSelf: 'left',
-                width: 80,
-              }}
-              text={amount === 1 ? 'Såld!' : 'Alla sålda!'}
-              backgroundColor={Colors.subtleGreen}
-            />
-          ) : null}
+
           {/* Product image */}
           <CachedImage style={detailStyles.image} uri={image ? image : ''} />
 
@@ -220,7 +206,7 @@ const ProductDetailScreen = (props) => {
             </>
           ) : null}
           <Title>{title}</Title>
-          {amount > 1 ? <Paragraph>{amount} stycken</Paragraph> : null}
+          {originalItems > 1 ? <Paragraph>{originalItems} stycken</Paragraph> : null}
           {description ? (
             <>
               <Divider style={{ marginVertical: 10 }} />
