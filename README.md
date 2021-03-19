@@ -40,7 +40,6 @@ Start apple and android simulators, see details in 'Simulators' below
 Select 'Run on iOS simulator' and 'Run on Android simulator' in you browser
 With the Expo app in your phone scan QR code to see it on your device
 
-
 ## Workflow
 
 - `git checkout master`
@@ -52,14 +51,16 @@ With the Expo app in your phone scan QR code to see it on your device
 ## Release new version on the App store/Google Play store
 
 - Read info here: https://docs.expo.io/distribution/app-stores/
+- `expo build`
 - `expo publish` background on this here: https://docs.expo.io/workflow/publishing/
 - To upload the previously built standalone app to the appropriate app store, you simply run `expo upload:android` or `expo upload:ios` more on this here: https://docs.expo.io/distribution/uploading-apps/
+- When asked for the path tp the Google Service Account JSON key: ./../api-7295700764673714197-958965-962f25310ea7.json
 
 ## Original setup
 
 Install the below:
 
-### Required:
+### Required
 
 ##### Node/NPM
 

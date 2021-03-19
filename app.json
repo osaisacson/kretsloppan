@@ -4,12 +4,8 @@
     "slug": "kretsloppan",
     "privacy": "public",
     "description": "Återbruksappen 'Kretsloppan' är ett verktyg för att synliggöra och öka användandet av återbruk. Den riktar sig mot alla intressenter - från organisationer till individer. Förutom att se tillgängligt återbruk kan man via appen också lägga upp sitt projekt och följa återbrukets resa från ett hem till ett annat.",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "version": "1.0.5",
+    "platforms": ["ios", "android", "web"],
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,9 +16,7 @@
     "updates": {
       "fallbackToCacheTimeout": 5000
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.egnahemsfabriken.kretsloppan",
       "buildNumber": "1.0.5",
@@ -35,7 +29,7 @@
     },
     "android": {
       "package": "com.egnahemsfabriken.kretsloppan",
-      "versionCode": 5,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash.png",
         "backgroundColor": "#ffffff"

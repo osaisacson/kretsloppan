@@ -24,6 +24,7 @@
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "core-js": "^3.9.1",
+    "eas": "^0.1.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "ex-react-native-i18n": "^0.0.6",
