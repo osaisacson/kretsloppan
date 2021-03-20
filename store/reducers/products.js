@@ -1,12 +1,5 @@
 import Product from '../../models/product';
-import {
-  DELETE_PRODUCT,
-  CREATE_PRODUCT,
-  UPDATE_PRODUCT,
-  UPDATE_BOOKED_PRODUCTS,
-  UPDATE_PRODUCT_SOLD_AMOUNT,
-  SET_PRODUCTS,
-} from '../actions/products';
+import { DELETE_PRODUCT, CREATE_PRODUCT, UPDATE_PRODUCT, SET_PRODUCTS } from '../actions/products';
 import { getIndex, updateCollection } from '../helpers';
 
 const initialState = {

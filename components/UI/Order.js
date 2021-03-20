@@ -30,6 +30,7 @@ const Order = ({
     comments,
     buyerId,
     sellerId,
+    timeInitiatorId,
     suggestedDate,
     isAgreed,
     isCollected,

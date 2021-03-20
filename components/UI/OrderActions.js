@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Avatar } from 'react-native-paper';
 import TouchableCmp from '../../components/UI/TouchableCmp';
 
-import ButtonIcon from '../../components/UI/ButtonIcon';
 import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { pure } from 'recompose';
@@ -14,9 +13,9 @@ import Colors from '../../constants/Colors';
 import * as ordersActions from '../../store/actions/orders';
 import * as productsActions from '../../store/actions/products';
 import ButtonConfirm from './ButtonConfirm';
-import ButtonRound from './ButtonRound';
 import CalendarSelection from './CalendarSelection';
 import UserAvatar from './UserAvatar';
+import OrderButtonSection from './OrderButtonSection';
 
 const OrderActions = ({
   navigation,
@@ -85,62 +84,13 @@ const OrderActions = ({
   };
 
   //Show and reset time/date for pickup
-  const toggleShowCalendar = () => {
+  const toggleShowCalendarHandler = () => {
     setShowCalendar((prevState) => !prevState);
-  };
-
-  const sendSuggestedTime = (dateTime) => {
-    console.log(
-      'OrderActions/sendSuggestedTime: attempting to set the selected dateTime in parent to: ',
-      dateTime
-    );
-    setOrderSuggestedDate(dateTime);
-  };
-
-  const resetSuggestedDT = () => {
-    console.log('START-----------------');
-    console.log('OrderActions/resetSuggestedDT, passed args');
-    console.log('id', id);
-    console.log('timeInitiatorId/loggedInUserId:', loggedInUserId);
-    console.log('projectId', projectId);
-    console.log('quantity', quantity);
-    console.log('orderSuggestedDate', orderSuggestedDate);
-    console.log('isAgreed should be false', false);
-    console.log('isCollected should be false', false);
-    console.log('-----------------END');
-
-    Alert.alert(
-      'Ändra tid',
-      `Genom att klicka här ändrar du den föreslagna tiden till ${moment(orderSuggestedDate)
-        .locale('sv')
-        .format('HH:mm, D MMMM')}. Ni får då igen fyra dagar på er att komma överens om en tid.`,
-      [
-        { text: 'Avbryt', style: 'default' },
-        {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              ordersActions.updateOrder(
-                id,
-                loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
-                projectId,
-                quantity,
-                orderSuggestedDate, //updated suggested pickup date
-                false, //isAgreed will be false as we are resetting the time
-                false //isCollected will be false as we are setting up a new time for collection
-              )
-            );
-            toggleShowCalendar();
-          },
-        },
-      ]
-    );
   };
 
   //Approve suggested pickup time: should only be available for the user who did not initiate the originally
   //proposed time, which means once this is clicked the 'isAgreed' flag should be set to true.
-  const approveSuggestedDateTime = () => {
+  const approveSuggestedDateTimeHandler = () => {
     console.log({
       order,
     });
@@ -331,6 +281,55 @@ const OrderActions = ({
     ]);
   };
 
+  const sendSuggestedTime = (dateTime) => {
+    console.log(
+      'OrderActions/sendSuggestedTime: attempting to set the selected dateTime in parent to: ',
+      dateTime
+    );
+    setOrderSuggestedDate(dateTime);
+  };
+
+  const resetSuggestedDT = () => {
+    console.log('START-----------------');
+    console.log('OrderActions/resetSuggestedDT, passed args');
+    console.log('id', id);
+    console.log('timeInitiatorId/loggedInUserId:', loggedInUserId);
+    console.log('projectId', projectId);
+    console.log('quantity', quantity);
+    console.log('orderSuggestedDate', orderSuggestedDate);
+    console.log('isAgreed should be false', false);
+    console.log('isCollected should be false', false);
+    console.log('-----------------END');
+
+    Alert.alert(
+      'Ändra tid',
+      `Genom att klicka här ändrar du den föreslagna tiden till ${moment(orderSuggestedDate)
+        .locale('sv')
+        .format('HH:mm, D MMMM')}. Ni får då igen fyra dagar på er att komma överens om en tid.`,
+      [
+        { text: 'Avbryt', style: 'default' },
+        {
+          text: 'Jag förstår',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(
+              ordersActions.updateOrder(
+                id,
+                loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
+                projectId,
+                quantity,
+                orderSuggestedDate, //updated suggested pickup date
+                false, //isAgreed will be false as we are resetting the time
+                false //isCollected will be false as we are setting up a new time for collection
+              )
+            );
+            toggleShowCalendar();
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <>
       <View style={styles.oneLineSpread}>
@@ -399,97 +398,25 @@ const OrderActions = ({
         <Divider style={{ width: 1, height: '100%', marginHorizontal: 8 }} />
 
         {/* BUTTONS */}
-        <View>
-          {/* When we don't have a time suggested yet */}
-          {!suggestedDate ? (
-            <ButtonRound
-              style={{ backgroundColor: Colors.darkPrimary }}
-              title={'Föreslå tid för upphämtning'}
-              onSelect={() => {
-                toggleShowCalendar();
-              }}
-            />
-          ) : null}
-          {/* When we are waiting for the other to approve a suggested time */}
-          {suggestedDate && !isAgreed && !isCollected ? (
-            <>
-              {/* Show 'Waiting for x to approve time' or 'Approve x time'  */}
-              {isTimeInitiator ? (
-                <ButtonRound
-                  disabled
-                  title={`Tid föreslagen av dig, väntar på godkännande av ${
-                    timeInitiatorId === buyerId
-                      ? sellerProfile.profileName
-                      : buyerProfile.profileName
-                  }`}
-                />
-              ) : (
-                <ButtonRound
-                  style={{ backgroundColor: Colors.primary }}
-                  title={`${timeInitiatorProfile.profileName} föreslog ${moment(suggestedDate)
-                    .locale('sv')
-                    .format('HH:mm, D MMMM')}, godkänn?`}
-                  onSelect={() => {
-                    approveSuggestedDateTime();
-                  }}
-                />
-              )}
-            </>
-          ) : null}
-          {/* When both parties have agreed on a time show a button for marking the order as collected*/}
-          {isAgreed && !isCollected ? (
-            <ButtonRound
-              style={{ backgroundColor: Colors.completed }}
-              title={`Hämtas av ${
-                loggedInUserId === buyerId ? 'dig' : buyerProfile.profileName
-              } ${moment(suggestedDate)
-                .locale('sv')
-                .format('HH:mm, D MMMM')}. Klicka här när hämtad!`}
-              onSelect={() => {
-                collectHandler();
-              }}
-            />
-          ) : null}
-          {/* Show a disabled button when the order has been collected */}
-          {isCollected ? (
-            <ButtonRound
-              disabled
-              style={{
-                backgroundColor: '#fff',
-
-                borderColor: Colors.completed,
-                borderSize: 1,
-              }}
-              titleStyle={{ color: Colors.completed }}
-              title={`Hämtad av ${
-                loggedInUserId === buyerId ? 'dig' : buyerProfile.profileName
-              } ${moment(isCollected).locale('sv').format('HH:mm, D MMMM YYYY')}`}
-            />
-          ) : null}
-
-          {/* EDIT AND DELETE OPTIONS */}
-          {/* As long as the order has not been collected, show the options to edit the order */}
-          {!isCollected ? (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 8,
-              }}>
-              {/* Show button to cancel the order */}
-              <ButtonIcon
-                icon="close"
-                color={Colors.neutral}
-                onSelect={() => {
-                  deleteHandler(id, productId, quantity);
-                }}
-              />
-              {/* Show button to change pickup time */}
-              <ButtonIcon icon="pen" color={Colors.neutral} onSelect={toggleShowCalendar} />
-            </View>
-          ) : null}
-        </View>
+        <OrderButtonSection
+          orderId={id}
+          productId={productId}
+          quantity={quantity}
+          suggestedDate={suggestedDate}
+          isAgreed={isAgreed}
+          isCollected={isCollected}
+          isTimeInitiator={isTimeInitiator}
+          buyerId={buyerId}
+          timeInitiatorId={timeInitiatorId}
+          loggedInUserId={loggedInUserId}
+          sellerProfileName={sellerProfile.profileName}
+          buyerProfileName={buyerProfile.profileName}
+          timeInitiatorName={timeInitiatorProfile.profileName}
+          toggleShowCalendar={toggleShowCalendarHandler}
+          approveSuggestedDateTime={approveSuggestedDateTimeHandler}
+          collectOrder={collectHandler}
+          deleteOrder={deleteHandler}
+        />
 
         {!isProductDetail ? (
           <>
