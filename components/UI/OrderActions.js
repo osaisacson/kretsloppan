@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import Colors from '../../constants/Colors';
 import * as ordersActions from '../../store/actions/orders';
 import * as productsActions from '../../store/actions/products';
-import ButtonConfirm from './ButtonConfirm';
 import CalendarSelection from './CalendarSelection';
 import UserAvatar from './UserAvatar';
 import OrderButtonSection from './OrderButtonSection';
@@ -72,9 +71,6 @@ const OrderActions = ({
   } = currentProduct;
 
   const [showCalendar, setShowCalendar] = useState(false);
-  const [orderSuggestedDate, setOrderSuggestedDate] = useState();
-
-  console.log({ orderSuggestedDate });
 
   // Identifies which user information is most relevant for the logged in user to see
   const infoId = loggedInUserId === buyerId ? sellerId : buyerId;
@@ -281,50 +277,42 @@ const OrderActions = ({
     ]);
   };
 
-  const sendSuggestedTime = (dateTime) => {
-    console.log(
-      'OrderActions/sendSuggestedTime: attempting to set the selected dateTime in parent to: ',
-      dateTime
-    );
-    setOrderSuggestedDate(dateTime);
-  };
-
-  const resetSuggestedDT = () => {
+  const setSuggestedDateHandler = (newSuggestedDate) => {
     console.log('START-----------------');
-    console.log('OrderActions/resetSuggestedDT, passed args');
+    console.log('OrderActions/setSuggestedDateHandler, passed args');
     console.log('id', id);
     console.log('timeInitiatorId/loggedInUserId:', loggedInUserId);
     console.log('projectId', projectId);
     console.log('quantity', quantity);
-    console.log('orderSuggestedDate', orderSuggestedDate);
+    console.log('newSuggestedDate', newSuggestedDate);
     console.log('isAgreed should be false', false);
     console.log('isCollected should be false', false);
     console.log('-----------------END');
 
+    dispatch(
+      ordersActions.updateOrder(
+        id,
+        loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
+        projectId,
+        quantity,
+        newSuggestedDate, //updated suggested pickup date
+        false, //isAgreed will be false as we are resetting the time
+        false //isCollected will be false as we are setting up a new time for collection
+      )
+    );
+    toggleShowCalendarHandler();
     Alert.alert(
-      'Ändra tid',
-      `Genom att klicka här ändrar du den föreslagna tiden till ${moment(orderSuggestedDate)
+      'Bekräfta tid',
+      `Nu väntar vi på att motpart godkänner din föreslagna upphämtningstid ${moment(
+        newSuggestedDate
+      )
         .locale('sv')
-        .format('HH:mm, D MMMM')}. Ni får då igen fyra dagar på er att komma överens om en tid.`,
+        .format('HH:mm, D MMMM')}. Håll ett öga på den här
+        reservationen under din profil för att se dess status. Du kan alltid också kontakta
+        motparten via deras kontaktuppgifter. Hitta dessa under 'Detaljer' i din reservation.`,
       [
-        { text: 'Avbryt', style: 'default' },
         {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(
-              ordersActions.updateOrder(
-                id,
-                loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
-                projectId,
-                quantity,
-                orderSuggestedDate, //updated suggested pickup date
-                false, //isAgreed will be false as we are resetting the time
-                false //isCollected will be false as we are setting up a new time for collection
-              )
-            );
-            toggleShowCalendar();
-          },
+          text: 'Ok',
         },
       ]
     );
@@ -443,12 +431,9 @@ const OrderActions = ({
 
       {showCalendar ? (
         <View style={{ flex: 1 }}>
-          <CalendarSelection suggestedDate={suggestedDate} sendSuggestedTime={sendSuggestedTime} />
-          <ButtonConfirm
-            onSelect={() => {
-              resetSuggestedDT(suggestedDate);
-            }}
-            title="Spara"
+          <CalendarSelection
+            suggestedDate={suggestedDate}
+            setSuggestedDate={setSuggestedDateHandler}
           />
         </View>
       ) : null}

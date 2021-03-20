@@ -9,26 +9,19 @@ import { Divider } from 'react-native-paper';
 import Colors from '../../constants/Colors';
 import HeaderThree from './HeaderThree';
 
-const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
+const CalendarSelection = ({ suggestedDate, setSuggestedDate }) => {
   const colorScheme = useColorScheme();
 
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [suggestedDateLocal, setSuggestedDateLocal] = useState(suggestedDate ? suggestedDate : []); //If we already have a date suggested, use this as the original state
-  const [suggestedDateTime, setSuggestedDateTime] = useState(suggestedDate ? suggestedDate : []);
+  const [newSuggestedDate, setNewSuggestedDate] = useState(suggestedDate ? suggestedDate : []); //If we already have a date suggested, use this as the original state
 
   const handleTimePicker = (date) => {
-    setSuggestedDateLocal(date);
+    setNewSuggestedDate(date);
     setShowTimePicker(true);
   };
 
   const hideTimePicker = () => {
     setShowTimePicker(false);
-  };
-
-  const setSuggestedDT = (dateTime) => {
-    setSuggestedDateTime(dateTime);
-    sendSuggestedTime(dateTime);
-    hideTimePicker();
   };
 
   return (
@@ -39,7 +32,9 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
         style={{ textAlign: 'center' }}
         text={
           suggestedDate
-            ? 'Föreslå en ny upphämtningstid nedan.'
+            ? `Föreslagen tid: ${moment(suggestedDate)
+                .locale('sv')
+                .format('HH:mm, D MMMM')}. Föreslå en ny upphämtningstid nedan.`
             : 'Föreslå en tid för upphämtning nedan.'
         }
       />
@@ -47,7 +42,7 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
       <View style={{ flex: 1 }}>
         <CalendarStrip
           scrollable
-          selectedDate={suggestedDateLocal}
+          selectedDate={newSuggestedDate}
           daySelectionAnimation={{
             type: 'border',
             borderWidth: 0.5,
@@ -66,18 +61,19 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
           borderHighlightColor="#666"
         />
         <DateTimePickerModal
-          date={new Date(suggestedDateLocal)}
+          date={new Date(newSuggestedDate)}
           isDarkModeEnabled={colorScheme === 'dark'}
           cancelTextIOS="Avbryt"
-          confirmTextIOS="Klar!"
-          headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
+          confirmTextIOS="Spara"
+          headerTextIOS={`Valt datum ${moment(newSuggestedDate)
             .locale('sv')
             .format('D MMMM')}. Välj tid:`}
           isVisible={showTimePicker}
           mode="time"
           locale="sv_SV" // Use "en_GB" here
           onConfirm={(dateTime) => {
-            setSuggestedDT(dateTime);
+            setSuggestedDate(dateTime);
+            hideTimePicker();
           }}
           onCancel={hideTimePicker}
         />
