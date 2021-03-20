@@ -1,4 +1,3 @@
-import moment from 'moment/min/moment-with-locales';
 import React, { useState, useRef } from 'react';
 import { View, Alert, Text, StyleSheet, Dimensions } from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -8,7 +7,6 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonConfirm from '../../../components/UI/ButtonConfirm';
-import CalendarSelection from '../../../components/UI/CalendarSelection';
 import HeaderThree from '../../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../../components/UI/HorizontalScrollContainer';
 import RoundItem from '../../../components/UI/RoundItem';
@@ -16,8 +14,8 @@ import RoundItemEmpty from '../../../components/UI/RoundItemEmpty';
 import UserAvatar from '../../../components/UI/UserAvatar';
 import { detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
-import * as ordersActions from '../../../store/actions/orders';
 import * as productsActions from '../../../store/actions/products';
+import * as ordersActions from '../../../store/actions/orders';
 
 const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
   const dispatch = useDispatch();
@@ -26,7 +24,6 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
 
   const [orderProject, setOrderProject] = useState('');
   const [orderQuantity, setOrderQuantity] = useState(1);
-  const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
   const {
     id,
@@ -76,120 +73,57 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
     refRBSheet.current.open();
   };
 
-  const reserveHandler = (id, ownerId, orderProjectId, quantity, orderSuggestedDate) => {
-    const imageUrl = image;
+  const reserveHandler = (id, quantity) => {
     const quantityBooked = Number(quantity);
     const newBookedProducts =
       (selectedProduct.booked === undefined ? 0 : selectedProduct.booked) + quantityBooked;
 
-    if (!quantity || !orderSuggestedDate) {
-      Alert.alert(
-        'Å Nej!',
-        'Det ser ut som du antingen inte valt hur många du vill boka eller inte föreslagit en upphämtningstid.',
-        [{ text: 'Ok' }]
-      );
+    if (!quantity) {
+      Alert.alert('Å Nej!', 'Det ser ut som du inte valt hur många du vill boka.', [
+        { text: 'Ok' },
+      ]);
       return false;
     }
 
-    Alert.alert(
-      'Kom ihåg',
-      'Denna reservation gäller i fyra dagar. Kontakta säljaren om ni behöver diskutera fler detaljer. Du hittar alltid reservationen under din profil.',
-      [
-        { text: 'Avbryt', style: 'default' },
-        {
-          text: 'Jag förstår',
-          style: 'destructive',
-          onPress: () => {
-            console.log('START-----------------');
-            console.log('Logistics/reserveHandler');
-            console.log('To ordersActions.createOrder:');
-            console.log({
-              id,
-              ownerId,
-              loggedInUserId,
-              orderProjectId,
-              imageUrl,
-              quantityBooked,
-              orderSuggestedDate,
-            });
-            console.log('To productsActions.updateProducts:');
-            console.log({
-              id,
-              category,
-              condition,
-              style,
-              material,
-              color,
-              title,
-              amount,
-              image,
-              address,
-              location,
-              pickupDetails,
-              phone,
-              description,
-              background,
-              length,
-              height,
-              width,
-              price,
-              priceText,
-              internalComments,
-              newBookedProducts, //updated number for how many products have been booked
-              sold,
-            });
-            console.log('-----------------END');
-            dispatch(
-              ordersActions.createOrder(
-                id,
-                ownerId, //becomes sellerId
-                loggedInUserId, //id of who initiated the time suggestion, becomes timeInitiatorId
-                orderProjectId, //becomes projectId
-                imageUrl,
-                quantityBooked,
-                orderSuggestedDate
-              )
-            );
-            dispatch(
-              productsActions.updateProduct(
-                id,
-                category,
-                condition,
-                style,
-                material,
-                color,
-                title,
-                amount,
-                image,
-                address,
-                location,
-                pickupDetails,
-                phone,
-                description,
-                background,
-                length,
-                height,
-                width,
-                price,
-                priceText,
-                internalComments,
-                newBookedProducts, //updated number for how many products have been booked
-                sold
-              )
-            );
-            refRBSheet.current.close();
-          },
-        },
-      ]
+    dispatch(
+      ordersActions.createOrder(
+        id,
+        ownerId,
+        loggedInUserId, //id of who initiated the time suggestion, becomes timeInitiatorId
+        orderProject,
+        image,
+        quantityBooked
+      )
     );
-  };
 
-  const sendSuggestedTime = (dateTime) => {
-    console.log(
-      'Logistics/sendSuggestedTime: attempting to set the selected dateTime in parent to: ',
-      dateTime
+    dispatch(
+      productsActions.updateProduct(
+        id,
+        category,
+        condition,
+        style,
+        material,
+        color,
+        title,
+        amount,
+        image,
+        address,
+        location,
+        pickupDetails,
+        phone,
+        description,
+        background,
+        length,
+        height,
+        width,
+        price,
+        priceText,
+        internalComments,
+        newBookedProducts, //updated number for how many products have been booked
+        sold
+      )
     );
-    setOrderSuggestedDate(dateTime);
+    refRBSheet.current.close();
   };
 
   return (
@@ -286,22 +220,13 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
                   </>
                 ) : null}
 
-                {/* Set a date and time for pickup */}
-                <CalendarSelection suggestedDate={null} sendSuggestedTime={sendSuggestedTime} />
                 <View style={{ alignItems: 'center', marginBottom: 15 }}>
                   <Text>{orderQuantity ? `Antal: ${orderQuantity}` : null}</Text>
-                  <Text>
-                    {orderSuggestedDate
-                      ? `Föreslaget upphämtningsdatum: ${moment(orderSuggestedDate)
-                          .locale('sv')
-                          .format('D MMM YYYY, HH:mm')}`
-                      : null}
-                  </Text>
                 </View>
                 <ButtonConfirm
                   style={{ backgroundColor: Colors.completed, borderRadius: 5, padding: 20 }}
                   onSelect={() => {
-                    reserveHandler(id, ownerId, orderProject, orderQuantity, orderSuggestedDate);
+                    reserveHandler(id, orderQuantity);
                   }}
                   title={'reservera'}
                 />

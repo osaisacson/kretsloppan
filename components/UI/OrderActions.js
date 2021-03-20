@@ -79,6 +79,20 @@ const OrderActions = ({
     navigation.navigate('ProductDetail', { detailId: productId });
   };
 
+  const showConfirmationAlertHandler = () => {
+    Alert.alert(
+      'Upphämtningstid föreslagen!',
+      `Nu väntar vi på att motpart godkänner din föreslagna upphämtningstid. Håll ett öga på den här
+        reservationen under din profil för att se dess status. Du kan alltid också kontakta
+        motparten via deras kontaktuppgifter. Hitta dessa under 'Detaljer' i din reservation.`,
+      [
+        {
+          text: 'Ok',
+        },
+      ]
+    );
+  };
+
   //Show and reset time/date for pickup
   const toggleShowCalendarHandler = () => {
     setShowCalendar((prevState) => !prevState);
@@ -87,21 +101,6 @@ const OrderActions = ({
   //Approve suggested pickup time: should only be available for the user who did not initiate the originally
   //proposed time, which means once this is clicked the 'isAgreed' flag should be set to true.
   const approveSuggestedDateTimeHandler = () => {
-    console.log({
-      order,
-    });
-
-    console.log('START-----------------');
-    console.log('OrderActions/approveSuggestedDateTime, passed args');
-    console.log('id', id);
-    console.log('timeInitiatorId:', timeInitiatorId);
-    console.log('projectId', projectId);
-    console.log('quantity', quantity);
-    console.log('suggestedDate', suggestedDate);
-    console.log('isAgreed should be true', true);
-    console.log('isCollected should be false', false);
-    console.log('-----------------END');
-
     Alert.alert(
       'Bekräfta tid',
       `Genom att klicka här lovar du att vara på addressen för upphämtning ${moment(suggestedDate)
@@ -206,37 +205,6 @@ const OrderActions = ({
 
   const deleteHandler = (orderId, productId, orderQuantity) => {
     const updatedBookedProducts = Number(booked === undefined ? 0 : booked) - Number(orderQuantity);
-    console.log('START-----------------');
-    console.log('OrderActions/deleteHandler, passed args');
-    console.log('Prep:');
-    console.log({ orderId, orderQuantity });
-    console.log('To updateProduct:');
-    console.log({
-      productId,
-      category,
-      condition,
-      style,
-      material,
-      color,
-      title,
-      amount,
-      image,
-      address,
-      location,
-      pickupDetails,
-      phone,
-      description,
-      background,
-      length,
-      height,
-      width,
-      price,
-      priceText,
-      internalComments,
-      updatedBookedProducts, //updated number for how many products have been booked
-      sold,
-    });
-    console.log('-----------------END');
 
     Alert.alert('Är du säker?', 'Vill du verkligen ta bort den här reservationen?', [
       { text: 'Nej', style: 'default' },
@@ -275,47 +243,6 @@ const OrderActions = ({
         },
       },
     ]);
-  };
-
-  const setSuggestedDateHandler = (newSuggestedDate) => {
-    console.log('START-----------------');
-    console.log('OrderActions/setSuggestedDateHandler, passed args');
-    console.log('id', id);
-    console.log('timeInitiatorId/loggedInUserId:', loggedInUserId);
-    console.log('projectId', projectId);
-    console.log('quantity', quantity);
-    console.log('newSuggestedDate', newSuggestedDate);
-    console.log('isAgreed should be false', false);
-    console.log('isCollected should be false', false);
-    console.log('-----------------END');
-
-    dispatch(
-      ordersActions.updateOrder(
-        id,
-        loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
-        projectId,
-        quantity,
-        newSuggestedDate, //updated suggested pickup date
-        false, //isAgreed will be false as we are resetting the time
-        false //isCollected will be false as we are setting up a new time for collection
-      )
-    );
-    toggleShowCalendarHandler();
-    Alert.alert(
-      'Bekräfta tid',
-      `Nu väntar vi på att motpart godkänner din föreslagna upphämtningstid ${moment(
-        newSuggestedDate
-      )
-        .locale('sv')
-        .format('HH:mm, D MMMM')}. Håll ett öga på den här
-        reservationen under din profil för att se dess status. Du kan alltid också kontakta
-        motparten via deras kontaktuppgifter. Hitta dessa under 'Detaljer' i din reservation.`,
-      [
-        {
-          text: 'Ok',
-        },
-      ]
-    );
   };
 
   return (
@@ -433,7 +360,11 @@ const OrderActions = ({
         <View style={{ flex: 1 }}>
           <CalendarSelection
             suggestedDate={suggestedDate}
-            setSuggestedDate={setSuggestedDateHandler}
+            orderId={id}
+            loggedInUserId={loggedInUserId}
+            projectId={projectId}
+            quantity={quantity}
+            showConfirmationAlert={showConfirmationAlertHandler}
           />
         </View>
       ) : null}

@@ -5,11 +5,22 @@ import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Divider } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import HeaderThree from './HeaderThree';
+import * as ordersActions from '../../store/actions/orders';
 
-const CalendarSelection = ({ suggestedDate, setSuggestedDate }) => {
+const CalendarSelection = ({
+  orderId,
+  suggestedDate,
+  loggedInUserId,
+  projectId,
+  quantity,
+  showConfirmationAlert,
+}) => {
+  const dispatch = useDispatch();
+
   const colorScheme = useColorScheme();
 
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -24,6 +35,23 @@ const CalendarSelection = ({ suggestedDate, setSuggestedDate }) => {
     setShowTimePicker(false);
   };
 
+  const setSuggestedDate = (newSuggestedDate) => {
+    const quantityBooked = Number(quantity);
+
+    dispatch(
+      ordersActions.updateOrder(
+        orderId,
+        loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
+        projectId,
+        quantityBooked,
+        newSuggestedDate, //updated suggested pickup date
+        false, //isAgreed will be false as we are resetting the time
+        false //isCollected will be false as we are setting up a new time for collection
+      )
+    );
+    showConfirmationAlert();
+  };
+
   return (
     <>
       <Divider style={{ marginBottom: 10 }} />
@@ -32,9 +60,7 @@ const CalendarSelection = ({ suggestedDate, setSuggestedDate }) => {
         style={{ textAlign: 'center' }}
         text={
           suggestedDate
-            ? `Föreslagen tid: ${moment(suggestedDate)
-                .locale('sv')
-                .format('HH:mm, D MMMM')}. Föreslå en ny upphämtningstid nedan.`
+            ? `Föreslå en ny upphämtningstid nedan.`
             : 'Föreslå en tid för upphämtning nedan.'
         }
       />

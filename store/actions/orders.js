@@ -80,15 +80,7 @@ export const deleteOrder = (orderId) => {
   };
 };
 
-export function createOrder(
-  productId,
-  sellerId,
-  timeInitiatorId,
-  projectId,
-  image,
-  quantity,
-  suggestedDate
-) {
+export function createOrder(productId, sellerId, timeInitiatorId, projectId, image, quantity) {
   return async (dispatch) => {
     const currentDate = new Date();
     const userData = await AsyncStorage.getItem('userData').then((data) =>
@@ -106,7 +98,6 @@ export function createOrder(
         image,
         quantity,
         createdOn: currentDate,
-        suggestedDate,
         isAgreed: false,
         isCollected: false,
       };
@@ -118,8 +109,6 @@ export function createOrder(
         ...orderData,
         id: key,
       };
-
-      console.log('XXXXX SUGGESTED DATE in createOrder....: ', suggestedDate);
 
       dispatch({
         type: CREATE_ORDER,

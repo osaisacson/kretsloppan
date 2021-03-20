@@ -6,6 +6,8 @@ import { Divider } from 'react-native-paper';
 import { pure } from 'recompose';
 
 import Card from './Card';
+import HeaderThree from './HeaderThree';
+
 import OrderActions from './OrderActions';
 import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
@@ -58,7 +60,7 @@ const Order = ({
   };
 
   return (
-    <Card>
+    <Card style={{ marginBottom: 20 }}>
       {/* Title and quantity */}
       <View style={{ ...styles.oneLineSpread, alignItems: 'flex-end' }}>
         <Text style={{ fontSize: 20, fontFamily: 'roboto-bold', width: '60%' }}>
@@ -102,23 +104,48 @@ const Order = ({
           style={{
             flex: 1,
             flexDirection: 'row',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Text style={{ fontFamily: 'bebas-neue', color: Colors.neutral, fontSize: 20 }}>
-            Detaljer{' '}
-          </Text>
-          <AntDesign
+          <HeaderThree
             style={{
-              textAlign: 'right',
-              paddingRight: 10,
-              paddingBottom: 10,
-              marginTop: showDetails ? 10 : 0,
+              textAlign: 'center',
+              paddingLeft: 10,
+              fontSize: 15,
+              fontFamily: 'roboto-bold',
             }}
-            name={showDetails ? 'caretup' : 'caretdown'}
-            size={25}
-            color={Colors.neutral}
+            text={
+              suggestedDate && !isAgreed
+                ? `Föreslagen tid: ${moment(suggestedDate).locale('sv').format('HH:mm, D MMMM')}`
+                : suggestedDate && isAgreed && !isCollected
+                ? `Överenskommen tid ${moment(suggestedDate).locale('sv').format('HH:mm, D MMMM')}`
+                : isCollected
+                ? `Hämtades ${moment(isCollected).locale('sv').format('HH:mm, D MMMM')}`
+                : 'Ingen upphämtningstid föreslagen'
+            }
           />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}>
+            <Text style={{ fontFamily: 'bebas-neue', color: Colors.neutral, fontSize: 20 }}>
+              Detaljer{' '}
+            </Text>
+            <AntDesign
+              style={{
+                textAlign: 'right',
+                paddingRight: 10,
+                paddingBottom: 10,
+                marginTop: showDetails ? 10 : 0,
+              }}
+              name={showDetails ? 'caretup' : 'caretdown'}
+              size={25}
+              color={Colors.neutral}
+            />
+          </View>
         </View>
       </TouchableCmp>
 
@@ -127,26 +154,6 @@ const Order = ({
         <>
           <View style={{ paddingVertical: 20 }}>
             <>
-              <StatusText
-                alwaysShow
-                label={
-                  suggestedDate && isAgreed
-                    ? 'Hämtas den:'
-                    : isCollected
-                    ? 'Hämtades den:'
-                    : suggestedDate && !isAgreed
-                    ? 'Föreslagen tid:'
-                    : ''
-                }
-                text={
-                  suggestedDate && !isCollected
-                    ? formattedDate(suggestedDate)
-                    : isCollected
-                    ? formattedDate(isCollected)
-                    : 'Inget förslag på upphämtningstid ännu'
-                }
-                textStyle={{ color: Colors.darkPrimary, fontSize: 17 }}
-              />
               <StatusText label="Upphämtningsaddress:" text={currentProduct.address} />
               <StatusText label="Detaljer om hämtning:" text={currentProduct.pickupDetails} />
               <StatusText
