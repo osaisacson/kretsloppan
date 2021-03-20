@@ -1,40 +1,32 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 import { pure } from 'recompose';
 
 import Styles from '../../constants/Styles';
 import CachedImage from './CachedImage';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
-import UserAvatar from './UserAvatar';
+import UserAvatarWithBadge from './../UI/UserAvatarWithBadge';
 
-const ProjectProductItem = ({ navigation, itemData, isHorizontal, onSelect }) => {
-  const { productId, ownerId, image, quantity } = itemData;
+const ProjectProductItem = ({ navigation, productInProject, onSelect }) => {
+  const { sellerId, image, quantity, background, title, location } = productInProject;
 
-  const products = useSelector((state) => state.products.availableProducts);
-  const currentProduct = products.find((prod) => prod.id === productId);
-
-  const { background, title, location } = currentProduct;
-
+  console.log('PRODUCT IN PROJECT', productInProject);
   return (
     <View style={styles.container}>
-      <Card style={isHorizontal ? styles.horizontalProduct : styles.product}>
+      <Card style={styles.product}>
         <View
           style={{
             position: 'absolute',
             alignSelf: 'flex-start',
             zIndex: 100,
           }}>
-          <UserAvatar
-            size={30}
-            userId={ownerId}
-            showBadge={false}
-            actionOnPress={() => {
-              navigation.navigate('Användare', {
-                detailId: ownerId,
-              });
-            }}
+          <UserAvatarWithBadge
+            size={60}
+            navigation={navigation}
+            text={'säljare'}
+            navigateTo="Användare"
+            detailId={sellerId}
           />
         </View>
         {location ? <Text style={styles.location}>{location}</Text> : null}
@@ -72,13 +64,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#ddd',
     marginTop: 15,
-  },
-  horizontalProduct: {
-    height: Styles.productItemHeight,
-    width: 200,
-    marginLeft: 10,
-    borderWidth: 0.5,
-    borderColor: '#ddd',
   },
   touchable: {
     borderRadius: 5,

@@ -1,7 +1,7 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { Avatar } from 'react-native-paper';
-import TouchableCmp from '../../components/UI/TouchableCmp';
+import TouchableCmp from '../../../components/UI/TouchableCmp';
 
 import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
@@ -9,14 +9,14 @@ import { pure } from 'recompose';
 
 import { useDispatch } from 'react-redux';
 
-import Colors from '../../constants/Colors';
-import * as ordersActions from '../../store/actions/orders';
-import * as productsActions from '../../store/actions/products';
-import CalendarSelection from './CalendarSelection';
-import UserAvatar from './UserAvatar';
-import OrderButtonSection from './OrderButtonSection';
+import Colors from '../../../constants/Colors';
+import * as ordersActions from '../../../store/actions/orders';
+import * as productsActions from '../../../store/actions/products';
+import CalendarSelection from '../../../components/UI/CalendarSelection';
+import UserAvatar from '../../../components/UI/UserAvatar';
+import OrderButtonSection from '../../../components/UI/OrderButtonSection';
 
-const OrderActions = ({
+const OrderLogic = ({
   navigation,
   loggedInUserId,
   order,
@@ -44,7 +44,7 @@ const OrderActions = ({
     isCollected,
   } = order;
 
-  const currentProduct = products.find((prod) => prod.id === productId);
+  const currentProduct = productId ? products.find((prod) => prod.id === productId) : {};
 
   const {
     category,
@@ -120,7 +120,7 @@ const OrderActions = ({
     const originalSoldProducts = sold ? sold : 0;
     const totalSoldProducts = originalSoldProducts + quantity; //Existing sold items plus the quantity of the currently completed order
     console.log('START-----------------');
-    console.log('OrderActions/approveSuggestedDateTime, passed args');
+    console.log('OrderLogic/approveSuggestedDateTime, passed args');
     console.log('-----');
     console.log('For updateProduct()');
     console.log('Prep:');
@@ -386,4 +386,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default pure(OrderActions);
+export default pure(OrderLogic);

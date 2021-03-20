@@ -95,7 +95,7 @@ export function createProduct(
   pickupDetails,
   phone,
   description,
-  background = '',
+  background,
   length,
   height,
   width,

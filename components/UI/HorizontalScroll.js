@@ -62,8 +62,6 @@ const HorizontalScroll = (props) => {
         {props.title ? (
           <HeaderTwo
             title={props.title}
-            subTitle={props.subTitle}
-            extraSubTitle={props.extraSubTitle}
             buttonOnPress={props.buttonOnPress}
             showAddLink={props.showAddLink}
             showMoreLink={props.showMoreLink}
@@ -89,7 +87,6 @@ const HorizontalScroll = (props) => {
                 {scrollData.map((item) => (
                   <RenderedItem
                     navigation={props.navigation}
-                    showBackgroundText={props.showBackgroundText}
                     itemData={item}
                     key={item.id}
                     isHorizontal

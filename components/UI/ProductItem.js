@@ -9,7 +9,7 @@ import Styles from './../../constants/Styles';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
-const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, onSelect }) => {
+const ProductItem = ({ navigation, itemData, isHorizontal, onSelect }) => {
   const {
     ownerId,
     location,
@@ -89,7 +89,7 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
         {title}
       </Text>
 
-      {showBackgroundText ? (
+      {background ? (
         <Text numberOfLines={5} ellipsizeMode="tail" style={styles.backgroundText}>
           {background}
         </Text>

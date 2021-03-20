@@ -8,7 +8,7 @@ import { pure } from 'recompose';
 import Card from './Card';
 import HeaderThree from './HeaderThree';
 
-import OrderActions from './OrderActions';
+import OrderLogic from './../../screens/details/ProductDetail/OrderLogic';
 import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
@@ -82,7 +82,7 @@ const Order = ({
       <Divider />
 
       {/* Image, buttonlogic and buyershortcut */}
-      <OrderActions
+      <OrderLogic
         navigation={navigation}
         loggedInUserId={loggedInUserId}
         order={order}
@@ -114,7 +114,7 @@ const Order = ({
               fontFamily: 'roboto-bold',
             }}
             text={
-              suggestedDate && !isAgreed
+              suggestedDate && !isAgreed && !isCollected
                 ? `Föreslagen tid: ${formattedDate(suggestedDate)}`
                 : suggestedDate && isAgreed && !isCollected
                 ? `Överenskommen tid ${formattedDate(suggestedDate)}`

@@ -160,10 +160,8 @@ const ProjectDetailScreen = (props) => {
         ListHeaderComponent={projectHeader}
         renderItem={(itemData) => (
           <ProjectProductItem
-            showBackgroundText
             navigation={props.navigation}
-            showSmallStatusIcons
-            itemData={itemData.item}
+            productInProject={itemData.item}
             onSelect={() => {
               selectItemHandler(
                 itemData.item.productId,

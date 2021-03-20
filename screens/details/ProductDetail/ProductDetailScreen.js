@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import Moment from 'moment/min/moment-with-locales';
+import moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import { View, Alert, Text } from 'react-native';
+import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -17,7 +17,7 @@ import StatusBadge from '../../../components/UI/StatusBadge';
 import { DetailWrapper, detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
 import * as productsActions from '../../../store/actions/products';
-import Logistics from './Logistics';
+import ReservationLogic from './ReservationLogic';
 
 const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
@@ -114,22 +114,32 @@ const ProductDetailScreen = (props) => {
   return (
     <DetailWrapper>
       <View>
-        <Logistics
+        <ReservationLogic
           navigation={navigation}
           hasEditPermission={hasEditPermission}
           selectedProduct={selectedProduct}
         />
 
+        {/* Displays a list of orders for the product if the logged in user is the buyer */}
+        {currentUserOrdersOfProduct.length ? (
+          <>
+            <HeaderTwo
+              showNotificationBadge
+              title={'Mina reservationer'}
+              indicator={currentUserOrdersOfProduct.length}
+            />
+            <Orders
+              isProductDetail
+              loggedInUserId={loggedInUserId}
+              orders={currentUserOrdersOfProduct}
+              navigation={navigation}
+            />
+            <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
+          </>
+        ) : null}
+
         <SectionCard>
-          <View
-            style={{
-              position: 'absolute',
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              zIndex: 10,
-              width: '100%',
-            }}>
+          <View style={[styles.flexAboveItem, { justifyContent: 'space-between' }]}>
             <StatusBadge
               text={
                 allReserved
@@ -140,7 +150,7 @@ const ProductDetailScreen = (props) => {
               }
               style={{
                 fontFamily: 'roboto-bold',
-                backgroundColor: Colors.darkPrimary,
+                backgroundColor: allSold ? Colors.subtleGreen : Colors.darkPrimary,
                 color: '#fff',
               }}
             />
@@ -148,21 +158,13 @@ const ProductDetailScreen = (props) => {
               text={priceText ? priceText : `${price} kr`}
               style={{
                 fontFamily: 'roboto-bold',
-                backgroundColor: Colors.darkPrimary,
+                backgroundColor: allSold ? Colors.subtleGreen : Colors.darkPrimary,
                 color: '#fff',
               }}
             />
           </View>
           {bookedItems && !allReserved && !allSold ? (
-            <View
-              style={{
-                position: 'absolute',
-                flex: 1,
-                flexDirection: 'row',
-                zIndex: 10,
-                marginTop: 40,
-                width: '100%',
-              }}>
+            <View style={[styles.flexAboveItem, { marginTop: 40 }]}>
               <StatusBadge
                 text={`${bookedItems} reserverade`}
                 style={{ fontSize: 15, backgroundColor: Colors.primary, color: '#fff' }}
@@ -170,15 +172,7 @@ const ProductDetailScreen = (props) => {
             </View>
           ) : null}
           {soldItems && !allSold && !allReserved ? (
-            <View
-              style={{
-                position: 'absolute',
-                flex: 1,
-                flexDirection: 'row',
-                zIndex: 10,
-                marginTop: 80,
-                width: '100%',
-              }}>
+            <View style={[styles.flexAboveItem, { marginTop: 80 }]}>
               <StatusBadge
                 text={`${soldItems} sålda`}
                 style={{ fontSize: 15, backgroundColor: Colors.subtlePurple, color: '#fff' }}
@@ -293,30 +287,10 @@ const ProductDetailScreen = (props) => {
           ) : null}
         </SectionCard>
         <Text style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
-          Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
+          Upplagt {moment(date).locale('sv').startOf('hour').fromNow()}
         </Text>
 
         <View style={{ marginTop: 20 }}>
-          {/* Displays a list of orders for the product if the logged in user is the buyer */}
-          {currentUserOrdersOfProduct.length ? (
-            <>
-              <HeaderTwo
-                showNotificationBadge
-                title={'Reservationer'}
-                indicator={currentUserOrdersOfProduct.length}
-              />
-              <Orders
-                isProductDetail
-                loggedInUserId={loggedInUserId}
-                orders={currentUserOrdersOfProduct}
-                navigation={navigation}
-              />
-              <Divider
-                style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }}
-              />
-            </>
-          ) : null}
-
           {/* Displays a list of orders for the product if the logged in user is the seller */}
           {hasEditPermission && productOrders.length ? (
             <>
@@ -341,6 +315,16 @@ const ProductDetailScreen = (props) => {
     </DetailWrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  flexAboveItem: {
+    position: 'absolute',
+    flex: 1,
+    flexDirection: 'row',
+    zIndex: 10,
+    width: '100%',
+  },
+});
 
 export const screenOptions = () => {
   return {

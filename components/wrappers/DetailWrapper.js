@@ -29,6 +29,7 @@ export const detailStyles = StyleSheet.create({
   image: {
     height: 300,
     width: '100%',
+    borderRadius: 5,
   },
   amount: {
     position: 'absolute',

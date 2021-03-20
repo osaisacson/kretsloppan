@@ -88,7 +88,17 @@ const ProposalDetailScreen = (props) => {
   return (
     <DetailWrapper>
       {isResolved ? (
-        <StatusBadge text="Löst!" style={{ backgroundColor: Colors.completed, color: '#fff' }} />
+        <StatusBadge
+          text="Löst!"
+          style={{
+            fontSize: 20,
+            backgroundColor: Colors.subtleGreen,
+            color: '#fff',
+            width: '100%',
+            fontFamily: 'bebas-neue',
+            marginTop: 20,
+          }}
+        />
       ) : null}
 
       <SectionCard>
@@ -116,7 +126,10 @@ const ProposalDetailScreen = (props) => {
       {projectId && projectForProposal.length ? (
         <SectionCard>
           <View style={detailStyles.centered}>
-            <HeaderThree text="Relaterar till projektet" style={detailStyles.centeredHeader} />
+            <HeaderThree
+              text={isResolved ? 'Finns nu i projektet' : 'Relaterar till projektet'}
+              style={detailStyles.centeredHeader}
+            />
 
             <HorizontalScroll
               scrollHeight={200}

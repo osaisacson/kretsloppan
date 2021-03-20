@@ -11,13 +11,13 @@ import HeaderThree from '../../../components/UI/HeaderThree';
 import HorizontalScrollContainer from '../../../components/UI/HorizontalScrollContainer';
 import RoundItem from '../../../components/UI/RoundItem';
 import RoundItemEmpty from '../../../components/UI/RoundItemEmpty';
-import UserAvatar from '../../../components/UI/UserAvatar';
+import UserAvatarWithBadge from '../../../components/UI/UserAvatarWithBadge';
 import { detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
 import * as productsActions from '../../../store/actions/products';
 import * as ordersActions from '../../../store/actions/orders';
 
-const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
+const ReservationLogic = ({ navigation, hasEditPermission, selectedProduct }) => {
   const dispatch = useDispatch();
   const refRBSheet = useRef();
   const windowHeight = Dimensions.get('window').height;
@@ -128,21 +128,12 @@ const Logistics = ({ navigation, hasEditPermission, selectedProduct }) => {
 
   return (
     <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
-      <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
-        <UserAvatar
-          userId={ownerId}
-          style={{ margin: 0 }}
-          showBadge={false}
-          actionOnPress={() => {
-            navigation.navigate('Användare', {
-              detailId: ownerId,
-            });
-          }}
-        />
-        <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -10 }]}>
-          <Text style={styles.smallText}>säljare</Text>
-        </View>
-      </View>
+      <UserAvatarWithBadge
+        navigation={navigation}
+        text={'säljare'}
+        navigateTo="Användare"
+        detailId={ownerId}
+      />
       <View
         style={{
           flex: 1,
@@ -246,22 +237,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  textAndBadge: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  smallBadge: {
-    zIndex: 10,
-    paddingHorizontal: 2,
-    borderRadius: 5,
-    height: 17,
-  },
-  smallText: {
-    textTransform: 'uppercase',
-    fontSize: 10,
-    padding: 2,
-    color: '#fff',
-  },
 });
 
-export default Logistics;
+export default ReservationLogic;
