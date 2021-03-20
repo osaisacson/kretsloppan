@@ -45,7 +45,7 @@ const SpotlightProductsScreen = (props) => {
           currUserId={currentProfile.id}
           hasReadNews={currentProfile.hasReadNews}
           pic="https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80"
-          text="NYHETER: Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0-beta3"
+          text="NYHETER: Ny version av Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0.7"
         />
       ) : null}
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
