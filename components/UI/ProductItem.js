@@ -11,7 +11,6 @@ import TouchableCmp from './TouchableCmp';
 
 const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, onSelect }) => {
   const {
-    id,
     ownerId,
     location,
     image,

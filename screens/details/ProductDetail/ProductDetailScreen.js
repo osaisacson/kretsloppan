@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import ButtonIcon from '../../../components/UI/ButtonIcon';
 import CachedImage from '../../../components/UI/CachedImage';
 import FilterLine from '../../../components/UI/FilterLine';
+import HeaderTwo from '../../../components/UI/HeaderTwo';
+
 import HeaderThree from '../../../components/UI/HeaderThree';
 import Orders from '../../../components/UI/Orders';
 import SectionCard from '../../../components/UI/SectionCard';
@@ -21,13 +23,7 @@ const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  //Get product and owner id from navigation params (from parent screen) and current user id from state
   const productId = props.route.params.detailId;
-  const ownerId = props.route.params.ownerId;
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.profileId;
-  const profiles = useSelector((state) => state.profiles.allProfiles);
-  const ownerProfile = profiles.find((profile) => profile.profileId === ownerId);
 
   //Find us the product that matches the current productId
   const selectedProduct = useSelector((state) =>
@@ -40,6 +36,7 @@ const ProductDetailScreen = (props) => {
 
   const {
     id,
+    ownerId,
     amount,
     category,
     color,
@@ -64,6 +61,11 @@ const ProductDetailScreen = (props) => {
     booked,
     sold,
   } = selectedProduct;
+
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.profileId;
+  const profiles = useSelector((state) => state.profiles.allProfiles);
+  const sellerProfile = profiles.find((profile) => profile.profileId === ownerId);
 
   const originalItems = amount === undefined ? 1 : amount;
   const bookedItems = booked || 0;
@@ -102,6 +104,7 @@ const ProductDetailScreen = (props) => {
           onPress: () => {
             navigation.goBack();
             dispatch(productsActions.deleteProduct(id));
+            //TO DO: Find all orders of the product and delete these as well. Requires some explanatory UI.
           },
         },
       ]
@@ -116,56 +119,69 @@ const ProductDetailScreen = (props) => {
           hasEditPermission={hasEditPermission}
           selectedProduct={selectedProduct}
         />
-        {/* Displays a list of orders for the product if the logged in user is the seller */}
-        {hasEditPermission && productOrders.length ? (
-          <>
-            <Orders
-              isProductDetail
-              loggedInUserId={loggedInUserId}
-              orders={productOrders}
-              navigation={navigation}
-            />
-            <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
-          </>
-        ) : null}
-
-        {/* Displays a list of orders for the product if the logged in user is the seller */}
-        {currentUserOrdersOfProduct.length ? (
-          <>
-            <Orders
-              isProductDetail
-              loggedInUserId={loggedInUserId}
-              orders={currentUserOrdersOfProduct}
-              navigation={navigation}
-            />
-            <Divider style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }} />
-          </>
-        ) : null}
 
         <SectionCard>
-          {!allSold && !allReserved ? (
+          <View
+            style={{
+              position: 'absolute',
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              zIndex: 10,
+              width: '100%',
+            }}>
+            <StatusBadge
+              text={
+                allReserved
+                  ? 'Alla för närvarande reserverade'
+                  : allSold
+                  ? 'Alla sålda'
+                  : `${originalItems - bookedItems} st à`
+              }
+              style={{
+                fontFamily: 'roboto-bold',
+                backgroundColor: Colors.darkPrimary,
+                color: '#fff',
+              }}
+            />
+            <StatusBadge
+              text={priceText ? priceText : `${price} kr`}
+              style={{
+                fontFamily: 'roboto-bold',
+                backgroundColor: Colors.darkPrimary,
+                color: '#fff',
+              }}
+            />
+          </View>
+          {bookedItems && !allReserved && !allSold ? (
             <View
               style={{
                 position: 'absolute',
                 flex: 1,
                 flexDirection: 'row',
-                justifyContent: 'space-between',
                 zIndex: 10,
+                marginTop: 40,
                 width: '100%',
               }}>
               <StatusBadge
-                text={
-                  allReserved
-                    ? 'Alla för närvarande reserverade'
-                    : allSold
-                    ? 'Alla sålda'
-                    : `${originalItems - bookedItems} st à`
-                }
-                style={{ backgroundColor: Colors.darkPrimary, color: '#fff' }}
+                text={`${bookedItems} reserverade`}
+                style={{ fontSize: 15, backgroundColor: Colors.primary, color: '#fff' }}
               />
+            </View>
+          ) : null}
+          {soldItems && !allSold && !allReserved ? (
+            <View
+              style={{
+                position: 'absolute',
+                flex: 1,
+                flexDirection: 'row',
+                zIndex: 10,
+                marginTop: 80,
+                width: '100%',
+              }}>
               <StatusBadge
-                text={priceText ? priceText : `${price} kr`}
-                style={{ backgroundColor: '#fff', color: '#000' }}
+                text={`${soldItems} sålda`}
+                style={{ fontSize: 15, backgroundColor: Colors.subtlePurple, color: '#fff' }}
               />
             </View>
           ) : null}
@@ -256,7 +272,7 @@ const ProductDetailScreen = (props) => {
 
           <Divider style={{ marginTop: 10 }} />
           <HeaderThree style={{ marginVertical: 10 }} text="Upphämtningsdetaljer" />
-          <Paragraph>{ownerProfile.profileName}</Paragraph>
+          <Paragraph>{sellerProfile.profileName}</Paragraph>
           <Paragraph>{phone ? phone : 'Ingen telefon angiven'}</Paragraph>
           <Paragraph>{address ? address : 'Ingen address angiven'}</Paragraph>
           <Paragraph>{pickupDetails}</Paragraph>
@@ -279,12 +295,54 @@ const ProductDetailScreen = (props) => {
         <Text style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
           Upplagt {Moment(date).locale('sv').startOf('hour').fromNow()}
         </Text>
+
+        <View style={{ marginTop: 20 }}>
+          {/* Displays a list of orders for the product if the logged in user is the buyer */}
+          {currentUserOrdersOfProduct.length ? (
+            <>
+              <HeaderTwo
+                showNotificationBadge
+                title={'Reservationer'}
+                indicator={currentUserOrdersOfProduct.length}
+              />
+              <Orders
+                isProductDetail
+                loggedInUserId={loggedInUserId}
+                orders={currentUserOrdersOfProduct}
+                navigation={navigation}
+              />
+              <Divider
+                style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }}
+              />
+            </>
+          ) : null}
+
+          {/* Displays a list of orders for the product if the logged in user is the seller */}
+          {hasEditPermission && productOrders.length ? (
+            <>
+              <HeaderTwo
+                showNotificationBadge
+                title={'Reservationer'}
+                indicator={productOrders.length}
+              />
+              <Orders
+                isProductDetail
+                loggedInUserId={loggedInUserId}
+                orders={productOrders}
+                navigation={navigation}
+              />
+              <Divider
+                style={{ marginBottom: 20, borderColor: Colors.primary, borderWidth: 0.6 }}
+              />
+            </>
+          ) : null}
+        </View>
       </View>
     </DetailWrapper>
   );
 };
 
-export const screenOptions = (navData) => {
+export const screenOptions = () => {
   return {
     headerTitle: '',
   };
