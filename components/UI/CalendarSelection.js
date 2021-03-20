@@ -17,7 +17,7 @@ const CalendarSelection = ({
   loggedInUserId,
   projectId,
   quantity,
-  showConfirmationAlert,
+  toggleShowCalendar,
 }) => {
   const dispatch = useDispatch();
 
@@ -49,7 +49,7 @@ const CalendarSelection = ({
         false //isCollected will be false as we are setting up a new time for collection
       )
     );
-    showConfirmationAlert();
+    toggleShowCalendar();
   };
 
   return (

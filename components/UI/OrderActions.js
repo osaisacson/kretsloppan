@@ -79,20 +79,6 @@ const OrderActions = ({
     navigation.navigate('ProductDetail', { detailId: productId });
   };
 
-  const showConfirmationAlertHandler = () => {
-    Alert.alert(
-      'Upphämtningstid föreslagen!',
-      `Nu väntar vi på att motpart godkänner din föreslagna upphämtningstid. Håll ett öga på den här
-        reservationen under din profil för att se dess status. Du kan alltid också kontakta
-        motparten via deras kontaktuppgifter. Hitta dessa under 'Detaljer' i din reservation.`,
-      [
-        {
-          text: 'Ok',
-        },
-      ]
-    );
-  };
-
   //Show and reset time/date for pickup
   const toggleShowCalendarHandler = () => {
     setShowCalendar((prevState) => !prevState);
@@ -364,7 +350,7 @@ const OrderActions = ({
             loggedInUserId={loggedInUserId}
             projectId={projectId}
             quantity={quantity}
-            showConfirmationAlert={showConfirmationAlertHandler}
+            toggleShowCalendar={toggleShowCalendarHandler}
           />
         </View>
       ) : null}

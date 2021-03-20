@@ -109,7 +109,7 @@ const OrderButtonSection = ({
             }}>
             {/* Show button to cancel the order */}
             <ButtonIcon
-              icon="close"
+              icon="delete"
               color={Colors.neutral}
               onSelect={() => {
                 deleteOrder(orderId, productId, quantity);

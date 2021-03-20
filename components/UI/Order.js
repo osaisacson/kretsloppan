@@ -61,9 +61,8 @@ const Order = ({
 
   return (
     <Card style={{ marginBottom: 20 }}>
-      {/* Title and quantity */}
       <View style={{ ...styles.oneLineSpread, alignItems: 'flex-end' }}>
-        <Text style={{ fontSize: 20, fontFamily: 'roboto-bold', width: '60%' }}>
+        <Text style={{ fontSize: 18, fontFamily: 'roboto-bold', width: '60%' }}>
           {currentProduct.title}{' '}
         </Text>
         {!isCollected ? (
@@ -116,11 +115,11 @@ const Order = ({
             }}
             text={
               suggestedDate && !isAgreed
-                ? `Föreslagen tid: ${moment(suggestedDate).locale('sv').format('HH:mm, D MMMM')}`
+                ? `Föreslagen tid: ${formattedDate(suggestedDate)}`
                 : suggestedDate && isAgreed && !isCollected
-                ? `Överenskommen tid ${moment(suggestedDate).locale('sv').format('HH:mm, D MMMM')}`
+                ? `Överenskommen tid ${formattedDate(suggestedDate)}`
                 : isCollected
-                ? `Hämtades ${moment(isCollected).locale('sv').format('HH:mm, D MMMM')}`
+                ? `Hämtades ${formattedDate(isCollected)}`
                 : 'Ingen upphämtningstid föreslagen'
             }
           />
@@ -130,6 +129,7 @@ const Order = ({
               flexDirection: 'row',
               justifyContent: 'flex-end',
               alignItems: 'center',
+              height: 60,
             }}>
             <Text style={{ fontFamily: 'bebas-neue', color: Colors.neutral, fontSize: 20 }}>
               Detaljer{' '}
