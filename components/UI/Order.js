@@ -45,6 +45,8 @@ const Order = ({
   const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
   const sellerProfile = sellerId ? profiles.find((profile) => profile.profileId === sellerId) : {};
   const buyerProfile = buyerId ? profiles.find((profile) => profile.profileId === buyerId) : {};
+  const isTimeInitiator = loggedInUserId === timeInitiatorId;
+  const timeInitiatorProfile = profiles.find((profile) => profile.profileId === timeInitiatorId);
 
   const toggleShowDetails = () => {
     setShowDetails((prevState) => !prevState);
@@ -86,6 +88,10 @@ const Order = ({
         products={products}
         profiles={profiles}
         projectForProduct={projectForProduct}
+        isTimeInitiator={isTimeInitiator}
+        timeInitiatorProfile={timeInitiatorProfile}
+        sellerProfile={sellerProfile}
+        buyerProfile={buyerProfile}
       />
       <Divider />
 

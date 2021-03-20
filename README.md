@@ -53,8 +53,12 @@ With the Expo app in your phone scan QR code to see it on your device
 - Read info here: https://docs.expo.io/distribution/app-stores/
 - `expo build`
 - `expo publish` background on this here: https://docs.expo.io/workflow/publishing/
-- To upload the previously built standalone app to the appropriate app store, you simply run `expo upload:android` or `expo upload:ios` more on this here: https://docs.expo.io/distribution/uploading-apps/
+- To upload the previously built standalone app to the appropriate app store, you simply run `expo upload:android` for android, more on this here: https://docs.expo.io/distribution/uploading-apps/
 - When asked for the path tp the Google Service Account JSON key: ./../api-7295700764673714197-958965-962f25310ea7.json
+- To upload ios go to https://expo.io/accounts/asaisacson/builds where you will find the build, dwnload it as .ipa
+- Install/open Transporter from the app store
+- Upload the .ipa in the Transporter
+- Go to https://appstoreconnect.apple.com/apps/1523861208/testflight/ios
 
 ## Original setup
 

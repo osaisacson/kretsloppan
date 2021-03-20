@@ -268,65 +268,6 @@ export function updateProduct(
   };
 }
 
-// export function updateBookedProducts(id, booked) {
-//   return async (dispatch) => {
-//     try {
-//       console.log(
-//         `Attempting to update product with id: ${id} to having ${booked} booked items...`
-//       );
-
-//       const dataToUpdate = {
-//         booked,
-//       };
-
-//       const returnedProductData = await firebase
-//         .database()
-//         .ref(`products/${id}`)
-//         .update(dataToUpdate);
-
-//       console.log(`...updated product with id ${id}:`, returnedProductData);
-
-//       dispatch({
-//         type: UPDATE_BOOKED_PRODUCTS,
-//         pid: id,
-//         productData: dataToUpdate,
-//       });
-//     } catch (error) {
-//       console.log('Error in actions/products/updateBookedProducts: ', error);
-//       throw error;
-//     }
-//   };
-// }
-
-// export function updateProductSoldAmount(id, soldAmount) {
-//   return async (dispatch) => {
-//     console.log('soldAmount from updateProductSoldAmount', soldAmount);
-//     try {
-//       console.log(`Attempting to update product with id: ${id}...`);
-
-//       const dataToUpdate = {
-//         sold: soldAmount,
-//       };
-
-//       const returnedProductData = await firebase
-//         .database()
-//         .ref(`products/${id}`)
-//         .update(dataToUpdate);
-
-//       console.log(`...updated product with id ${id}:`, returnedProductData);
-
-//       dispatch({
-//         type: UPDATE_PRODUCT_SOLD_AMOUNT,
-//         pid: id,
-//         productData: dataToUpdate,
-//       });
-//     } catch (error) {
-//       console.log('Error in actions/products/updateProductSoldAmount: ', error);
-//       throw error;
-//     }
-//   };
-// }
-
 export const deleteProduct = (productId) => {
   return async (dispatch) => {
     try {

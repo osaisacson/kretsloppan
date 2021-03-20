@@ -24,8 +24,11 @@ const OrderActions = ({
   order,
   isProductDetail,
   products,
-  profiles,
   projectForProduct,
+  isTimeInitiator,
+  timeInitiatorProfile,
+  buyerProfile,
+  sellerProfile,
 }) => {
   const dispatch = useDispatch();
 
@@ -72,11 +75,7 @@ const OrderActions = ({
   const [showCalendar, setShowCalendar] = useState(false);
   const [orderSuggestedDate, setOrderSuggestedDate] = useState();
 
-  // Identifies who is currently watching the order
-  const isTimeInitiator = loggedInUserId === timeInitiatorId;
-  const timeInitiatorProfile = profiles.find((profile) => profile.profileId === timeInitiatorId);
-  const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
-  const sellerProfile = profiles.find((profile) => profile.profileId === sellerId);
+  console.log({ orderSuggestedDate });
 
   // Identifies which user information is most relevant for the logged in user to see
   const infoId = loggedInUserId === buyerId ? sellerId : buyerId;
@@ -336,7 +335,7 @@ const OrderActions = ({
     <>
       <View style={styles.oneLineSpread}>
         {/*  IMAGES */}
-        {/* If we are on the product detail screen show the user avatar amd always show 'buyer' as text...*/}
+        {/* If we are on the product detail screen show the user avatar and always show 'buyer' as text...*/}
         {isProductDetail ? (
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={{ flex: 1, flexDirection: 'row' }}>

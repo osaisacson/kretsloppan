@@ -11,10 +11,17 @@ const StatusText = ({ label, text, alwaysShow, textStyle }) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginVertical: 4,
-          marginHorizontal: 10,
+          paddingHorizontal: 10,
+          width: '100%',
         }}>
-        <Text style={{ fontFamily: 'roboto-light-italic' }}>{label}</Text>
-        <Text style={[textStyle, { fontFamily: 'roboto-bold-italic' }]}>{text}</Text>
+        <Text style={{ fontFamily: 'roboto-light-italic', maxWidth: '50%' }}>{label}</Text>
+        <Text
+          style={[
+            textStyle,
+            { textAlign: 'right', fontFamily: 'roboto-bold-italic', maxWidth: '50%' },
+          ]}>
+          {text}
+        </Text>
       </View>
       <Divider />
     </>
