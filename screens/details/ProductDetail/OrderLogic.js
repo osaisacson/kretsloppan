@@ -136,7 +136,7 @@ const OrderLogic = ({
     console.log('quantity', quantity);
     console.log('suggestedDate', suggestedDate);
     console.log('isAgreed should be true', true);
-    console.log('isCollected should be false', false);
+    console.log('isCollected should be todays date', new Date());
     console.log('-----------------END');
 
     Alert.alert('Är produkten hämtad?', 'Genom att klicka här bekräftar du att ordern är klar.', [

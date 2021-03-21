@@ -20,7 +20,6 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
   const allOrders = useSelector((state) => state.orders.availableOrders);
 
   const ordersToSell = userOrders.filter((order) => !order.isCollected);
-  console.log({ allOrders, ordersToSell });
   const ordersToBuy = allOrders.filter(
     (order) => order.sellerId === loggedInUserId && !order.isCollected
   );

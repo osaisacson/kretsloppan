@@ -60,6 +60,10 @@ With the Expo app in your phone scan QR code to see it on your device
 - Install/open Transporter from the app store
 - Upload the .ipa in the Transporter
 - Go to https://appstoreconnect.apple.com/apps/1523861208/testflight/ios
+- Select your app and on the top left plus sign create a new version
+- Wait until testflight has finished uploading. Check the status under the tab 'Testflight' It could take about an hour and you wont be able to select the build for the version documentation until its done.
+- Fill out documentation upload details and choose the build.
+- Click publish
 
 ## Original setup
 
