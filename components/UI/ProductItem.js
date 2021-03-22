@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { pure } from 'recompose';
 
 import CachedImage from '../../components/UI/CachedImage';
 import UserAvatar from '../../components/UI/UserAvatar';
@@ -9,9 +9,8 @@ import Styles from './../../constants/Styles';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
-const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, onSelect }) => {
+const ProductItem = ({ navigation, itemData, isHorizontal, onSelect }) => {
   const {
-    id,
     ownerId,
     location,
     image,
@@ -20,15 +19,16 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
     background,
     amount,
     sold,
+    booked,
     title,
   } = itemData;
 
-  const productOrders = useSelector((state) => state.orders.availableOrders);
-  const ordersForProduct = productOrders.filter((order) => order.productId === id); //All orders for the product
+  const originalItems = amount === undefined ? 1 : amount;
+  const bookedItems = booked || 0;
+  const soldItems = sold || 0;
 
-  const allOrdersCollected = ordersForProduct.every((order) => order.isCollected);
-  const allSold = amount === sold && allOrdersCollected;
-  const allReserved = amount > sold && !allOrdersCollected;
+  const allSold = originalItems === soldItems;
+  const allReserved = originalItems === bookedItems;
 
   const InfoBadge = ({ text, style }) => {
     return <Text style={{ ...styles.infoBadge, ...style }}>{text}</Text>;
@@ -54,30 +54,34 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
             }}
           />
         </View>
-        {allSold ? (
-          <Text style={{ ...styles.status, backgroundColor: Colors.subtleGreen }}>Alla sålda</Text>
-        ) : null}
-        {allReserved ? (
-          <Text style={{ ...styles.status, backgroundColor: Colors.darkPrimary }}>
-            Alla Reserverade
-          </Text>
-        ) : null}
-
-        {location ? <InfoBadge text={location} style={styles.location} /> : null}
-
         <View style={styles.touchable}>
           <TouchableCmp onPress={onSelect} useForeground>
             <View style={styles.imageContainer}>
               <CachedImage style={styles.image} uri={image} />
             </View>
-            {amount ? <InfoBadge text={`${amount} st à`} style={styles.amount} /> : null}
-            {priceText && !price ? <InfoBadge text={priceText} style={styles.price} /> : null}
-            {(price || price === 0) && !priceText ? (
-              <InfoBadge text={`${price ? price : 0} kr`} style={styles.price} />
-            ) : null}
-            {price && priceText ? (
-              <InfoBadge text={`${price}kr eller ${priceText}`} style={styles.price} />
-            ) : null}
+
+            {location ? <InfoBadge text={location} style={styles.location} /> : null}
+
+            {allSold || allReserved ? (
+              <Text
+                style={{
+                  ...styles.status,
+                  backgroundColor: allSold ? Colors.subtleGreen : Colors.darkPrimary,
+                }}>
+                {allSold ? 'Alla sålda' : 'Alla reserverade'}
+              </Text>
+            ) : (
+              <>
+                <InfoBadge text={`${originalItems - bookedItems} st à`} style={styles.amount} />
+                {priceText && !price ? <InfoBadge text={priceText} style={styles.price} /> : null}
+                {(price || price === 0) && !priceText ? (
+                  <InfoBadge text={`${price ? price : 0} kr`} style={styles.price} />
+                ) : null}
+                {price && priceText ? (
+                  <InfoBadge text={`${price}kr eller ${priceText}`} style={styles.price} />
+                ) : null}
+              </>
+            )}
           </TouchableCmp>
         </View>
       </Card>
@@ -85,7 +89,7 @@ const ProductItem = ({ navigation, itemData, showBackgroundText, isHorizontal, o
         {title}
       </Text>
 
-      {showBackgroundText ? (
+      {background ? (
         <Text numberOfLines={5} ellipsizeMode="tail" style={styles.backgroundText}>
           {background}
         </Text>
@@ -194,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductItem;
+export default pure(ProductItem);

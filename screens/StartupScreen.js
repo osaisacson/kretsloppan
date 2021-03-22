@@ -64,8 +64,9 @@ const StartupScreen = () => {
           return;
         }
         console.log(
-          `We have received a userId from AsyncStorage. Authenticating user with id ${userId}`
+          `We have received a userId from AsyncStorage. Attempting to authenticate user with id ${userId}`
         );
+
         const expirationTime = expirationDate.getTime() - new Date().getTime();
         updateExpoTokens(userId);
         //If we instead succeed and have a valid token then we go to the shop page

@@ -84,7 +84,7 @@ const UserSpotlightScreen = (props) => {
             }
             size={80}
           />
-          <ButtonIcon icon="settings" color={Colors.neutral} onSelect={editProfileHandler} />
+          <ButtonIcon icon="cog" color={Colors.neutral} onSelect={editProfileHandler} />
 
           <Title style={{ color: '#fff', ...userProfileStyles.title }}>
             {currentProfile.profileName}

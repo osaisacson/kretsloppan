@@ -1,37 +1,26 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Card } from 'react-native-paper';
+import { pure } from 'recompose';
 
-import ResolvedBadge from '../../components/UI/ResolvedBadge';
 import Colors from '../../constants/Colors';
 import Styles from './../../constants/Styles';
 import TouchableCmp from './TouchableCmp';
 
 const TextItem = ({ itemData, onSelect }) => {
-  const resolvedBadge = useMemo(
-    () =>
-      itemData.status === 'löst' ? (
-        <ResolvedBadge badgeText="Löst!" />
-      ) : (
-        <View style={styles.spacer} />
-      ),
-    [itemData.status]
-  );
+  const { title, description } = itemData;
 
   return (
     <Card style={{ height: Styles.textItemHeight }}>
       <View style={styles.container}>
         <View style={styles.touchable}>
           <TouchableCmp onPress={onSelect} useForeground>
-            <>
-              {resolvedBadge}
-              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-                {itemData.title}
-              </Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
-                {itemData.description}
-              </Text>
-            </>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+              {title}
+            </Text>
+            <Text numberOfLines={2} ellipsizeMode="tail" style={styles.subTitle}>
+              {description}
+            </Text>
           </TouchableCmp>
         </View>
       </View>
@@ -69,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextItem;
+export default pure(TextItem);

@@ -4,28 +4,26 @@ class Order {
     productId,
     buyerId,
     sellerId,
+    timeInitiatorId,
     projectId,
     image,
     quantity,
     createdOn,
-    reservedUntil,
     suggestedDate,
-    buyerAgreed,
-    sellerAgreed,
+    isAgreed,
     isCollected
   ) {
     this.id = id;
     this.productId = productId;
     this.buyerId = buyerId;
     this.sellerId = sellerId;
+    this.timeInitiatorId = timeInitiatorId;
     this.projectId = projectId;
     this.image = image;
     this.quantity = quantity;
     this.createdOn = createdOn;
-    this.reservedUntil = reservedUntil;
     this.suggestedDate = suggestedDate;
-    this.buyerAgreed = buyerAgreed;
-    this.sellerAgreed = sellerAgreed;
+    this.isAgreed = isAgreed;
     this.isCollected = isCollected;
   }
 }

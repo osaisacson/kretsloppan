@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { pure } from 'recompose';
 
 import CachedImage from '../../components/UI/CachedImage';
 import Card from './Card';
@@ -64,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectItem;
+export default pure(ProjectItem);

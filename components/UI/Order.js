@@ -1,158 +1,171 @@
-import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
+import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { pure } from 'recompose';
 
-import Colors from './../../constants/Colors';
 import Card from './Card';
-import OrderActions from './OrderActions';
+import HeaderThree from './HeaderThree';
+
+import OrderLogic from './../../screens/details/ProductDetail/OrderLogic';
 import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
-import UserAvatar from './UserAvatar';
+import Colors from '../../constants/Colors';
 
-const Order = ({ order, navigation, profiles, projects, loggedInUserId, isProductDetail }) => {
+const Order = ({
+  order,
+  navigation,
+  loggedInUserId,
+  isProductDetail,
+  projects,
+  products,
+  profiles,
+}) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const {
     productId,
-    buyerId,
-    sellerId,
     projectId,
-    image,
     quantity,
     comments,
+    buyerId,
+    sellerId,
+    timeInitiatorId,
     suggestedDate,
+    isAgreed,
     isCollected,
-    buyerAgreed,
-    sellerAgreed,
   } = order;
 
-  const products = useSelector((state) => state.products.availableProducts);
-  const currentProduct = products.find((product) => product.id === productId);
-
-  const buyerProfile = profiles.find((profile) => profile.profileId === buyerId);
+  const currentProduct = productId ? products.find((product) => product.id === productId) : {};
+  if (!currentProduct) {
+    console.log(
+      'A product that is associated with some orders has likely been deleted on this page'
+    );
+    return null;
+  }
   const projectForProduct = projectId ? projects.find((project) => project.id === projectId) : {};
-
-  const theOneWeAreWaitingFor = profiles.find(
-    (profile) => profile.profileId === (!sellerAgreed ? sellerId : buyerId)
-  );
-
-  const isBuyer = buyerId === loggedInUserId; //The currently logged in user matches the buyerId in the order
-  const isSeller = sellerId === loggedInUserId; //The currently logged in user matches the sellerId in the order
-
-  const waitingForYouAsSeller = isSeller && !sellerAgreed;
-  const waitingForYouAsBuyer = isBuyer && !buyerAgreed;
-  const waitingForYou = waitingForYouAsSeller || waitingForYouAsBuyer;
-  const nameOfThumberOuterGetter = theOneWeAreWaitingFor.profileName;
-
-  const bothHaveAgreedOnTime = buyerAgreed && sellerAgreed && suggestedDate;
+  const sellerProfile = sellerId ? profiles.find((profile) => profile.profileId === sellerId) : {};
+  const buyerProfile = buyerId ? profiles.find((profile) => profile.profileId === buyerId) : {};
+  const isTimeInitiator = loggedInUserId === timeInitiatorId;
+  const timeInitiatorProfile = profiles.find((profile) => profile.profileId === timeInitiatorId);
 
   const toggleShowDetails = () => {
     setShowDetails((prevState) => !prevState);
   };
 
-  return (
-    <Card style={{ marginTop: 4 }}>
-      <TouchableCmp onPress={toggleShowDetails}>
-        <View style={styles.oneLineSpread}>
-          <Text style={{ fontSize: 18, fontFamily: 'roboto-bold' }}>{currentProduct.title}</Text>
-          <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>{quantity} st</Text>
-        </View>
-        <Divider />
+  const formattedDate = (dateToFormat) => {
+    return moment(dateToFormat).locale('sv').format('D MMMM, HH:mm');
+  };
 
-        {/* Image, buttonlogic and buyershortcut */}
-        <OrderActions
-          navigation={navigation}
-          loggedInUserId={loggedInUserId}
-          order={order}
-          isBuyer={isBuyer}
-          isSeller={isSeller}
-          productImage={image}
-          isProductDetail={isProductDetail}
-        />
-        {isCollected ? (
-          <AntDesign
+  return (
+    <Card style={{ marginBottom: 20 }}>
+      <View style={{ ...styles.oneLineSpread, alignItems: 'flex-end' }}>
+        <Text style={{ fontSize: 18, fontFamily: 'roboto-bold', width: '60%' }}>
+          {currentProduct.title}{' '}
+        </Text>
+        {!isCollected ? (
+          <>
+            <View
+              style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', width: '40%' }}>
+              <Text style={{ fontSize: 16, fontFamily: 'roboto-bold' }}>
+                {quantity} st {quantity > 1 ? 'reserverade' : 'reserverad'}
+              </Text>
+              <Text style={{ fontSize: 16 }}>
+                {moment(order.createdOn).locale('sv').format('D MMMM YYYY')}
+              </Text>
+            </View>
+          </>
+        ) : null}
+      </View>
+      <Divider />
+
+      {/* Image, buttonlogic and buyershortcut */}
+      <OrderLogic
+        navigation={navigation}
+        loggedInUserId={loggedInUserId}
+        order={order}
+        isProductDetail={isProductDetail}
+        products={products}
+        profiles={profiles}
+        projectForProduct={projectForProduct}
+        isTimeInitiator={isTimeInitiator}
+        timeInitiatorProfile={timeInitiatorProfile}
+        sellerProfile={sellerProfile}
+        buyerProfile={buyerProfile}
+      />
+      <Divider />
+
+      {/* Trigger for showing  order details */}
+      <TouchableCmp onPress={toggleShowDetails}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <HeaderThree
             style={{
-              textAlign: 'right',
-              paddingRight: 10,
-              paddingBottom: 10,
-              marginTop: isProductDetail ? 10 : 0,
+              textAlign: 'center',
+              paddingLeft: 10,
+              fontSize: 15,
+              fontFamily: 'roboto-bold',
             }}
-            name="checkcircle"
-            size={20}
-            color={Colors.subtleGreen}
+            text={
+              suggestedDate && !isAgreed && !isCollected
+                ? `Föreslagen tid: ${formattedDate(suggestedDate)}`
+                : suggestedDate && isAgreed && !isCollected
+                ? `Överenskommen tid ${formattedDate(suggestedDate)}`
+                : isCollected
+                ? `Hämtades ${formattedDate(isCollected)}`
+                : 'Ingen upphämtningstid föreslagen'
+            }
           />
-        ) : (
-          <AntDesign
+          <View
             style={{
-              textAlign: 'right',
-              paddingRight: 10,
-              paddingBottom: 10,
-              marginTop: isProductDetail ? 10 : 0,
-            }}
-            name="caretdown"
-            size={18}
-            color="#666"
-          />
-        )}
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              height: 60,
+            }}>
+            <Text style={{ fontFamily: 'bebas-neue', color: Colors.neutral, fontSize: 20 }}>
+              Detaljer{' '}
+            </Text>
+            <AntDesign
+              style={{
+                textAlign: 'right',
+                paddingRight: 10,
+                paddingBottom: 10,
+                marginTop: showDetails ? 10 : 0,
+              }}
+              name={showDetails ? 'caretup' : 'caretdown'}
+              size={25}
+              color={Colors.neutral}
+            />
+          </View>
+        </View>
       </TouchableCmp>
 
+      {/* Collapsible section with order details */}
       {showDetails ? (
         <>
-          <Divider />
-
           <View style={{ paddingVertical: 20 }}>
             <>
+              <StatusText label="Upphämtningsaddress:" text={currentProduct.address} />
+              <StatusText label="Detaljer om hämtning:" text={currentProduct.pickupDetails} />
               <StatusText
-                textStyle={{ width: 200, textAlign: 'right' }}
-                label="Upphämtningsaddress:"
-                text={currentProduct.address}
+                label={`${sellerProfile.profileName}'s telefon:`}
+                text={currentProduct.phone}
               />
-              <Divider />
-              {currentProduct.pickupDetails ? (
-                <>
-                  <StatusText
-                    textStyle={{ width: 200, textAlign: 'right' }}
-                    label="Detaljer om hämtning:"
-                    text={currentProduct.pickupDetails}
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {currentProduct.phone ? (
-                <>
-                  <StatusText
-                    textStyle={{ width: 200, textAlign: 'right' }}
-                    label="Säljarens telefon:"
-                    text={`0${currentProduct.phone}`}
-                  />
-                  <Divider />
-                </>
-              ) : null}
+              <StatusText
+                label={`${buyerProfile.profileName}'s telefon:`}
+                text={buyerProfile.phone}
+              />
               {comments ? <Text>Kommentarer: {comments}</Text> : null}
             </>
-
-            {!isCollected && suggestedDate ? (
-              <>
-                {!isCollected ? (
-                  <StatusText
-                    textStyle={{ textAlign: 'right' }}
-                    label={!bothHaveAgreedOnTime ? 'Föreslagen upphämtningstid' : 'Hämtas'}
-                    text={moment(suggestedDate).locale('sv').format('HH:mm, D MMMM YYYY')}
-                  />
-                ) : (
-                  <StatusText
-                    textStyle={{ textAlign: 'right' }}
-                    label="Hämtades"
-                    text={moment(isCollected).locale('sv').format('HH:mm, D MMMM YYYY')}
-                  />
-                )}
-                <Divider />
-              </>
-            ) : null}
 
             {projectForProduct && !projectForProduct === '000' ? (
               <View style={styles.oneLineSpread}>
@@ -183,28 +196,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
   },
-  statusText: {
-    color: Colors.darkPrimary,
-    fontFamily: 'roboto-light-italic',
-  },
-  textAndBadge: {
-    marginLeft: 30,
-    marginBottom: 20,
-    flex: 1,
-    flexDirection: 'row',
-  },
-  smallBadge: {
-    zIndex: 10,
-    paddingHorizontal: 2,
-    borderRadius: 5,
-    height: 17,
-  },
-  smallText: {
-    textTransform: 'uppercase',
-    fontSize: 10,
-    padding: 2,
-    color: '#fff',
-  },
 });
 
-export default Order;
+export default pure(Order);

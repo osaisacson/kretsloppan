@@ -5,19 +5,29 @@ import { useColorScheme } from 'react-native-appearance';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Divider } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import HeaderThree from './HeaderThree';
+import * as ordersActions from '../../store/actions/orders';
 
-const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
+const CalendarSelection = ({
+  orderId,
+  suggestedDate,
+  loggedInUserId,
+  projectId,
+  quantity,
+  toggleShowCalendar,
+}) => {
+  const dispatch = useDispatch();
+
   const colorScheme = useColorScheme();
 
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [suggestedDateLocal, setSuggestedDateLocal] = useState(suggestedDate ? suggestedDate : []); //If we already have a date suggested, use this as the original state
-  const [suggestedDateTime, setSuggestedDateTime] = useState(suggestedDate ? suggestedDate : []);
+  const [newSuggestedDate, setNewSuggestedDate] = useState(suggestedDate ? suggestedDate : []); //If we already have a date suggested, use this as the original state
 
   const handleTimePicker = (date) => {
-    setSuggestedDateLocal(date);
+    setNewSuggestedDate(date);
     setShowTimePicker(true);
   };
 
@@ -25,10 +35,21 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
     setShowTimePicker(false);
   };
 
-  const setSuggestedDT = (dateTime) => {
-    setSuggestedDateTime(dateTime);
-    sendSuggestedTime(dateTime);
-    hideTimePicker();
+  const setSuggestedDate = (newSuggestedDate) => {
+    const quantityBooked = Number(quantity);
+
+    dispatch(
+      ordersActions.updateOrder(
+        orderId,
+        loggedInUserId, //the timeInitiatorId will be the one of the logged in user as they are the ones initiating the change
+        projectId,
+        quantityBooked,
+        newSuggestedDate, //updated suggested pickup date
+        false, //isAgreed will be false as we are resetting the time
+        false //isCollected will be false as we are setting up a new time for collection
+      )
+    );
+    toggleShowCalendar();
   };
 
   return (
@@ -39,7 +60,7 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
         style={{ textAlign: 'center' }}
         text={
           suggestedDate
-            ? 'Föreslå en ny upphämtningstid nedan.'
+            ? `Föreslå en ny upphämtningstid nedan.`
             : 'Föreslå en tid för upphämtning nedan.'
         }
       />
@@ -47,7 +68,7 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
       <View style={{ flex: 1 }}>
         <CalendarStrip
           scrollable
-          selectedDate={suggestedDateLocal}
+          selectedDate={newSuggestedDate}
           daySelectionAnimation={{
             type: 'border',
             borderWidth: 0.5,
@@ -66,18 +87,19 @@ const CalendarSelection = ({ suggestedDate, sendSuggestedTime }) => {
           borderHighlightColor="#666"
         />
         <DateTimePickerModal
-          date={new Date(suggestedDateLocal)}
+          date={new Date(newSuggestedDate)}
           isDarkModeEnabled={colorScheme === 'dark'}
           cancelTextIOS="Avbryt"
-          confirmTextIOS="Klar!"
-          headerTextIOS={`Valt datum ${moment(suggestedDateLocal)
+          confirmTextIOS="Spara"
+          headerTextIOS={`Valt datum ${moment(newSuggestedDate)
             .locale('sv')
             .format('D MMMM')}. Välj tid:`}
           isVisible={showTimePicker}
           mode="time"
           locale="sv_SV" // Use "en_GB" here
           onConfirm={(dateTime) => {
-            setSuggestedDT(dateTime);
+            setSuggestedDate(dateTime);
+            hideTimePicker();
           }}
           onCancel={hideTimePicker}
         />

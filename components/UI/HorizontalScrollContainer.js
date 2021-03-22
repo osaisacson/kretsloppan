@@ -18,13 +18,7 @@ const HorizontalScrollContainer = ({
   return (
     <ScrollView scrollEventThrottle={16}>
       {title ? (
-        <HeaderTwo
-          title={title}
-          subTitle={subTitle}
-          extraSubTitle={extraSubTitle}
-          icon={icon}
-          showNotificationBadge={showNotificationBadge}
-        />
+        <HeaderTwo title={title} icon={icon} showNotificationBadge={showNotificationBadge} />
       ) : null}
       <View
         style={{

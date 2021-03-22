@@ -1,4 +1,4 @@
-import * as Notifications from 'expo-notifications'
+import * as Notifications from 'expo-notifications';
 import firebase from 'firebase';
 
 export const getIndex = (stateSegment, matchId) => {
@@ -30,7 +30,7 @@ export function convertImage(image) {
       );
 
       const firebaseImageUrl = await response.json();
-      console.log('returned image url from firebase', firebaseImageUrl);
+      console.log('...returned image url from firebase', firebaseImageUrl);
       return firebaseImageUrl;
     } catch (error) {
       throw error;
@@ -40,9 +40,9 @@ export function convertImage(image) {
 
 export function denormalizeData(data) {
   if (!data || typeof data !== 'object') {
+    console.log('...there is no data or the data is not an object.');
     return;
   }
-
   const id = Object.keys(data).pop();
 
   return {
@@ -72,6 +72,6 @@ export function updateExpoTokens(userId, remove = false) {
         }
       });
   } catch (error) {
-    console.error('updateExpoTokens', error.message);
+    console.error('...updateExpoTokens failed', error.message);
   }
 }

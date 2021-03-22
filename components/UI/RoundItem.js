@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { pure } from 'recompose';
 
 import CachedImage from '../../components/UI/CachedImage';
 import Colors from '../../constants/Colors';
@@ -64,5 +65,4 @@ const styles = StyleSheet.create({
     borderRadius: 100 / 2,
   },
 });
-
-export default RoundItem;
+export default pure(RoundItem);

@@ -89,10 +89,15 @@ const ProposalDetailScreen = (props) => {
     <DetailWrapper>
       {isResolved ? (
         <StatusBadge
-          style={{ alignSelf: 'flex-start', marginTop: 5 }}
           text="Löst!"
-          icon={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-          backgroundColor={Colors.completed}
+          style={{
+            fontSize: 20,
+            backgroundColor: Colors.subtleGreen,
+            color: '#fff',
+            width: '100%',
+            fontFamily: 'bebas-neue',
+            marginTop: 20,
+          }}
         />
       ) : null}
 
@@ -121,7 +126,10 @@ const ProposalDetailScreen = (props) => {
       {projectId && projectForProposal.length ? (
         <SectionCard>
           <View style={detailStyles.centered}>
-            <HeaderThree text="Relaterar till projektet" style={detailStyles.centeredHeader} />
+            <HeaderThree
+              text={isResolved ? 'Finns nu i projektet' : 'Relaterar till projektet'}
+              style={detailStyles.centeredHeader}
+            />
 
             <HorizontalScroll
               scrollHeight={200}
@@ -148,8 +156,8 @@ const ProposalDetailScreen = (props) => {
             />
             {!isResolved ? (
               <ButtonRound
-              style={{ backgroundColor: Colors.approved  }}
-                              disabled={isResolved} //disable/enable base on true/false of these params
+                style={{ backgroundColor: Colors.approved }}
+                disabled={isResolved} //disable/enable base on true/false of these params
                 onSelect={() => {
                   collectHandler(selectedProposal.id);
                 }}

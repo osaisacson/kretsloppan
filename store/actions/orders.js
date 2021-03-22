@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Order from '../../models/order';
 
@@ -21,6 +21,7 @@ export function fetchOrders() {
 
       if (orderSnapshot.exists) {
         const normalizedOrderData = orderSnapshot.val();
+
         const allOrders = [];
         const userOrders = [];
 
@@ -31,14 +32,13 @@ export function fetchOrders() {
             order.productId,
             order.buyerId,
             order.sellerId,
+            order.timeInitiatorId,
             order.projectId,
             order.image,
             order.quantity,
             order.createdOn,
-            order.reservedUntil,
             order.suggestedDate,
-            order.buyerAgreed,
-            order.sellerAgreed,
+            order.isAgreed,
             order.isCollected
           );
 
@@ -54,7 +54,7 @@ export function fetchOrders() {
           orders: allOrders,
           userOrders,
         });
-        console.log(`Orders:`);
+        console.log(`Orders:`, allOrders);
         console.log(`...${allOrders.length} total orders found and loaded.`);
         console.log(`...${userOrders.length} orders created by the user found and loaded.`);
       }
@@ -80,7 +80,7 @@ export const deleteOrder = (orderId) => {
   };
 };
 
-export function createOrder(productId, sellerId, projectId, image, quantity, suggestedDate) {
+export function createOrder(productId, sellerId, timeInitiatorId, projectId, image, quantity) {
   return async (dispatch) => {
     const currentDate = new Date();
     const userData = await AsyncStorage.getItem('userData').then((data) =>
@@ -89,26 +89,19 @@ export function createOrder(productId, sellerId, projectId, image, quantity, sug
     const buyerId = userData.userId;
 
     try {
-      console.log('Creating order...');
-
-      const fourDaysFromNow = new Date(
-        currentDate.getTime() + 4 * 24 * 60 * 60 * 1000
-      ).toISOString();
-
       const orderData = {
         productId,
         buyerId,
         sellerId,
+        timeInitiatorId,
         projectId,
         image,
         quantity,
         createdOn: currentDate,
-        reservedUntil: fourDaysFromNow,
-        suggestedDate,
-        buyerAgreed: true,
-        sellerAgreed: false,
+        isAgreed: false,
         isCollected: false,
       };
+      console.log('Actions/createOrder attempting to create order with data: ', orderData);
 
       const { key } = await firebase.database().ref('orders').push(orderData);
 
@@ -131,25 +124,25 @@ export function createOrder(productId, sellerId, projectId, image, quantity, sug
 
 export function updateOrder(
   id,
+  timeInitiatorId,
   projectId,
   quantity,
-  reservedUntil,
   suggestedDate,
-  buyerAgreed,
-  sellerAgreed,
+  isAgreed,
   isCollected
 ) {
   return async (dispatch) => {
+    const currentDate = new Date();
     try {
       console.log(`Attempting to update order with id: ${id}...`);
 
       const dataToUpdate = {
+        timeInitiatorId,
         projectId,
         quantity,
-        reservedUntil,
+        createdOn: currentDate,
         suggestedDate,
-        buyerAgreed,
-        sellerAgreed,
+        isAgreed,
         isCollected,
       };
 

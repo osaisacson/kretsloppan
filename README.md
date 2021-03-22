@@ -35,11 +35,11 @@ Then...
 `git clone https://github.com/osaisacson/kretsloppan.git`
 `git init`
 `npm install`
+...if you get an error about peer-deps do `npm install react-native-fs --save --legacy-peer-deps`
 Start apple and android simulators, see details in 'Simulators' below
 `expo start`
 Select 'Run on iOS simulator' and 'Run on Android simulator' in you browser
 With the Expo app in your phone scan QR code to see it on your device
-
 
 ## Workflow
 
@@ -52,14 +52,25 @@ With the Expo app in your phone scan QR code to see it on your device
 ## Release new version on the App store/Google Play store
 
 - Read info here: https://docs.expo.io/distribution/app-stores/
+- `expo build:android`
+- `expo build:ios`
 - `expo publish` background on this here: https://docs.expo.io/workflow/publishing/
-- To upload the previously built standalone app to the appropriate app store, you simply run `expo upload:android` or `expo upload:ios` more on this here: https://docs.expo.io/distribution/uploading-apps/
+- To upload the previously built standalone app to the appropriate app store, you simply run `expo upload:android` for android, more on this here: https://docs.expo.io/distribution/uploading-apps/
+- When asked for Google Service Account path: ./../api-7295700764673714197-958965-962f25310ea7.json
+- To upload ios go to https://expo.io/accounts/asaisacson/builds where you will find the build, dwnload it as .ipa
+- Install/open Transporter from the app store
+- Upload the .ipa in the Transporter
+- Go to https://appstoreconnect.apple.com/apps/1523861208/testflight/ios
+- Select your app and on the top left plus sign create a new version
+- Wait until testflight has finished uploading. Check the status under the tab 'Testflight' It could take about an hour and you wont be able to select the build for the version documentation until its done.
+- Fill out documentation upload details and choose the build.
+- Click publish
 
 ## Original setup
 
 Install the below:
 
-### Required:
+### Required
 
 ##### Node/NPM
 

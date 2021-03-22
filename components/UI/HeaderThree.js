@@ -8,7 +8,7 @@ const HeaderThree = ({ style, text }) => {
 };
 
 const styles = StyleSheet.create({
-  headerThree: { fontFamily: 'roboto-light-italic', color: Colors.darkPrimary },
+  headerThree: { fontFamily: 'roboto-light-italic', color: Colors.darkPrimary, padding: 5 },
 });
 
 export default HeaderThree;

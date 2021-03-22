@@ -23,16 +23,16 @@ export default (state = initialState, action) => {
         action.orderData.productId,
         action.orderData.buyerId,
         action.orderData.sellerId,
+        action.orderData.timeInitiatorId,
         action.orderData.projectId,
         action.orderData.image,
         action.orderData.quantity,
         action.orderData.createdOn,
-        action.orderData.reservedUntil,
         action.orderData.suggestedDate,
-        action.orderData.buyerAgreed,
-        action.orderData.sellerAgreed,
+        action.orderData.isAgreed,
         action.orderData.isCollected
       );
+
       console.log('store/reducers/orders/CREATE_ORDER, new order: ', newOrder);
       return {
         ...state,
@@ -48,16 +48,16 @@ export default (state = initialState, action) => {
         state.availableOrders[availableOrderIndex].productId,
         state.availableOrders[availableOrderIndex].buyerId,
         state.availableOrders[availableOrderIndex].sellerId,
+        action.orderData.timeInitiatorId,
         action.orderData.projectId,
         state.availableOrders[availableOrderIndex].image,
         action.orderData.quantity,
-        state.availableOrders[availableOrderIndex].createdOn,
-        action.orderData.reservedUntil,
+        action.orderData.createdOn,
         action.orderData.suggestedDate,
-        action.orderData.buyerAgreed,
-        action.orderData.sellerAgreed,
+        action.orderData.isAgreed,
         action.orderData.isCollected
       );
+
       console.log('store/reducers/orders/UPDATE_ORDER, updated order: ', updatedUserOrder);
 
       //Update state
