@@ -35,6 +35,7 @@ Then...
 `git clone https://github.com/osaisacson/kretsloppan.git`
 `git init`
 `npm install`
+...if you get an error about peer-deps do `npm install react-native-fs --save --legacy-peer-deps`
 Start apple and android simulators, see details in 'Simulators' below
 `expo start`
 Select 'Run on iOS simulator' and 'Run on Android simulator' in you browser
