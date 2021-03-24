@@ -12,6 +12,7 @@ export const AuthNavigator = () => {
   return (
     <AuthStackNavigator.Navigator
       screenOptions={{
+        headerTitle: '',
         headerStyle: {
           height: 0,
         },
