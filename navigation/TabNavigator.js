@@ -101,7 +101,7 @@ const ProjectsStack = ({ navigation }) => {
 };
 
 const ProposalsStack = ({ navigation }) => {
-  usePopToTopOnBlur(navigation, 'Återbruk');
+  usePopToTopOnBlur(navigation, 'Efterlysningar');
 
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>

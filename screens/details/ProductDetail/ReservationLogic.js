@@ -128,12 +128,7 @@ const ReservationLogic = ({ navigation, hasEditPermission, selectedProduct }) =>
 
   return (
     <View style={[styles.oneLineSpread, { marginBottom: 6, marginTop: 10 }]}>
-      <UserAvatarWithBadge
-        navigation={navigation}
-        text={'säljare'}
-        navigateTo="Användare"
-        detailId={ownerId}
-      />
+      <UserAvatarWithBadge navigation={navigation} text={'säljare'} detailId={ownerId} />
       <View
         style={{
           flex: 1,

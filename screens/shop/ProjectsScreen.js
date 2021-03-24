@@ -49,11 +49,9 @@ const ProjectsScreen = (props) => {
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const selectItemHandler = (id, ownerId, title) => {
+  const selectItemHandler = (itemData) => {
     props.navigation.navigate('ProjectDetail', {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+      itemData: itemData,
     });
   };
 
@@ -87,7 +85,7 @@ const ProjectsScreen = (props) => {
           <ProjectItem
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+              selectItemHandler(itemData.item);
             }}
           />
         )}

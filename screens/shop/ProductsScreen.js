@@ -68,11 +68,10 @@ const ProductsScreen = (props) => {
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const selectItemHandler = (id, ownerId, title) => {
+  const selectItemHandler = (itemData) => {
+    'CLICKED SELECTITEMHANDLER, itemData: ', itemData;
     props.navigation.navigate('ProductDetail', {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+      itemData: itemData,
     });
   };
 
@@ -107,7 +106,7 @@ const ProductsScreen = (props) => {
             showSmallStatusIcons
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+              selectItemHandler(itemData.item);
             }}
           />
         )}

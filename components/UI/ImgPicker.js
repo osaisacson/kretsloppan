@@ -2,7 +2,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, Alert } from 'react-native';
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 
 import ButtonConfirm from '../../components/UI/ButtonConfirm';
 
@@ -78,13 +78,8 @@ const ImgPicker = ({ passedImage, onImageTaken }) => {
         )}
       </View>
       <View style={styles.centered}>
-        <ButtonConfirm
-          icon="camera"
-          title="Kamera"
-          onSelect={takePhoto}
-          style={{ marginRight: 8 }}
-        />
-        <ButtonConfirm icon="image" title="Galleri" onSelect={pickImage}/>
+        <ButtonConfirm icon="camera" title="Kamera" onSelect={takePhoto} />
+        <ButtonConfirm icon="image" title="Galleri" onSelect={pickImage} />
       </View>
     </View>
   );
@@ -109,8 +104,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   centered: {
+    width: '70%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 });

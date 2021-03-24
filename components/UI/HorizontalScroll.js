@@ -8,8 +8,7 @@ import ButtonSeeMore from './ButtonSeeMore';
 import HeaderTwo from './HeaderTwo';
 import LargeImageItem from './LargeImageItem';
 import ProductItem from './ProductItem';
-import RoundItem from './RoundItem';
-import TextItem from './TextItem';
+import ProposalItem from './ProposalItem';
 
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
@@ -17,20 +16,14 @@ const HorizontalScroll = (props) => {
   let scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.productItemHeight;
   const detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
-  //Check if we instead should render the RoundItem
-  if (props.roundItem) {
-    RenderedItem = RoundItem;
-    scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.roundItemHeight;
-  }
-
-  //Check if we instead should render the TextItem
-  if (props.textItem) {
-    RenderedItem = TextItem;
+  //Check if we instead should render the ProposalItem
+  if (props.isProposal) {
+    RenderedItem = ProposalItem;
     scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.textItemHeight;
   }
 
   //Check if we instead should render the LargeImageItem
-  if (props.largeImageItem) {
+  if (props.isProject) {
     RenderedItem = LargeImageItem;
     scrollHeight = Styles.largeImageItemHeight;
   }
@@ -41,11 +34,10 @@ const HorizontalScroll = (props) => {
     scrollHeight = 0;
   }
 
-  const selectItemHandler = (id, ownerId, title) => {
+  const selectItemHandler = (itemData) => {
+    console.log('SELECTED PRODUCT FROM HORIZONTAL SCROLL', itemData);
     props.navigation.navigate(detailPath, {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+      itemData: itemData,
     });
   };
 
@@ -90,13 +82,9 @@ const HorizontalScroll = (props) => {
                     itemData={item}
                     key={item.id}
                     isHorizontal
-                    onSelect={
-                      props.customHandler
-                        ? props.customHandler
-                        : () => {
-                            selectItemHandler(item.id, item.ownerId, item.title);
-                          }
-                    }
+                    onSelect={() => {
+                      selectItemHandler(item);
+                    }}
                   />
                 ))}
                 {props.showMoreLink && scrollData.length > 1 ? (

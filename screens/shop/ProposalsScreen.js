@@ -8,7 +8,7 @@ import Error from '../../components/UI/Error';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import SearchBar from '../../components/UI/SearchBar';
-import TextItem from '../../components/UI/TextItem';
+import ProposalItem from '../../components/UI/ProposalItem';
 import SaferArea from '../../components/wrappers/SaferArea';
 import * as proposalsActions from '../../store/actions/proposals';
 
@@ -49,11 +49,9 @@ const ProposalsScreen = (props) => {
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const selectItemHandler = (id, ownerId, title) => {
+  const selectItemHandler = (itemData) => {
     props.navigation.navigate('ProposalDetail', {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+      itemData: itemData,
     });
   };
 
@@ -84,10 +82,10 @@ const ProposalsScreen = (props) => {
         data={filteredProposals}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
-          <TextItem
+          <ProposalItem
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+              selectItemHandler(itemData.item);
             }}
           />
         )}

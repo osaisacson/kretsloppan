@@ -4,10 +4,10 @@ import { Card } from 'react-native-paper';
 import { pure } from 'recompose';
 
 import Colors from '../../constants/Colors';
-import Styles from './../../constants/Styles';
+import Styles from '../../constants/Styles';
 import TouchableCmp from './TouchableCmp';
 
-const TextItem = ({ itemData, onSelect }) => {
+const ProposalItem = ({ itemData, onSelect }) => {
   const { title, description } = itemData;
 
   return (
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default pure(TextItem);
+export default pure(ProposalItem);

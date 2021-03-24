@@ -68,7 +68,7 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
-          largeImageItem
+          isProject
           detailPath="ProjectDetail"
           title="Projekt"
           showAddLink={() => props.navigation.navigate('EditProject')}
@@ -86,7 +86,7 @@ const SpotlightProductsScreen = (props) => {
           }
         />
         <HorizontalScroll
-          textItem
+          isProposal
           scrollHeight={55}
           detailPath="ProposalDetail"
           title="Efterlysningar"

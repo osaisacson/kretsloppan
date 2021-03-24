@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import Moment from 'moment/min/moment-with-locales';
 import React from 'react';
-import { View, Text, Alert, Platform } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,24 +21,21 @@ const ProposalDetailScreen = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  //Get proposal and owner id from navigation params (from parent screen) and current user id from state
-  const proposalId = props.route.params.detailId;
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.profileId;
+  const selectedProposal = props.route.params.itemData;
 
-  //Find us the proposal that matches the current proposalId
-  const selectedProposal = useSelector((state) =>
-    state.proposals.availableProposals.find((proposal) => proposal.id === proposalId)
-  );
-
-  //Get all projects from state, and then return the ones that matches the id of the current proposal
-  const availableProjects = useSelector((state) => state.projects.availableProjects || {});
+  console.log('itemData passed to prooposalDetailScreen: ', selectedProposal);
 
   if (!selectedProposal) {
-    return null;
+    return {};
   }
 
   const { projectId, ownerId, id, status, title, description, price } = selectedProposal;
+
+  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
+  const loggedInUserId = currentProfile.profileId;
+
+  //Get all projects from state, and then return the ones that matches the id of the current proposal
+  const availableProjects = useSelector((state) => state.projects.availableProjects || {});
 
   //Return the projects that matches the id of the current proposal
   const projectForProposal = availableProjects.filter((proj) => proj.id === projectId || null);
@@ -132,8 +129,8 @@ const ProposalDetailScreen = (props) => {
             />
 
             <HorizontalScroll
+              isProject
               scrollHeight={200}
-              largeImageItem
               detailPath="ProjectDetail"
               scrollData={projectForProposal}
               navigation={props.navigation}

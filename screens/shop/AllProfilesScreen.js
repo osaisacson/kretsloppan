@@ -55,10 +55,9 @@ const AllProfilesScreen = (props) => {
     return b.profileName - a.profileName;
   });
 
-  const selectItemHandler = (profileId, profileName) => {
+  const selectItemHandler = (itemData) => {
     props.navigation.navigate('Användare', {
-      detailId: profileId,
-      detailTitle: profileName,
+      detailId: itemData.profileId,
     });
   };
 
@@ -103,7 +102,7 @@ const AllProfilesScreen = (props) => {
                 key={itemData.item.profileId}
                 itemData={itemData.item}
                 onSelect={() => {
-                  selectItemHandler(itemData.item.profileId, itemData.item.profileName);
+                  selectItemHandler(itemData.item);
                 }}
               />
               <Text style={{ alignSelf: 'center', paddingLeft: 10 }}>

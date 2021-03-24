@@ -55,11 +55,9 @@ const UserProductsScreen = (props) => {
     setSearchQuery(text.length ? text : '');
   };
 
-  const selectItemHandler = (id, ownerId, title) => {
+  const selectItemHandler = (itemData) => {
     props.navigation.navigate('ProductDetail', {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+      itemData: itemData,
     });
   };
 
@@ -96,7 +94,7 @@ const UserProductsScreen = (props) => {
             showSmallStatusIcons
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(itemData.item.id, itemData.item.ownerId, itemData.item.title);
+              selectItemHandler(itemData);
             }}
           />
         )}

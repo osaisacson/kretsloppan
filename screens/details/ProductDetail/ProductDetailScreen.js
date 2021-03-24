@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
+import { pure } from 'recompose';
 
 import ButtonIcon from '../../../components/UI/ButtonIcon';
 import CachedImage from '../../../components/UI/CachedImage';
@@ -23,15 +24,12 @@ const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const productId = props.route.params.detailId;
+  const selectedProduct = props.route.params.itemData;
 
-  //Find us the product that matches the current productId
-  const selectedProduct = useSelector((state) =>
-    state.products.availableProducts.find((prod) => prod.id === productId)
-  );
+  console.log('itemData passed to productDetailScreen: ', selectedProduct);
 
   if (!selectedProduct) {
-    return null;
+    return {};
   }
 
   const {
@@ -101,6 +99,7 @@ const ProductDetailScreen = (props) => {
         {
           text: 'Ja, radera',
           style: 'destructive',
+
           onPress: () => {
             navigation.goBack();
             dispatch(productsActions.deleteProduct(id));
@@ -332,4 +331,4 @@ export const screenOptions = () => {
   };
 };
 
-export default ProductDetailScreen;
+export default pure(ProductDetailScreen);

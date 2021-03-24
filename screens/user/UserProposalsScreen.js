@@ -7,7 +7,7 @@ import Error from '../../components/UI/Error';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import Loader from '../../components/UI/Loader';
 import SearchBar from '../../components/UI/SearchBar';
-import TextItem from '../../components/UI/TextItem';
+import ProposalItem from '../../components/UI/ProposalItem';
 import SaferArea from '../../components/wrappers/SaferArea';
 import * as proposalsActions from '../../store/actions/proposals';
 
@@ -57,11 +57,9 @@ const UserProposalsScreen = (props) => {
     setSearchQuery(text.length ? text : '');
   };
 
-  const selectItemHandler = (id, ownerId, title, detailPath) => {
-    props.navigation.navigate(detailPath, {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+  const selectItemHandler = (itemData) => {
+    props.navigation.navigate('ProposalDetail', {
+      itemData: itemData,
     });
   };
 
@@ -98,16 +96,11 @@ const UserProposalsScreen = (props) => {
         data={proposalsSorted}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
-          <TextItem
+          <ProposalItem
             navigation={props.navigation}
             itemData={itemData.item}
             onSelect={() => {
-              selectItemHandler(
-                itemData.item.id,
-                itemData.item.ownerId,
-                itemData.item.title,
-                'ProposalDetail'
-              );
+              selectItemHandler(itemData.item);
             }}
           />
         )}

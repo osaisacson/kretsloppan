@@ -11,7 +11,6 @@ import UserAvatarWithBadge from './../UI/UserAvatarWithBadge';
 const ProjectProductItem = ({ navigation, productInProject, onSelect }) => {
   const { sellerId, image, quantity, background, title, location } = productInProject;
 
-  console.log('PRODUCT IN PROJECT', productInProject);
   return (
     <View style={styles.container}>
       <Card style={styles.product}>
@@ -25,7 +24,6 @@ const ProjectProductItem = ({ navigation, productInProject, onSelect }) => {
             size={60}
             navigation={navigation}
             text={'säljare'}
-            navigateTo="Användare"
             detailId={sellerId}
           />
         </View>

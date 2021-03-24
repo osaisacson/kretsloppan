@@ -173,11 +173,7 @@ const Order = ({
                   Att användas i projekt:
                 </Text>
                 <View>
-                  <SmallRectangularItem
-                    detailPath="ProjectDetail"
-                    item={projectForProduct}
-                    navigation={navigation}
-                  />
+                  <SmallRectangularItem item={projectForProduct} navigation={navigation} />
                 </View>
               </View>
             ) : null}

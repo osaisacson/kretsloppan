@@ -17,17 +17,20 @@ import Colors from '../../constants/Colors';
 import * as projectsActions from '../../store/actions/projects';
 
 const ProjectDetailScreen = (props) => {
-  const projectId = props.route.params.detailId;
-  const ownerId = props.route.params.ownerId;
+  const selectedProject = props.route.params.itemData;
+
+  console.log('itemData passed to projectDetailScreen: ', selectedProject);
+
+  if (!selectedProject) {
+    return {};
+  }
+
+  const projectId = selectedProject.id;
+
+  const { ownerId } = selectedProject;
 
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const loggedInUserId = currentProfile.profileId;
-
-  const selectedProject = useSelector((state) => {
-    return projectId
-      ? state.projects.availableProjects.find((proj) => proj.id === projectId)
-      : state.projects.lastProjectAdded;
-  }); //gets a slice of the current state from combined reducers, then checks that slice for the item that has a matching id to the one we extract from the navigation above
 
   const associatedProducts = useSelector((state) =>
     state.orders.availableOrders.filter((order) => order.projectId === projectId)
@@ -48,11 +51,9 @@ const ProjectDetailScreen = (props) => {
     navigation.navigate('EditProject', { detailId: projectId });
   };
 
-  const selectItemHandler = (id, ownerId, title) => {
+  const selectItemHandler = (itemData) => {
     props.navigation.navigate('ProductDetail', {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+      itemData: itemData,
     });
   };
 
@@ -127,7 +128,7 @@ const ProjectDetailScreen = (props) => {
             />
           </View>
           <HorizontalScroll
-            textItem
+            isProposal
             detailPath="ProposalDetail"
             scrollHeight={40}
             scrollData={associatedProposals}
@@ -163,11 +164,7 @@ const ProjectDetailScreen = (props) => {
             navigation={props.navigation}
             productInProject={itemData.item}
             onSelect={() => {
-              selectItemHandler(
-                itemData.item.productId,
-                itemData.item.sellerId,
-                itemData.item.title
-              );
+              selectItemHandler(itemData.item);
             }}
           />
         )}

@@ -155,7 +155,7 @@ const UserProfile = (props) => {
       ) : null}
       {userProposals.length ? (
         <HorizontalScroll
-          textItem
+          isProposal
           detailPath="ProposalDetail"
           title="Efterlysningar"
           simpleCount={userProposals.length}
@@ -165,7 +165,7 @@ const UserProfile = (props) => {
       ) : null}
       {userProjects.length ? (
         <HorizontalScroll
-          largeImageItem
+          isProject
           detailPath="ProjectDetail"
           title="Återbruksprojekt"
           simpleCount={userProjects.length}

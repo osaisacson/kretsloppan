@@ -61,7 +61,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         showMoreLink={userProducts.length ? () => navigation.navigate('Mitt återbruk') : false}
       />
       <HorizontalScroll
-        largeImageItem
+        isProject
         detailPath="ProjectDetail"
         title="Mina återbruksprojekt"
         scrollData={userProjects}
@@ -70,7 +70,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         showAddLink={() => navigation.navigate('EditProject')}
       />
       <HorizontalScroll
-        textItem
+        isProposal
         scrollData={activeUserProposals}
         detailPath="ProposalDetail"
         title="Mina Efterlysningar"
