@@ -16,7 +16,7 @@ import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import UserProposalsScreen from '../screens/user/UserProposalsScreen';
 import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
-import { topStackHeaderForTabs, detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
+import {  detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
 
 const DetailsStack = createStackNavigator();
 

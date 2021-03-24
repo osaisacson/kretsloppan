@@ -127,7 +127,6 @@ const ProposalDetailScreen = (props) => {
               text={isResolved ? 'Finns nu i projektet' : 'Relaterar till projektet'}
               style={detailStyles.centeredHeader}
             />
-
             <HorizontalScroll
               isProject
               scrollHeight={200}

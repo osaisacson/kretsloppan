@@ -75,8 +75,10 @@ const OrderLogic = ({
   // Identifies which user information is most relevant for the logged in user to see
   const infoId = loggedInUserId === buyerId ? sellerId : buyerId;
 
-  const goToItem = () => {
-    navigation.navigate('ProductDetail', { detailId: productId });
+  const selectItemHandler = (itemData) => {
+    navigation.navigate('ProductDetail', {
+      itemData: itemData,
+    });
   };
 
   //Show and reset time/date for pickup
@@ -260,7 +262,7 @@ const OrderLogic = ({
                   activeOpacity={0.5}
                   onPress={() => {
                     navigation.navigate('ProjectDetail', {
-                      detailId: projectForProduct.id,
+                      itemData: projectForProduct,
                     });
                   }}>
                   <Avatar.Image
@@ -282,7 +284,10 @@ const OrderLogic = ({
             ) : null}
           </View>
         ) : (
-          <TouchableOpacity onPress={goToItem}>
+          <TouchableOpacity
+            onPress={() => {
+              selectItemHandler(currentProduct);
+            }}>
             <Image
               style={{
                 borderRadius: 5,

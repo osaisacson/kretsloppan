@@ -88,7 +88,6 @@ const Order = ({
         order={order}
         isProductDetail={isProductDetail}
         products={products}
-        profiles={profiles}
         projectForProduct={projectForProduct}
         isTimeInitiator={isTimeInitiator}
         timeInitiatorProfile={timeInitiatorProfile}
