@@ -76,7 +76,7 @@ const ProductsScreen = ({ navigation }) => {
         onChangeText={(term) => setSearchQuery(term)}
       />
       <FlatList
-        numColumns={2}
+        numColumns={1}
         initialNumToRender={12}
         refreshing={isFetching}
         data={filteredProducts}

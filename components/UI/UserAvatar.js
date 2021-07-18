@@ -1,10 +1,10 @@
 import React from 'react';
-import { Avatar, Badge } from 'react-native-paper';
+import { Avatar, Badge, Text } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
 import TouchableCmp from './TouchableCmp';
 
-const UserAvatar = ({ userId, actionOnPress, style, size, showBadge }) => {
+const UserAvatar = ({ userId, actionOnPress, style, size, showBadge, showName }) => {
   //Get logged in userId from state, and products
   let currentProfile = useSelector((state) => state.profiles.userProfile || {});
   //If we are passing a userId, use this as the current user, else use the currently logged in user
