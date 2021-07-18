@@ -129,9 +129,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   horizontalProduct: {
-    height: Styles.productItemHeight,
-    width: 200,
-    marginLeft: 10,
+    height: Styles.smallProductItemHeight,
+    width: 250,
     borderWidth: 0.5,
     borderColor: '#ddd',
   },
@@ -158,7 +157,6 @@ const styles = StyleSheet.create({
   },
   locationAndDate: {
     flex: 1,
-    marginRight: 10,
     marginTop: 10,
   },
   cursiveAndRight: {

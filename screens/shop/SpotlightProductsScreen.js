@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/wrappers/SaferArea';
+import Styles from './../../constants/Styles';
 
 const SpotlightProductsScreen = (props) => {
   const allProductsRaw = useSelector((state) => state.products.availableProducts);
@@ -51,6 +52,7 @@ const SpotlightProductsScreen = (props) => {
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
           title="Återbruk"
+          scrollHeight={Styles.productItemHeight + 20}
           showAddLink={() => props.navigation.navigate('EditProduct')}
           showMoreLink={
             allProducts.length > 1 ? () => props.navigation.navigate('Återbruk') : false
