@@ -1,42 +1,43 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
+import useGetProducts from './../../hooks/useGetProducts';
 import { FlatList } from 'react-native';
+
 import { createFilter } from 'react-native-search-filter';
-import { useSelector, useDispatch } from 'react-redux';
-
-import EmptyState from '../../components/UI/EmptyState';
-import Error from '../../components/UI/Error';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import ProductItem from '../../components/UI/ProductItem';
-import SearchBar from '../../components/UI/SearchBar';
 import SaferArea from '../../components/wrappers/SaferArea';
-import * as productsActions from '../../store/actions/products';
+import Error from '../../components/UI/Error';
+import Loader from '../../components/UI/Loader';
+import EmptyState from '../../components/UI/EmptyState';
+import HeaderTwo from '../../components/UI/HeaderTwo';
+import SearchBar from '../../components/UI/SearchBar';
+import ProductItem from '../../components/UI/ProductItem';
 
-const ProductsScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [error, setError] = useState();
-
-  //Get original products from state
-  const products = useSelector((state) => state.products.availableProducts);
+const ProductsScreen = ({ navigation }) => {
+  const { status, data, isFetching, error } = useGetProducts();
+  console.log('...fetching products in ProductsScreen via the useGetProducts hook: ', status);
 
   //Prepare for changing the rendered products on search
   const [searchQuery, setSearchQuery] = useState('');
 
-  const dispatch = useDispatch();
+  const selectItemHandler = (itemData) => {
+    navigation.navigate('ProductDetail', { itemData: itemData });
+  };
 
-  //Load products
-  const loadProducts = useCallback(async () => {
-    setError(null);
-    setIsRefreshing(true);
-    try {
-      console.log('ProductsScreen: fetching products...');
-      dispatch(productsActions.fetchProducts());
-    } catch (err) {
-      setError(err.message);
-    }
-    setIsRefreshing(false);
-  }, [dispatch, setIsLoading, setError]);
+  if (status === 'error') {
+    console.log('ERROR: ', error.message);
+    return <Error />;
+  }
+
+  if (status === 'loading') {
+    return <Loader />;
+  }
+
+  if (!(status === 'loading') && data.length === 0) {
+    return <EmptyState text="Inga produkter hittade." />;
+  }
+
+  if (isFetching) {
+    return <EmptyState text="Background updating" />;
+  }
 
   //Set which fields to filter by
   const KEYS_TO_FILTERS = [
@@ -60,32 +61,13 @@ const ProductsScreen = (props) => {
     'internalComments',
   ];
 
-  const filteredProductsRaw = products.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+  const filteredProductsRaw = data.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
 
   const filteredProducts = filteredProductsRaw.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
-
-  const selectItemHandler = (itemData) => {
-    'CLICKED SELECTITEMHANDLER, itemData: ', itemData;
-    props.navigation.navigate('ProductDetail', {
-      itemData: itemData,
-    });
-  };
-
-  if (error) {
-    return <Error actionOnPress={loadProducts} />;
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!isLoading && products.length === 0) {
-    return <EmptyState text="Inga produkter hittade." />;
-  }
 
   return (
     <SaferArea>
@@ -96,13 +78,12 @@ const ProductsScreen = (props) => {
       <FlatList
         numColumns={2}
         initialNumToRender={12}
-        onRefresh={loadProducts}
-        refreshing={isRefreshing}
+        refreshing={isFetching}
         data={filteredProducts}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProductItem
-            navigation={props.navigation}
+            navigation={navigation}
             showSmallStatusIcons
             itemData={itemData.item}
             onSelect={() => {
@@ -114,7 +95,7 @@ const ProductsScreen = (props) => {
           <HeaderTwo
             isSearch
             simpleCount={filteredProducts.length}
-            showAddLink={() => props.navigation.navigate('EditProduct')}
+            showAddLink={() => navigation.navigate('EditProduct')}
             indicator={filteredProducts.length ? filteredProducts.length : 0}
           />
         }

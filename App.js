@@ -2,7 +2,7 @@ import I18n from 'ex-react-native-i18n';
 import AppLoading from 'expo-app-loading';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import * as Notifications from 'expo-notifications'
+import * as Notifications from 'expo-notifications';
 import * as firebase from 'firebase';
 import React, { useState } from 'react';
 import { Vibration } from 'react-native';
@@ -12,6 +12,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import * as SplashScreen from 'expo-splash-screen';
 
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import 'firebase/database';
 import env from './env';
@@ -34,6 +35,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
 });
 
+const queryClient = new QueryClient();
+
 I18n.default_locale = 'sv-SE';
 
 if (!firebase.apps.length) {
@@ -49,7 +52,9 @@ const AppWrapper = () => {
 
   return (
     <Provider store={store}>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </Provider>
   );
 };

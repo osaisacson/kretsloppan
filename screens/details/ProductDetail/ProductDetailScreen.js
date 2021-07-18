@@ -3,13 +3,16 @@ import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
-import { useSelector, useDispatch } from 'react-redux';
+import useGetProduct from '../../../hooks/useGetProduct';
+import { useSelector } from 'react-redux';
+
 import { pure } from 'recompose';
 
 import ButtonIcon from '../../../components/UI/ButtonIcon';
 import CachedImage from '../../../components/UI/CachedImage';
 import FilterLine from '../../../components/UI/FilterLine';
 import HeaderTwo from '../../../components/UI/HeaderTwo';
+import firebase from 'firebase';
 
 import HeaderThree from '../../../components/UI/HeaderThree';
 import Orders from '../../../components/UI/Orders';
@@ -17,19 +20,51 @@ import SectionCard from '../../../components/UI/SectionCard';
 import StatusBadge from '../../../components/UI/StatusBadge';
 import { DetailWrapper, detailStyles } from '../../../components/wrappers/DetailWrapper';
 import Colors from '../../../constants/Colors';
-import * as productsActions from '../../../store/actions/products';
 import ReservationLogic from './ReservationLogic';
 
 const ProductDetailScreen = (props) => {
-  const dispatch = useDispatch();
+  //Get product id from route through props
+  const selectedProductId = props.route.params.itemData.id;
+
+  console.log('itemData id passed to productDetailScreen: ', selectedProductId);
+
+  const { status, data, error, isFetching } = useGetProduct(selectedProductId);
+
+  // const getProduct = async (productId) => {
+  //   const productRef = await firebase.database().ref(`products/${productId}`).ref.once('value');
+  //   console.log('IS THIS SOMETHING: ', productRef);
+
+  //   const productData = { productRef, id: productId };
+
+  //   console.log('PRRRRRODUCTTTTDATAAA: ', productData);
+
+  //   return productRef;
+  // };
+
+  // console.log(getProduct(selectedProductId));
+
   const navigation = useNavigation();
 
-  const selectedProduct = props.route.params.itemData;
+  console.log('itemData in productDetailScreen: ', data);
 
-  console.log('itemData passed to productDetailScreen: ', selectedProduct);
+  if (isFetching) {
+    return (
+      <DetailWrapper>
+        <View>
+          <Title>...Laddar</Title>
+        </View>
+      </DetailWrapper>
+    );
+  }
 
-  if (!selectedProduct) {
-    return {};
+  if (error) {
+    return (
+      <DetailWrapper>
+        <View>
+          <Title>{data.error}</Title>
+        </View>
+      </DetailWrapper>
+    );
   }
 
   const {
@@ -58,7 +93,7 @@ const ProductDetailScreen = (props) => {
     location,
     booked,
     sold,
-  } = selectedProduct;
+  } = data;
 
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const loggedInUserId = currentProfile.profileId;

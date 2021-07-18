@@ -52,6 +52,7 @@ With the Expo app in your phone scan QR code to see it on your device
 ## Release new version on the App store/Google Play store
 
 - Read info here: https://docs.expo.io/distribution/app-stores/
+- go to app.js and update the ios and android version number
 - `expo build:android`
 - `expo build:ios`
 - `expo publish` background on this here: https://docs.expo.io/workflow/publishing/
