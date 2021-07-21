@@ -52,7 +52,7 @@ const SpotlightProductsScreen = (props) => {
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <HorizontalScroll
           title="Återbruk"
-          scrollHeight={Styles.largeProductItemHeight + 20}
+          scrollHeight={Styles.smallProductItemHeight}
           showAddLink={() => props.navigation.navigate('EditProduct')}
           showMoreLink={
             allProducts.length > 1 ? () => props.navigation.navigate('Återbruk') : false

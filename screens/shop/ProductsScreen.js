@@ -86,7 +86,11 @@ const ProductsScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <>
-            <Divider />
+            <Divider
+              style={{
+                marginBottom: 10,
+              }}
+            />
             <View style={styles.container}>
               <ProductAvatarAndLocation navigation={navigation} itemData={itemData.item} />
               <ProductItem
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin: 8,
-    marginBottom: 100,
+    marginBottom: 80,
   },
 });
 

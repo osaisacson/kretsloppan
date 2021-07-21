@@ -12,7 +12,6 @@ const ProductAvatarAndLocation = ({ navigation, itemData }) => {
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        zIndex: 100,
       }}>
       <UserAvatar
         size={40}
