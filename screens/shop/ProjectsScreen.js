@@ -1,47 +1,46 @@
-import React, { useState, useCallback } from 'react';
-import { FlatList } from 'react-native';
+import React, { useState } from 'react';
+import useGetProjects from './../../hooks/useGetProjects';
+import { FlatList, StyleSheet, View } from 'react-native';
+
 import { createFilter } from 'react-native-search-filter';
-import { useSelector, useDispatch } from 'react-redux';
-
-import EmptyState from '../../components/UI/EmptyState';
-import Error from '../../components/UI/Error';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import ProjectItem from '../../components/UI/ProjectItem';
-import SearchBar from '../../components/UI/SearchBar';
 import SaferArea from '../../components/wrappers/SaferArea';
-import * as projectsActions from '../../store/actions/projects';
+import Error from '../../components/UI/Error';
+import Loader from '../../components/UI/Loader';
+import EmptyState from '../../components/UI/EmptyState';
+import HeaderTwo from '../../components/UI/HeaderTwo';
+import SearchBar from '../../components/UI/SearchBar';
+import ProjectItem from '../../components/UI/ProjectItem';
+import { Divider } from 'react-native-paper';
+import ProductAvatarAndLocation from '../../components/UI/ProductAvatarAndLocation';
 
-const ProjectsScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [error, setError] = useState();
-
-  //Get original projects from state
-  const projects = useSelector((state) => state.projects.availableProjects);
+const ProjectsScreen = ({ navigation }) => {
+  const { status, data, isFetching, error } = useGetProjects();
+  console.log('...fetching projects in ProjectsScreen via the useGetProjects hook: ', status);
 
   //Prepare for changing the rendered projects on search
   const [searchQuery, setSearchQuery] = useState('');
 
-  const dispatch = useDispatch();
+  if (status === 'error') {
+    console.log('ERROR: ', error.message);
+    return <Error />;
+  }
 
-  //Load projects
-  const loadProjects = useCallback(async () => {
-    setError(null);
-    setIsRefreshing(true);
-    try {
-      console.log('ProjectsScreen: fetching projects...');
-      dispatch(projectsActions.fetchProjects());
-    } catch (err) {
-      setError(err.message);
-    }
-    setIsRefreshing(false);
-  }, [dispatch, setIsLoading, setError]);
+  if (status === 'loading') {
+    return <Loader />;
+  }
+
+  if (!(status === 'loading') && data.length === 0) {
+    return <EmptyState text="Hittade inga projekt." />;
+  }
+
+  if (isFetching) {
+    return <EmptyState text="Background updating" />;
+  }
 
   //Set which fields to filter by
   const KEYS_TO_FILTERS = ['title', 'location', 'description', 'slogan', 'status'];
 
-  const filteredProjectsRaw = projects.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+  const filteredProjectsRaw = data.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
 
   const filteredProjects = filteredProjectsRaw.sort(function (a, b) {
     a = new Date(a.date);
@@ -55,51 +54,56 @@ const ProjectsScreen = (props) => {
     });
   };
 
-  if (error) {
-    return <Error actionOnPress={loadProjects} />;
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!isLoading && projects.length === 0) {
-    return <EmptyState text="Hittade inga projekt." />;
-  }
-
   return (
     <SaferArea>
       <SearchBar
         placeholder="Leta bland projekt: titel, plats..."
-        onChangeText={(term) => setSearchQuery(term.length ? term : '')}
+        onChangeText={(term) => setSearchQuery(term)}
       />
-
       <FlatList
         numColumns={1}
         initialNumToRender={6}
-        onRefresh={loadProjects}
-        refreshing={isRefreshing}
+        refreshing={isFetching}
         data={filteredProjects}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
-          <ProjectItem
-            itemData={itemData.item}
-            onSelect={() => {
-              selectItemHandler(itemData.item);
-            }}
-          />
+          <>
+            <Divider
+              style={{
+                marginBottom: 10,
+              }}
+            />
+            <View style={styles.container}>
+              <ProductAvatarAndLocation navigation={navigation} itemData={itemData.item} />
+              <ProjectItem
+                cardHeight={200}
+                itemData={itemData.item}
+                onSelect={() => {
+                  selectItemHandler(itemData.item);
+                }}
+              />
+            </View>
+          </>
         )}
         ListHeaderComponent={
           <HeaderTwo
             isSearch
-            showAddLink={() => props.navigation.navigate('EditProject')}
             simpleCount={filteredProjects.length}
-            indicator={filteredProjects.length ? filteredProjects.length : 0}
+            showAddLink={() => navigation.navigate('EditProject')}
           />
         }
       />
     </SaferArea>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    margin: 8,
+    marginBottom: 75,
+  },
+});
 
 export default ProjectsScreen;

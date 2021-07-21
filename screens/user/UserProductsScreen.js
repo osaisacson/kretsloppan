@@ -90,6 +90,7 @@ const UserProductsScreen = (props) => {
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ProductItem
+            cardHeight={200}
             navigation={props.navigation}
             itemData={itemData.item}
             onSelect={() => {

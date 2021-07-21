@@ -94,7 +94,7 @@ const ProductsScreen = ({ navigation }) => {
             <View style={styles.container}>
               <ProductAvatarAndLocation navigation={navigation} itemData={itemData.item} />
               <ProductItem
-                productHeight={Styles.largeProductItemHeight}
+                cardHeight={Styles.largeProductItemHeight}
                 itemData={itemData.item}
                 onSelect={() => {
                   selectItemHandler(itemData.item);

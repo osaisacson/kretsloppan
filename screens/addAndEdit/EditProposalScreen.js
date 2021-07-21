@@ -215,7 +215,7 @@ const EditProposalScreen = (props) => {
 export const screenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: routeParams.detailId ? 'Redigera efterlysning' : 'Lägg till ny efterlysning',
+    headerTitle: routeParams.detailId ? 'Redigera efterlysning' : 'Ny efterlysning',
   };
 };
 
