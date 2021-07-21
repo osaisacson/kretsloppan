@@ -8,7 +8,7 @@ import Styles from './../../constants/Styles';
 import Card from './Card';
 import TouchableCmp from './TouchableCmp';
 
-const ProductItem = ({ itemData, onSelect, productHeight }) => {
+const ProductItem = ({ itemData, onSelect, productHeight, hideInfo }) => {
   const { image, priceText, price, background, amount, sold, booked, title } = itemData;
 
   const originalItems = amount === undefined ? 1 : amount;
@@ -50,26 +50,32 @@ const ProductItem = ({ itemData, onSelect, productHeight }) => {
         </TouchableCmp>
       </View>
 
-      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-        {title}
-      </Text>
+      {!hideInfo ? (
+        <>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+            {title}
+          </Text>
 
-      {background ? (
-        <Text numberOfLines={5} ellipsizeMode="tail">
-          {background}
-        </Text>
-      ) : null}
+          {background ? (
+            <Text numberOfLines={5} ellipsizeMode="tail">
+              {background}
+            </Text>
+          ) : null}
 
-      {(price || price === 0) && !priceText ? (
-        <Text style={styles.price}>
-          {`${price ? price : 0} kr `}
-          {originalItems > 1 ? 'styck' : null}
-        </Text>
+          {(price || price === 0) && !priceText ? (
+            <Text style={styles.price}>
+              {`${price ? price : 0} kr `}
+              {originalItems > 1 ? 'styck' : null}
+            </Text>
+          ) : null}
+
+          {price && priceText ? (
+            <Text style={styles.price}>{`${price}kr eller ${priceText}`}</Text>
+          ) : null}
+
+          {priceText && !price ? <Text style={styles.price}>{priceText}</Text> : null}
+        </>
       ) : null}
-      {price && priceText ? (
-        <Text style={styles.price}>{`${price}kr eller ${priceText}`}</Text>
-      ) : null}
-      {priceText && !price ? <Text style={styles.price}>{priceText}</Text> : null}
     </Card>
   );
 };

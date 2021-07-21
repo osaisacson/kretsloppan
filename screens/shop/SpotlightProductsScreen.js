@@ -1,11 +1,14 @@
 import { MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, FlatList, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import HorizontalScroll from '../../components/UI/HorizontalScroll';
 import Introduction from '../../components/UI/Introduction';
 import SaferArea from '../../components/wrappers/SaferArea';
+import HeaderTwo from '../../components/UI/HeaderTwo';
+import ProductItem from '../../components/UI/ProductItem';
+
 import Styles from './../../constants/Styles';
 
 const SpotlightProductsScreen = (props) => {
@@ -35,7 +38,7 @@ const SpotlightProductsScreen = (props) => {
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
-  const recentProducts = recentProductsSorted.slice(0, 5);
+  const recentProducts = recentProductsSorted.slice(0, 6);
   const recentProjects = recentProjectsSorted.slice(0, 5);
   const recentProposals = recentProposalsSorted.slice(0, 5);
 
@@ -49,26 +52,47 @@ const SpotlightProductsScreen = (props) => {
           text="NYHETER: Ny version av Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0.8"
         />
       ) : null}
+      <FlatList
+        numColumns={3}
+        data={recentProducts}
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
+          <>
+            <View style={styles.container}>
+              <ProductItem
+                hideInfo
+                productHeight={Styles.smallProductItemHeight}
+                itemData={itemData.item}
+                onSelect={() => {
+                  selectItemHandler(itemData.item);
+                }}
+              />
+            </View>
+          </>
+        )}
+        ListHeaderComponent={
+          <HeaderTwo
+            title={'Återbruk'}
+            buttonOnPress={props.buttonOnPress}
+            showAddLink={() => props.navigation.navigate('EditProduct')}
+            showMoreLink={
+              allProducts.length > 1 ? () => props.navigation.navigate('Återbruk') : false
+            }
+            icon={
+              <FontAwesome5
+                name="recycle"
+                size={21}
+                style={{
+                  marginRight: 5,
+                }}
+              />
+            }
+            indicator={allProducts.length ? allProducts.length : 0}
+          />
+        }
+      />
+
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <HorizontalScroll
-          title="Återbruk"
-          scrollHeight={Styles.smallProductItemHeight}
-          showAddLink={() => props.navigation.navigate('EditProduct')}
-          showMoreLink={
-            allProducts.length > 1 ? () => props.navigation.navigate('Återbruk') : false
-          }
-          scrollData={recentProducts}
-          navigation={props.navigation}
-          icon={
-            <FontAwesome5
-              name="recycle"
-              size={21}
-              style={{
-                marginRight: 5,
-              }}
-            />
-          }
-        />
         <HorizontalScroll
           isProject
           detailPath="ProjectDetail"
@@ -113,5 +137,13 @@ const SpotlightProductsScreen = (props) => {
     </SaferArea>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    margin: 8,
+  },
+});
 
 export default SpotlightProductsScreen;

@@ -14,7 +14,6 @@ const HeaderTwo = ({
   simpleCount,
   showAddLink,
   showMoreLink,
-  showNotificationBadge,
   isSearch,
 }) => {
   return (
@@ -27,7 +26,7 @@ const HeaderTwo = ({
             {isSearch ? `${simpleCount} Hittade` : `(${simpleCount})`}
           </Text>
         ) : null}
-        {showNotificationBadge ? (
+        {indicator ? (
           <Badge size={25} style={{ fontWeight: 'bold', marginBottom: 6 }}>
             {indicator}
           </Badge>

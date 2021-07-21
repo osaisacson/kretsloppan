@@ -108,7 +108,6 @@ const ProductsScreen = ({ navigation }) => {
             isSearch
             simpleCount={filteredProducts.length}
             showAddLink={() => navigation.navigate('EditProduct')}
-            indicator={filteredProducts.length ? filteredProducts.length : 0}
           />
         }
       />
