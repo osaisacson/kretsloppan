@@ -91,7 +91,6 @@ const UserProductsScreen = (props) => {
         renderItem={(itemData) => (
           <ProductItem
             navigation={props.navigation}
-            showSmallStatusIcons
             itemData={itemData.item}
             onSelect={() => {
               selectItemHandler(itemData);

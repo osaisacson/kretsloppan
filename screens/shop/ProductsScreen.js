@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useGetProducts from './../../hooks/useGetProducts';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { createFilter } from 'react-native-search-filter';
 import SaferArea from '../../components/wrappers/SaferArea';
@@ -10,6 +10,9 @@ import EmptyState from '../../components/UI/EmptyState';
 import HeaderTwo from '../../components/UI/HeaderTwo';
 import SearchBar from '../../components/UI/SearchBar';
 import ProductItem from '../../components/UI/ProductItem';
+import { Divider } from 'react-native-paper';
+import ProductAvatarAndLocation from '../../components/UI/ProductAvatarAndLocation';
+import Styles from '../../constants/Styles';
 
 const ProductsScreen = ({ navigation }) => {
   const { status, data, isFetching, error } = useGetProducts();
@@ -82,14 +85,19 @@ const ProductsScreen = ({ navigation }) => {
         data={filteredProducts}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
-          <ProductItem
-            navigation={navigation}
-            showSmallStatusIcons
-            itemData={itemData.item}
-            onSelect={() => {
-              selectItemHandler(itemData.item);
-            }}
-          />
+          <>
+            <Divider />
+            <View style={styles.container}>
+              <ProductAvatarAndLocation navigation={navigation} itemData={itemData.item} />
+              <ProductItem
+                productHeight={Styles.largeProductItemHeight}
+                itemData={itemData.item}
+                onSelect={() => {
+                  selectItemHandler(itemData.item);
+                }}
+              />
+            </View>
+          </>
         )}
         ListHeaderComponent={
           <HeaderTwo
@@ -103,5 +111,14 @@ const ProductsScreen = ({ navigation }) => {
     </SaferArea>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    margin: 8,
+    marginBottom: 100,
+  },
+});
 
 export default ProductsScreen;

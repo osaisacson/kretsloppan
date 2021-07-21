@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   product: {
-    height: Styles.productItemHeight,
+    height: Styles.largeProductItemHeight,
     width: '93%',
     margin: '1.5%',
     borderWidth: 0.5,

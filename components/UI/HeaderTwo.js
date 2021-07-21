@@ -23,7 +23,7 @@ const HeaderTwo = ({
         <View>{icon ? icon : null}</View>
         <Text style={styles.contentHeader}>{title}</Text>
         {simpleCount ? (
-          <Text style={isSearch ? styles.simpleCountForSearch : styles.simpleCount}>
+          <Text style={styles.results}>
             {isSearch ? `${simpleCount} Hittade` : `(${simpleCount})`}
           </Text>
         ) : null}
@@ -64,13 +64,9 @@ const styles = StyleSheet.create({
     fontSize: 31,
     marginRight: 6,
   },
-  simpleCount: {
-    fontFamily: 'roboto-light',
-    fontSize: 15,
-  },
-  simpleCountForSearch: {
-    fontFamily: 'roboto-light-italic',
-    fontSize: 16,
+  results: {
+    fontFamily: 'bebas-neue-bold',
+    fontSize: 28,
   },
   rightHandButtons: {
     flexDirection: 'row',

@@ -13,7 +13,7 @@ import ProposalItem from './ProposalItem';
 const HorizontalScroll = (props) => {
   //By default sets the rendered item to be ProductItem
   let RenderedItem = ProductItem;
-  let scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.productItemHeight;
+  let scrollHeight = props.scrollHeight ? props.scrollHeight : Styles.largeProductItemHeight;
   const detailPath = props.detailPath ? props.detailPath : 'ProductDetail';
 
   //Check if we instead should render the ProposalItem
