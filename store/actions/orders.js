@@ -54,7 +54,6 @@ export function fetchOrders() {
           orders: allOrders,
           userOrders,
         });
-        console.log(`Orders:`, allOrders);
         console.log(`...${allOrders.length} total orders found and loaded.`);
         console.log(`...${userOrders.length} orders created by the user found and loaded.`);
       }

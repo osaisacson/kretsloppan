@@ -23,7 +23,7 @@ const ProposalDetailScreen = (props) => {
 
   const selectedProposal = props.route.params.itemData;
 
-  console.log('itemData passed to prooposalDetailScreen: ', selectedProposal);
+  console.log('itemData passed to proposalDetailScreen: ', selectedProposal);
 
   if (!selectedProposal) {
     return {};

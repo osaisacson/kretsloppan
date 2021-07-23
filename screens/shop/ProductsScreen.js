@@ -39,7 +39,7 @@ const ProductsScreen = ({ navigation }) => {
   }
 
   if (isFetching) {
-    return <EmptyState text="Background updating" />;
+    return <EmptyState text="Hämtar produkter" />;
   }
 
   //Set which fields to filter by

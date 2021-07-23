@@ -34,7 +34,7 @@ const ProjectsScreen = ({ navigation }) => {
   }
 
   if (isFetching) {
-    return <EmptyState text="Background updating" />;
+    return <EmptyState text="Hämtar projekt" />;
   }
 
   //Set which fields to filter by
