@@ -10,7 +10,7 @@ import SpotlightProducts from './SpotlightProducts';
 import SpotlightProjects from './SpotlightProjects';
 import SpotlightProposals from './SpotlightProposals';
 
-const SpotlightProductsScreen = (props) => {
+const SpotlightScreen = () => {
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
 
   const ListHeaderComponent = (
@@ -50,4 +50,4 @@ const SpotlightProductsScreen = (props) => {
   );
 };
 
-export default SpotlightProductsScreen;
+export default SpotlightScreen;
