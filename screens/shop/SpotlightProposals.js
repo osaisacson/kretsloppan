@@ -4,40 +4,35 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import useGetProposals from '../../hooks/useGetProposals';
 
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Text } from 'react-native';
 
 import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import Error from '../../components/UI/Error';
 import EmptyState from '../../components/UI/EmptyState';
 import ProposalItem from '../../components/UI/ProposalItem';
 import ButtonSeeMore from '../../components/UI/ButtonSeeMore';
 
 const SpotlightProposals = () => {
-  const { status, data, isFetching, error } = useGetProposals();
+  const { isLoading, isError, data, error } = useGetProposals();
 
   const navigation = useNavigation();
 
-  if (status === 'error') {
+  const selectItemHandler = (itemData) => {
+    navigation.navigate('ProposalDetail', {
+      itemData: itemData,
+    });
+  };
+
+  if (isError) {
     console.log('ERROR: ', error.message);
-    return <Error />;
+    return <Text>Error: {error.message}</Text>;
   }
 
-  if (status === 'loading') {
+  if (isLoading) {
     console.log('Loading proposals in SpotlightProposals via the useGetProposals hook...');
-    return <Loader />;
-  }
-
-  if (!(status === 'loading') && data.length === 0) {
-    console.log('...no proposals found.');
-    return <EmptyState text="Inga produkter hittade." />;
-  }
-
-  if (isFetching) {
     return <EmptyState text="Hämtar efterlysningar" />;
   }
 
-  console.log(`${status} Projects found: `, data.length);
+  console.log('Proposals found: ', data.length);
 
   const recentActiveProposals = data.filter((proposal) => proposal.status !== 'löst');
 

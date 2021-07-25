@@ -1,12 +1,14 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { Button } from 'react-native-paper';
+import Colors from '../../constants/Colors';
 
 const ButtonSeeMore = ({ onSelect, nrToShow }) => {
   return (
     <Button
       compact
       mode="contained"
+      color={Colors.darkPrimary}
       style={{
         marginTop: 5,
         marginHorizontal: 8,

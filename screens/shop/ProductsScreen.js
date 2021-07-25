@@ -15,7 +15,7 @@ import ProductAvatarAndLocation from '../../components/UI/ProductAvatarAndLocati
 import Styles from '../../constants/Styles';
 
 const ProductsScreen = ({ navigation }) => {
-  const { status, data, isFetching, error } = useGetProducts();
+  const { status, data, isLoading, error } = useGetProducts();
   console.log('Fetching products in ProductsScreen via the useGetProducts hook...');
 
   //Prepare for changing the rendered products on search
@@ -38,7 +38,7 @@ const ProductsScreen = ({ navigation }) => {
     return <EmptyState text="Inga produkter hittade." />;
   }
 
-  if (isFetching) {
+  if (isLoading) {
     return <EmptyState text="Hämtar produkter" />;
   }
 
@@ -81,7 +81,7 @@ const ProductsScreen = ({ navigation }) => {
       <FlatList
         numColumns={1}
         initialNumToRender={12}
-        refreshing={isFetching}
+        refreshing={isLoading}
         data={filteredProducts}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (

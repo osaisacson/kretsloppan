@@ -1,41 +1,39 @@
 import React from 'react';
 
-import { FlatList } from 'react-native';
-import { useSelector } from 'react-redux';
+import { FlatList, Text } from 'react-native';
 
-import Introduction from '../../components/UI/Introduction';
+import Card from './../../components/UI/Card';
+
 import SaferArea from '../../components/wrappers/SaferArea';
 
 import SpotlightProducts from './SpotlightProducts';
 import SpotlightProjects from './SpotlightProjects';
 import SpotlightProposals from './SpotlightProposals';
 import { Divider } from 'react-native-paper';
+import Styles from '../../constants/Styles';
+import Colors from '../../constants/Colors';
 
 const SpotlightScreen = () => {
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-
   const ListHeaderComponent = (
-    <>
-      {!currentProfile.hasReadNews ? (
-        <Introduction
-          currUserId={currentProfile.id}
-          hasReadNews={currentProfile.hasReadNews}
-          pic="https://images.unsplash.com/photo-1541848756149-e3843fcbbde0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1663&q=80"
-          text="NYHETER: Ny version av Kretsloppan släppt, hurra! För feedback kontakta asaisacson@gmail.com, vi gör kontinuerliga uppdateringar. Version: 1.0.9"
-        />
-      ) : null}
-    </>
+    <Card style={{ padding: 10, margin: 8, backgroundColor: Colors.extraDarkPrimary }}>
+      <Text style={{ ...Styles.contentHeader, color: '#fff', textAlign: 'center' }}>
+        Välkommen till Kretsloppan!
+      </Text>
+      <Text style={{ fontFamily: 'roboto-bold-italic', textAlign: 'center', color: '#fff' }}>
+        Hitta återbruk i din trakt, lägg upp projekt du bygger och efterlys material du behöver.
+      </Text>
+    </Card>
   );
 
   const ListFooterComponent = (
     <>
-      {/* Products */}
-      <SpotlightProducts />
+      {/* Projects */}
+      <SpotlightProjects />
 
       <Divider style={{ marginTop: 25, marginBottom: 20 }} />
 
-      {/* Projects */}
-      <SpotlightProjects />
+      {/* Products */}
+      <SpotlightProducts />
 
       <Divider style={{ marginTop: 25, marginBottom: 20 }} />
 

@@ -4,7 +4,7 @@ import { pure } from 'recompose';
 
 import Colors from './../../constants/Colors';
 import Styles from './../../constants/Styles';
-import CardTemplate from './CardTemplate';
+import CardTouchable from './CardTouchable';
 import CardBottomInfo from './CardBottomInfo';
 
 const ProductItem = ({ itemData, onSelect, cardHeight, hideInfo }) => {
@@ -56,7 +56,7 @@ const ProductItem = ({ itemData, onSelect, cardHeight, hideInfo }) => {
   ) : null;
 
   return (
-    <CardTemplate
+    <CardTouchable
       image={image}
       cardHeight={cardHeight}
       onSelect={onSelect}

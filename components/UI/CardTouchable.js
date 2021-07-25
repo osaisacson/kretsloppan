@@ -5,7 +5,7 @@ import { pure } from 'recompose';
 import CachedImage from './CachedImage';
 import TouchableCmp from './TouchableCmp';
 
-const CardTemplate = ({ onSelect, cardHeight, children, image, overlayBadge, underCardInfo }) => {
+const CardTouchable = ({ onSelect, cardHeight, children, image, overlayBadge, underCardInfo }) => {
   return (
     <View
       style={{
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default pure(CardTemplate);
+export default pure(CardTouchable);

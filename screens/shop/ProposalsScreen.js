@@ -12,7 +12,7 @@ import SearchBar from '../../components/UI/SearchBar';
 import ProposalItem from '../../components/UI/ProposalItem';
 
 const ProposalsScreen = ({ navigation }) => {
-  const { status, data, isFetching, error } = useGetProposals();
+  const { status, data, isLoading, error } = useGetProposals();
   console.log('Fetching proposals in ProposalsScreen via the useGetProposals hook...');
 
   //Prepare for changing the rendered proposals on search
@@ -31,7 +31,7 @@ const ProposalsScreen = ({ navigation }) => {
     return <EmptyState text="Hittade inga projekt." />;
   }
 
-  if (isFetching) {
+  if (isLoading) {
     return <EmptyState text="Hämtar efterlysningar" />;
   }
 
@@ -61,7 +61,7 @@ const ProposalsScreen = ({ navigation }) => {
       <FlatList
         numColumns={1}
         initialNumToRender={6}
-        refreshing={isFetching}
+        refreshing={isLoading}
         data={filteredProposals}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (

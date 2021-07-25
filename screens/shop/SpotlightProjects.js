@@ -7,37 +7,32 @@ import useGetProjects from '../../hooks/useGetProjects';
 import { FlatList, View, StyleSheet } from 'react-native';
 
 import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import Error from '../../components/UI/Error';
 import EmptyState from '../../components/UI/EmptyState';
 import ProjectItem from '../../components/UI/ProjectItem';
 import ButtonSeeMore from '../../components/UI/ButtonSeeMore';
 
 const SpotlightProjects = () => {
-  const { status, data, isFetching, error } = useGetProjects();
+  const { isLoading, isError, data, error } = useGetProjects();
 
   const navigation = useNavigation();
 
-  if (status === 'error') {
+  const selectItemHandler = (itemData) => {
+    navigation.navigate('ProjectDetail', {
+      itemData: itemData,
+    });
+  };
+
+  if (isError) {
     console.log('ERROR: ', error.message);
-    return <Error />;
+    return <Text>Error: {error.message}</Text>;
   }
 
-  if (status === 'loading') {
+  if (isLoading) {
     console.log('Loading projects in SpotlightProjects via the useGetProjects hook...');
-    return <Loader />;
-  }
-
-  if (!(status === 'loading') && data.length === 0) {
-    console.log('...no projects found.');
-    return <EmptyState text="Inga produkter hittade." />;
-  }
-
-  if (isFetching) {
     return <EmptyState text="Hämtar projekt" />;
   }
 
-  console.log(`${status} Projects found: `, data.length);
+  console.log('Projects found: ', data.length);
 
   const recentProjectsSorted = data.sort(function (a, b) {
     a = new Date(a.date);

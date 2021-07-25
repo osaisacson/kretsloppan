@@ -1,22 +1,24 @@
 import { useQuery } from 'react-query';
 import firebase from 'firebase';
 
-const getProduct = async (productId) => {
-  const productRef = await firebase.database().ref(`products/${productId}`).ref.once('value');
-  const productData = productRef.on('value', (snap) => {
-    var data = [];
-    snap.forEach((ss) => {
-      data.push(ss.child('name').val());
-    });
-    console.table([data]);
-    return data;
-  });
+const getProducts = async () => {
+  const data = await firebase.database().ref('products').once('value');
+  const normalizedProductData = data.val();
+  const productData = [];
 
-  console.log('PRODUCTDATA IN getProduct', productData);
+  for (const key in normalizedProductData) {
+    const product = normalizedProductData[key];
+    productData.push({
+      id: key,
+      ...product,
+    });
+  }
 
   return productData;
 };
 
-export default function useGetProduct(productId) {
-  return useQuery(['product', productId], () => getProduct(productId));
+const useProducts = (select) => useQuery(['products'], getProducts, { select });
+
+export default function useGetProduct(id) {
+  return useProducts((products) => products.find((product) => product.id === id));
 }

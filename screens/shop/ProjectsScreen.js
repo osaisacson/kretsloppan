@@ -14,7 +14,7 @@ import { Divider } from 'react-native-paper';
 import ProductAvatarAndLocation from '../../components/UI/ProductAvatarAndLocation';
 
 const ProjectsScreen = ({ navigation }) => {
-  const { status, data, isFetching, error } = useGetProjects();
+  const { status, data, isLoading, error } = useGetProjects();
   console.log('Fetching projects in ProjectsScreen via the useGetProjects hook...');
 
   //Prepare for changing the rendered projects on search
@@ -33,7 +33,7 @@ const ProjectsScreen = ({ navigation }) => {
     return <EmptyState text="Hittade inga projekt." />;
   }
 
-  if (isFetching) {
+  if (isLoading) {
     return <EmptyState text="Hämtar projekt" />;
   }
 
@@ -63,7 +63,7 @@ const ProjectsScreen = ({ navigation }) => {
       <FlatList
         numColumns={1}
         initialNumToRender={6}
-        refreshing={isFetching}
+        refreshing={isLoading}
         data={filteredProjects}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (

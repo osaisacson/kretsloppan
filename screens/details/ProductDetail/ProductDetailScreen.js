@@ -12,9 +12,8 @@ import ButtonIcon from '../../../components/UI/ButtonIcon';
 import CachedImage from '../../../components/UI/CachedImage';
 import FilterLine from '../../../components/UI/FilterLine';
 import HeaderTwo from '../../../components/UI/HeaderTwo';
-import firebase from 'firebase';
-
 import HeaderThree from '../../../components/UI/HeaderThree';
+import Loader from '../../../components/UI/Loader';
 import Orders from '../../../components/UI/Orders';
 import SectionCard from '../../../components/UI/SectionCard';
 import StatusBadge from '../../../components/UI/StatusBadge';
@@ -26,46 +25,23 @@ const ProductDetailScreen = (props) => {
   //Get product id from route through props
   const selectedProductId = props.route.params.itemData.id;
 
-  console.log('itemData id passed to productDetailScreen: ', selectedProductId);
+  const { isLoading, isError, data, error } = useGetProduct(selectedProductId);
 
-  const { status, data, error, isFetching } = useGetProduct(selectedProductId);
+  if (isError) {
+    console.log('ERROR: ', error.message);
+    return <Text>Error: {error.message}</Text>;
+  }
 
-  // const getProduct = async (productId) => {
-  //   const productRef = await firebase.database().ref(`products/${productId}`).ref.once('value');
-  //   console.log('IS THIS SOMETHING: ', productRef);
-
-  //   const productData = { productRef, id: productId };
-
-  //   console.log('PRRRRRODUCTTTTDATAAA: ', productData);
-
-  //   return productRef;
-  // };
-
-  // console.log(getProduct(selectedProductId));
+  if (isLoading) {
+    console.log(
+      `Loading product with id ${selectedProductId} in SpotlightProducts via the useGetProduct hook...`
+    );
+    return <Loader />;
+  }
 
   const navigation = useNavigation();
 
   console.log('itemData in productDetailScreen: ', data);
-
-  if (isFetching) {
-    return (
-      <DetailWrapper>
-        <View>
-          <Title>...Laddar</Title>
-        </View>
-      </DetailWrapper>
-    );
-  }
-
-  if (error) {
-    return (
-      <DetailWrapper>
-        <View>
-          <Title>{data.error}</Title>
-        </View>
-      </DetailWrapper>
-    );
-  }
 
   const {
     id,
@@ -151,7 +127,7 @@ const ProductDetailScreen = (props) => {
         <ReservationLogic
           navigation={navigation}
           hasEditPermission={hasEditPermission}
-          selectedProduct={selectedProduct}
+          selectedProduct={data}
         />
 
         {/* Displays a list of orders for the product if the logged in user is the buyer */}
@@ -225,7 +201,7 @@ const ProductDetailScreen = (props) => {
                 icon="delete"
                 color={Colors.warning}
                 onSelect={() => {
-                  deleteHandler(selectedProduct.id);
+                  deleteHandler(data.id);
                 }}
               />
 
@@ -233,7 +209,7 @@ const ProductDetailScreen = (props) => {
                 icon="pen"
                 color={Colors.neutral}
                 onSelect={() => {
-                  editProductHandler(selectedProduct.id);
+                  editProductHandler(data.id);
                 }}
               />
             </View>

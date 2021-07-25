@@ -1,7 +1,7 @@
 import React from 'react';
 import { pure } from 'recompose';
 import CardBottomInfo from './CardBottomInfo';
-import CardTemplate from './CardTemplate';
+import CardTouchable from './CardTouchable';
 
 const ProjectItem = ({ onSelect, itemData, cardHeight, hideInfo }) => {
   const { image, title, description } = itemData;
@@ -11,7 +11,7 @@ const ProjectItem = ({ onSelect, itemData, cardHeight, hideInfo }) => {
   ) : null;
 
   return (
-    <CardTemplate
+    <CardTouchable
       hideInfo={hideInfo}
       image={image}
       cardHeight={cardHeight}

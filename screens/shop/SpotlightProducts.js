@@ -7,37 +7,32 @@ import useGetProducts from '../../hooks/useGetProducts';
 import { FlatList, View, StyleSheet } from 'react-native';
 
 import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import Error from '../../components/UI/Error';
 import EmptyState from '../../components/UI/EmptyState';
 import ProductItem from '../../components/UI/ProductItem';
 import ButtonSeeMore from '../../components/UI/ButtonSeeMore';
 
 const SpotlightProducts = () => {
-  const { status, data, isFetching, error } = useGetProducts();
+  const { isLoading, isError, data, error } = useGetProducts();
 
   const navigation = useNavigation();
 
-  if (status === 'error') {
+  const selectItemHandler = (itemData) => {
+    navigation.navigate('ProductDetail', {
+      itemData: itemData,
+    });
+  };
+
+  if (isError) {
     console.log('ERROR: ', error.message);
-    return <Error />;
+    return <Text>Error: {error.message}</Text>;
   }
 
-  if (status === 'loading') {
+  if (isLoading) {
     console.log('Loading products in SpotlightProducts via the useGetProducts hook...');
-    return <Loader />;
-  }
-
-  if (!(status === 'loading') && data.length === 0) {
-    console.log('...no products found.');
-    return <EmptyState text="Inga produkter hittade." />;
-  }
-
-  if (isFetching) {
     return <EmptyState text="Hämtar produkter" />;
   }
 
-  console.log(`${status} Products found: `, data.length);
+  console.log('Products found: ', data.length);
 
   const recentProductsSorted = data.sort(function (a, b) {
     a = new Date(a.date);
@@ -45,7 +40,7 @@ const SpotlightProducts = () => {
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const recentProducts = recentProductsSorted.slice(0, 6);
+  const recentProducts = recentProductsSorted.slice(0, 9);
 
   return (
     <FlatList

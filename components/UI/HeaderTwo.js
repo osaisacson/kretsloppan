@@ -3,8 +3,9 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Badge } from 'react-native-paper';
 import { pure } from 'recompose';
 
+import Styles from './../../constants/Styles';
 import Colors from './../../constants/Colors';
-import ButtonIcon from './ButtonIcon';
+
 import { Button } from 'react-native-paper';
 
 import ButtonSeeMore from './ButtonSeeMore';
@@ -23,9 +24,9 @@ const HeaderTwo = ({
     <View style={styles.headerContainer}>
       <View style={styles.textAndBadge}>
         <View>{icon ? icon : null}</View>
-        <Text style={styles.contentHeader}>{title}</Text>
+        <Text style={Styles.contentHeader}>{title}</Text>
         {simpleCount ? (
-          <Text style={styles.results}>
+          <Text style={Styles.searchResults}>
             {isSearch ? `${simpleCount} Hittade` : `(${simpleCount})`}
           </Text>
         ) : null}
@@ -46,6 +47,7 @@ const HeaderTwo = ({
               fontFamily: 'roboto-bold',
               fontSize: 13,
             }}
+            color={Colors.darkPrimary}
             onSelect={showAddLink}>
             Lägg till ny
           </Button>
@@ -69,15 +71,6 @@ const styles = StyleSheet.create({
   textAndBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  contentHeader: {
-    fontFamily: 'bebas-neue-bold',
-    fontSize: 31,
-    marginRight: 6,
-  },
-  results: {
-    fontFamily: 'bebas-neue-bold',
-    fontSize: 28,
   },
   rightHandButtons: {
     flexDirection: 'row',
