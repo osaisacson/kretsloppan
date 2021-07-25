@@ -59,11 +59,12 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         navigation={navigation}
         showAddLink={() => navigation.navigate('EditProduct')}
         showMoreLink={userProducts.length ? () => navigation.navigate('Mitt återbruk') : false}
+        nrToShow={userProducts.length}
       />
       <HorizontalScroll
         isProject
         detailPath="ProjectDetail"
-        title="Mina återbruksprojekt"
+        title="Mina projekt"
         scrollData={userProjects}
         simpleCount={userProjects.length}
         navigation={navigation}
@@ -80,6 +81,7 @@ const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, 
         showMoreLink={
           userProposals.length > 1 ? () => navigation.navigate('Alla mina efterlysningar') : false
         }
+        nrToShow={userProposals.length}
       />
 
       <Card style={{ marginTop: 4 }}>

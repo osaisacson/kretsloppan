@@ -13,7 +13,7 @@ import ProposalItem from '../../components/UI/ProposalItem';
 
 const ProposalsScreen = ({ navigation }) => {
   const { status, data, isFetching, error } = useGetProposals();
-  console.log('...fetching proposals in ProposalsScreen via the useGetProposals hook: ', status);
+  console.log('Fetching proposals in ProposalsScreen via the useGetProposals hook...');
 
   //Prepare for changing the rendered proposals on search
   const [searchQuery, setSearchQuery] = useState('');

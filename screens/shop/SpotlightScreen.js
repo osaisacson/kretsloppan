@@ -9,6 +9,7 @@ import SaferArea from '../../components/wrappers/SaferArea';
 import SpotlightProducts from './SpotlightProducts';
 import SpotlightProjects from './SpotlightProjects';
 import SpotlightProposals from './SpotlightProposals';
+import { Divider } from 'react-native-paper';
 
 const SpotlightScreen = () => {
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
@@ -31,11 +32,17 @@ const SpotlightScreen = () => {
       {/* Products */}
       <SpotlightProducts />
 
+      <Divider style={{ marginTop: 25, marginBottom: 20 }} />
+
       {/* Projects */}
       <SpotlightProjects />
 
+      <Divider style={{ marginTop: 25, marginBottom: 20 }} />
+
       {/* Proposals */}
       <SpotlightProposals />
+
+      <Divider style={{ marginTop: 35, marginBottom: 0 }} />
     </>
   );
 

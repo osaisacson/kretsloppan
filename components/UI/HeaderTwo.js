@@ -5,6 +5,8 @@ import { pure } from 'recompose';
 
 import Colors from './../../constants/Colors';
 import ButtonIcon from './ButtonIcon';
+import { Button } from 'react-native-paper';
+
 import ButtonSeeMore from './ButtonSeeMore';
 
 const HeaderTwo = ({
@@ -15,6 +17,7 @@ const HeaderTwo = ({
   showAddLink,
   showMoreLink,
   isSearch,
+  nrToShow,
 }) => {
   return (
     <View style={styles.headerContainer}>
@@ -34,9 +37,18 @@ const HeaderTwo = ({
       </View>
 
       <View style={styles.rightHandButtons}>
-        {showMoreLink ? <ButtonSeeMore onSelect={showMoreLink} /> : null}
+        {showMoreLink ? <ButtonSeeMore nrToShow={nrToShow} onSelect={showMoreLink} /> : null}
         {showAddLink ? (
-          <ButtonIcon icon="plus" compact onSelect={showAddLink} color={Colors.darkPrimary} />
+          <Button
+            icon="plus"
+            mode="text"
+            labelStyle={{
+              fontFamily: 'roboto-bold',
+              fontSize: 13,
+            }}
+            onSelect={showAddLink}>
+            Lägg till ny
+          </Button>
         ) : null}
       </View>
     </View>

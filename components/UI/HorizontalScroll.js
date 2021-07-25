@@ -57,6 +57,7 @@ const HorizontalScroll = (props) => {
             buttonOnPress={props.buttonOnPress}
             showAddLink={props.showAddLink}
             showMoreLink={props.showMoreLink}
+            nrToShow={props.nrToShow}
             icon={props.icon}
             simpleCount={props.simpleCount}
             indicator={scrollData.length ? scrollData.length : 0}
@@ -96,7 +97,7 @@ const HorizontalScroll = (props) => {
                       paddingRight: 30,
                       height: scrollHeight,
                     }}>
-                    <ButtonSeeMore itemNr={scrollData.length} onSelect={props.showMoreLink} />
+                    <ButtonSeeMore nrToShow={scrollData.length} onSelect={props.showMoreLink} />
                   </View>
                 ) : null}
               </ScrollView>

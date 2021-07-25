@@ -37,17 +37,15 @@ const SpotlightProducts = () => {
     return <EmptyState text="Hämtar produkter" />;
   }
 
-  const allProducts = data.filter((product) => !(product.amount === product.sold));
+  console.log(`${status} Products found: `, data.length);
 
-  const recentProductsSorted = allProducts.sort(function (a, b) {
+  const recentProductsSorted = data.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
   const recentProducts = recentProductsSorted.slice(0, 6);
-
-  console.log('...done! Products found: ', data.length);
 
   return (
     <FlatList
@@ -82,12 +80,12 @@ const SpotlightProducts = () => {
               }}
             />
           }
-          indicator={allProducts.length ? allProducts.length : 0}
         />
       }
       ListFooterComponent={
         <ButtonSeeMore
-          onSelect={allProducts.length > 1 ? () => navigation.navigate('Återbruk') : false}
+          nrToShow={data.length > 1 ? data.length : null}
+          onSelect={data.length > 1 ? () => navigation.navigate('Återbruk') : false}
         />
       }
     />

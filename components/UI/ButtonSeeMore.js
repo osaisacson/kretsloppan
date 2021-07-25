@@ -2,29 +2,26 @@ import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { Button } from 'react-native-paper';
 
-import Colors from './../../constants/Colors';
-
-const ButtonSeeMore = ({ onSelect }) => {
+const ButtonSeeMore = ({ onSelect, nrToShow }) => {
   return (
     <Button
-      mode="outlined"
       compact
+      mode="contained"
       style={{
         marginTop: 5,
-        marginBottom: 8,
-        borderColor: Colors.darkPrimary,
+        marginHorizontal: 8,
       }}
       contentStyle={{
-        height: 30,
+        height: 50,
         marginTop: 2,
       }}
       labelStyle={{
-        fontFamily: 'roboto-regular',
-        fontSize: 11,
+        fontFamily: 'roboto-bold',
+        fontSize: 13,
       }}
-      onPress={onSelect}
-      color={Colors.darkPrimary}>
-      Se alla <Feather name="arrow-right" />
+      onPress={onSelect}>
+      Se alla {nrToShow}
+      <Feather name="arrow-right" />
     </Button>
   );
 };

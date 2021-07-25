@@ -37,6 +37,8 @@ const SpotlightProposals = () => {
     return <EmptyState text="Hämtar efterlysningar" />;
   }
 
+  console.log(`${status} Projects found: `, data.length);
+
   const recentActiveProposals = data.filter((proposal) => proposal.status !== 'löst');
 
   const recentProposalsSorted = recentActiveProposals.sort(function (a, b) {
@@ -46,8 +48,6 @@ const SpotlightProposals = () => {
   });
 
   const recentProposals = recentProposalsSorted.slice(0, 3);
-
-  console.log('...done! Proposals found: ', data.length);
 
   return (
     <FlatList
@@ -83,11 +83,11 @@ const SpotlightProposals = () => {
               }}
             />
           }
-          indicator={data.length ? data.length : 0}
         />
       }
       ListFooterComponent={
         <ButtonSeeMore
+          nrToShow={data.length > 1 ? data.length : null}
           onSelect={data.length > 1 ? () => navigation.navigate('Efterlysningar') : false}
         />
       }

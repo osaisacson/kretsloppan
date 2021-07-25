@@ -15,7 +15,7 @@ import ProductAvatarAndLocation from '../../components/UI/ProductAvatarAndLocati
 
 const ProjectsScreen = ({ navigation }) => {
   const { status, data, isFetching, error } = useGetProjects();
-  console.log('...fetching projects in ProjectsScreen via the useGetProjects hook: ', status);
+  console.log('Fetching projects in ProjectsScreen via the useGetProjects hook...');
 
   //Prepare for changing the rendered projects on search
   const [searchQuery, setSearchQuery] = useState('');

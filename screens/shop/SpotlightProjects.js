@@ -37,6 +37,8 @@ const SpotlightProjects = () => {
     return <EmptyState text="Hämtar projekt" />;
   }
 
+  console.log(`${status} Projects found: `, data.length);
+
   const recentProjectsSorted = data.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
@@ -44,8 +46,6 @@ const SpotlightProjects = () => {
   });
 
   const recentProjects = recentProjectsSorted.slice(0, 1);
-
-  console.log('...done! Projects found: ', data.length);
 
   return (
     <FlatList
@@ -80,11 +80,13 @@ const SpotlightProjects = () => {
               }}
             />
           }
-          indicator={data.length ? data.length : 0}
         />
       }
       ListFooterComponent={
-        <ButtonSeeMore onSelect={data.length > 1 ? () => navigation.navigate('Projekt') : false} />
+        <ButtonSeeMore
+          nrToShow={data.length > 1 ? data.length : null}
+          onSelect={data.length > 1 ? () => navigation.navigate('Projekt') : false}
+        />
       }
     />
   );

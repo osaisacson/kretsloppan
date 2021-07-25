@@ -16,7 +16,7 @@ import Styles from '../../constants/Styles';
 
 const ProductsScreen = ({ navigation }) => {
   const { status, data, isFetching, error } = useGetProducts();
-  console.log('...fetching products in ProductsScreen via the useGetProducts hook: ', status);
+  console.log('Fetching products in ProductsScreen via the useGetProducts hook...');
 
   //Prepare for changing the rendered products on search
   const [searchQuery, setSearchQuery] = useState('');
