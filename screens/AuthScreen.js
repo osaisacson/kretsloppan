@@ -18,10 +18,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Avatar, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
-import Card from '../../components/UI/Card';
-import Input from '../../components/UI/Input';
-import Colors from '../../constants/Colors';
-import * as authActions from '../../store/actions/auth';
+import Card from '../components/UI/Card';
+import Input from '../components/UI/Input';
+import Colors from '../constants/Colors';
+import * as authActions from '../store/actions/auth';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 

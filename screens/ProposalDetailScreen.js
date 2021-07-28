@@ -5,17 +5,17 @@ import { View, Text, Alert } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ButtonRound from '../../components/UI/ButtonRound';
-import ButtonIcon from '../../components/UI/ButtonIcon';
-import ContactDetails from '../../components/UI/ContactDetails';
-import HeaderThree from '../../components/UI/HeaderThree';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import SectionCard from '../../components/UI/SectionCard';
-import StatusBadge from '../../components/UI/StatusBadge';
-import UserLine from '../../components/UI/UserLine';
-import { DetailWrapper, detailStyles } from '../../components/wrappers/DetailWrapper';
-import Colors from '../../constants/Colors';
-import * as proposalsActions from '../../store/actions/proposals';
+import ButtonRound from '../components/UI/ButtonRound';
+import ButtonIcon from '../components/UI/ButtonIcon';
+import ContactDetails from '../components/UI/ContactDetails';
+import HeaderThree from '../components/UI/HeaderThree';
+import HorizontalScroll from '../components/UI/HorizontalScroll';
+import SectionCard from '../components/UI/SectionCard';
+import StatusBadge from '../components/UI/StatusBadge';
+import UserLine from '../components/UI/UserLine';
+import { DetailWrapper, detailStyles } from '../components/wrappers/DetailWrapper';
+import Colors from '../constants/Colors';
+import * as proposalsActions from '../store/actions/proposals';
 
 const ProposalDetailScreen = (props) => {
   const dispatch = useDispatch();

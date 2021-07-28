@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import useGetProducts from './../../hooks/useGetProducts';
+import useGetProducts from '../hooks/useGetProducts';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { createFilter } from 'react-native-search-filter';
-import SaferArea from '../../components/wrappers/SaferArea';
-import Error from '../../components/UI/Error';
-import Loader from '../../components/UI/Loader';
-import EmptyState from '../../components/UI/EmptyState';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import SearchBar from '../../components/UI/SearchBar';
-import ProductItem from '../../components/UI/ProductItem';
+import SaferArea from '../components/wrappers/SaferArea';
+import Error from '../components/UI/Error';
+import Loader from '../components/UI/Loader';
+import EmptyState from '../components/UI/EmptyState';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import SearchBar from '../components/UI/SearchBar';
+import ProductItem from '../components/UI/ProductItem';
 import { Divider } from 'react-native-paper';
-import ProductAvatarAndLocation from '../../components/UI/ProductAvatarAndLocation';
-import Styles from '../../constants/Styles';
+import ProductAvatarAndLocation from '../components/UI/ProductAvatarAndLocation';
+import Styles from '../constants/Styles';
 
 const ProductsScreen = ({ navigation }) => {
   const { status, data, isLoading, error } = useGetProducts();

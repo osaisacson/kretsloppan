@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ImagePicker from '../../components/UI/ImgPicker';
-import Loader from '../../components/UI/Loader';
-import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import * as profilesActions from '../../store/actions/profiles';
+import ImagePicker from '../components/UI/ImgPicker';
+import Loader from '../components/UI/Loader';
+import { FormFieldWrapper, formStyles } from '../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../components/wrappers/FormWrapper';
+import * as profilesActions from '../store/actions/profiles';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 

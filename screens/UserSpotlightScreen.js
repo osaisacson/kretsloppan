@@ -3,9 +3,9 @@ import { View, Image } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
-import ButtonIcon from '../../components/UI/ButtonIcon';
-import Colors from '../../constants/Colors';
-import ScrollViewToTop from './../../components/wrappers/ScrollViewToTop';
+import ButtonIcon from '../components/UI/ButtonIcon';
+import Colors from '../constants/Colors';
+import ScrollViewToTop from '../components/wrappers/ScrollViewToTop';
 import UserItems from './UserItems';
 import { userProfileStyles } from './UserProfile';
 

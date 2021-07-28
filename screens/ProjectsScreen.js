@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import useGetProjects from './../../hooks/useGetProjects';
+import useGetProjects from '../hooks/useGetProjects';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { createFilter } from 'react-native-search-filter';
-import SaferArea from '../../components/wrappers/SaferArea';
-import Error from '../../components/UI/Error';
-import Loader from '../../components/UI/Loader';
-import EmptyState from '../../components/UI/EmptyState';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import SearchBar from '../../components/UI/SearchBar';
-import ProjectItem from '../../components/UI/ProjectItem';
+import SaferArea from '../components/wrappers/SaferArea';
+import Error from '../components/UI/Error';
+import Loader from '../components/UI/Loader';
+import EmptyState from '../components/UI/EmptyState';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import SearchBar from '../components/UI/SearchBar';
+import ProjectItem from '../components/UI/ProjectItem';
 import { Divider } from 'react-native-paper';
-import ProductAvatarAndLocation from '../../components/UI/ProductAvatarAndLocation';
+import ProductAvatarAndLocation from '../components/UI/ProductAvatarAndLocation';
 
 const ProjectsScreen = ({ navigation }) => {
   const { status, data, isLoading, error } = useGetProjects();

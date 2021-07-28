@@ -4,14 +4,14 @@ import { Divider } from 'react-native-paper';
 import { createFilter } from 'react-native-search-filter';
 import { useSelector, useDispatch } from 'react-redux';
 
-import EmptyState from '../../components/UI/EmptyState';
-import Error from '../../components/UI/Error';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import RoundItem from '../../components/UI/RoundItem';
-import SearchBar from '../../components/UI/SearchBar';
-import SaferArea from '../../components/wrappers/SaferArea';
-import * as profilesActions from '../../store/actions/profiles';
+import EmptyState from '../components/UI/EmptyState';
+import Error from '../components/UI/Error';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import Loader from '../components/UI/Loader';
+import RoundItem from '../components/UI/RoundItem';
+import SearchBar from '../components/UI/SearchBar';
+import SaferArea from '../components/wrappers/SaferArea';
+import * as profilesActions from '../store/actions/profiles';
 
 const AllProfilesScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);

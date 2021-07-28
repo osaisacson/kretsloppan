@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import HeaderThree from '../../components/UI/HeaderThree';
-import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
-import Loader from '../../components/UI/Loader';
-import RoundItem from '../../components/UI/RoundItem';
-import { detailStyles } from '../../components/wrappers/DetailWrapper';
-import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import * as proposalsActions from '../../store/actions/proposals';
+import HeaderThree from '../components/UI/HeaderThree';
+import HorizontalScrollContainer from '../components/UI/HorizontalScrollContainer';
+import Loader from '../components/UI/Loader';
+import RoundItem from '../components/UI/RoundItem';
+import { detailStyles } from '../components/wrappers/DetailWrapper';
+import { FormFieldWrapper, formStyles } from '../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../components/wrappers/FormWrapper';
+import * as proposalsActions from '../store/actions/proposals';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 

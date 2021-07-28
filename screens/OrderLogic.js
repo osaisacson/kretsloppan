@@ -1,7 +1,7 @@
 import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
 import { Avatar } from 'react-native-paper';
-import TouchableCmp from '../../../components/UI/TouchableCmp';
+import TouchableCmp from '../components/UI/TouchableCmp';
 
 import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-paper';
@@ -9,12 +9,12 @@ import { pure } from 'recompose';
 
 import { useDispatch } from 'react-redux';
 
-import Colors from '../../../constants/Colors';
-import * as ordersActions from '../../../store/actions/orders';
-import * as productsActions from '../../../store/actions/products';
-import CalendarSelection from '../../../components/UI/CalendarSelection';
-import UserAvatar from '../../../components/UI/UserAvatar';
-import OrderButtonSection from '../../../components/UI/OrderButtonSection';
+import Colors from '../constants/Colors';
+import * as ordersActions from '../store/actions/orders';
+import * as productsActions from '../store/actions/products';
+import CalendarSelection from '../components/UI/CalendarSelection';
+import UserAvatar from '../components/UI/UserAvatar';
+import OrderButtonSection from '../components/UI/OrderButtonSection';
 
 const OrderLogic = ({
   navigation,

@@ -2,16 +2,16 @@ import React from 'react';
 
 import { FlatList, Text } from 'react-native';
 
-import Card from './../../components/UI/Card';
+import Card from '../components/UI/Card';
 
-import SaferArea from '../../components/wrappers/SaferArea';
+import SaferArea from '../components/wrappers/SaferArea';
 
 import SpotlightProducts from './SpotlightProducts';
 import SpotlightProjects from './SpotlightProjects';
 import SpotlightProposals from './SpotlightProposals';
 import { Divider } from 'react-native-paper';
-import Styles from '../../constants/Styles';
-import Colors from '../../constants/Colors';
+import Styles from '../constants/Styles';
+import Colors from '../constants/Colors';
 
 const SpotlightScreen = () => {
   const ListHeaderComponent = (

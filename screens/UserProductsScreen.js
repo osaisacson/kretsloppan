@@ -2,14 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import EmptyState from '../../components/UI/EmptyState';
-import Error from '../../components/UI/Error';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import ProductItem from '../../components/UI/ProductItem';
-import SearchBar from '../../components/UI/SearchBar';
-import SaferArea from '../../components/wrappers/SaferArea';
-import * as productsActions from '../../store/actions/products';
+import EmptyState from '../components/UI/EmptyState';
+import Error from '../components/UI/Error';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import Loader from '../components/UI/Loader';
+import ProductItem from '../components/UI/ProductItem';
+import SearchBar from '../components/UI/SearchBar';
+import SaferArea from '../components/wrappers/SaferArea';
+import * as productsActions from '../store/actions/products';
 
 const UserProductsScreen = (props) => {
   //Get user products from state

@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { Alert, TextInput, View, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import HorizontalScrollContainer from '../../components/UI/HorizontalScrollContainer';
-import ImagePicker from '../../components/UI/ImgPicker';
-import Loader from '../../components/UI/Loader';
-import PickerItem from '../../components/UI/PickerItem';
-import { FormFieldWrapper, formStyles } from '../../components/wrappers/FormFieldWrapper';
-import FormWrapper from '../../components/wrappers/FormWrapper';
-import * as productsActions from '../../store/actions/products';
-import { PART, CONDITION, STYLE, MATERIAL, COLOR } from './../../data/filters';
+import HorizontalScrollContainer from '../components/UI/HorizontalScrollContainer';
+import ImagePicker from '../components/UI/ImgPicker';
+import Loader from '../components/UI/Loader';
+import PickerItem from '../components/UI/PickerItem';
+import { FormFieldWrapper, formStyles } from '../components/wrappers/FormFieldWrapper';
+import FormWrapper from '../components/wrappers/FormWrapper';
+import * as productsActions from '../store/actions/products';
+import { PART, CONDITION, STYLE, MATERIAL, COLOR } from '../data/filters';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 

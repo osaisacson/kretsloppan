@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import useGetProposals from './../../hooks/useGetProposals';
+import useGetProposals from '../hooks/useGetProposals';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { createFilter } from 'react-native-search-filter';
-import SaferArea from '../../components/wrappers/SaferArea';
-import Error from '../../components/UI/Error';
-import Loader from '../../components/UI/Loader';
-import EmptyState from '../../components/UI/EmptyState';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import SearchBar from '../../components/UI/SearchBar';
-import ProposalItem from '../../components/UI/ProposalItem';
+import SaferArea from '../components/wrappers/SaferArea';
+import Error from '../components/UI/Error';
+import Loader from '../components/UI/Loader';
+import EmptyState from '../components/UI/EmptyState';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import SearchBar from '../components/UI/SearchBar';
+import ProposalItem from '../components/UI/ProposalItem';
 
 const ProposalsScreen = ({ navigation }) => {
   const { status, data, isLoading, error } = useGetProposals();

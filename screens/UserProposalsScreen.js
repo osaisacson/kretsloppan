@@ -2,14 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import EmptyState from '../../components/UI/EmptyState';
-import Error from '../../components/UI/Error';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import Loader from '../../components/UI/Loader';
-import SearchBar from '../../components/UI/SearchBar';
-import ProposalItem from '../../components/UI/ProposalItem';
-import SaferArea from '../../components/wrappers/SaferArea';
-import * as proposalsActions from '../../store/actions/proposals';
+import EmptyState from '../components/UI/EmptyState';
+import Error from '../components/UI/Error';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import Loader from '../components/UI/Loader';
+import SearchBar from '../components/UI/SearchBar';
+import ProposalItem from '../components/UI/ProposalItem';
+import SaferArea from '../components/wrappers/SaferArea';
+import * as proposalsActions from '../store/actions/proposals';
 
 const UserProposalsScreen = (props) => {
   //Get user proposals from state

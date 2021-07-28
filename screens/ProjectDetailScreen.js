@@ -2,48 +2,60 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 
-import ButtonIcon from '../../components/UI/ButtonIcon';
-import CachedImage from '../../components/UI/CachedImage';
-import EmptyState from '../../components/UI/EmptyState';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import ProjectProductItem from '../../components/UI/ProjectProductItem';
-import SectionCard from '../../components/UI/SectionCard';
-import UserLine from '../../components/UI/UserLine';
-import SaferArea from '../../components/wrappers/SaferArea';
-import Colors from '../../constants/Colors';
-import * as projectsActions from '../../store/actions/projects';
+import ButtonIcon from '../components/UI/ButtonIcon';
+import CachedImage from '../components/UI/CachedImage';
+import EmptyState from '../components/UI/EmptyState';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import HorizontalScroll from '../components/UI/HorizontalScroll';
+import ProjectProductItem from '../components/UI/ProjectProductItem';
+import SectionCard from '../components/UI/SectionCard';
+import UserLine from '../components/UI/UserLine';
+import SaferArea from '../components/wrappers/SaferArea';
+import Colors from '../constants/Colors';
+import * as projectsActions from '../store/actions/projects';
 
 const ProjectDetailScreen = (props) => {
-  const selectedProject = props.route.params.itemData;
+  //Get project id from route through props
+  const selectedProjectId = props.route.params.itemData.id;
 
-  console.log('itemData passed to projectDetailScreen: ', selectedProject);
+  const { isLoading, isError, data, error } = useGetProject(selectedProjectId);
 
-  if (!selectedProject) {
-    return {};
+  if (isError) {
+    console.log('ERROR: ', error.message);
+    return <Text>Error: {error.message}</Text>;
   }
 
-  const projectId = selectedProject.id;
+  if (isLoading) {
+    console.log(
+      `Loading project with id ${selectedProjectId} in SpotlightProjects via the useGetProject hook...`
+    );
+    return <Loader />;
+  }
 
-  const { ownerId } = selectedProject;
+  const navigation = useNavigation();
+
+  console.log('itemData in projectDetailScreen: ', data);
+
+  // const projectId = selectedProject.id;
+
+  // const { ownerId } = selectedProject;
+
+  // const associatedProducts = useSelector((state) =>
+  //   state.orders.availableOrders.filter((order) => order.projectId === projectId)
+  // );
+
+  // const associatedProposals = useSelector((state) =>
+  //   state.proposals.availableProposals.filter(
+  //     (proposal) => proposal.projectId === projectId && proposal.status !== 'löst'
+  //   )
+  // );
+
+  // const dispatch = useDispatch();
 
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const loggedInUserId = currentProfile.profileId;
-
-  const associatedProducts = useSelector((state) =>
-    state.orders.availableOrders.filter((order) => order.projectId === projectId)
-  );
-
-  const associatedProposals = useSelector((state) =>
-    state.proposals.availableProposals.filter(
-      (proposal) => proposal.projectId === projectId && proposal.status !== 'löst'
-    )
-  );
-
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const hasEditPermission = ownerId === loggedInUserId;
 
