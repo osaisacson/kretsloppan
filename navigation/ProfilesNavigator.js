@@ -3,15 +3,15 @@ import React from 'react';
 
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetail/ProductDetailScreen';
+} from '../screens/ProductDetailScreen';
 import ProjectDetailScreen, {
   screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
+} from '../screens/ProjectDetailScreen';
 import ProposalDetailScreen, {
   screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
-import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
-import UserProfile from '../screens/user/UserProfile';
+} from '../screens/ProposalDetailScreen';
+import AllProfilesScreen from '../screens/AllProfilesScreen';
+import UserProfile from '../screens/UserProfile';
 import { defaultNavOptions, defaultMainPageOptions, mainPageOptionsWithUser } from './NavHeaders';
 
 const ProfilesStackNavigator = createStackNavigator();

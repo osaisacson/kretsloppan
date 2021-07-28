@@ -2,14 +2,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import React from 'react';
-import useGetProjects from '../../hooks/useGetProjects';
+import useGetProjects from '../hooks/useGetProjects';
 
 import { FlatList, View, StyleSheet } from 'react-native';
 
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import EmptyState from '../../components/UI/EmptyState';
-import ProjectItem from '../../components/UI/ProjectItem';
-import ButtonSeeMore from '../../components/UI/ButtonSeeMore';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import EmptyState from '../components/UI/EmptyState';
+import ProjectItem from '../components/UI/ProjectItem';
+import ButtonSeeMore from '../components/UI/ButtonSeeMore';
 
 const SpotlightProjects = () => {
   const { isLoading, isError, data, error } = useGetProjects();

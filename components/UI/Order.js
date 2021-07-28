@@ -8,7 +8,7 @@ import { pure } from 'recompose';
 import Card from './Card';
 import HeaderThree from './HeaderThree';
 
-import OrderLogic from './../../screens/details/ProductDetail/OrderLogic';
+import OrderLogic from './../../screens/OrderLogic';
 import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';

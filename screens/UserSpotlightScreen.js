@@ -58,7 +58,7 @@ const UserSpotlightScreen = (props) => {
       <ScrollViewToTop>
         <View style={userProfileStyles.userInfoSection}>
           <Image
-            source={require('./../../assets/userBackground.png')}
+            source={require('./../assets/userBackground.png')}
             style={{
               flex: 1,
               resizeMode: 'cover',
@@ -80,7 +80,7 @@ const UserSpotlightScreen = (props) => {
             source={
               currentProfile && currentProfile.image
                 ? { uri: currentProfile.image }
-                : require('./../../assets/avatar-placeholder-image.png')
+                : require('./../assets/avatar-placeholder-image.png')
             }
             size={80}
           />

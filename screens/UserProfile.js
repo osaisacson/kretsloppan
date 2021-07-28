@@ -3,10 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import { Avatar, Title, Caption, Paragraph } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
-import ContactDetails from '../../components/UI/ContactDetails';
-import EmptyState from '../../components/UI/EmptyState';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import ScrollViewToTop from '../../components/wrappers/ScrollViewToTop';
+import ContactDetails from '../components/UI/ContactDetails';
+import EmptyState from '../components/UI/EmptyState';
+import HorizontalScroll from '../components/UI/HorizontalScroll';
+import ScrollViewToTop from '../components/wrappers/ScrollViewToTop';
 
 const UserProfile = (props) => {
   //Get profiles, return only the one which matches the id we pass in route params
@@ -74,7 +74,7 @@ const UserProfile = (props) => {
           source={
             currentProfile && currentProfile.image
               ? { uri: currentProfile.image }
-              : require('./../../assets/avatar-placeholder-image.png')
+              : require('./../assets/avatar-placeholder-image.png')
           }
           size={80}
         />

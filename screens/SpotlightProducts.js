@@ -2,14 +2,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import React from 'react';
-import useGetProducts from '../../hooks/useGetProducts';
+import useGetProducts from '../hooks/useGetProducts';
 
 import { FlatList, View, StyleSheet } from 'react-native';
 
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import EmptyState from '../../components/UI/EmptyState';
-import ProductItem from '../../components/UI/ProductItem';
-import ButtonSeeMore from '../../components/UI/ButtonSeeMore';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import EmptyState from '../components/UI/EmptyState';
+import ProductItem from '../components/UI/ProductItem';
+import ButtonSeeMore from '../components/UI/ButtonSeeMore';
 
 const SpotlightProducts = () => {
   const { isLoading, isError, data, error } = useGetProducts();

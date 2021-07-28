@@ -3,22 +3,22 @@ import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
-import useGetProduct from '../../../hooks/useGetProduct';
+import useGetProduct from '../hooks/useGetProduct';
 import { useSelector } from 'react-redux';
 
 import { pure } from 'recompose';
 
-import ButtonIcon from '../../../components/UI/ButtonIcon';
-import CachedImage from '../../../components/UI/CachedImage';
-import FilterLine from '../../../components/UI/FilterLine';
-import HeaderTwo from '../../../components/UI/HeaderTwo';
-import HeaderThree from '../../../components/UI/HeaderThree';
-import Loader from '../../../components/UI/Loader';
-import Orders from '../../../components/UI/Orders';
-import SectionCard from '../../../components/UI/SectionCard';
-import StatusBadge from '../../../components/UI/StatusBadge';
-import { DetailWrapper, detailStyles } from '../../../components/wrappers/DetailWrapper';
-import Colors from '../../../constants/Colors';
+import ButtonIcon from '../components/UI/ButtonIcon';
+import CachedImage from '../components/UI/CachedImage';
+import FilterLine from '../components/UI/FilterLine';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import HeaderThree from '../components/UI/HeaderThree';
+import Loader from '../components/UI/Loader';
+import Orders from '../components/UI/Orders';
+import SectionCard from '../components/UI/SectionCard';
+import StatusBadge from '../components/UI/StatusBadge';
+import { DetailWrapper, detailStyles } from '../components/wrappers/DetailWrapper';
+import Colors from '../constants/Colors';
 import ReservationLogic from './ReservationLogic';
 
 const ProductDetailScreen = (props) => {

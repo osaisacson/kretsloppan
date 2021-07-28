@@ -2,14 +2,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import React from 'react';
-import useGetProposals from '../../hooks/useGetProposals';
+import useGetProposals from '../hooks/useGetProposals';
 
 import { FlatList, View, StyleSheet, Text } from 'react-native';
 
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import EmptyState from '../../components/UI/EmptyState';
-import ProposalItem from '../../components/UI/ProposalItem';
-import ButtonSeeMore from '../../components/UI/ButtonSeeMore';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import EmptyState from '../components/UI/EmptyState';
+import ProposalItem from '../components/UI/ProposalItem';
+import ButtonSeeMore from '../components/UI/ButtonSeeMore';
 
 const SpotlightProposals = () => {
   const { isLoading, isError, data, error } = useGetProposals();

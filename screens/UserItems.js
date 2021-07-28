@@ -4,12 +4,12 @@ import { View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
-import Card from '../../components/UI/Card';
-import HeaderTwo from '../../components/UI/HeaderTwo';
-import HorizontalScroll from '../../components/UI/HorizontalScroll';
-import Orders from '../../components/UI/Orders';
-import TouchableCmp from '../../components/UI/TouchableCmp';
-import Colors from '../../constants/Colors';
+import Card from '../components/UI/Card';
+import HeaderTwo from '../components/UI/HeaderTwo';
+import HorizontalScroll from '../components/UI/HorizontalScroll';
+import Orders from '../components/UI/Orders';
+import TouchableCmp from '../components/UI/TouchableCmp';
+import Colors from '../constants/Colors';
 
 const UserItems = ({ userProjects, userProposals, userProducts, loggedInUserId, navigation }) => {
   const [showArchive, setShowArchive] = useState(false);

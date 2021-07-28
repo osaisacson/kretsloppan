@@ -3,19 +3,19 @@ import React from 'react';
 
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
-} from '../screens/addAndEdit/EditProductScreen';
+} from '../screens/EditProductScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions,
-} from '../screens/addAndEdit/EditProjectScreen';
+} from '../screens/EditProjectScreen';
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
-} from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen from '../screens/details/ProductDetail/ProductDetailScreen;
-import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
-import UserProductsScreen from '../screens/user/UserProductsScreen';
-import UserProposalsScreen from '../screens/user/UserProposalsScreen';
-import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
+} from '../screens/EditProposalScreen';
+import ProductDetailScreen from '../screens/ProductDetailScreen;
+import ProjectDetailScreen from '../screens/ProjectDetailScreen';
+import ProposalDetailScreen from '../screens/ProposalDetailScreen';
+import UserProductsScreen from '../screens/UserProductsScreen';
+import UserProposalsScreen from '../screens/UserProposalsScreen';
+import UserSpotlightScreen from '../screens/UserSpotlightScreen';
 import {  detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
 
 const DetailsStack = createStackNavigator();

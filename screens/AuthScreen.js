@@ -233,7 +233,7 @@ const AuthScreen = () => {
                             source={
                               placeholderPic
                                 ? { uri: placeholderPic }
-                                : require('./../../assets/avatar-placeholder-image.png')
+                                : require('./../assets/avatar-placeholder-image.png')
                             }
                             size={80}
                           />

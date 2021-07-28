@@ -6,16 +6,16 @@ import { Divider } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ButtonConfirm from '../../../components/UI/ButtonConfirm';
-import HeaderThree from '../../../components/UI/HeaderThree';
-import HorizontalScrollContainer from '../../../components/UI/HorizontalScrollContainer';
-import RoundItem from '../../../components/UI/RoundItem';
-import RoundItemEmpty from '../../../components/UI/RoundItemEmpty';
-import UserAvatarWithBadge from '../../../components/UI/UserAvatarWithBadge';
-import { detailStyles } from '../../../components/wrappers/DetailWrapper';
-import Colors from '../../../constants/Colors';
-import * as productsActions from '../../../store/actions/products';
-import * as ordersActions from '../../../store/actions/orders';
+import ButtonConfirm from '../components/UI/ButtonConfirm';
+import HeaderThree from '../components/UI/HeaderThree';
+import HorizontalScrollContainer from '../components/UI/HorizontalScrollContainer';
+import RoundItem from '../components/UI/RoundItem';
+import RoundItemEmpty from '../components/UI/RoundItemEmpty';
+import UserAvatarWithBadge from '../components/UI/UserAvatarWithBadge';
+import { detailStyles } from '../components/wrappers/DetailWrapper';
+import Colors from '../constants/Colors';
+import * as productsActions from '../store/actions/products';
+import * as ordersActions from '../store/actions/orders';
 
 const ReservationLogic = ({ navigation, hasEditPermission, selectedProduct }) => {
   const dispatch = useDispatch();
