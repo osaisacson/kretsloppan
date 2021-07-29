@@ -4,7 +4,7 @@ import React from 'react';
 import ProductDetail, { screenOptions as productDetailOptions } from '../screens/ProductDetail';
 import ProjectDetail, { screenOptions as projectDetailOptions } from '../screens/ProjectDetail';
 import ProposalDetail, { screenOptions as proposalDetailOptions } from '../screens/ProposalDetail';
-import AllProfilesScreen from '../screens/AllProfilesScreen';
+import ProfilesList from '../screens/ProfilesList';
 import UserProfile from '../screens/UserProfile';
 import { defaultNavOptions, defaultMainPageOptions, mainPageOptionsWithUser } from './NavHeaders';
 
@@ -15,7 +15,7 @@ export const ProfilesNavigator = () => {
     <ProfilesStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProfilesStackNavigator.Screen
         name="Alla Användare"
-        component={AllProfilesScreen}
+        component={ProfilesList}
         options={defaultMainPageOptions}
       />
       <ProfilesStackNavigator.Screen

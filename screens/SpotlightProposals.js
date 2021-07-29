@@ -48,15 +48,13 @@ const SpotlightProposals = ({
     return <EmptyState text="Inga efterlysningar i projektet ännu" />;
   }
 
-  const recentProposalsSorted = data.sort(function (a, b) {
+  const sortedProposals = proposals.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const recentProposals = nrItemsToShow
-    ? recentProposalsSorted.slice(0, nrItemsToShow)
-    : recentProposalsSorted;
+  const recentProposals = nrItemsToShow ? sortedProposals.slice(0, nrItemsToShow) : sortedProposals;
 
   return (
     <FlatList

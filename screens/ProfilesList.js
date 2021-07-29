@@ -2,45 +2,41 @@ import React, { useState, useCallback } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { createFilter } from 'react-native-search-filter';
-import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-import EmptyState from '../components/UI/EmptyState';
-import Error from '../components/UI/Error';
+import useGetProfiles from '../hooks/useGetProfiles';
+
 import HeaderTwo from '../components/UI/HeaderTwo';
 import Loader from '../components/UI/Loader';
 import RoundItem from '../components/UI/RoundItem';
 import SearchBar from '../components/UI/SearchBar';
 import SaferArea from '../components/wrappers/SaferArea';
-import * as profilesActions from '../store/actions/profiles';
 
-const AllProfilesScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [error, setError] = useState();
+const ProfilesList = () => {
+  const { isLoading, isError, data, error } = useGetProfiles();
 
-  //Get original profiles from state
-  const profiles = useSelector((state) => state.profiles.allProfiles);
+  if (isError) {
+    console.log('ERROR: ', error.message);
+    return <Text>Error: {error.message}</Text>;
+  }
 
-  //Prepare for changing the rendered profiles on search
+  if (isLoading) {
+    console.log(`Loading profiles...`);
+    return <Loader />;
+  }
+
+  const filteredProfiles = data.filter(createFilter(searchQuery, KEYS_TO_SEARCH_BY));
+
+  const sortedProfiles = filteredProfiles.sort(function (a, b) {
+    return b.profileName - a.profileName;
+  });
+
+  const navigation = useNavigation();
+
   const [searchQuery, setSearchQuery] = useState('');
 
-  const dispatch = useDispatch();
-
-  //Load profiles
-  const loadProfiles = useCallback(async () => {
-    setError(null);
-    setIsRefreshing(true);
-    try {
-      console.log('AllProfilesScreen: fetching profiles...');
-      dispatch(profilesActions.fetchProfiles());
-    } catch (err) {
-      setError(err.message);
-    }
-    setIsRefreshing(false);
-  }, [dispatch, setIsLoading, setError]);
-
   //Set which fields to filter by
-  const KEYS_TO_FILTERS = [
+  const KEYS_TO_SEARCH_BY = [
     'profileName',
     'profileDescription',
     'email',
@@ -49,29 +45,11 @@ const AllProfilesScreen = (props) => {
     'location',
   ];
 
-  const filteredProfilesRaw = profiles.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
-
-  const filteredProfiles = filteredProfilesRaw.sort(function (a, b) {
-    return b.profileName - a.profileName;
-  });
-
   const selectItemHandler = (itemData) => {
-    props.navigation.navigate('Användare', {
+    navigation.navigate('Användare', {
       detailId: itemData.profileId,
     });
   };
-
-  if (error) {
-    return <Error actionOnPress={loadProfiles} />;
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!isLoading && profiles.length === 0) {
-    return <EmptyState text="Hittar inga användare." />;
-  }
 
   return (
     <SaferArea>
@@ -86,7 +64,7 @@ const AllProfilesScreen = (props) => {
         numColumns={1}
         onRefresh={loadProfiles}
         refreshing={isRefreshing}
-        data={filteredProfiles}
+        data={sortedProfiles}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <View>
@@ -115,8 +93,8 @@ const AllProfilesScreen = (props) => {
         ListHeaderComponent={
           <HeaderTwo
             title="Alla användare"
-            simpleCount={filteredProfiles.length}
-            indicator={filteredProfiles.length ? filteredProfiles.length : 0}
+            simpleCount={sortedProfiles.length}
+            indicator={sortedProfiles.length ? sortedProfiles.length : 0}
           />
         }
       />
@@ -124,4 +102,4 @@ const AllProfilesScreen = (props) => {
   );
 };
 
-export default AllProfilesScreen;
+export default ProfilesList;

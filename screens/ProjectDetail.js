@@ -7,7 +7,7 @@ import useGetProject from '../hooks/useGetProject';
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
 
-import SpotlightProducts from './SpotlightProducts';
+import SpotlightOrders from './SpotlightOrders';
 import SpotlightProposals from './SpotlightProposals';
 
 import ButtonIcon from '../components/UI/ButtonIcon';
@@ -132,7 +132,7 @@ const ProjectDetail = (props) => {
   const ListFooterComponent = (
     <>
       {/* Associated products */}
-      <SpotlightProducts rowsToShow={3} projectId={id} title={'Återbruk använt i projektet'} />
+      <SpotlightOrders rowsToShow={3} projectId={id} title={'Återbruk använt i projektet'} />
       <Divider style={{ marginTop: 25, marginBottom: 20 }} />
       <SpotlightProposals title={'Efterlysningar till projektet'} projectId={id} />
     </>

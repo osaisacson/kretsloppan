@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import useGetProposals from '../hooks/useGetProposals';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import useGetProposals from '../hooks/useGetProposals';
 
 import { createFilter } from 'react-native-search-filter';
 import SaferArea from '../components/wrappers/SaferArea';
@@ -9,7 +11,7 @@ import HeaderTwo from '../components/UI/HeaderTwo';
 import SearchBar from '../components/UI/SearchBar';
 import ProposalItem from '../components/UI/ProposalItem';
 
-const ProposalsList = ({ navigation }) => {
+const ProposalsList = () => {
   const { isLoading, isError, data, error } = useGetProposals();
 
   if (isError) {
@@ -22,12 +24,14 @@ const ProposalsList = ({ navigation }) => {
     return <Loader />;
   }
 
+  const navigation = useNavigation();
+
   const [searchQuery, setSearchQuery] = useState('');
 
   //Set which fields to filter by
-  const KEYS_TO_FILTERS = ['title', 'description', 'price', 'status'];
+  const KEYS_TO_SEARCH_BY = ['title', 'description', 'price', 'status'];
 
-  const filteredProposalsRaw = data.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+  const filteredProposalsRaw = data.filter(createFilter(searchQuery, KEYS_TO_SEARCH_BY));
 
   const filteredProposals = filteredProposalsRaw.sort(function (a, b) {
     a = new Date(a.date);
@@ -36,7 +40,7 @@ const ProposalsList = ({ navigation }) => {
   });
 
   const selectItemHandler = (itemData) => {
-    props.navigation.navigate('ProposalDetail', {
+    navigation.navigate('ProposalDetail', {
       itemData: itemData,
     });
   };

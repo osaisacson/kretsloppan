@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import useGetProjects from '../hooks/useGetProjects';
 import { FlatList, StyleSheet, View } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 import { createFilter } from 'react-native-search-filter';
+
+import useGetProjects from '../hooks/useGetProjects';
+
 import SaferArea from '../components/wrappers/SaferArea';
 import Loader from '../components/UI/Loader';
 import HeaderTwo from '../components/UI/HeaderTwo';
@@ -11,7 +13,7 @@ import ProjectItem from '../components/UI/ProjectItem';
 import { Divider } from 'react-native-paper';
 import ProductAvatarAndLocation from '../components/UI/ProductAvatarAndLocation';
 
-const ProjectsList = ({ navigation }) => {
+const ProjectsList = () => {
   const { isLoading, isError, data, error } = useGetProjects();
 
   if (isError) {
@@ -23,6 +25,8 @@ const ProjectsList = ({ navigation }) => {
     console.log(`Loading projects...`);
     return <Loader />;
   }
+
+  const navigation = useNavigation();
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -38,7 +42,7 @@ const ProjectsList = ({ navigation }) => {
   });
 
   const selectItemHandler = (itemData) => {
-    props.navigation.navigate('ProjectDetail', {
+    navigation.navigate('ProjectDetail', {
       itemData: itemData,
     });
   };
