@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { createFilter } from 'react-native-search-filter';
@@ -25,6 +25,8 @@ const ProfilesList = () => {
     return <Loader />;
   }
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   const filteredProfiles = data.filter(createFilter(searchQuery, KEYS_TO_SEARCH_BY));
 
   const sortedProfiles = filteredProfiles.sort(function (a, b) {
@@ -32,8 +34,6 @@ const ProfilesList = () => {
   });
 
   const navigation = useNavigation();
-
-  const [searchQuery, setSearchQuery] = useState('');
 
   //Set which fields to filter by
   const KEYS_TO_SEARCH_BY = [
@@ -62,8 +62,6 @@ const ProfilesList = () => {
         initialNumToRender={10}
         horizontal={false}
         numColumns={1}
-        onRefresh={loadProfiles}
-        refreshing={isRefreshing}
         data={sortedProfiles}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
@@ -93,7 +91,6 @@ const ProfilesList = () => {
         ListHeaderComponent={
           <HeaderTwo
             title="Alla användare"
-            simpleCount={sortedProfiles.length}
             indicator={sortedProfiles.length ? sortedProfiles.length : 0}
           />
         }
