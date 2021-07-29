@@ -11,7 +11,13 @@ import EmptyState from '../components/UI/EmptyState';
 import ProposalItem from '../components/UI/ProposalItem';
 import ButtonSeeMore from '../components/UI/ButtonSeeMore';
 
-const SpotlightProposals = () => {
+const SpotlightProposals = ({
+  nrItemsToShow,
+
+  title,
+  showButtonAddNew,
+  showButtonSeeMore,
+}) => {
   const { isLoading, isError, data, error } = useGetProposals();
 
   const navigation = useNavigation();
@@ -34,15 +40,15 @@ const SpotlightProposals = () => {
 
   console.log('Proposals found: ', data.length);
 
-  const recentActiveProposals = data.filter((proposal) => proposal.status !== 'löst');
-
-  const recentProposalsSorted = recentActiveProposals.sort(function (a, b) {
+  const recentProposalsSorted = data.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const recentProposals = recentProposalsSorted.slice(0, 3);
+  const recentProposals = nrItemsToShow
+    ? recentProposalsSorted.slice(0, nrItemsToShow)
+    : recentProposalsSorted;
 
   return (
     <FlatList
@@ -66,8 +72,8 @@ const SpotlightProposals = () => {
       )}
       ListHeaderComponent={
         <HeaderTwo
-          title={'Efterlysningar'}
-          showAddLink={() => navigation.navigate('EditProject')}
+          title={title}
+          showAddLink={showButtonAddNew ? () => navigation.navigate('EditProject') : null}
           icon={
             <MaterialCommunityIcons
               name="alert-decagram-outline"
@@ -81,10 +87,12 @@ const SpotlightProposals = () => {
         />
       }
       ListFooterComponent={
-        <ButtonSeeMore
-          nrToShow={data.length > 1 ? data.length : null}
-          onSelect={data.length > 1 ? () => navigation.navigate('Efterlysningar') : false}
-        />
+        showButtonSeeMore ? (
+          <ButtonSeeMore
+            nrToShow={data.length > 1 ? data.length : null}
+            onSelect={data.length > 1 ? () => navigation.navigate('Efterlysningar') : false}
+          />
+        ) : null
       }
     />
   );

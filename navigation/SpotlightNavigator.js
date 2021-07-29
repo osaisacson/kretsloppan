@@ -14,10 +14,10 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/EditProposalScreen';
-import ProductDetailScreen from '../screens/ProductDetailScreen';
-import ProjectDetailScreen from '../screens/ProjectDetailScreen';
-import ProposalDetailScreen from '../screens/ProposalDetailScreen';
-import ProductsScreen from '../screens/ProductsScreen';
+import ProductDetail from '../screens/ProductDetail';
+import ProjectDetail from '../screens/ProjectDetail';
+import ProposalDetail from '../screens/ProposalDetail';
+import ProductsList from '../screens/ProductsList';
 import SpotlightScreen from '../screens/SpotlightScreen';
 import UserProductsScreen from '../screens/UserProductsScreen';
 import UserProfile from '../screens/UserProfile';
@@ -43,21 +43,21 @@ export const SpotlightNavigator = ({ navigation }) => {
         component={SpotlightScreen}
         options={defaultMainPageOptions}
       />
-      <SpotlightStackNavigator.Screen name="Återbruk" component={ProductsScreen} />
+      <SpotlightStackNavigator.Screen name="Återbruk" component={ProductsList} />
       {/* Details */}
       <SpotlightStackNavigator.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProjectDetail"
-        component={ProjectDetailScreen}
+        component={ProjectDetail}
         options={detailHeader}
       />
       {/* Edits */}

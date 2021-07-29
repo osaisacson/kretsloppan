@@ -1,22 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import firebase from 'firebase';
+
+import useGetProject from '../hooks/useGetProject';
+
 import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import { Divider, Paragraph } from 'react-native-paper';
-// import { useSelector, useDispatch } from 'react-redux';
+
+import SpotlightProducts from './SpotlightProducts';
+import SpotlightProposals from './SpotlightProposals';
 
 import ButtonIcon from '../components/UI/ButtonIcon';
 import CachedImage from '../components/UI/CachedImage';
-import EmptyState from '../components/UI/EmptyState';
-import HeaderTwo from '../components/UI/HeaderTwo';
-import HorizontalScroll from '../components/UI/HorizontalScroll';
-import ProjectProductItem from '../components/UI/ProjectProductItem';
 import SectionCard from '../components/UI/SectionCard';
 import UserLine from '../components/UI/UserLine';
 import SaferArea from '../components/wrappers/SaferArea';
 import Colors from '../constants/Colors';
 import * as projectsActions from '../store/actions/projects';
 
-const ProjectDetailScreen = (props) => {
+const ProjectDetail = (props) => {
   //Get project id from route through props
   const selectedProjectId = props.route.params.itemData.id;
 
@@ -36,8 +38,18 @@ const ProjectDetailScreen = (props) => {
 
   const navigation = useNavigation();
 
-  console.log('itemData in projectDetailScreen: ', data);
+  const currentUserId = firebase.auth().currentUser.uid;
 
+  console.log('itemData in projectDetail: ', data);
+
+  // console.log('currentUserId from firebase: ', currentUserId);
+
+  // const currentProfile = useGetProfileWithStates(currentUserId);
+  //TODO
+  //    const { isLoading, isError, data, error } = useGetProfile(currentUser.id);
+  //    const { isLoading, isError, data, error } = useGetOrdersForProject(['orders', selectedProjectId]);
+
+  //TO DELETE
   // const projectId = selectedProject.id;
 
   // const { ownerId } = selectedProject;
@@ -54,22 +66,15 @@ const ProjectDetailScreen = (props) => {
 
   // const dispatch = useDispatch();
 
-  const currentProfile = useSelector((state) => state.profiles.userProfile || {});
-  const loggedInUserId = currentProfile.profileId;
+  // const currentProfile = useSelector((state) => state.profiles.userProfile || {});
 
-  const hasEditPermission = ownerId === loggedInUserId;
+  const hasEditPermission = ownerId === currentUserId; //TODO: this should not be currentUserId from firebase but the profileId from the currentProfile:   // const loggedInUserId = currentProfile.profileId;
 
-  const editProjectHandler = (projectId) => {
-    navigation.navigate('EditProject', { detailId: projectId });
+  const editProjectHandler = (id) => {
+    navigation.navigate('EditProject', { detailId: id });
   };
 
-  const selectItemHandler = (itemData) => {
-    props.navigation.navigate('ProductDetail', {
-      itemData: itemData,
-    });
-  };
-
-  const deleteHandler = (projectId) => {
+  const deleteHandler = (id) => {
     Alert.alert(
       'Är du säker?',
       'Vill du verkligen radera den här projektet? Det går inte att gå ändra sig sen.',
@@ -79,7 +84,7 @@ const ProjectDetailScreen = (props) => {
           text: 'Ja, radera',
           style: 'destructive',
           onPress: () => {
-            dispatch(projectsActions.deleteProject(projectId));
+            dispatch(projectsActions.deleteProject(id));
             navigation.goBack();
           },
         },
@@ -87,22 +92,18 @@ const ProjectDetailScreen = (props) => {
     );
   };
 
-  const projectHeader = selectedProject ? (
+  console.log('data: ', data);
+
+  const { title, location, ownerId, image, id, slogan, description } = data;
+
+  const ListHeaderComponent = (
     <View>
       <SectionCard>
-        <Text style={styles.title}>{selectedProject.title}</Text>
-        {selectedProject.location ? (
-          <Text style={styles.subTitle}>{selectedProject.location}</Text>
-        ) : null}
+        <Text style={styles.title}>{title}</Text>
+        {location ? <Text style={styles.subTitle}>{location}</Text> : null}
         <Divider style={{ marginBottom: 8 }} />
-        <UserLine
-          profileId={selectedProject.ownerId}
-          style={{ marginBottom: -50, marginLeft: 5 }}
-        />
-        <CachedImage
-          style={styles.image}
-          uri={selectedProject.image ? selectedProject.image : ''}
-        />
+        <UserLine profileId={ownerId} style={{ marginBottom: -50, marginLeft: 5 }} />
+        <CachedImage style={styles.image} uri={image ? image : ''} />
 
         {/* Buttons to show if the user has edit permissions */}
         {hasEditPermission ? (
@@ -112,74 +113,44 @@ const ProjectDetailScreen = (props) => {
               icon="delete"
               color={Colors.warning}
               onSelect={() => {
-                deleteHandler(selectedProject.id);
+                deleteHandler(id);
               }}
             />
             <ButtonIcon
               icon="pen"
               color={Colors.neutral}
               onSelect={() => {
-                editProjectHandler(selectedProject.id);
+                editProjectHandler(id);
               }}
             />
           </View>
         ) : null}
-        <Text style={styles.slogan}>{selectedProject.slogan}</Text>
+        <Text style={styles.slogan}>{slogan}</Text>
       </SectionCard>
-      {selectedProject.description ? (
+      {description ? (
         <SectionCard>
-          <Paragraph style={{ padding: 5 }}>{selectedProject.description}</Paragraph>
+          <Paragraph style={{ padding: 5 }}>{description}</Paragraph>
         </SectionCard>
       ) : null}
-      {associatedProposals.length ? (
-        <>
-          <View style={{ marginTop: 10 }}>
-            <HeaderTwo
-              title="Efterlysningar till projektet"
-              simpleCount={associatedProposals.length}
-            />
-          </View>
-          <HorizontalScroll
-            isProposal
-            detailPath="ProposalDetail"
-            scrollHeight={40}
-            scrollData={associatedProposals}
-            navigation={props.navigation}
-          />
-        </>
-      ) : null}
-      {associatedProducts.length ? (
-        <View style={{ marginTop: 10 }}>
-          <HeaderTwo title="Återbruk i projektet" simpleCount={associatedProducts.length} />
-        </View>
-      ) : (
-        <EmptyState style={{ marginVertical: 30 }}>Inget återbruk i projektet ännu</EmptyState>
-      )}
     </View>
-  ) : null;
+  );
 
-  if (!selectedProject) {
-    return null;
-  }
+  const ListFooterComponent = (
+    <>
+      {/* Associated products */}
+      {/* TODO: Currently showing all products. Limit these to only the associated products */}
+      <SpotlightProducts rowsToShow={3} projectId={id} title={'Återbruk använt i projektet'} />
+      <Divider style={{ marginTop: 25, marginBottom: 20 }} />
+      <SpotlightProposals title={'Efterlysningar till projektet'} />
+    </>
+  );
 
   return (
     <SaferArea>
       <FlatList
-        initialNumToRender={8}
-        horizontal={false}
-        numColumns={1}
-        data={associatedProducts}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={projectHeader}
-        renderItem={(itemData) => (
-          <ProjectProductItem
-            navigation={props.navigation}
-            productInProject={itemData.item}
-            onSelect={() => {
-              selectItemHandler(itemData.item);
-            }}
-          />
-        )}
+        listKey="spotlightFlatlist"
+        ListHeaderComponent={ListHeaderComponent}
+        ListFooterComponent={ListFooterComponent}
       />
     </SaferArea>
   );
@@ -218,10 +189,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export const screenOptions = (navData) => {
+export const screenOptions = () => {
   return {
     headerTitle: '',
   };
 };
 
-export default ProjectDetailScreen;
+export default ProjectDetail;

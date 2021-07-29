@@ -1,4 +1,3 @@
-import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import React from 'react';
@@ -6,12 +5,20 @@ import useGetProducts from '../hooks/useGetProducts';
 
 import { FlatList, View, StyleSheet } from 'react-native';
 
+import { FontAwesome5 } from '@expo/vector-icons';
 import HeaderTwo from '../components/UI/HeaderTwo';
+import ButtonSeeMore from '../components/UI/ButtonSeeMore';
 import EmptyState from '../components/UI/EmptyState';
 import ProductItem from '../components/UI/ProductItem';
-import ButtonSeeMore from '../components/UI/ButtonSeeMore';
 
-const SpotlightProducts = () => {
+const SpotlightProducts = ({
+  nrItemsToShow,
+  rowsToShow,
+  title,
+  showButtonAddNew,
+  showButtonSeeMore,
+  projectId,
+}) => {
   const { isLoading, isError, data, error } = useGetProducts();
 
   const navigation = useNavigation();
@@ -34,19 +41,22 @@ const SpotlightProducts = () => {
 
   console.log('Products found: ', data.length);
 
-  const recentProductsSorted = data.sort(function (a, b) {
+  //Only show products that belong to a specific project
+  const products = projectId ? data.filter((product) => product.projectId === projectId) : data;
+
+  const productsSorted = products.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const recentProducts = recentProductsSorted.slice(0, 9);
+  const productsToShow = nrItemsToShow ? productsSorted.slice(0, nrItemsToShow) : productsSorted;
 
   return (
     <FlatList
       listKey="productsFlatlist"
-      numColumns={3}
-      data={recentProducts}
+      numColumns={rowsToShow}
+      data={productsToShow}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
         <>
@@ -64,8 +74,8 @@ const SpotlightProducts = () => {
       )}
       ListHeaderComponent={
         <HeaderTwo
-          title={'Återbruk'}
-          showAddLink={() => navigation.navigate('EditProduct')}
+          title={title}
+          showAddLink={showButtonAddNew ? () => navigation.navigate('EditProduct') : null}
           icon={
             <FontAwesome5
               name="recycle"
@@ -78,10 +88,12 @@ const SpotlightProducts = () => {
         />
       }
       ListFooterComponent={
-        <ButtonSeeMore
-          nrToShow={data.length > 1 ? data.length : null}
-          onSelect={data.length > 1 ? () => navigation.navigate('Återbruk') : false}
-        />
+        showButtonSeeMore ? (
+          <ButtonSeeMore
+            nrToShow={products.length > 1 ? products.length : null}
+            onSelect={products.length > 1 ? () => navigation.navigate('Återbruk') : false}
+          />
+        ) : null
       }
     />
   );

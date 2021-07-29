@@ -14,12 +14,12 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/EditProposalScreen';
-import ProductDetailScreen from '../screens/ProductDetailScreen';
-import ProjectDetailScreen from '../screens/ProjectDetailScreen';
-import ProposalDetailScreen from '../screens/ProposalDetailScreen';
-import ProductsScreen from '../screens/ProductsScreen';
-import ProjectsScreen from '../screens/ProjectsScreen';
-import ProposalsScreen from '../screens/ProposalsScreen';
+import ProductDetail from '../screens/ProductDetail';
+import ProjectDetail from '../screens/ProjectDetail';
+import ProposalDetail from '../screens/ProposalDetail';
+import ProductsList from '../screens/ProductsList';
+import ProjectsList from '../screens/ProjectsList';
+import ProposalsList from '../screens/ProposalsList';
 import UserSpotlightScreen from '../screens/UserSpotlightScreen';
 import { topStackHeaderForTabs, detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
 import { SpotlightNavigator } from './SpotlightNavigator';
@@ -35,10 +35,10 @@ const ProductsStack = ({ navigation }) => {
 
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
-      <DetailsStack.Screen name="Allt återbruk" component={ProductsScreen} />
+      <DetailsStack.Screen name="Allt återbruk" component={ProductsList} />
       <DetailsStack.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -60,10 +60,10 @@ const ProjectsStack = ({ navigation }) => {
 
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
-      <DetailsStack.Screen name="Alla projekt" component={ProjectsScreen} />
+      <DetailsStack.Screen name="Alla projekt" component={ProjectsList} />
       <DetailsStack.Screen
         name="ProjectDetail"
-        component={ProjectDetailScreen}
+        component={ProjectDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -73,7 +73,7 @@ const ProjectsStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -83,7 +83,7 @@ const ProjectsStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -105,10 +105,10 @@ const ProposalsStack = ({ navigation }) => {
 
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
-      <DetailsStack.Screen name="Alla efterlysningar" component={ProposalsScreen} />
+      <DetailsStack.Screen name="Alla efterlysningar" component={ProposalsList} />
       <DetailsStack.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen

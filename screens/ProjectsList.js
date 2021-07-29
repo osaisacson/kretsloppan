@@ -1,53 +1,44 @@
 import React, { useState } from 'react';
-import useGetProposals from '../hooks/useGetProposals';
+import useGetProjects from '../hooks/useGetProjects';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { createFilter } from 'react-native-search-filter';
 import SaferArea from '../components/wrappers/SaferArea';
-import Error from '../components/UI/Error';
 import Loader from '../components/UI/Loader';
-import EmptyState from '../components/UI/EmptyState';
 import HeaderTwo from '../components/UI/HeaderTwo';
 import SearchBar from '../components/UI/SearchBar';
-import ProposalItem from '../components/UI/ProposalItem';
+import ProjectItem from '../components/UI/ProjectItem';
+import { Divider } from 'react-native-paper';
+import ProductAvatarAndLocation from '../components/UI/ProductAvatarAndLocation';
 
-const ProposalsScreen = ({ navigation }) => {
-  const { status, data, isLoading, error } = useGetProposals();
-  console.log('Fetching proposals in ProposalsScreen via the useGetProposals hook...');
+const ProjectsList = ({ navigation }) => {
+  const { isLoading, isError, data, error } = useGetProjects();
 
-  //Prepare for changing the rendered proposals on search
-  const [searchQuery, setSearchQuery] = useState('');
-
-  if (status === 'error') {
+  if (isError) {
     console.log('ERROR: ', error.message);
-    return <Error />;
-  }
-
-  if (status === 'loading') {
-    return <Loader />;
-  }
-
-  if (!(status === 'loading') && data.length === 0) {
-    return <EmptyState text="Hittade inga projekt." />;
+    return <Text>Error: {error.message}</Text>;
   }
 
   if (isLoading) {
-    return <EmptyState text="Hämtar efterlysningar" />;
+    console.log(`Loading projects...`);
+    return <Loader />;
   }
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   //Set which fields to filter by
-  const KEYS_TO_FILTERS = ['title', 'description', 'price', 'status'];
+  const KEYS_TO_SEARCH_BY = ['title', 'location', 'description', 'slogan', 'status'];
 
-  const filteredProposalsRaw = data.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+  const filteredProjectsRaw = data.filter(createFilter(searchQuery, KEYS_TO_SEARCH_BY));
 
-  const filteredProposals = filteredProposalsRaw.sort(function (a, b) {
+  const filteredProjects = filteredProjectsRaw.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
   const selectItemHandler = (itemData) => {
-    props.navigation.navigate('ProposalDetail', {
+    props.navigation.navigate('ProjectDetail', {
       itemData: itemData,
     });
   };
@@ -62,14 +53,19 @@ const ProposalsScreen = ({ navigation }) => {
         numColumns={1}
         initialNumToRender={6}
         refreshing={isLoading}
-        data={filteredProposals}
+        data={filteredProjects}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <>
+            <Divider
+              style={{
+                marginBottom: 10,
+              }}
+            />
             <View style={styles.container}>
-              <ProposalItem
-                navigation={navigation}
-                cardHeight={150}
+              <ProductAvatarAndLocation navigation={navigation} itemData={itemData.item} />
+              <ProjectItem
+                cardHeight={200}
                 itemData={itemData.item}
                 onSelect={() => {
                   selectItemHandler(itemData.item);
@@ -81,8 +77,8 @@ const ProposalsScreen = ({ navigation }) => {
         ListHeaderComponent={
           <HeaderTwo
             isSearch
-            simpleCount={filteredProposals.length}
-            showAddLink={() => navigation.navigate('EditProposal')}
+            simpleCount={filteredProjects.length}
+            showAddLink={() => navigation.navigate('EditProject')}
           />
         }
       />
@@ -95,7 +91,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin: 8,
+    marginBottom: 75,
   },
 });
 
-export default ProposalsScreen;
+export default ProjectsList;

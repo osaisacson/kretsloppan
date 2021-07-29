@@ -10,9 +10,9 @@ import EditProjectScreen, {
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
 } from '../screens/EditProposalScreen';
-import ProductDetailScreen from '../screens/ProductDetailScreen;
-import ProjectDetailScreen from '../screens/ProjectDetailScreen';
-import ProposalDetailScreen from '../screens/ProposalDetailScreen';
+import ProductDetail from '../screens/ProductDetail;
+import ProjectDetail from '../screens/ProjectDetail';
+import ProposalDetail from '../screens/ProposalDetail';
 import UserProductsScreen from '../screens/UserProductsScreen';
 import UserProposalsScreen from '../screens/UserProposalsScreen';
 import UserSpotlightScreen from '../screens/UserSpotlightScreen';
@@ -36,7 +36,7 @@ const MyProfileStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -47,7 +47,7 @@ const MyProfileStack = ({ navigation }) => {
       {/* User project screens  */}
       <DetailsStack.Screen
         name="ProjectDetail"
-        component={ProjectDetailScreen}
+        component={ProjectDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -63,7 +63,7 @@ const MyProfileStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen

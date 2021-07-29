@@ -17,6 +17,8 @@ const getProjects = async () => {
   return projectData;
 };
 
-export default function useGetProjects() {
-  return useQuery('projects', getProjects);
+const useProjects = (select) => useQuery(['projects'], getProjects, { select });
+
+export default function useGetProject(id) {
+  return useProjects((projects) => projects.find((project) => project.id === id));
 }

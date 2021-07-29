@@ -17,13 +17,13 @@ import { DetailWrapper, detailStyles } from '../components/wrappers/DetailWrappe
 import Colors from '../constants/Colors';
 import * as proposalsActions from '../store/actions/proposals';
 
-const ProposalDetailScreen = (props) => {
+const ProposalDetail = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const selectedProposal = props.route.params.itemData;
 
-  console.log('itemData passed to proposalDetailScreen: ', selectedProposal);
+  console.log('itemData passed to proposalDetail: ', selectedProposal);
 
   if (!selectedProposal) {
     return {};
@@ -185,4 +185,4 @@ export const screenOptions = (navData) => {
   };
 };
 
-export default ProposalDetailScreen;
+export default ProposalDetail;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useGetProjects from '../hooks/useGetProjects';
+import useGetProducts from '../hooks/useGetProducts';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { createFilter } from 'react-native-search-filter';
@@ -9,62 +9,70 @@ import Loader from '../components/UI/Loader';
 import EmptyState from '../components/UI/EmptyState';
 import HeaderTwo from '../components/UI/HeaderTwo';
 import SearchBar from '../components/UI/SearchBar';
-import ProjectItem from '../components/UI/ProjectItem';
+import ProductItem from '../components/UI/ProductItem';
 import { Divider } from 'react-native-paper';
 import ProductAvatarAndLocation from '../components/UI/ProductAvatarAndLocation';
+import Styles from '../constants/Styles';
 
-const ProjectsScreen = ({ navigation }) => {
-  const { status, data, isLoading, error } = useGetProjects();
-  console.log('Fetching projects in ProjectsScreen via the useGetProjects hook...');
+const ProductsList = ({ navigation }) => {
+  const { isLoading, isError, data, error } = useGetProducts();
 
-  //Prepare for changing the rendered projects on search
-  const [searchQuery, setSearchQuery] = useState('');
-
-  if (status === 'error') {
+  if (isError) {
     console.log('ERROR: ', error.message);
-    return <Error />;
-  }
-
-  if (status === 'loading') {
-    return <Loader />;
-  }
-
-  if (!(status === 'loading') && data.length === 0) {
-    return <EmptyState text="Hittade inga projekt." />;
+    return <Text>Error: {error.message}</Text>;
   }
 
   if (isLoading) {
-    return <EmptyState text="Hämtar projekt" />;
+    console.log(`Loading products...`);
+    return <Loader />;
   }
 
-  //Set which fields to filter by
-  const KEYS_TO_FILTERS = ['title', 'location', 'description', 'slogan', 'status'];
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredProjectsRaw = data.filter(createFilter(searchQuery, KEYS_TO_FILTERS));
+  const selectItemHandler = (itemData) => {
+    navigation.navigate('ProductDetail', { itemData: itemData });
+  };
 
-  const filteredProjects = filteredProjectsRaw.sort(function (a, b) {
+  const KEYS_TO_SEARCH_BY = [
+    'address',
+    'location',
+    'category',
+    'condition',
+    'style',
+    'material',
+    'color',
+    'title',
+    'amount',
+    'description',
+    'background',
+    'length',
+    'height',
+    'width',
+    'price',
+    'priceText',
+    'status',
+    'internalComments',
+  ];
+
+  const filteredProductsRaw = data.filter(createFilter(searchQuery, KEYS_TO_SEARCH_BY));
+
+  const filteredProducts = filteredProductsRaw.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const selectItemHandler = (itemData) => {
-    props.navigation.navigate('ProjectDetail', {
-      itemData: itemData,
-    });
-  };
-
   return (
     <SaferArea>
       <SearchBar
-        placeholder="Leta bland projekt: titel, plats..."
+        placeholder="Leta bland återbruk: titel, skick, mått..."
         onChangeText={(term) => setSearchQuery(term)}
       />
       <FlatList
         numColumns={1}
-        initialNumToRender={6}
+        initialNumToRender={12}
         refreshing={isLoading}
-        data={filteredProjects}
+        data={filteredProducts}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <>
@@ -75,8 +83,8 @@ const ProjectsScreen = ({ navigation }) => {
             />
             <View style={styles.container}>
               <ProductAvatarAndLocation navigation={navigation} itemData={itemData.item} />
-              <ProjectItem
-                cardHeight={200}
+              <ProductItem
+                cardHeight={Styles.largeProductItemHeight}
                 itemData={itemData.item}
                 onSelect={() => {
                   selectItemHandler(itemData.item);
@@ -88,8 +96,8 @@ const ProjectsScreen = ({ navigation }) => {
         ListHeaderComponent={
           <HeaderTwo
             isSearch
-            simpleCount={filteredProjects.length}
-            showAddLink={() => navigation.navigate('EditProject')}
+            simpleCount={filteredProducts.length}
+            showAddLink={() => navigation.navigate('EditProduct')}
           />
         }
       />
@@ -102,8 +110,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin: 8,
-    marginBottom: 75,
+    marginBottom: 80,
   },
 });
 
-export default ProjectsScreen;
+export default ProductsList;

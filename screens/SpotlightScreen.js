@@ -3,7 +3,6 @@ import React from 'react';
 import { FlatList, Text } from 'react-native';
 
 import Card from '../components/UI/Card';
-
 import SaferArea from '../components/wrappers/SaferArea';
 
 import SpotlightProducts from './SpotlightProducts';
@@ -33,12 +32,18 @@ const SpotlightScreen = () => {
       <Divider style={{ marginTop: 25, marginBottom: 20 }} />
 
       {/* Products */}
-      <SpotlightProducts />
+      <SpotlightProducts
+        nrItemsToShow={9}
+        rowsToShow={3}
+        showButtonSeeMore
+        showAddNew
+        title={'Återbruk'}
+      />
 
       <Divider style={{ marginTop: 25, marginBottom: 20 }} />
 
       {/* Proposals */}
-      <SpotlightProposals />
+      <SpotlightProposals nrItemsToShow={4} showButtonSeeMore showAddNew title={'Efterlysningar'} />
 
       <Divider style={{ marginTop: 35, marginBottom: 0 }} />
     </>

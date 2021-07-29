@@ -21,7 +21,7 @@ import { DetailWrapper, detailStyles } from '../components/wrappers/DetailWrappe
 import Colors from '../constants/Colors';
 import ReservationLogic from './ReservationLogic';
 
-const ProductDetailScreen = (props) => {
+const ProductDetail = (props) => {
   //Get product id from route through props
   const selectedProductId = props.route.params.itemData.id;
 
@@ -41,7 +41,7 @@ const ProductDetailScreen = (props) => {
 
   const navigation = useNavigation();
 
-  console.log('itemData in productDetailScreen: ', data);
+  console.log('itemData in productDetail: ', data);
 
   const {
     id,
@@ -342,4 +342,4 @@ export const screenOptions = () => {
   };
 };
 
-export default pure(ProductDetailScreen);
+export default pure(ProductDetail);
