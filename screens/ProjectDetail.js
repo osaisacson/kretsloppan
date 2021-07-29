@@ -40,14 +40,8 @@ const ProjectDetail = (props) => {
 
   const currentUserId = firebase.auth().currentUser.uid;
 
-  console.log('itemData in projectDetail: ', data);
-
-  // console.log('currentUserId from firebase: ', currentUserId);
-
-  // const currentProfile = useGetProfileWithStates(currentUserId);
   //TODO
   //    const { isLoading, isError, data, error } = useGetProfile(currentUser.id);
-  //    const { isLoading, isError, data, error } = useGetOrdersForProject(['orders', selectedProjectId]);
 
   //TO DELETE
   // const projectId = selectedProject.id;
@@ -138,10 +132,9 @@ const ProjectDetail = (props) => {
   const ListFooterComponent = (
     <>
       {/* Associated products */}
-      {/* TODO: Currently showing all products. Limit these to only the associated products */}
       <SpotlightProducts rowsToShow={3} projectId={id} title={'Återbruk använt i projektet'} />
       <Divider style={{ marginTop: 25, marginBottom: 20 }} />
-      <SpotlightProposals title={'Efterlysningar till projektet'} />
+      <SpotlightProposals title={'Efterlysningar till projektet'} projectId={id} />
     </>
   );
 

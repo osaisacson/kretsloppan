@@ -44,6 +44,11 @@ const SpotlightProducts = ({
   //Only show products that belong to a specific project
   const products = projectId ? data.filter((product) => product.projectId === projectId) : data;
 
+  if (projectId && !products.length) {
+    console.log('Could not find any products.');
+    return <EmptyState text="Inget återbruk i projektet ännu" />;
+  }
+
   const productsSorted = products.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);

@@ -34,19 +34,19 @@ const SpotlightProjects = () => {
 
   console.log('Projects found: ', data.length);
 
-  const recentProjectsSorted = data.sort(function (a, b) {
+  const projectsSorted = data.sort(function (a, b) {
     a = new Date(a.date);
     b = new Date(b.date);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const recentProjects = recentProjectsSorted.slice(0, 1);
+  const projectsToShow = projectsSorted.slice(0, 1);
 
   return (
     <FlatList
       listKey="projectsFlatlist"
       numColumns={1}
-      data={recentProjects}
+      data={projectsToShow}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
         <>

@@ -13,7 +13,7 @@ import ButtonSeeMore from '../components/UI/ButtonSeeMore';
 
 const SpotlightProposals = ({
   nrItemsToShow,
-
+  projectId,
   title,
   showButtonAddNew,
   showButtonSeeMore,
@@ -39,6 +39,14 @@ const SpotlightProposals = ({
   }
 
   console.log('Proposals found: ', data.length);
+
+  //Only show proposals that belong to a specific project
+  const proposals = projectId ? data.filter((proposal) => proposal.projectId === projectId) : data;
+
+  if (projectId && !proposals.length) {
+    console.log('Could not find any proposals.');
+    return <EmptyState text="Inga efterlysningar i projektet ännu" />;
+  }
 
   const recentProposalsSorted = data.sort(function (a, b) {
     a = new Date(a.date);
