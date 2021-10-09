@@ -1,24 +1,41 @@
-import { useQuery } from 'react-query';
-import firebase from 'firebase';
+import React from 'react';
+import useGetOrders from './useGetOrders';
+import Loader from './../components/UI/Loader';
+import { Text } from 'react-native';
 
-const getOrders = async () => {
-  const data = await firebase.database().ref('orders').once('value');
-  const normalizedOrderData = data.val();
-  const orderData = [];
-
-  for (const key in normalizedOrderData) {
-    const order = normalizedOrderData[key];
-    orderData.push({
-      id: key,
-      ...order,
-    });
+// TBD: This should be remade to use react query cache similar to the example below
+export default function useGetOrder(productId) {
+  const { isLoading, isError, data, error } = useGetOrders();
+  if (isError) {
+    console.log('ERROR: ', error.message);
+    return <Text>Error: {error.message}</Text>;
   }
 
-  return orderData;
-};
-
-const useOrders = (select) => useQuery(['orders'], getOrders, { select });
-
-export default function useGetOrder(id) {
-  return useOrders((orders) => orders.find((order) => order.id === id));
+  if (isLoading) {
+    console.log(
+      `Loading order belonging to product with id ${productId} via the useGetOrder hook...`
+    );
+    return <Loader />;
+  }
+  return data.find((d) => d.productId == productId); //checks if the order productId matches the passed productId
 }
+
+// import { useQuery, QueryClient } from 'react-query';
+// import { getOrders } from './useGetOrders';
+
+// const queryClient = new QueryClient();
+
+// export default function useGetOrder(productId) {
+//   return useQuery(
+//     ['orders', productId],
+//     () => {
+//       getOrders().find((d) => d.id == productId);
+//     },
+//     {
+//       initialData: () => {
+//         return queryClient.getQueryData('orders')?.find((d) => d.id == productId);
+//       },
+//       initialStale: true,
+//     }
+//   );
+// }

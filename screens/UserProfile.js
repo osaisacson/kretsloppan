@@ -132,7 +132,7 @@ const UserProfile = (props) => {
       {availableUserProductsSorted.length ? (
         <HorizontalScroll
           title="Till Salu"
-          simpleCount={availableUserProductsSorted.length}
+          indicator={availableUserProductsSorted.length}
           scrollData={availableUserProductsSorted}
           navigation={props.navigation}
         />
@@ -140,7 +140,7 @@ const UserProfile = (props) => {
       {reservedUserProducts.length ? (
         <HorizontalScroll
           title="För närvarande reserverat"
-          simpleCount={reservedUserProducts.length}
+          indicator={reservedUserProducts.length}
           scrollData={reservedUserProducts}
           navigation={props.navigation}
         />
@@ -148,7 +148,7 @@ const UserProfile = (props) => {
       {soldUserProducts.length ? (
         <HorizontalScroll
           title="Sålt"
-          simpleCount={soldUserProducts.length}
+          indicator={soldUserProducts.length}
           scrollData={soldUserProducts}
           navigation={props.navigation}
         />
@@ -158,7 +158,7 @@ const UserProfile = (props) => {
           isProposal
           detailPath="ProposalDetail"
           title="Efterlysningar"
-          simpleCount={userProposals.length}
+          indicator={userProposals.length}
           scrollData={userProposals}
           navigation={props.navigation}
         />
@@ -168,7 +168,7 @@ const UserProfile = (props) => {
           isProject
           detailPath="ProjectDetail"
           title="Återbruksprojekt"
-          simpleCount={userProjects.length}
+          indicator={userProjects.length}
           scrollData={userProjects}
           navigation={props.navigation}
         />

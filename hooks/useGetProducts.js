@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import firebase from 'firebase';
 
-const getProducts = async () => {
+export const getProducts = async () => {
   const data = await firebase.database().ref('products').once('value');
   const normalizedProductData = data.val();
   const productData = [];
@@ -13,7 +13,6 @@ const getProducts = async () => {
       ...product,
     });
   }
-
   return productData;
 };
 

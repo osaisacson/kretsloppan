@@ -1,5 +1,5 @@
-import moment from 'moment/min/moment-with-locales';
 import React, { useState } from 'react';
+import moment from 'moment/min/moment-with-locales';
 import { Avatar } from 'react-native-paper';
 import TouchableCmp from '../components/UI/TouchableCmp';
 

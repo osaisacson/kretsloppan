@@ -1,24 +1,38 @@
-import { useQuery } from 'react-query';
-import firebase from 'firebase';
+import useGetProfiles from './useGetProfiles';
+import Loader from './../components/UI/Loader';
+import { Text } from 'react-native';
 
-const getProfiles = async () => {
-  const data = await firebase.database().ref('profiles').once('value');
-  const normalizedProfileData = data.val();
-  const profileData = [];
-
-  for (const key in normalizedProfileData) {
-    const profile = normalizedProfileData[key];
-    profileData.push({
-      id: key,
-      ...profile,
-    });
+// TBD: This should be remade to use react query cache similar to the example below
+export default function useGetProfile(profileId) {
+  const { isLoading, isError, data, error } = useGetProfiles();
+  if (isError) {
+    console.log('ERROR: ', error.message);
+    return <Text>Error: {error.message}</Text>;
   }
 
-  return profileData;
-};
-
-const useProfiles = (select) => useQuery(['profiles'], getProfiles, { select });
-
-export default function useGetProfile(id) {
-  return useProfiles((profiles) => profiles.find((profile) => profile.id === id));
+  if (isLoading) {
+    console.log(`Loading profile with id ${profileId} via the useGetProfile hook...`);
+    return <Loader />;
+  }
+  return data.find((d) => d.id == profileId);
 }
+
+// import { useQuery, QueryClient } from 'react-query';
+// import { getProfiles } from './useGetProfiles';
+
+// const queryClient = new QueryClient();
+
+// export default function useGetProfile(profileId) {
+//   return useQuery(
+//     ['profiles', profileId],
+//     () => {
+//       getProfiles().find((d) => d.id == profileId);
+//     },
+//     {
+//       initialData: () => {
+//         return queryClient.getQueryData('profiles')?.find((d) => d.id == profileId);
+//       },
+//       initialStale: true,
+//     }
+//   );
+// }

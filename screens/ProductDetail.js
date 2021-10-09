@@ -1,9 +1,11 @@
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment/min/moment-with-locales';
-import React from 'react';
 import { View, Alert, Text, StyleSheet } from 'react-native';
 import { Divider, Title, Paragraph } from 'react-native-paper';
 import useGetProduct from '../hooks/useGetProduct';
+import useGetOrder from '../hooks/useGetOrder';
+
 import { useSelector } from 'react-redux';
 
 import { pure } from 'recompose';
@@ -13,7 +15,7 @@ import CachedImage from '../components/UI/CachedImage';
 import FilterLine from '../components/UI/FilterLine';
 import HeaderTwo from '../components/UI/HeaderTwo';
 import HeaderThree from '../components/UI/HeaderThree';
-import Loader from '../components/UI/Loader';
+
 import Orders from '../components/UI/Orders';
 import SectionCard from '../components/UI/SectionCard';
 import StatusBadge from '../components/UI/StatusBadge';
@@ -24,24 +26,13 @@ import ReservationLogic from './ReservationLogic';
 const ProductDetail = (props) => {
   //Get product id from route through props
   const selectedProductId = props.route.params.itemData.id;
-
-  const { isLoading, isError, data, error } = useGetProduct(selectedProductId);
-
-  if (isError) {
-    console.log('ERROR: ', error.message);
-    return <Text>Error: {error.message}</Text>;
-  }
-
-  if (isLoading) {
-    console.log(
-      `Loading product with id ${selectedProductId} in SpotlightProducts via the useGetProduct hook...`
-    );
-    return <Loader />;
-  }
+  //Get product selectedProduct
+  const selectedProduct = useGetProduct(selectedProductId);
+  const productOrders = useGetOrder(selectedProductId);
+  console.log('PRODUCTDETAILS THROUGH REACT QUERY: ', selectedProduct);
+  console.log('ORDERS ON PRODUCTDETAIL THROUGH REACT QUERY: ', productOrders);
 
   const navigation = useNavigation();
-
-  console.log('itemData in productDetail: ', data);
 
   const {
     id,
@@ -69,7 +60,7 @@ const ProductDetail = (props) => {
     location,
     booked,
     sold,
-  } = data;
+  } = selectedProduct;
 
   const currentProfile = useSelector((state) => state.profiles.userProfile || {});
   const loggedInUserId = currentProfile.profileId;
@@ -79,10 +70,6 @@ const ProductDetail = (props) => {
   const originalItems = amount === undefined ? 1 : amount;
   const bookedItems = booked || 0;
   const soldItems = sold || 0;
-
-  const productOrders = useSelector((state) =>
-    state.orders.availableOrders.filter((order) => order.productId === id)
-  );
 
   const hasAnyOrders = productOrders.length;
   const allSold = hasAnyOrders && originalItems === soldItems;
@@ -114,7 +101,7 @@ const ProductDetail = (props) => {
           onPress: () => {
             navigation.goBack();
             dispatch(productsActions.deleteProduct(id));
-            //TO DO: Find all orders of the product and delete these as well. Requires some explanatory UI.
+            //TBD: Find all orders of the product and delete these as well. Requires some explanatory UI.
           },
         },
       ]
@@ -127,7 +114,7 @@ const ProductDetail = (props) => {
         <ReservationLogic
           navigation={navigation}
           hasEditPermission={hasEditPermission}
-          selectedProduct={data}
+          selectedProduct={selectedProduct}
         />
 
         {/* Displays a list of orders for the product if the logged in user is the buyer */}
@@ -201,7 +188,7 @@ const ProductDetail = (props) => {
                 icon="delete"
                 color={Colors.warning}
                 onSelect={() => {
-                  deleteHandler(data.id);
+                  deleteHandler(selectedProduct.id);
                 }}
               />
 
@@ -209,7 +196,7 @@ const ProductDetail = (props) => {
                 icon="pen"
                 color={Colors.neutral}
                 onSelect={() => {
-                  editProductHandler(data.id);
+                  editProductHandler(selectedProduct.id);
                 }}
               />
             </View>

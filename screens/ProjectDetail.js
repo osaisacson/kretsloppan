@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import firebase from 'firebase';
 
 import useGetProject from '../hooks/useGetProject';
@@ -22,7 +22,7 @@ const ProjectDetail = (props) => {
   //Get project id from route through props
   const selectedProjectId = props.route.params.itemData.id;
 
-  const { isLoading, isError, data, error } = useGetProject(selectedProjectId);
+  const selectedProject = useGetProject(selectedProjectId);
 
   if (isError) {
     console.log('ERROR: ', error.message);
@@ -86,9 +86,7 @@ const ProjectDetail = (props) => {
     );
   };
 
-  console.log('data: ', data);
-
-  const { title, location, ownerId, image, id, slogan, description } = data;
+  const { title, location, ownerId, image, id, slogan, description } = selectedProject;
 
   const ListHeaderComponent = (
     <View>

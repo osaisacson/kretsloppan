@@ -20,12 +20,7 @@ const ProjectProductItem = ({ navigation, productInProject, onSelect }) => {
             alignSelf: 'flex-start',
             zIndex: 100,
           }}>
-          <UserAvatarWithBadge
-            size={60}
-            navigation={navigation}
-            text={'säljare'}
-            detailId={sellerId}
-          />
+          <UserAvatarWithBadge navigation={navigation} text={'säljare'} detailId={sellerId} />
         </View>
         {location ? <Text style={styles.location}>{location}</Text> : null}
 
@@ -94,15 +89,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 20,
   },
-  date: {
-    width: '100%',
-    textAlign: 'right',
-    marginBottom: -10,
-    paddingRight: 25,
-    marginTop: 10,
-    fontFamily: 'roboto-light-italic',
-    fontSize: 14,
-  },
   location: {
     padding: 5,
     position: 'absolute',
@@ -116,18 +102,6 @@ const styles = StyleSheet.create({
   amount: {
     position: 'absolute',
     left: 0,
-    bottom: 0,
-    padding: 5,
-    zIndex: 99,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    fontFamily: 'roboto-bold',
-    fontSize: 15,
-    textAlign: 'right',
-    marginRight: 8,
-  },
-  price: {
-    position: 'absolute',
-    right: -9,
     bottom: 0,
     padding: 5,
     zIndex: 99,

@@ -14,7 +14,6 @@ const ProductAvatarAndLocation = ({ navigation, itemData }) => {
         justifyContent: 'space-between',
       }}>
       <UserAvatar
-        size={40}
         userId={ownerId}
         actionOnPress={() => {
           navigation.navigate('Användare', {

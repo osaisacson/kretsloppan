@@ -4,9 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 
 import { createFilter } from 'react-native-search-filter';
 import SaferArea from '../components/wrappers/SaferArea';
-import Error from '../components/UI/Error';
 import Loader from '../components/UI/Loader';
-import EmptyState from '../components/UI/EmptyState';
 import HeaderTwo from '../components/UI/HeaderTwo';
 import SearchBar from '../components/UI/SearchBar';
 import ProductItem from '../components/UI/ProductItem';
@@ -16,6 +14,11 @@ import Styles from '../constants/Styles';
 
 const ProductsList = ({ navigation }) => {
   const { isLoading, isError, data, error } = useGetProducts();
+
+  console.log(
+    'NR OF OBJECTS RECEIVED TO THE PRODUCT LIST SCREEN THROUGH REACT QUERY: ',
+    data.length
+  );
 
   if (isError) {
     console.log('ERROR: ', error.message);

@@ -31,7 +31,7 @@ const HeaderTwo = ({
           </Text>
         ) : null}
         {indicator ? (
-          <Badge size={25} style={{ fontWeight: 'bold', marginBottom: 6 }}>
+          <Badge size={25} style={{ fontWeight: 'bold', marginLeft: 5, marginBottom: 6 }}>
             {indicator}
           </Badge>
         ) : null}

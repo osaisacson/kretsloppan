@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import firebase from 'firebase';
 
-const getProfiles = async () => {
+export const getProfiles = async () => {
   const data = await firebase.database().ref('profiles').once('value');
   const normalizedProfileData = data.val();
   const profileData = [];
