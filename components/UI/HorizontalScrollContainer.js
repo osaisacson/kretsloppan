@@ -6,8 +6,6 @@ import HeaderTwo from './HeaderTwo';
 const HorizontalScrollContainer = ({
   scrollHeight,
   title,
-  subTitle,
-  extraSubTitle,
   icon,
   showNotificationBadge,
   children,

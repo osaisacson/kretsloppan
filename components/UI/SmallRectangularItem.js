@@ -4,12 +4,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import CachedImage from './CachedImage';
 import TouchableCmp from './TouchableCmp';
 
-const SmallRectangularItem = ({ navigation, detailPath, style, item, showText }) => {
-  const selectItemHandler = (id, ownerId, title) => {
-    navigation.navigate(detailPath, {
-      detailId: id,
-      ownerId,
-      detailTitle: title,
+const SmallRectangularItem = ({ navigation, item }) => {
+  const selectItemHandler = (itemData) => {
+    navigation.navigate('ProjectDetail', {
+      itemData: itemData,
     });
   };
 
@@ -18,7 +16,7 @@ const SmallRectangularItem = ({ navigation, detailPath, style, item, showText })
       <View style={styles.touchable}>
         <TouchableCmp
           onPress={() => {
-            selectItemHandler(item.id, item.ownerId, item.title);
+            selectItemHandler(item);
           }}
           useForeground>
           <View style={styles.imageContainer}>

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 100,
+    minWidth: 110,
   },
   label: {
     color: '#fff',

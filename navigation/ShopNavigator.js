@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
-import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
@@ -27,7 +27,9 @@ export const ShopNavigator = () => {
 
   console.log('Calling ShopNavigator');
   console.log(`Profile of current user ${currentProfile ? 'exists' : 'does not exist yet'}`);
-  console.log(`${currentProfile ? 'hasWalkedThrough: ' + hasWalkedThrough : ''}`);
+  console.log(
+    `${currentProfile ? 'and the status of hasWalkedThrough is: ' + hasWalkedThrough : ''}`
+  );
 
   const loadAppData = async () => {
     try {
@@ -58,7 +60,7 @@ export const ShopNavigator = () => {
     return null;
   }
 
-  if (!hasWalkedThrough) {
+  if (!hasWalkedThrough || hasWalkedThrough === 'undefined') {
     return <WalkthroughScreen currUserId={currentProfile.id} />;
   }
 

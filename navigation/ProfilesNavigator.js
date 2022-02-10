@@ -1,17 +1,11 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import ProductDetailScreen, {
-  screenOptions as productDetailScreenOptions,
-} from '../screens/details/ProductDetail/ProductDetailScreen';
-import ProjectDetailScreen, {
-  screenOptions as projectDetailScreenOptions,
-} from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen, {
-  screenOptions as proposalDetailScreenOptions,
-} from '../screens/details/ProposalDetailScreen';
-import AllProfilesScreen from '../screens/shop/AllProfilesScreen';
-import UserProfile from '../screens/user/UserProfile';
+import ProductDetail, { screenOptions as productDetailOptions } from '../screens/ProductDetail';
+import ProjectDetail, { screenOptions as projectDetailOptions } from '../screens/ProjectDetail';
+import ProposalDetail, { screenOptions as proposalDetailOptions } from '../screens/ProposalDetail';
+import ProfilesList from '../screens/ProfilesList';
+import UserProfile from '../screens/UserProfile';
 import { defaultNavOptions, defaultMainPageOptions, mainPageOptionsWithUser } from './NavHeaders';
 
 const ProfilesStackNavigator = createStackNavigator();
@@ -21,7 +15,7 @@ export const ProfilesNavigator = () => {
     <ProfilesStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProfilesStackNavigator.Screen
         name="Alla Användare"
-        component={AllProfilesScreen}
+        component={ProfilesList}
         options={defaultMainPageOptions}
       />
       <ProfilesStackNavigator.Screen
@@ -31,18 +25,18 @@ export const ProfilesNavigator = () => {
       />
       <ProfilesStackNavigator.Screen
         name="ProjectDetail"
-        component={ProjectDetailScreen}
-        options={projectDetailScreenOptions}
+        component={ProjectDetail}
+        options={projectDetailOptions}
       />
       <ProfilesStackNavigator.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
-        options={productDetailScreenOptions}
+        component={ProductDetail}
+        options={productDetailOptions}
       />
       <ProfilesStackNavigator.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
-        options={proposalDetailScreenOptions}
+        component={ProposalDetail}
+        options={proposalDetailOptions}
       />
     </ProfilesStackNavigator.Navigator>
   );

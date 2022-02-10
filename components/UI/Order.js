@@ -8,7 +8,7 @@ import { pure } from 'recompose';
 import Card from './Card';
 import HeaderThree from './HeaderThree';
 
-import OrderLogic from './../../screens/details/ProductDetail/OrderLogic';
+import OrderLogic from './../../screens/OrderLogic';
 import SmallRectangularItem from './SmallRectangularItem';
 import StatusText from './StatusText';
 import TouchableCmp from './TouchableCmp';
@@ -88,7 +88,6 @@ const Order = ({
         order={order}
         isProductDetail={isProductDetail}
         products={products}
-        profiles={profiles}
         projectForProduct={projectForProduct}
         isTimeInitiator={isTimeInitiator}
         timeInitiatorProfile={timeInitiatorProfile}
@@ -173,11 +172,7 @@ const Order = ({
                   Att användas i projekt:
                 </Text>
                 <View>
-                  <SmallRectangularItem
-                    detailPath="ProjectDetail"
-                    item={projectForProduct}
-                    navigation={navigation}
-                  />
+                  <SmallRectangularItem item={projectForProduct} navigation={navigation} />
                 </View>
               </View>
             ) : null}

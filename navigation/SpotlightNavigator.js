@@ -1,28 +1,28 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import usePopToTopOnBlur from '../hooks/usePopToTopOnBlur';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
-} from '../screens/addAndEdit/EditProductScreen';
+} from '../screens/EditProductScreen';
 import EditProfileScreen, {
   screenOptions as editProfileScreenOptions,
-} from '../screens/addAndEdit/EditProfileScreen';
+} from '../screens/EditProfileScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions,
-} from '../screens/addAndEdit/EditProjectScreen';
+} from '../screens/EditProjectScreen';
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
-} from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen from '../screens/details/ProductDetail/ProductDetailScreen';
-import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
-import ProductsScreen from '../screens/shop/ProductsScreen';
-import SpotlightProductsScreen from '../screens/shop/SpotlightProductsScreen';
-import UserProductsScreen from '../screens/user/UserProductsScreen';
-import UserProfile from '../screens/user/UserProfile';
-import UserProposalsScreen from '../screens/user/UserProposalsScreen';
-import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
+} from '../screens/EditProposalScreen';
+import ProductDetail from '../screens/ProductDetail';
+import ProjectDetail from '../screens/ProjectDetail';
+import ProposalDetail from '../screens/ProposalDetail';
+import ProductsList from '../screens/ProductsList';
+import SpotlightScreen from '../screens/SpotlightScreen';
+import UserProductsScreen from '../screens/UserProductsScreen';
+import UserProfile from '../screens/UserProfile';
+import UserProposalsScreen from '../screens/UserProposalsScreen';
+import UserSpotlightScreen from '../screens/UserSpotlightScreen';
 import {
   detailHeader,
   defaultNavOptions,
@@ -40,24 +40,24 @@ export const SpotlightNavigator = ({ navigation }) => {
     <SpotlightStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <SpotlightStackNavigator.Screen
         name="Kretsloppan"
-        component={SpotlightProductsScreen}
+        component={SpotlightScreen}
         options={defaultMainPageOptions}
       />
-      <SpotlightStackNavigator.Screen name="Återbruk" component={ProductsScreen} />
+      <SpotlightStackNavigator.Screen name="Återbruk" component={ProductsList} />
       {/* Details */}
       <SpotlightStackNavigator.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeader}
       />
       <SpotlightStackNavigator.Screen
         name="ProjectDetail"
-        component={ProjectDetailScreen}
+        component={ProjectDetail}
         options={detailHeader}
       />
       {/* Edits */}

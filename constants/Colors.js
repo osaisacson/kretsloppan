@@ -3,6 +3,8 @@ export default {
   lightPrimary: '#f2e1e8',
   mediumPrimary: '#f2e1f2',
   darkPrimary: '#9c0065',
+  extraDarkPrimary: '#47012e',
+
   accent: '#ffc107',
 
   subtlePurple: '#7c5295',

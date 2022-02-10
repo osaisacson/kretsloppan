@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import UserAvatar from './UserAvatar';
 import Colors from '../../constants/Colors';
 
-const UserAvatarWithBadge = ({ navigation, text, navigateTo, detailId, size }) => {
+const UserAvatarWithBadge = ({ navigation, text, detailId, size }) => {
   return (
     <View style={[styles.textAndBadge, { justifyContent: 'flex-start' }]}>
       <UserAvatar
@@ -13,7 +13,9 @@ const UserAvatarWithBadge = ({ navigation, text, navigateTo, detailId, size }) =
         style={{ margin: 0 }}
         showBadge={false}
         actionOnPress={() => {
-          navigation.navigate({ navigateTo }, { detailId: detailId });
+          navigation.navigate('Användare', {
+            detailId: detailId,
+          });
         }}
       />
       <View style={[styles.smallBadge, { backgroundColor: Colors.darkPrimary, left: -25 }]}>

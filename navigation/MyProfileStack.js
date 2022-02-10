@@ -1,22 +1,22 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
-} from '../screens/addAndEdit/EditProductScreen';
+} from '../screens/EditProductScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions,
-} from '../screens/addAndEdit/EditProjectScreen';
+} from '../screens/EditProjectScreen';
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
-} from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen from '../screens/details/ProductDetail/ProductDetailScreen;
-import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
-import UserProductsScreen from '../screens/user/UserProductsScreen';
-import UserProposalsScreen from '../screens/user/UserProposalsScreen';
-import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
-import { topStackHeaderForTabs, detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
+} from '../screens/EditProposalScreen';
+import ProductDetail from '../screens/ProductDetail;
+import ProjectDetail from '../screens/ProjectDetail';
+import ProposalDetail from '../screens/ProposalDetail';
+import UserProductsScreen from '../screens/UserProductsScreen';
+import UserProposalsScreen from '../screens/UserProposalsScreen';
+import UserSpotlightScreen from '../screens/UserSpotlightScreen';
+import {  detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
 
 const DetailsStack = createStackNavigator();
 
@@ -36,7 +36,7 @@ const MyProfileStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -47,7 +47,7 @@ const MyProfileStack = ({ navigation }) => {
       {/* User project screens  */}
       <DetailsStack.Screen
         name="ProjectDetail"
-        component={ProjectDetailScreen}
+        component={ProjectDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -63,7 +63,7 @@ const MyProfileStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen

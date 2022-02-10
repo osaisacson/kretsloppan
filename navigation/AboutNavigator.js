@@ -1,5 +1,5 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import AboutScreen from '../screens/AboutScreen';
 import { defaultNavOptions, defaultMainPageOptions } from './NavHeaders';

@@ -3,8 +3,11 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Badge } from 'react-native-paper';
 import { pure } from 'recompose';
 
+import Styles from './../../constants/Styles';
 import Colors from './../../constants/Colors';
-import ButtonIcon from './ButtonIcon';
+
+import { Button } from 'react-native-paper';
+
 import ButtonSeeMore from './ButtonSeeMore';
 
 const HeaderTwo = ({
@@ -14,30 +17,40 @@ const HeaderTwo = ({
   simpleCount,
   showAddLink,
   showMoreLink,
-  showNotificationBadge,
   isSearch,
+  nrToShow,
 }) => {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.textAndBadge}>
         <View>{icon ? icon : null}</View>
-        <Text style={styles.contentHeader}>{title}</Text>
+        <Text style={Styles.contentHeader}>{title}</Text>
         {simpleCount ? (
-          <Text style={isSearch ? styles.simpleCountForSearch : styles.simpleCount}>
+          <Text style={Styles.searchResults}>
             {isSearch ? `${simpleCount} Hittade` : `(${simpleCount})`}
           </Text>
         ) : null}
-        {showNotificationBadge ? (
-          <Badge size={25} style={{ fontWeight: 'bold', marginBottom: 6 }}>
+        {indicator ? (
+          <Badge size={25} style={{ fontWeight: 'bold', marginLeft: 5, marginBottom: 6 }}>
             {indicator}
           </Badge>
         ) : null}
       </View>
 
       <View style={styles.rightHandButtons}>
-        {showMoreLink ? <ButtonSeeMore onSelect={showMoreLink} /> : null}
+        {showMoreLink ? <ButtonSeeMore nrToShow={nrToShow} onSelect={showMoreLink} /> : null}
         {showAddLink ? (
-          <ButtonIcon icon="plus" compact onSelect={showAddLink} color={Colors.darkPrimary} />
+          <Button
+            icon="plus"
+            mode="text"
+            labelStyle={{
+              fontFamily: 'roboto-bold',
+              fontSize: 13,
+            }}
+            color={Colors.darkPrimary}
+            onSelect={showAddLink}>
+            Lägg till ny
+          </Button>
         ) : null}
       </View>
     </View>
@@ -58,19 +71,6 @@ const styles = StyleSheet.create({
   textAndBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  contentHeader: {
-    fontFamily: 'bebas-neue-bold',
-    fontSize: 31,
-    marginRight: 6,
-  },
-  simpleCount: {
-    fontFamily: 'roboto-light',
-    fontSize: 15,
-  },
-  simpleCountForSearch: {
-    fontFamily: 'roboto-light-italic',
-    fontSize: 16,
   },
   rightHandButtons: {
     flexDirection: 'row',

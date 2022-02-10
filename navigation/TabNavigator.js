@@ -1,26 +1,26 @@
+import React from 'react';
 import { Entypo, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
 
 import Colors from '../constants/Colors';
 import usePopToTopOnBlur from '../hooks/usePopToTopOnBlur';
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
-} from '../screens/addAndEdit/EditProductScreen';
+} from '../screens/EditProductScreen';
 import EditProjectScreen, {
   screenOptions as editProjectScreenOptions,
-} from '../screens/addAndEdit/EditProjectScreen';
+} from '../screens/EditProjectScreen';
 import EditProposalScreen, {
   screenOptions as editProposalScreenOptions,
-} from '../screens/addAndEdit/EditProposalScreen';
-import ProductDetailScreen from '../screens/details/ProductDetail/ProductDetailScreen';
-import ProjectDetailScreen from '../screens/details/ProjectDetailScreen';
-import ProposalDetailScreen from '../screens/details/ProposalDetailScreen';
-import ProductsScreen from '../screens/shop/ProductsScreen';
-import ProjectsScreen from '../screens/shop/ProjectsScreen';
-import ProposalsScreen from '../screens/shop/ProposalsScreen';
-import UserSpotlightScreen from '../screens/user/UserSpotlightScreen';
+} from '../screens/EditProposalScreen';
+import ProductDetail from '../screens/ProductDetail';
+import ProjectDetail from '../screens/ProjectDetail';
+import ProposalDetail from '../screens/ProposalDetail';
+import ProductsList from '../screens/ProductsList';
+import ProjectsList from '../screens/ProjectsList';
+import ProposalsList from '../screens/ProposalsList';
+import UserSpotlightScreen from '../screens/UserSpotlightScreen';
 import { topStackHeaderForTabs, detailHeaderForTabs, mainPageOptionsNoUser } from './NavHeaders';
 import { SpotlightNavigator } from './SpotlightNavigator';
 
@@ -35,10 +35,10 @@ const ProductsStack = ({ navigation }) => {
 
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
-      <DetailsStack.Screen name="Allt återbruk" component={ProductsScreen} />
+      <DetailsStack.Screen name="Allt återbruk" component={ProductsList} />
       <DetailsStack.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -60,10 +60,10 @@ const ProjectsStack = ({ navigation }) => {
 
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
-      <DetailsStack.Screen name="Alla projekt" component={ProjectsScreen} />
+      <DetailsStack.Screen name="Alla projekt" component={ProjectsList} />
       <DetailsStack.Screen
         name="ProjectDetail"
-        component={ProjectDetailScreen}
+        component={ProjectDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -73,7 +73,7 @@ const ProjectsStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ProductDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -83,7 +83,7 @@ const ProjectsStack = ({ navigation }) => {
       />
       <DetailsStack.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen
@@ -101,14 +101,14 @@ const ProjectsStack = ({ navigation }) => {
 };
 
 const ProposalsStack = ({ navigation }) => {
-  usePopToTopOnBlur(navigation, 'Återbruk');
+  usePopToTopOnBlur(navigation, 'Efterlysningar');
 
   return (
     <DetailsStack.Navigator screenOptions={topStackHeaderForTabs}>
-      <DetailsStack.Screen name="Alla efterlysningar" component={ProposalsScreen} />
+      <DetailsStack.Screen name="Alla efterlysningar" component={ProposalsList} />
       <DetailsStack.Screen
         name="ProposalDetail"
-        component={ProposalDetailScreen}
+        component={ProposalDetail}
         options={detailHeaderForTabs}
       />
       <DetailsStack.Screen

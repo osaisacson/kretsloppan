@@ -1,8 +1,8 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
 //Auth screens
-import AuthScreen from '../screens/user/AuthScreen';
+import AuthScreen from '../screens/AuthScreen';
 
 const AuthStackNavigator = createStackNavigator();
 
@@ -12,6 +12,7 @@ export const AuthNavigator = () => {
   return (
     <AuthStackNavigator.Navigator
       screenOptions={{
+        headerTitle: '',
         headerStyle: {
           height: 0,
         },
