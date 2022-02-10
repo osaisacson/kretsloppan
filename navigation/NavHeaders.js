@@ -1,5 +1,7 @@
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+import firebase from 'firebase';
+
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import HeaderButton from '../components/UI/HeaderButton';
@@ -36,6 +38,7 @@ export const defaultMainPageOptions = (navData) => {
     headerRight: () => (
       <View style={styles.avatarContainer}>
         <UserAvatar
+          userId={firebase.auth().currentUser.uid}
           style={styles.userAvatar}
           showBadge
           actionOnPress={() => {

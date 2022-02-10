@@ -1,5 +1,5 @@
-import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 import StartupScreen from '../screens/StartupScreen';
@@ -14,9 +14,9 @@ const AppNavigator = () => {
   console.log(
     `${
       !isAuth && didTryAutoLogin
-        ? "We don't have an auth token and we tried to auto login - should call the AuthNavigator"
+        ? "We don't have an auth token and we tried to auto login - next step is calling the AuthNavigator..."
         : !isAuth && !didTryAutoLogin
-        ? "We don't have an auth token and we did not try to auto login - should call StartupScreen"
+        ? "We don't have an auth token and we did not try to auto login - next step is calling StartupScreen..."
         : isAuth
         ? 'We have an auth token - should call the ShopNavigator'
         : null

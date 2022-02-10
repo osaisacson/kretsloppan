@@ -15,18 +15,11 @@ import Styles from '../constants/Styles';
 const ProductsList = ({ navigation }) => {
   const { isLoading, isError, data, error } = useGetProducts();
 
-  console.log(
-    'NR OF OBJECTS RECEIVED TO THE PRODUCT LIST SCREEN THROUGH REACT QUERY: ',
-    data.length
-  );
-
   if (isError) {
-    console.log('ERROR: ', error.message);
     return <Text>Error: {error.message}</Text>;
   }
 
   if (isLoading) {
-    console.log(`Loading products...`);
     return <Loader />;
   }
 

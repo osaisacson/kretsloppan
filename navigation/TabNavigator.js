@@ -1,7 +1,7 @@
+import React from 'react';
 import { Entypo, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
 
 import Colors from '../constants/Colors';
 import usePopToTopOnBlur from '../hooks/usePopToTopOnBlur';

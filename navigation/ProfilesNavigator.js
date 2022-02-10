@@ -1,5 +1,5 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import ProductDetail, { screenOptions as productDetailOptions } from '../screens/ProductDetail';
 import ProjectDetail, { screenOptions as projectDetailOptions } from '../screens/ProjectDetail';
